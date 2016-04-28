@@ -46,6 +46,7 @@
     "rimraf": "^2.5.2"
   },
   "dependencies": {
+    "esdoc": "^0.4.6",
     "esdoc-es7-plugin": "0.0.3",
     "redux-grid-view": "*",
     "lodash.assign": "^4.0.8"
