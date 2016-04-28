@@ -14,6 +14,7 @@
   ],
   "main": "lib/index.js",
   "scripts": {
+    "link-dev": "npm link ../redux-grid-view",
     "prebuild": "rimraf build",
     "build": "babel src/lib -d lib",
     "watch": "npm run build -- --watch",
@@ -28,6 +29,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
+    "redux-grid-view": "*",
     "babel-cli": "^6.7.5",
     "babel-core": "^6.7.6",
     "babel-eslint": "^6.0.2",
