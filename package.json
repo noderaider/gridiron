@@ -61,12 +61,12 @@
     "babel-runtime": "^6.9.0",
     "esdoc": "^0.4.7",
     "esdoc-es7-plugin": "0.0.3",
-    "fixed-data-table": "^0.6.0",
     "npm-run-all": "^2.1.1",
     "redux-grid-view": "*"
   },
   "peerDependencies": {
-    "react": "^0.14.0 || ^15.0.0"
+    "react": "^0.14.0 || ^15.0.0",
+    "fixed-data-table": "*"
   },
   "jest": {
     "modulePathIgnorePatterns": [
