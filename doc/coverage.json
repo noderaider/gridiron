@@ -1,0 +1,27 @@
+{
+  "coverage": "11.11%",
+  "expectCount": 9,
+  "actualCount": 1,
+  "files": {
+    "lib/helpers/FakeObjectDataListStore.js": {
+      "expectCount": 7,
+      "actualCount": 1,
+      "undocumentLines": [
+        3,
+        4,
+        9,
+        28,
+        52,
+        5
+      ]
+    },
+    "lib/helpers/detectResize.js": {
+      "expectCount": 2,
+      "actualCount": 0,
+      "undocumentLines": [
+        111,
+        136
+      ]
+    }
+  }
+}

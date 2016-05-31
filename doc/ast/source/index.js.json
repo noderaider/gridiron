@@ -1,0 +1,571 @@
+{
+  "type": "Program",
+  "start": 0,
+  "end": 446,
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 10,
+      "column": 0
+    }
+  },
+  "sourceType": "module",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "start": 0,
+      "end": 45,
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 45
+        }
+      },
+      "specifiers": [
+        {
+          "type": "ImportNamespaceSpecifier",
+          "start": 7,
+          "end": 18,
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 18
+            }
+          },
+          "local": {
+            "type": "Identifier",
+            "start": 12,
+            "end": 18,
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 12
+              },
+              "end": {
+                "line": 1,
+                "column": 18
+              }
+            },
+            "name": "create"
+          }
+        }
+      ],
+      "importKind": "value",
+      "source": {
+        "type": "Literal",
+        "start": 24,
+        "end": 45,
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 24
+          },
+          "end": {
+            "line": 1,
+            "column": 45
+          }
+        },
+        "value": "./components/create",
+        "rawValue": "./components/create",
+        "raw": "'./components/create'",
+        "leadingComments": null,
+        "trailingComments": null
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\r\n * redux-grid\r\n * Requires dependencies { React, FixedDataTable, connect } and exports a higher order component and controls that can select from redux state.\r\n * @param  {[type]} dependencies [description]\r\n * @return {[type]}              [description]\r\n ",
+          "start": 49,
+          "end": 313,
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 8,
+              "column": 3
+            }
+          },
+          "range": [
+            49,
+            313
+          ]
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "start": 315,
+      "end": 444,
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 0
+        },
+        "end": {
+          "line": 9,
+          "column": 129
+        }
+      },
+      "declaration": {
+        "type": "ArrowFunctionExpression",
+        "start": 330,
+        "end": 444,
+        "loc": {
+          "start": {
+            "line": 9,
+            "column": 15
+          },
+          "end": {
+            "line": 9,
+            "column": 129
+          }
+        },
+        "id": null,
+        "generator": false,
+        "expression": true,
+        "async": false,
+        "params": [
+          {
+            "type": "Identifier",
+            "start": 330,
+            "end": 342,
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 15
+              },
+              "end": {
+                "line": 9,
+                "column": 27
+              }
+            },
+            "name": "dependencies",
+            "leadingComments": null
+          }
+        ],
+        "body": {
+          "type": "CallExpression",
+          "start": 346,
+          "end": 444,
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 31
+            },
+            "end": {
+              "line": 9,
+              "column": 129
+            }
+          },
+          "callee": {
+            "type": "MemberExpression",
+            "start": 346,
+            "end": 372,
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 31
+              },
+              "end": {
+                "line": 9,
+                "column": 57
+              }
+            },
+            "object": {
+              "type": "CallExpression",
+              "start": 346,
+              "end": 365,
+              "loc": {
+                "start": {
+                  "line": 9,
+                  "column": 31
+                },
+                "end": {
+                  "line": 9,
+                  "column": 50
+                }
+              },
+              "callee": {
+                "type": "MemberExpression",
+                "start": 346,
+                "end": 357,
+                "loc": {
+                  "start": {
+                    "line": 9,
+                    "column": 31
+                  },
+                  "end": {
+                    "line": 9,
+                    "column": 42
+                  }
+                },
+                "object": {
+                  "type": "Identifier",
+                  "start": 346,
+                  "end": 352,
+                  "loc": {
+                    "start": {
+                      "line": 9,
+                      "column": 31
+                    },
+                    "end": {
+                      "line": 9,
+                      "column": 37
+                    }
+                  },
+                  "name": "Object"
+                },
+                "property": {
+                  "type": "Identifier",
+                  "start": 353,
+                  "end": 357,
+                  "loc": {
+                    "start": {
+                      "line": 9,
+                      "column": 38
+                    },
+                    "end": {
+                      "line": 9,
+                      "column": 42
+                    }
+                  },
+                  "name": "keys"
+                },
+                "computed": false
+              },
+              "arguments": [
+                {
+                  "type": "Identifier",
+                  "start": 358,
+                  "end": 364,
+                  "loc": {
+                    "start": {
+                      "line": 9,
+                      "column": 43
+                    },
+                    "end": {
+                      "line": 9,
+                      "column": 49
+                    }
+                  },
+                  "name": "create"
+                }
+              ]
+            },
+            "property": {
+              "type": "Identifier",
+              "start": 366,
+              "end": 372,
+              "loc": {
+                "start": {
+                  "line": 9,
+                  "column": 51
+                },
+                "end": {
+                  "line": 9,
+                  "column": 57
+                }
+              },
+              "name": "reduce"
+            },
+            "computed": false
+          },
+          "arguments": [
+            {
+              "type": "ArrowFunctionExpression",
+              "start": 373,
+              "end": 439,
+              "loc": {
+                "start": {
+                  "line": 9,
+                  "column": 58
+                },
+                "end": {
+                  "line": 9,
+                  "column": 124
+                }
+              },
+              "id": null,
+              "generator": false,
+              "expression": true,
+              "async": false,
+              "params": [
+                {
+                  "type": "Identifier",
+                  "start": 374,
+                  "end": 383,
+                  "loc": {
+                    "start": {
+                      "line": 9,
+                      "column": 59
+                    },
+                    "end": {
+                      "line": 9,
+                      "column": 68
+                    }
+                  },
+                  "name": "reduxGrid"
+                },
+                {
+                  "type": "Identifier",
+                  "start": 385,
+                  "end": 386,
+                  "loc": {
+                    "start": {
+                      "line": 9,
+                      "column": 70
+                    },
+                    "end": {
+                      "line": 9,
+                      "column": 71
+                    }
+                  },
+                  "name": "x"
+                }
+              ],
+              "body": {
+                "type": "ObjectExpression",
+                "start": 392,
+                "end": 438,
+                "loc": {
+                  "start": {
+                    "line": 9,
+                    "column": 77
+                  },
+                  "end": {
+                    "line": 9,
+                    "column": 123
+                  }
+                },
+                "properties": [
+                  {
+                    "type": "SpreadProperty",
+                    "start": 394,
+                    "end": 406,
+                    "loc": {
+                      "start": {
+                        "line": 9,
+                        "column": 79
+                      },
+                      "end": {
+                        "line": 9,
+                        "column": 91
+                      }
+                    },
+                    "argument": {
+                      "type": "Identifier",
+                      "start": 397,
+                      "end": 406,
+                      "loc": {
+                        "start": {
+                          "line": 9,
+                          "column": 82
+                        },
+                        "end": {
+                          "line": 9,
+                          "column": 91
+                        }
+                      },
+                      "name": "reduxGrid"
+                    }
+                  },
+                  {
+                    "type": "Property",
+                    "start": 408,
+                    "end": 436,
+                    "loc": {
+                      "start": {
+                        "line": 9,
+                        "column": 93
+                      },
+                      "end": {
+                        "line": 9,
+                        "column": 121
+                      }
+                    },
+                    "method": false,
+                    "shorthand": false,
+                    "computed": true,
+                    "key": {
+                      "type": "Identifier",
+                      "start": 409,
+                      "end": 410,
+                      "loc": {
+                        "start": {
+                          "line": 9,
+                          "column": 94
+                        },
+                        "end": {
+                          "line": 9,
+                          "column": 95
+                        }
+                      },
+                      "name": "x"
+                    },
+                    "value": {
+                      "type": "CallExpression",
+                      "start": 413,
+                      "end": 436,
+                      "loc": {
+                        "start": {
+                          "line": 9,
+                          "column": 98
+                        },
+                        "end": {
+                          "line": 9,
+                          "column": 121
+                        }
+                      },
+                      "callee": {
+                        "type": "MemberExpression",
+                        "start": 413,
+                        "end": 422,
+                        "loc": {
+                          "start": {
+                            "line": 9,
+                            "column": 98
+                          },
+                          "end": {
+                            "line": 9,
+                            "column": 107
+                          }
+                        },
+                        "object": {
+                          "type": "Identifier",
+                          "start": 413,
+                          "end": 419,
+                          "loc": {
+                            "start": {
+                              "line": 9,
+                              "column": 98
+                            },
+                            "end": {
+                              "line": 9,
+                              "column": 104
+                            }
+                          },
+                          "name": "create"
+                        },
+                        "property": {
+                          "type": "Identifier",
+                          "start": 420,
+                          "end": 421,
+                          "loc": {
+                            "start": {
+                              "line": 9,
+                              "column": 105
+                            },
+                            "end": {
+                              "line": 9,
+                              "column": 106
+                            }
+                          },
+                          "name": "x"
+                        },
+                        "computed": true
+                      },
+                      "arguments": [
+                        {
+                          "type": "Identifier",
+                          "start": 423,
+                          "end": 435,
+                          "loc": {
+                            "start": {
+                              "line": 9,
+                              "column": 108
+                            },
+                            "end": {
+                              "line": 9,
+                              "column": 120
+                            }
+                          },
+                          "name": "dependencies"
+                        }
+                      ]
+                    },
+                    "kind": "init"
+                  }
+                ],
+                "parenthesizedExpression": true
+              }
+            },
+            {
+              "type": "ObjectExpression",
+              "start": 441,
+              "end": 443,
+              "loc": {
+                "start": {
+                  "line": 9,
+                  "column": 126
+                },
+                "end": {
+                  "line": 9,
+                  "column": 128
+                }
+              },
+              "properties": []
+            }
+          ]
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\r\n * redux-grid\r\n * Requires dependencies { React, FixedDataTable, connect } and exports a higher order component and controls that can select from redux state.\r\n * @param  {[type]} dependencies [description]\r\n * @return {[type]}              [description]\r\n ",
+            "start": 49,
+            "end": 313,
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 0
+              },
+              "end": {
+                "line": 8,
+                "column": 3
+              }
+            },
+            "range": [
+              49,
+              313
+            ]
+          }
+        ],
+        "trailingComments": []
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\r\n * redux-grid\r\n * Requires dependencies { React, FixedDataTable, connect } and exports a higher order component and controls that can select from redux state.\r\n * @param  {[type]} dependencies [description]\r\n * @return {[type]}              [description]\r\n ",
+          "start": 49,
+          "end": 313,
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 8,
+              "column": 3
+            }
+          },
+          "range": [
+            49,
+            313
+          ]
+        }
+      ]
+    }
+  ]
+}

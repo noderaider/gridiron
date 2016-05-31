@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">lib/components/createGrid.js | redux-grid API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/cchamberlain/redux-grid" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">helpers</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/helpers/FakeObjectDataListStore.js~FakeObjectDataListStore.html">FakeObjectDataListStore</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-addResizeListener">addResizeListener</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-removeResizeListener">removeResizeListener</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">lib/components/createGrid.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">const should = require(&apos;chai&apos;).should()
+const IS_BROWSER = typeof window === &apos;object&apos;
+
+export default ({ React, ReactDOM, FixedDataTable, connect }) =&gt; {
+  should.exist(React)
+  should.exist(FixedDataTable)
+  should.exist(connect)
+  const {Component, PropTypes} = React
+  const {Table, Column, Cell} = FixedDataTable
+
+
+  class Grid extends Component {
+    static propTypes =  { selectColumns: PropTypes.func.isRequired
+                        , selectRows: PropTypes.func.isRequired
+                        , maxHeight: PropTypes.number.isRequired
+                        };
+    static defaultProps = { maxHeight: 800 }
+    constructor(props) {
+      super(props)
+      this.state = { width: 0, height: 0, canUpdate: true }
+    }
+    componentDidMount() {
+      if(!IS_BROWSER) return
+      const { addResizeListener } = require(&apos;../helpers/detectResize&apos;)
+      this._handleResize()
+      this._handleExpands(this.props)
+      addResizeListener(this.container.parentNode, this._handleResize)
+    }
+    componentWillReceiveProps(nextProps) {
+      if(!IS_BROWSER) return
+      console.warn(&apos;WILL RECEIVE&apos;)
+      this._handleExpands(nextProps)
+
+    }
+    componentDidReceiveProps() {
+      console.warn(&apos;DID RECEIVE&apos;)
+    }
+    componentWillUnmount() {
+      if(!IS_BROWSER) return
+      const { removeResizeListener } = require(&apos;../helpers/detectResize&apos;)
+      removeResizeListener(this.container.parentNode, this._handleResize)
+    }
+    _handleResize = () =&gt; {
+      should.exist(this.container)
+      const { parentNode, offsetWidth, offsetHeight, clientWidth, clientHeight } = this.container
+      should.exist(parentNode)
+      should.exist(offsetWidth)
+      should.exist(offsetHeight)
+      should.exist(clientWidth)
+      should.exist(clientHeight)
+      const borderWidth = offsetWidth - clientWidth
+      const borderHeight = offsetHeight - clientHeight
+      const width = parentNode.offsetWidth - borderWidth
+      const height = parentNode.offsetHeight - borderHeight
+      this.setState({ width, height })
+    };
+    _handleExpands = props =&gt; {
+      //this.setState({ canUpdate: false })
+
+      const { expandedRows } = props
+
+      const [headerRow, ...domRows] = Array.from(document.querySelectorAll(&apos;.fixedDataTableRowLayout_rowWrapper&apos;))
+      const rowContainer = document.querySelector(&apos;.fixedDataTableLayout_rowsContainer&apos;)
+
+      /** RESET BACK FIRST */
+      let { originalHeight, originalContainerHeight } = this.state
+      if(originalHeight) {
+        console.warn(&apos;calculating&apos;, originalHeight, originalContainerHeight)
+        domRows.forEach((node, i) =&gt; {
+          node.style.transform = `translate3d(0px, ${i * originalHeight}px, 0px)`
+          node.childNodes[0].style.height = `${originalHeight}px`
+        })
+        rowContainer.style.height = `${originalContainerHeight}px`
+      }
+
+
+
+      const expandRows = domRows.filter((x, i) =&gt; expandedRows.includes(i)).map(x =&gt; x.childNodes[0])
+      if(!originalHeight)
+        originalHeight = parseInt(expandRows[0].style.height.split(&apos;px&apos;)[0])
+      let expandHeight = 150
+      let offsetHeight = expandHeight - originalHeight
+
+      console.warn(originalHeight)
+      expandRows.forEach((node, i) =&gt; {
+        node.style.height = `${originalHeight + expandHeight}px`
+        node.style.backgroundColor = &apos;white&apos;
+      })
+      console.warn(expandRows)
+
+      let currentExpanded = 0
+      let pushedRows = 0
+      domRows.forEach((node, i) =&gt; {
+        if(expandedRows.includes(i -1)) {
+          currentExpanded++
+        }
+        if(currentExpanded === 0)
+          return
+
+        let translateHeight = i * originalHeight + expandHeight * currentExpanded
+        console.warn(&apos;translate&apos;, originalHeight, translateHeight)
+        node.style.transform = `translate3d(0px, ${translateHeight}px, 0px)`
+        pushedRows+=currentExpanded
+      })
+
+      if(!originalContainerHeight)
+        originalContainerHeight = parseInt(rowContainer.style.height.split(&apos;px&apos;)[0])
+      let totalAddedHeight = (pushedRows) * offsetHeight
+      rowContainer.style.height = `${originalContainerHeight + totalAddedHeight}px`
+      if(!this.state.originalContainerHeight) {
+        this.setState({ originalContainerHeight, originalHeight })
+      }
+    };
+//    shouldComponentUpdate() { return true }
+    render() {
+      const { state, selectColumns, selectRows, maxHeight } = this.props
+      const { width } = this.state
+      should.exist(selectColumns)
+      should.exist(selectRows)
+      selectColumns.should.be.a(&apos;function&apos;)
+      selectRows.should.be.a(&apos;function&apos;)
+      const columns = selectColumns(state)
+      const rows = selectRows(state)
+      should.exist(columns)
+      should.exist(rows)
+      columns.should.be.an(&apos;object&apos;)
+      rows.should.be.instanceof(Array)
+      const columnKeys = Object.keys(columns)
+
+      return (
+        &lt;div ref={x =&gt; this.container=x}&gt;
+          &lt;Table
+            rowHeight={40}
+            headerHeight={50}
+            rowsCount={rows.length}
+            flexGrow={1}
+            width={width}
+            height={1000}
+            {...this.props}&gt;
+
+            {columnKeys.map((x, i) =&gt; {
+              return (
+                &lt;Column
+                  key={i}
+                  width={50}
+                  flexGrow={1}
+                  header={&lt;Cell&gt;{columns[x]}&lt;/Cell&gt;}
+                  cell={({rowIndex, ...props}) =&gt; {
+                    return (
+                        &lt;Cell {...props}&gt;
+                          {rows[rowIndex][i]}
+                        &lt;/Cell&gt;
+                      )
+                    /*
+                    if(rowIndex !== 1) {
+                      return (
+                      )
+                    }
+                    return (
+                      &lt;div style={{ height: 500
+                                  //, backgroundColor: &apos;rgb(100, 100, 100)&apos;
+                                  //, zIndex: 10000
+                                  }}&gt;
+                        OTHER CELL
+                      &lt;/div&gt;
+                    )
+                      */
+                  }}
+                /&gt;
+              )
+            })}
+          &lt;/Table&gt;
+        &lt;/div&gt;
+      )
+    }
+  }
+  return Grid
+}
+
+          /*
+      //this.state = { dataList: new FakeObjectDataListStore(100) }
+          &lt;Column
+            header={&lt;Cell&gt;First Name&lt;/Cell&gt;}
+            cell={&lt;Cell data={data} col=&quot;firstName&quot; /&gt;}
+            fixed={true}
+            width={100}
+          /&gt;
+          &lt;Column
+            header={&lt;Cell&gt;Sentence! (flexGrow greediness=2)&lt;/Cell&gt;}
+            cell={&lt;TextCell data={data} col=&quot;sentence&quot; /&gt;}
+            flexGrow={2}
+            width={200}
+          /&gt;
+          &lt;Column
+            header={&lt;Cell&gt;Company (flexGrow greediness=1)&lt;/Cell&gt;}
+            cell={&lt;TextCell data={data} col=&quot;companyName&quot; /&gt;}
+            flexGrow={1}
+            width={200}
+          /&gt;
+        */
+/*
+  const colorizeText = (str, index) =&gt; {
+    var val, n = 0
+    return str.split(&apos;&apos;).map((letter) =&gt; {
+      val = index * 70 + n++
+      var color = &apos;hsl(&apos; + val + &apos;, 100%, 50%)&apos;
+      return &lt;span style={{color}} key={val}&gt;{letter}&lt;/span&gt;
+    })
+  }
+
+  const TextCell = ({rowIndex, data, columnKey, ...props}) =&gt; (
+    &lt;Cell {...props}&gt;
+      {data.getObjectAt(rowIndex)[columnKey]}
+    &lt;/Cell&gt;
+  )
+  const ColoredTextCell = ({rowIndex, data, col, ...props}) =&gt; (
+    &lt;Cell {...props}&gt;
+      {colorizeText(data.getObjectAt(rowIndex)[col], rowIndex)}
+    &lt;/Cell&gt;
+  )
+  */
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
