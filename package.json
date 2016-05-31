@@ -59,6 +59,7 @@
   "dependencies": {
     "babel-core": "^6.9.0",
     "babel-runtime": "^6.9.0",
+    "chai": "^3.5.0",
     "esdoc": "^0.4.7",
     "esdoc-es7-plugin": "0.0.3",
     "npm-run-all": "^2.1.1",
