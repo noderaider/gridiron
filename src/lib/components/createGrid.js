@@ -21,7 +21,7 @@ export default ({ React, ReactDOM, FixedDataTable, connect }) => {
     }
     componentDidMount() {
       if(!IS_BROWSER) return
-      const { addResizeListener } = require('../helpers/detectResize')()
+      const { addResizeListener } = require('../helpers/detectResize').default()
       this._handleResize()
       this._handleExpands(this.props)
       addResizeListener(this.container.parentNode, this._handleResize)
@@ -37,7 +37,7 @@ export default ({ React, ReactDOM, FixedDataTable, connect }) => {
     }
     componentWillUnmount() {
       if(!IS_BROWSER) return
-      const { removeResizeListener } = require('../helpers/detectResize')()
+      const { removeResizeListener } = require('../helpers/detectResize').default()
       removeResizeListener(this.container.parentNode, this._handleResize)
     }
     _handleResize = () => {
