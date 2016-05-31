@@ -1,6 +1,6 @@
 {
   "name": "redux-grid",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Grid component built for Redux.",
   "main": "lib/index.js",
   "keywords": [
