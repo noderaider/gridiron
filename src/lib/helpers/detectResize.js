@@ -111,7 +111,7 @@ export default function detectResize() {
     }
   }
 
-  const addResizeListener = function(element, fn){
+  const addResizeListener = function(element, fn) {
     if (attachEvent) element.attachEvent('onresize', fn)
     else {
       if (!element.__resizeTriggers__) {
@@ -136,7 +136,7 @@ export default function detectResize() {
     }
   }
 
-  var removeResizeListener = function(element, fn){
+  var removeResizeListener = function(element, fn) {
     if (attachEvent) element.detachEvent('onresize', fn)
     else {
       element.__resizeListeners__.splice(element.__resizeListeners__.indexOf(fn), 1)
@@ -145,8 +145,7 @@ export default function detectResize() {
           element.__resizeTriggers__ = !element.removeChild(element.__resizeTriggers__)
       }
     }
-  }
+
 
   return { addResizeListener, removeResizeListener }
-
 }
