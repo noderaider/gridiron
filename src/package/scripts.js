@@ -27,7 +27,7 @@ export default ({}) => ({ 'start': 'run-p build-watch'
 
 
                           /** RELEASE */
-                        , 'prerelease': 'npm run test'
+                        , '_prerelease': 'npm run test'
                         , 'release': 'npm version patch && npm publish'
                         , 'postrelease': 'npm run release-gh-pages'
 
