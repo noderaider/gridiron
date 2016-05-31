@@ -1,5 +1,23 @@
 window.esdocSearchIndex = [
   [
+    "redux-grid/lib/helpers/fakeobjectdataliststore.js~fakeobjectdataliststore",
+    "class/lib/helpers/FakeObjectDataListStore.js~FakeObjectDataListStore.html",
+    "<span>FakeObjectDataListStore</span> <span class=\"search-result-import-path\">redux-grid/lib/helpers/FakeObjectDataListStore.js</span>",
+    "class"
+  ],
+  [
+    "redux-grid/lib/helpers/detectresize.js~addresizelistener",
+    "function/index.html#static-function-addResizeListener",
+    "<span>addResizeListener</span> <span class=\"search-result-import-path\">redux-grid/lib/helpers/detectResize.js</span>",
+    "function"
+  ],
+  [
+    "redux-grid/lib/helpers/detectresize.js~removeresizelistener",
+    "function/index.html#static-function-removeResizeListener",
+    "<span>removeResizeListener</span> <span class=\"search-result-import-path\">redux-grid/lib/helpers/detectResize.js</span>",
+    "function"
+  ],
+  [
     "builtinexternal/ecmascriptexternal.js~array",
     "external/index.html",
     "BuiltinExternal/ECMAScriptExternal.js~Array",
@@ -328,5 +346,83 @@ window.esdocSearchIndex = [
     "external/index.html",
     "BuiltinExternal/WebAPIExternal.js~XMLHttpRequest",
     "external"
+  ],
+  [
+    "lib/components/create.js",
+    "file/lib/components/create.js.html",
+    "lib/components/create.js",
+    "file"
+  ],
+  [
+    "lib/components/createexpander.js",
+    "file/lib/components/createExpander.js.html",
+    "lib/components/createExpander.js",
+    "file"
+  ],
+  [
+    "lib/components/creategrid.js",
+    "file/lib/components/createGrid.js.html",
+    "lib/components/createGrid.js",
+    "file"
+  ],
+  [
+    "lib/components/createheader.js",
+    "file/lib/components/createHeader.js.html",
+    "lib/components/createHeader.js",
+    "file"
+  ],
+  [
+    "lib/helpers/fakeobjectdataliststore.js",
+    "file/lib/helpers/FakeObjectDataListStore.js.html",
+    "lib/helpers/FakeObjectDataListStore.js",
+    "file"
+  ],
+  [
+    "lib/helpers/fakeobjectdataliststore.js~fakeobjectdataliststore#constructor",
+    "class/lib/helpers/FakeObjectDataListStore.js~FakeObjectDataListStore.html#instance-constructor-constructor",
+    "lib/helpers/FakeObjectDataListStore.js~FakeObjectDataListStore#constructor",
+    "method"
+  ],
+  [
+    "lib/helpers/fakeobjectdataliststore.js~fakeobjectdataliststore#createfakerowobjectdata",
+    "class/lib/helpers/FakeObjectDataListStore.js~FakeObjectDataListStore.html#instance-method-createFakeRowObjectData",
+    "lib/helpers/FakeObjectDataListStore.js~FakeObjectDataListStore#createFakeRowObjectData",
+    "method"
+  ],
+  [
+    "lib/helpers/fakeobjectdataliststore.js~fakeobjectdataliststore#getall",
+    "class/lib/helpers/FakeObjectDataListStore.js~FakeObjectDataListStore.html#instance-method-getAll",
+    "lib/helpers/FakeObjectDataListStore.js~FakeObjectDataListStore#getAll",
+    "method"
+  ],
+  [
+    "lib/helpers/fakeobjectdataliststore.js~fakeobjectdataliststore#getobjectat",
+    "class/lib/helpers/FakeObjectDataListStore.js~FakeObjectDataListStore.html#instance-method-getObjectAt",
+    "lib/helpers/FakeObjectDataListStore.js~FakeObjectDataListStore#getObjectAt",
+    "method"
+  ],
+  [
+    "lib/helpers/fakeobjectdataliststore.js~fakeobjectdataliststore#getsize",
+    "class/lib/helpers/FakeObjectDataListStore.js~FakeObjectDataListStore.html#instance-method-getSize",
+    "lib/helpers/FakeObjectDataListStore.js~FakeObjectDataListStore#getSize",
+    "method"
+  ],
+  [
+    "lib/helpers/fakeobjectdataliststore.js~fakeobjectdataliststore#size",
+    "class/lib/helpers/FakeObjectDataListStore.js~FakeObjectDataListStore.html#instance-member-size",
+    "lib/helpers/FakeObjectDataListStore.js~FakeObjectDataListStore#size",
+    "member"
+  ],
+  [
+    "lib/helpers/detectresize.js",
+    "file/lib/helpers/detectResize.js.html",
+    "lib/helpers/detectResize.js",
+    "file"
+  ],
+  [
+    "lib/index.js",
+    "file/lib/index.js.html",
+    "lib/index.js",
+    "file"
   ]
 ]
