@@ -57,28 +57,33 @@ export default ({ React, ReactDOM, FixedDataTable, connect }) => {
     _handleExpands = props => {
       //this.setState({ canUpdate: false })
 
+      let expandHeight = 150
       const { expandedRows } = props
 
       const [headerRow, ...domRows] = Array.from(document.querySelectorAll('.fixedDataTableRowLayout_rowWrapper'))
-      const rowContainer = document.querySelector('.fixedDataTableLayout_rowsContainer')
 
-      /** RESET BACK FIRST */
       let { originalHeight, originalContainerHeight } = this.state
-      if(originalHeight) {
+
+      const rowContainer = document.querySelector('.fixedDataTableLayout_rowsContainer')
+      const expandRows = domRows.filter((x, i) => expandedRows.includes(i)).map(x => x.childNodes[0])
+
+      if(originalHeight && originalContainerHeight) {
+        /** RESET BACK FIRST */
+        rowContainer.style.height = `${originalContainerHeight}px`
+
         console.warn('calculating', originalHeight, originalContainerHeight)
         domRows.forEach((node, i) => {
           node.style.transform = `translate3d(0px, ${i * originalHeight}px, 0px)`
           node.childNodes[0].style.height = `${originalHeight}px`
         })
-        rowContainer.style.height = `${originalContainerHeight}px`
+      } else {
+        if(expandRows.length === 0)
+          return
+        originalContainerHeight = parseInt(rowContainer.style.height.split('px')[0])
+        originalHeight = parseInt(expandRows[0].style.height.split('px')[0])
+        this.setState({ originalContainerHeight, originalHeight })
       }
 
-
-
-      const expandRows = domRows.filter((x, i) => expandedRows.includes(i)).map(x => x.childNodes[0])
-      if(!originalHeight)
-        originalHeight = parseInt(expandRows[0].style.height.split('px')[0])
-      let expandHeight = 150
       let offsetHeight = expandHeight - originalHeight
 
       console.warn(originalHeight)
@@ -103,13 +108,8 @@ export default ({ React, ReactDOM, FixedDataTable, connect }) => {
         pushedRows+=currentExpanded
       })
 
-      if(!originalContainerHeight)
-        originalContainerHeight = parseInt(rowContainer.style.height.split('px')[0])
       let totalAddedHeight = (pushedRows) * offsetHeight
       rowContainer.style.height = `${originalContainerHeight + totalAddedHeight}px`
-      if(!this.state.originalContainerHeight) {
-        this.setState({ originalContainerHeight, originalHeight })
-      }
     };
 //    shouldComponentUpdate() { return true }
     render() {
