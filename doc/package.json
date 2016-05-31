@@ -1,0 +1,105 @@
+{
+  "name": "redux-grid",
+  "version": "0.1.14",
+  "description": "Grid component built for Redux.",
+  "main": "lib/index.js",
+  "keywords": [
+    "redux",
+    "react",
+    "grid",
+    "tables",
+    "charts",
+    "charting",
+    "pagination",
+    "sort"
+  ],
+  "scripts": {
+    "start": "run-p build-watch",
+    "clean": "run-p clean-lib clean-doc",
+    "clean-lib": "rimraf lib",
+    "clean-doc": "rimraf doc",
+    "prebuild": "npm run clean",
+    "build": "babel src/lib -d lib",
+    "build-watch": "npm run build -- --watch",
+    "pretest": "npm run build",
+    "test": "mocha --require test/mock/dom --harmony --es_staging --compilers .:test/compiler test/*.js",
+    "test-watch": "mocha --require test/mock/dom --harmony --es_staging --watch --compilers .:test/compiler test/*.js",
+    "test-debug": "node-debug --nodejs --harmony --no-preload --save-live-edit --hidden node_modules/ _mocha --watch --debug",
+    "_prerelease": "npm run test",
+    "release": "npm version patch && npm publish",
+    "postrelease": "npm run release-gh-pages",
+    "prerelease-gh-pages": "npm run doc",
+    "release-gh-pages": "run-s gh-pages-subtree gh-pages-push gh-pages-delete",
+    "postrelease-gh-pages": "npm run clean-doc && npm run git-save -- clean && git push -u origin master --follow-tags",
+    "predoc": "rimraf doc",
+    "doc": "esdoc -c ./esdoc.json && ncp CNAME doc/CNAME",
+    "postdoc": "npm run git-save -- doc",
+    "gh-pages-subtree": "git subtree split --prefix doc -b gh-pages",
+    "gh-pages-push": "git push -f origin gh-pages:gh-pages",
+    "gh-pages-delete": "git branch -D gh-pages",
+    "git-save": "git add -A && git commit -am ",
+    "upgrade": "ncu -a && npm update"
+  },
+  "dependencies": {
+    "babel-core": "^6.9.0",
+    "babel-runtime": "^6.9.0",
+    "chai": "^3.5.0",
+    "esdoc": "^0.4.7",
+    "esdoc-es7-plugin": "0.0.3",
+    "ncp": "^2.0.0",
+    "npm-run-all": "^2.1.1",
+    "redux-grid-view": "*"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.9.0",
+    "babel-core": "^6.9.0",
+    "babel-eslint": "^6.0.4",
+    "babel-jest": "^12.1.0",
+    "babel-loader": "^6.2.4",
+    "babel-plugin-react-transform": "^2.0.2",
+    "babel-plugin-transform-runtime": "^6.9.0",
+    "babel-polyfill": "*",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.5.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "eslint": "*",
+    "eslint-plugin-babel": "*",
+    "eslint-plugin-react": "*",
+    "faker": "^3.1.0",
+    "jest-cli": "*",
+    "mocha": "^2.5.3",
+    "react": "^15.1.0",
+    "react-addons-test-utils": "^15.1.0",
+    "react-dom": "^15.1.0",
+    "react-tools": "^0.13.3",
+    "redux-grid-view": "*",
+    "rimraf": "^2.5.2"
+  },
+  "peerDependencies": {
+    "react": "^0.14.0 || ^15.0.0",
+    "fixed-data-table": "*"
+  },
+  "author": "Cole Chamberlain <cole.chamberlain@gmail.com> (https://github.com/cchamberlain)",
+  "bugs": {
+    "url": "https://github.com/cchamberlain/redux-grid/issues"
+  },
+  "homepage": "https://cchamberlain.github.io/redux-grid",
+  "jest": {
+    "modulePathIgnorePatterns": [
+      "doc"
+    ],
+    "unmockedModulePathPatterns": [
+      "<rootDir>/node_modules/react/",
+      "<rootDir>/node_modules/react-dom/",
+      "<rootDir>/node_modules/react-addons-test-utils/",
+      "<rootDir>/node_modules/fixed-data-table/",
+      "<rootDir>/node_modules/faker/"
+    ],
+    "verbose": true
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cchamberlain/redux-grid.git"
+  }
+}
