@@ -46,7 +46,6 @@
     "chai": "^3.5.0",
     "esdoc": "^0.4.7",
     "esdoc-es7-plugin": "0.0.3",
-    "ncp": "^2.0.0",
     "npm-run-all": "^2.1.1",
     "redux-grid-view": "*"
   },
