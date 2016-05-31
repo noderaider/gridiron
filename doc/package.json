@@ -1,6 +1,6 @@
 {
   "name": "redux-grid",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Grid component built for Redux.",
   "main": "lib/index.js",
   "keywords": [
@@ -46,6 +46,7 @@
     "chai": "^3.5.0",
     "esdoc": "^0.4.7",
     "esdoc-es7-plugin": "0.0.3",
+    "ncp": "^2.0.0",
     "npm-run-all": "^2.1.1",
     "redux-grid-view": "*"
   },
