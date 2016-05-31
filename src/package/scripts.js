@@ -7,7 +7,7 @@
  const GH_PAGES_ROOT = 'doc'
 
                           /** START SCRIPT STARTS BUILD WITH WATCHING ENABLED (USEFUL WITH NPM LINK) */
-export default ({}) => ({ 'start': 'run-p build-watch test-watch'
+export default ({}) => ({ 'start': 'run-p build-watch'
 
                           /** CLEAN EVERYTHING PRE BUILD */
                         , 'clean': 'run-p clean-lib clean-doc'

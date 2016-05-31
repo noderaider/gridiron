@@ -1,5 +1,5 @@
-import { addResizeListener, removeResizeListener } from '../helpers/detectResize'
 const should = require('chai').should()
+const IS_BROWSER = typeof window === 'object'
 
 export default ({ React, ReactDOM, FixedDataTable, connect }) => {
   should.exist(React)
@@ -20,11 +20,14 @@ export default ({ React, ReactDOM, FixedDataTable, connect }) => {
       this.state = { width: 0, height: 0, canUpdate: true }
     }
     componentDidMount() {
+      if(!IS_BROWSER) return
+      const { addResizeListener } = require('../helpers/detectResize')()
       this._handleResize()
       this._handleExpands(this.props)
       addResizeListener(this.container.parentNode, this._handleResize)
     }
     componentWillReceiveProps(nextProps) {
+      if(!IS_BROWSER) return
       console.warn('WILL RECEIVE')
       this._handleExpands(nextProps)
 
@@ -33,6 +36,8 @@ export default ({ React, ReactDOM, FixedDataTable, connect }) => {
       console.warn('DID RECEIVE')
     }
     componentWillUnmount() {
+      if(!IS_BROWSER) return
+      const { removeResizeListener } = require('../helpers/detectResize')()
       removeResizeListener(this.container.parentNode, this._handleResize)
     }
     _handleResize = () => {
