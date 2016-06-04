@@ -13,13 +13,13 @@ export default ({ React }) => {
                               }
 
   return props => (
-    <div style={wrapStyle}>
+    <span style={wrapStyle}>
       <span>
         <button style={expanderButtonStyle} onClick={props.handleExpand}>
           <i className={`fa fa-${(props.expanded ? 'minus' : 'plus')}-square`} />
         </button>
       </span>
       <span>{props.children}</span>
-    </div>
+    </span>
   )
 }

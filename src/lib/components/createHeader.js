@@ -13,7 +13,7 @@ export default ({ React }) => {
                             }
 
   return props => (
-    <div style={wrapStyle}>
+    <span style={wrapStyle}>
       <span>{props.children}</span>
       <span>
         <button style={headerButtonStyle} onClick={props.handleSort}>
@@ -23,6 +23,6 @@ export default ({ React }) => {
           <i className={`fa fa-filter${''}`} />
         </button>
       </span>
-    </div>
+    </span>
   )
 }
