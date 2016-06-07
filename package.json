@@ -44,6 +44,7 @@
     "babel-core": "^6.9.0",
     "babel-runtime": "^6.9.0",
     "chai": "^3.5.0",
+    "classnames": "^2.2.5",
     "esdoc": "^0.4.7",
     "esdoc-es7-plugin": "0.0.3",
     "ncp": "^2.0.0",
