@@ -1,6 +1,7 @@
 import { createPropTypes, createConnect } from '../createGrid'
 import createExpander from '../createExpander'
 import createExpandableCellRangeRenderer from './internal/createExpandableCellRangeRenderer'
+import createAutoSizer from 'react-autosizer'
 import classNames from 'classnames'
 const should = require('chai').should()
 const IS_BROWSER = typeof window === 'object'
@@ -16,28 +17,33 @@ export default function createGrid({ React, connect, ReactVirtualized, Immutable
 
 
 
-
-  const pollingFrequency = 1000
   class ReduxGrid extends Component {
     static propTypes = createPropTypes(React);
     static defaultProps = { maxHeight: 800
                           , styles: {}
                           }
+    set width(value) {
+      console.warn(`setting ReduxGrid width to ${value}`)
+      this.setState({ width: value })
+    }
+    set height(value) {
+      console.warn(`setting ReduxGrid height to ${value}`)
+      this.setState({ height: value })
+    }
     constructor(props) {
       super(props)
-      this.state = {
-        disableHeader: false,
-        headerHeight: 30,
-        height: 600,
-        hideIndexRow: false,
-        overscanRowCount: 10,
-        rowHeight: 40,
-        rowCount: 1000,
-        scrollToIndex: undefined,
-        sortBy: 'index',
-        sortDirection: SortDirection.ASC,
-        useDynamicRowHeight: false
-      }
+      this.state =  { disableHeader: false
+                    , headerHeight: 30
+                    , height: props.height || 900
+                    , hideIndexRow: false
+                    , overscanRowCount: 10
+                    , rowHeight: 40
+                    , rowCount: 1000
+                    , scrollToIndex: undefined
+                    , sortBy: 'index'
+                    , sortDirection: SortDirection.ASC
+                    , useDynamicRowHeight: false
+                    }
     }
     /*
     componentDidMount() {
@@ -101,22 +107,13 @@ export default function createGrid({ React, connect, ReactVirtualized, Immutable
 
       return (
         <ContentBox>
-          <div>
-            <AutoSizer disableHeight>
-              {({ width }) => (
-                <Grid
-                  className={styles.BodyGrid}
-                  width={width}
-                  height={height}
-                  columnWidth={
-                    ({ index }) => {
-                      return width / columnKeys.length
-                      /*
-                      if(index === 0)
-                        return controlsWidth
-                      return (width - controlsWidth) / (columnKeys.length - 1)
-                      */
-                    }
+          <div style={{height: 800}}>
+            <AutoSizer direction="down">
+              {({ width, height }, gridSizer) => {
+                const onResize = dimensions => {
+                  if(gridSizer) {
+                    console.warn('gridsizer updated', dimensions)
+                    gridSizer.dimensions = dimensions
                   }
                   rowHeight={({ index }) => index === 0 ? 50 : 19}
                   columnCount={columnKeys.length}
@@ -232,11 +229,23 @@ export default function createGrid({ React, connect, ReactVirtualized, Immutable
                       if(rowIndex === 0) {
                         return <div className={styles.headerCell}>{columns[columnKeys[columnIndex]]}</div>
                       }
-                      return <div className={rowIndex % 2 === 0 ? styles.evenRow : styles.oddRow}>{rows[rowIndex][columnIndex]}</div>
                     }
-                  }
-                />
-              )}
+                    rowHeight={({ index }) => index === 0 ? 50 : 25}
+                    columnCount={columnKeys.length}
+                    rowCount={rowCount}
+                    cellRangeRenderer={cellRangeRenderer}
+                    cellRenderer={
+                      ({ columnIndex, rowIndex, isScrolling }) => {
+                        if(rowIndex === 0) {
+                          return <div className={styles.headerCell}>{columns[columnKeys[columnIndex]]}</div>
+                        }
+                        return <div className={rowIndex % 2 === 0 ? styles.evenRow : styles.oddRow}>{rows[rowIndex][columnIndex]}</div>
+                      }
+                    }
+                  />
+                )
+              }
+              }
             </AutoSizer>
           </div>
         </ContentBox>

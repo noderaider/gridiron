@@ -1,11 +1,10 @@
 import CellSizeAndPositionManager from './utils/CellSizeAndPositionManager'
 
-
 /**
  * Default implementation of cellRangeRenderer used by Grid.
  * This renderer supports cell-caching while the user is scrolling.
  */
-export default function createExpandableCellRangeRenderer({ React, Expander, expandedRowManager, state }) {
+export default function createExpandableCellRangeRenderer({ React, onResize, AutoSizer, Expander, expandRowManager, state }) {
   const { Component, PropTypes } = React
   class ExpandedArea extends Component {
     componentDidMount() {
@@ -39,20 +38,20 @@ export default function createExpandableCellRangeRenderer({ React, Expander, exp
 
     let expandedOffset = 0
 
-    const expandedIndices = expandedRowManager.getExpandedIndices()
+    const expandedIndices = expandRowManager.getExpandedIndices()
 
     const renderedCells = []
 
     for (let rowIndex = rowStartIndex; rowIndex <= rowStopIndex; rowIndex++) {
       let rowDatum = rowSizeAndPositionManager.getSizeAndPositionOfCell(rowIndex)
 
-      let isExpandable = expandedRowManager.isExpandable(rowIndex)
+      let isExpandable = expandRowManager.isExpandable(rowIndex)
       let isExpanded = expandedIndices.includes(rowIndex)
 
       let expanderOffset = 0
       if(isExpandable) {
         const expanderKey = `${rowIndex}-expander`
-        expanderOffset = expandedRowManager.getExpanderWidth(rowIndex)
+        expanderOffset = expandRowManager.getExpanderWidth(rowIndex)
         let expander = (
           <div
             key={expanderKey}
@@ -61,9 +60,9 @@ export default function createExpandableCellRangeRenderer({ React, Expander, exp
                     , top: rowDatum.offset + verticalOffsetAdjustment + expandedOffset
                     , width: expanderOffset
                     } }
-            className={expandedRowManager.getExpanderClassName(rowIndex)}
+            className={expandRowManager.getExpanderClassName(rowIndex)}
           >
-            <Expander expanded={isExpanded} handleExpand={() => expandedRowManager.onToggleExpand(rowIndex)}/>
+            <Expander expanded={isExpanded} handleExpand={() => expandRowManager.onToggleExpand(rowIndex)}/>
           </div>
         )
         renderedCells.push(expander)
@@ -107,15 +106,16 @@ export default function createExpandableCellRangeRenderer({ React, Expander, exp
         if (renderedCell == null || renderedCell === false)
           continue
 
-        let child = (
+        const style = { height: rowDatum.size
+                      , left: isExpandable && columnIndex === 0 ? columnDatum.offset + horizontalOffsetAdjustment + expanderOffset : columnDatum.offset + horizontalOffsetAdjustment
+                      , top: rowDatum.offset + verticalOffsetAdjustment + expandedOffset
+                      , width: isExpandable && columnIndex === 0 ? columnDatum.size - expanderOffset : columnDatum.size
+                      }
+        const child = (
           <div
             key={key}
             className='Grid__cell'
-            style={ { height: rowDatum.size
-                    , left: isExpandable && columnIndex === 0 ? columnDatum.offset + horizontalOffsetAdjustment + expanderOffset : columnDatum.offset + horizontalOffsetAdjustment
-                    , top: rowDatum.offset + verticalOffsetAdjustment + expandedOffset
-                    , width: isExpandable && columnIndex === 0 ? columnDatum.size - expanderOffset : columnDatum.size
-                    } }
+            style={style}
           >
             {renderedCell}
           </div>
@@ -125,23 +125,30 @@ export default function createExpandableCellRangeRenderer({ React, Expander, exp
       }
 
       if(isExpanded) {
-        let key=`${rowIndex}-expanded`
-        let height=expandedRowManager.getHeight(rowIndex)
-        let expanded = (
-          <ExpandedArea
-            key={key}
-            style={ { height
-                    , left: horizontalOffsetAdjustment
-                    , top: rowDatum.offset + rowDatum.size + verticalOffsetAdjustment + expandedOffset
-                    , width: '100%'
-                    } }
-            className={expandedRowManager.getClassName(rowIndex)}
-          >
-            {expandedRowManager.getContent(rowIndex, state)}
-          </ExpandedArea>
+        const key=`${rowIndex}-expanded`
+        const style = { /*height: expandRowManager.getHeight(rowIndex)
+                      ,*/ left: horizontalOffsetAdjustment
+                      , top: rowDatum.offset + rowDatum.size + verticalOffsetAdjustment + expandedOffset
+                      , width: '100%'
+                      }
+        const content = expandRowManager.getContent(rowIndex, state)
+        const expanded = (
+          <AutoSizer key={key} onResize={
+            (dimensions, eventArgs) => {
+              console.warn('attempting to resize gridSizer to', dimensions)
+              onResize(dimensions)
+            }
+          } traverseSource={x => x.childNodes[0]} direction="up">
+            <ExpandedArea
+              style={style}
+              className={expandRowManager.getClassName(rowIndex)}
+            >
+              {expandRowManager.getContent(rowIndex, state)}
+            </ExpandedArea>
+          </AutoSizer>
         )
         renderedCells.push(expanded)
-        expandedOffset += height
+        //expandedOffset += height
       }
     }
 
@@ -150,20 +157,3 @@ export default function createExpandableCellRangeRenderer({ React, Expander, exp
 
 
 }
-
-
-/*
-type DefaultCellRangeRendererParams = {
-  cellCache: Object,
-  cellRenderer: Function,
-  columnSizeAndPositionManager: CellSizeAndPositionManager,
-  columnStartIndex: number,
-  columnStopIndex: number,
-  isScrolling: boolean,
-  rowSizeAndPositionManager: CellSizeAndPositionManager,
-  rowStartIndex: number,
-  rowStopIndex: number,
-  scrollLeft: number,
-  scrollTop: number
-};
-*/

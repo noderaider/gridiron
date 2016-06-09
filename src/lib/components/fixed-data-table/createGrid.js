@@ -1,3 +1,4 @@
+import { addResizeListener, removeResizeListener } from 'detect-resize'
 import { createPropTypes, createConnect } from '../createGrid'
 const should = require('chai').should()
 const IS_BROWSER = typeof window === 'object'
@@ -19,7 +20,6 @@ export default function createGrid({ React, connect, FixedDataTable }) {
     }
     componentDidMount() {
       if(!IS_BROWSER) return
-      const { addResizeListener } = require('../../helpers/detectResize')
       this._handleResize()
       this._handleExpands(this.props)
       addResizeListener(this.container.parentNode, this._handleResize)
@@ -35,7 +35,6 @@ export default function createGrid({ React, connect, FixedDataTable }) {
     }
     componentWillUnmount() {
       if(!IS_BROWSER) return
-      const { removeResizeListener } = require('../../helpers/detectResize')
       removeResizeListener(this.container.parentNode, this._handleResize)
     }
     _handleResize = () => {
