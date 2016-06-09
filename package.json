@@ -51,6 +51,7 @@
     "ncp": "^2.0.0",
     "npm-run-all": "^2.1.1",
     "react-autosizer": "^0.1.6",
+    "react-height": "^2.1.0",
     "redux-grid-view": "*"
   },
   "devDependencies": {

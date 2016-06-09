@@ -1,7 +1,7 @@
 import { createPropTypes, createConnect } from '../createGrid'
 import createExpander from '../createExpander'
 import createExpandableCellRangeRenderer from './internal/createExpandableCellRangeRenderer'
-import createAutoSizer from 'react-autosizer'
+//import createAutoSizer from 'react-autosizer'
 import classNames from 'classnames'
 const should = require('chai').should()
 const IS_BROWSER = typeof window === 'object'
@@ -12,9 +12,9 @@ export default function createGrid({ React, connect, ReactVirtualized, Immutable
   should.exist(connect)
   should.exist(ReactVirtualized)
   const {Component, PropTypes} = React
-  const {FlexTable, FlexColumn, SortDirection, SortIndicator, Grid} = ReactVirtualized
+  const {AutoSizer, FlexTable, FlexColumn, SortDirection, SortIndicator, Grid} = ReactVirtualized
   const Expander = createExpander({ React })
-  const AutoSizer = createAutoSizer({ React })
+  //const AutoSizer = createAutoSizer({ React })
 
 
 
@@ -22,20 +22,20 @@ export default function createGrid({ React, connect, ReactVirtualized, Immutable
     static propTypes = createPropTypes(React);
     static defaultProps = { maxHeight: 800
                           , styles: {}
-                          }
-    set width(value) {
-      console.warn(`setting ReduxGrid width to ${value}`)
-      this.setState({ width: value })
-    }
-    set height(value) {
-      console.warn(`setting ReduxGrid height to ${value}`)
-      this.setState({ height: value })
-    }
+                          };
+    increaseHeight = height => {
+      console.warn(`ReduxGrid height increasing by ${height}`)
+      this.setState({ height: this.state.height + height })
+    };
+    reduceHeight = height => {
+      console.warn(`ReduxGrid height reducing by ${height}`)
+      this.setState({ height: this.state.height - height })
+    };
     constructor(props) {
       super(props)
       this.state =  { disableHeader: false
                     , headerHeight: 30
-                    , height: props.height || 900
+                    , height: props.height || 500
                     , hideIndexRow: false
                     , overscanRowCount: 10
                     , rowHeight: 40
@@ -97,17 +97,24 @@ export default function createGrid({ React, connect, ReactVirtualized, Immutable
 
       return (
         <ContentBox>
-          <div style={{height: 800}}>
-            <AutoSizer direction="down">
-              {({ width, height }, gridSizer) => {
+          <div style={{height: this.state.height}}>
+            <AutoSizer
+              disableHeight
+              //direction="down"
+              //name="gridSizer"
+            >
+              {({ width, height }/*, gridSizer*/) => {
+                /*
                 const onResize = dimensions => {
                   if(gridSizer) {
                     console.warn('gridsizer updated', dimensions)
                     gridSizer.dimensions = dimensions
                   }
                 }
+                */
 
-                const cellRangeRenderer = createExpandableCellRangeRenderer({ React, onResize, AutoSizer, Expander, expandRowManager, state })
+                createExpandableCellRangeRenderer({ grid: this, React, AutoSizer, Expander, expandRowManager, state })
+                  .then()
 
                 return (
                   <Grid
