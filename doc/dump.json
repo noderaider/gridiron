@@ -1,0 +1,1501 @@
+[
+  {
+    "__docId__": 0,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "lib/components/create.js",
+    "memberof": null,
+    "longname": "lib/components/create.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "export { default as Grid } from './createGrid'\r\nexport { default as Header } from './createHeader'\r\nexport { default as Expander } from './createExpander'\r\n"
+  },
+  {
+    "__docId__": 1,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "lib/components/createExpander.js",
+    "memberof": null,
+    "longname": "lib/components/createExpander.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "const should = require('chai').should()\r\n\r\nexport default ({ React }) => {\r\n  const wrapStyle = { display: 'flex'\r\n                    , flexDirection: 'row'\r\n                    , flexWrap: 'nowrap'\r\n                    , flexGrow: 1\r\n                    , alignItems: 'center'\r\n                    , justifyContent: 'space-between'\r\n                    }\r\n  const expanderButtonStyle = { border: 0\r\n                              , backgroundColor: 'transparent'\r\n                              }\r\n\r\n  return props => (\r\n    <span style={wrapStyle}>\r\n      <span>\r\n        <button style={expanderButtonStyle} onClick={props.handleExpand}>\r\n          <i className={`fa fa-${(props.expanded ? 'minus' : 'plus')}-square`} />\r\n        </button>\r\n      </span>\r\n      <span>{props.children}</span>\r\n    </span>\r\n  )\r\n}\r\n"
+  },
+  {
+    "__docId__": 2,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "should",
+    "memberof": "lib/components/createExpander.js",
+    "longname": "lib/components/createExpander.js~should",
+    "access": null,
+    "export": false,
+    "importPath": "redux-grid/lib/components/createExpander.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 1,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 3,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "lib/components/createGrid.js",
+    "memberof": null,
+    "longname": "lib/components/createGrid.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "const should = require('chai').should()\r\n\r\n/**\r\n * <Grid /> factory\r\n * @param  {Object}    options.ReactVirtualized react-virtualized dependency for a higher order react-virtualized <Grid />.\r\n * @param  {Object}    options.FixedDataTable   fixed-data-table dependency for a higher order fixed-data-table <Grid />.\r\n * @param  {...Object} options.rest             The rest of the <Grid /> dependencies.\r\n * @return {Grid}                               A higher order <Grid /> component.\r\n */\r\nexport default function createGrid({ ReactVirtualized, FixedDataTable, ...rest }) {\r\n  should.exist(ReactVirtualized || FixedDataTable, 'react-virtualized or fixed-data-table are required for <Grid />')\r\n  return ReactVirtualized ? require('./react-virtualized/createGrid').default({ ReactVirtualized, ...rest })\r\n                          : require('./fixed-data-table/createGrid').default({ FixedDataTable, ...rest })\r\n}\r\n\r\n/**\r\n * Interface factory for <Grid /> components.\r\n * @param  {[type]} options.PropTypes [description]\r\n * @return {[type]}                   [description]\r\n */\r\nexport const createPropTypes = ({ PropTypes }) => ( { selectColumns: PropTypes.func.isRequired\r\n                                                    , selectRows: PropTypes.func.isRequired\r\n                                                    , maxHeight: PropTypes.number.isRequired\r\n                                                    } )\r\n\r\n/** Creates mapStateToProps for <Grid /> component */\r\nexport const createMapStateToProps = ({}) => state => state\r\n\r\n/** Creates mapDispatchToProps for <Grid /> component */\r\nexport const createMapDispatchToProps = ({}) => dispatch => ({})\r\n\r\n/**\r\n * Creates a react-redux style connect function tailed for <Grid />\r\n * @param  {function}  options.connect  react-redux connect function dependency.\r\n * @param  {...Object} options.rest     The rest of the connect related dependencies.\r\n * @return {Grid}                       A higher order <Grid /> component.\r\n */\r\nexport const createConnect = ({ connect, ...rest }) => {\r\n  should.exist(connect, 'redux connect is required for <Grid /> connect')\r\n  connect.should.be.a('function')\r\n  const mapStateToProps = createMapStateToProps({ ...rest })\r\n  should.exist(mapStateToProps, 'mapStateToProps is required for <Grid /> connect')\r\n  mapStateToProps.should.be.a('function')\r\n  const mapDispatchToProps = createMapDispatchToProps({ ...rest })\r\n  should.exist(mapDispatchToProps, 'mapDispatchToProps is required for <Grid /> connect')\r\n  mapDispatchToProps.should.be.a('function')\r\n  return Component => connect(mapStateToProps, mapDispatchToProps)(Component)\r\n}\r\n"
+  },
+  {
+    "__docId__": 4,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "should",
+    "memberof": "lib/components/createGrid.js",
+    "longname": "lib/components/createGrid.js~should",
+    "access": null,
+    "export": false,
+    "importPath": "redux-grid/lib/components/createGrid.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 1,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 5,
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "createGrid",
+    "memberof": "lib/components/createGrid.js",
+    "longname": "lib/components/createGrid.js~createGrid",
+    "access": null,
+    "export": true,
+    "importPath": "redux-grid/lib/components/createGrid.js",
+    "importStyle": "createGrid",
+    "description": "<Grid /> factory",
+    "lineNumber": 10,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "options.ReactVirtualized",
+        "description": "react-virtualized dependency for a higher order react-virtualized <Grid />."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "options.FixedDataTable",
+        "description": "fixed-data-table dependency for a higher order fixed-data-table <Grid />."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "...Object"
+        ],
+        "spread": true,
+        "optional": false,
+        "name": "options.rest",
+        "description": "The rest of the <Grid /> dependencies."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Grid"
+      ],
+      "spread": false,
+      "description": "A higher order <Grid /> component."
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 6,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "createPropTypes",
+    "memberof": "lib/components/createGrid.js",
+    "longname": "lib/components/createGrid.js~createPropTypes",
+    "access": null,
+    "export": true,
+    "importPath": "redux-grid/lib/components/createGrid.js",
+    "importStyle": "{createPropTypes}",
+    "description": "Interface factory for <Grid /> components.",
+    "lineNumber": 21,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "[type]"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "options.PropTypes",
+        "description": "[description]"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "[type]"
+      ],
+      "spread": false,
+      "description": "[description]"
+    },
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 7,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "createMapStateToProps",
+    "memberof": "lib/components/createGrid.js",
+    "longname": "lib/components/createGrid.js~createMapStateToProps",
+    "access": null,
+    "export": true,
+    "importPath": "redux-grid/lib/components/createGrid.js",
+    "importStyle": "{createMapStateToProps}",
+    "description": "Creates mapStateToProps for <Grid /> component",
+    "lineNumber": 27,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 8,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "createMapDispatchToProps",
+    "memberof": "lib/components/createGrid.js",
+    "longname": "lib/components/createGrid.js~createMapDispatchToProps",
+    "access": null,
+    "export": true,
+    "importPath": "redux-grid/lib/components/createGrid.js",
+    "importStyle": "{createMapDispatchToProps}",
+    "description": "Creates mapDispatchToProps for <Grid /> component",
+    "lineNumber": 30,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 9,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "createConnect",
+    "memberof": "lib/components/createGrid.js",
+    "longname": "lib/components/createGrid.js~createConnect",
+    "access": null,
+    "export": true,
+    "importPath": "redux-grid/lib/components/createGrid.js",
+    "importStyle": "{createConnect}",
+    "description": "Creates a react-redux style connect function tailed for <Grid />",
+    "lineNumber": 38,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "function"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "options.connect",
+        "description": "react-redux connect function dependency."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "...Object"
+        ],
+        "spread": true,
+        "optional": false,
+        "name": "options.rest",
+        "description": "The rest of the connect related dependencies."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Grid"
+      ],
+      "spread": false,
+      "description": "A higher order <Grid /> component."
+    },
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 10,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "lib/components/createHeader.js",
+    "memberof": null,
+    "longname": "lib/components/createHeader.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "const should = require('chai').should()\r\n\r\nexport default ({ React }) => {\r\n  const wrapStyle = { display: 'flex'\r\n                    , flexDirection: 'row'\r\n                    , flexWrap: 'nowrap'\r\n                    , flexGrow: 1\r\n                    , alignItems: 'center'\r\n                    , justifyContent: 'space-between'\r\n                    }\r\n  const headerButtonStyle = { border: 0\r\n                            , backgroundColor: 'transparent'\r\n                            }\r\n\r\n  return props => (\r\n    <span style={wrapStyle}>\r\n      <span>{props.children}</span>\r\n      <span>\r\n        <button style={headerButtonStyle} onClick={props.handleSort}>\r\n          <i className={`fa fa-sort-${(props.asc ? 'asc' : 'desc')}`} />\r\n        </button>\r\n        <button style={headerButtonStyle} onClick={props.handleFilter}>\r\n          <i className={`fa fa-filter${''}`} />\r\n        </button>\r\n      </span>\r\n    </span>\r\n  )\r\n}\r\n"
+  },
+  {
+    "__docId__": 11,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "should",
+    "memberof": "lib/components/createHeader.js",
+    "longname": "lib/components/createHeader.js~should",
+    "access": null,
+    "export": false,
+    "importPath": "redux-grid/lib/components/createHeader.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 1,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 12,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "lib/components/fixed-data-table/createGrid.js",
+    "memberof": null,
+    "longname": "lib/components/fixed-data-table/createGrid.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import { addResizeListener, removeResizeListener } from 'detect-resize'\r\nimport { createPropTypes, createConnect } from '../createGrid'\r\nconst should = require('chai').should()\r\nconst IS_BROWSER = typeof window === 'object'\r\n\r\nexport default function createGrid({ React, connect, FixedDataTable }) {\r\n  should.exist(React)\r\n  should.exist(FixedDataTable)\r\n  should.exist(connect)\r\n  const {Component, PropTypes} = React\r\n  const {Table, Column, Cell} = FixedDataTable\r\n\r\n\r\n  class Grid extends Component {\r\n    static propTypes = createPropTypes(React);\r\n    static defaultProps = { maxHeight: 800 }\r\n    constructor(props) {\r\n      super(props)\r\n      this.state = { width: 0, height: 0, canUpdate: true }\r\n    }\r\n    componentDidMount() {\r\n      if(!IS_BROWSER) return\r\n      this._handleResize()\r\n      this._handleExpands(this.props)\r\n      addResizeListener(this.container.parentNode, this._handleResize)\r\n    }\r\n    componentWillReceiveProps(nextProps) {\r\n      if(!IS_BROWSER) return\r\n      console.warn('WILL RECEIVE')\r\n      this._handleExpands(nextProps)\r\n\r\n    }\r\n    componentDidReceiveProps() {\r\n      console.warn('DID RECEIVE')\r\n    }\r\n    componentWillUnmount() {\r\n      if(!IS_BROWSER) return\r\n      removeResizeListener(this.container.parentNode, this._handleResize)\r\n    }\r\n    _handleResize = () => {\r\n      should.exist(this.container)\r\n      const { parentNode, offsetWidth, offsetHeight, clientWidth, clientHeight } = this.container\r\n      should.exist(parentNode)\r\n      should.exist(offsetWidth)\r\n      should.exist(offsetHeight)\r\n      should.exist(clientWidth)\r\n      should.exist(clientHeight)\r\n      const borderWidth = offsetWidth - clientWidth\r\n      const borderHeight = offsetHeight - clientHeight\r\n      const width = parentNode.offsetWidth - borderWidth\r\n      const height = parentNode.offsetHeight - borderHeight\r\n      this.setState({ width, height })\r\n    };\r\n    _handleExpands = props => {\r\n      //this.setState({ canUpdate: false })\r\n\r\n      let expandHeight = 150\r\n      const { expandedRows } = props\r\n\r\n      const [headerRow, ...domRows] = Array.from(document.querySelectorAll('.fixedDataTableRowLayout_rowWrapper'))\r\n\r\n      let { originalHeight, originalContainerHeight } = this.state\r\n\r\n      const rowContainer = document.querySelector('.fixedDataTableLayout_rowsContainer')\r\n      const expandRows = domRows.filter((x, i) => expandedRows.includes(i)).map(x => x.childNodes[0])\r\n\r\n      if(originalHeight && originalContainerHeight) {\r\n        /** RESET BACK FIRST */\r\n        rowContainer.style.height = `${originalContainerHeight}px`\r\n\r\n        console.warn('calculating', originalHeight, originalContainerHeight)\r\n        domRows.forEach((node, i) => {\r\n          node.style.transform = `translate3d(0px, ${i * originalHeight}px, 0px)`\r\n          node.childNodes[0].style.height = `${originalHeight}px`\r\n        })\r\n      } else {\r\n        if(expandRows.length === 0)\r\n          return\r\n        originalContainerHeight = parseInt(rowContainer.style.height.split('px')[0])\r\n        originalHeight = parseInt(expandRows[0].style.height.split('px')[0])\r\n        this.setState({ originalContainerHeight, originalHeight })\r\n      }\r\n\r\n      let offsetHeight = expandHeight - originalHeight\r\n\r\n      console.warn(originalHeight)\r\n      expandRows.forEach((node, i) => {\r\n        node.style.height = `${originalHeight + expandHeight}px`\r\n        node.style.backgroundColor = 'white'\r\n      })\r\n      console.warn(expandRows)\r\n\r\n      let currentExpanded = 0\r\n      let pushedRows = 0\r\n      domRows.forEach((node, i) => {\r\n        if(expandedRows.includes(i -1)) {\r\n          currentExpanded++\r\n        }\r\n        if(currentExpanded === 0)\r\n          return\r\n\r\n        let translateHeight = i * originalHeight + expandHeight * currentExpanded\r\n        console.warn('translate', originalHeight, translateHeight)\r\n        node.style.transform = `translate3d(0px, ${translateHeight}px, 0px)`\r\n        pushedRows+=currentExpanded\r\n      })\r\n\r\n      let totalAddedHeight = (pushedRows) * offsetHeight\r\n      rowContainer.style.height = `${originalContainerHeight + totalAddedHeight}px`\r\n    };\r\n//    shouldComponentUpdate() { return true }\r\n    render() {\r\n      const { state, selectColumns, selectRows, maxHeight } = this.props\r\n      const { width } = this.state\r\n      should.exist(selectColumns)\r\n      should.exist(selectRows)\r\n      selectColumns.should.be.a('function')\r\n      selectRows.should.be.a('function')\r\n      const columns = selectColumns(state)\r\n      const rows = selectRows(state)\r\n      should.exist(columns)\r\n      should.exist(rows)\r\n      columns.should.be.an('object')\r\n      rows.should.be.instanceof(Array)\r\n      const columnKeys = Object.keys(columns)\r\n\r\n      return (\r\n        <div ref={x => this.container=x}>\r\n          <Table\r\n            rowHeight={40}\r\n            headerHeight={50}\r\n            rowsCount={rows.length}\r\n            flexGrow={1}\r\n            width={width}\r\n            height={1000}\r\n            {...this.props}>\r\n\r\n            {columnKeys.map((x, i) => {\r\n              return (\r\n                <Column\r\n                  key={i}\r\n                  width={50}\r\n                  flexGrow={1}\r\n                  header={<Cell>{columns[x]}</Cell>}\r\n                  cell={({rowIndex, ...props}) => {\r\n                    return (\r\n                        <Cell {...props}>\r\n                          {rows[rowIndex][i]}\r\n                        </Cell>\r\n                    )\r\n                  }}\r\n                />\r\n              )\r\n            })}\r\n          </Table>\r\n        </div>\r\n      )\r\n    }\r\n  }\r\n  return createConnect({ connect })(Grid)\r\n}\r\n\r\n          /*\r\n      //this.state = { dataList: new FakeObjectDataListStore(100) }\r\n          <Column\r\n            header={<Cell>First Name</Cell>}\r\n            cell={<Cell data={data} col=\"firstName\" />}\r\n            fixed={true}\r\n            width={100}\r\n          />\r\n          <Column\r\n            header={<Cell>Sentence! (flexGrow greediness=2)</Cell>}\r\n            cell={<TextCell data={data} col=\"sentence\" />}\r\n            flexGrow={2}\r\n            width={200}\r\n          />\r\n          <Column\r\n            header={<Cell>Company (flexGrow greediness=1)</Cell>}\r\n            cell={<TextCell data={data} col=\"companyName\" />}\r\n            flexGrow={1}\r\n            width={200}\r\n          />\r\n        */\r\n/*\r\n  const colorizeText = (str, index) => {\r\n    var val, n = 0\r\n    return str.split('').map((letter) => {\r\n      val = index * 70 + n++\r\n      var color = 'hsl(' + val + ', 100%, 50%)'\r\n      return <span style={{color}} key={val}>{letter}</span>\r\n    })\r\n  }\r\n\r\n  const TextCell = ({rowIndex, data, columnKey, ...props}) => (\r\n    <Cell {...props}>\r\n      {data.getObjectAt(rowIndex)[columnKey]}\r\n    </Cell>\r\n  )\r\n  const ColoredTextCell = ({rowIndex, data, col, ...props}) => (\r\n    <Cell {...props}>\r\n      {colorizeText(data.getObjectAt(rowIndex)[col], rowIndex)}\r\n    </Cell>\r\n  )\r\n  */\r\n"
+  },
+  {
+    "__docId__": 13,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "should",
+    "memberof": "lib/components/fixed-data-table/createGrid.js",
+    "longname": "lib/components/fixed-data-table/createGrid.js~should",
+    "access": null,
+    "export": false,
+    "importPath": "redux-grid/lib/components/fixed-data-table/createGrid.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 3,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 14,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "IS_BROWSER",
+    "memberof": "lib/components/fixed-data-table/createGrid.js",
+    "longname": "lib/components/fixed-data-table/createGrid.js~IS_BROWSER",
+    "access": null,
+    "export": false,
+    "importPath": "redux-grid/lib/components/fixed-data-table/createGrid.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 4,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 15,
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "createGrid",
+    "memberof": "lib/components/fixed-data-table/createGrid.js",
+    "longname": "lib/components/fixed-data-table/createGrid.js~createGrid",
+    "access": null,
+    "export": true,
+    "importPath": "redux-grid/lib/components/fixed-data-table/createGrid.js",
+    "importStyle": "createGrid",
+    "description": null,
+    "lineNumber": 6,
+    "undocument": true,
+    "params": [
+      {
+        "name": "objectPattern",
+        "types": [
+          "{\"React\": *, \"connect\": *, \"FixedDataTable\": *}"
+        ],
+        "defaultRaw": {
+          "React": null,
+          "connect": null,
+          "FixedDataTable": null
+        },
+        "defaultValue": "{\"React\":null,\"connect\":null,\"FixedDataTable\":null}"
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 16,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "lib/components/react-virtualized/internal/createExpandableCellRangeRenderer.js",
+    "memberof": null,
+    "longname": "lib/components/react-virtualized/internal/createExpandableCellRangeRenderer.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import CellSizeAndPositionManager from './utils/CellSizeAndPositionManager'\r\n\r\n/**\r\n * Default implementation of cellRangeRenderer used by Grid.\r\n * This renderer supports cell-caching while the user is scrolling.\r\n */\r\nexport default function createExpandableCellRangeRenderer({ React, onResize, AutoSizer, Expander, expandRowManager, state }) {\r\n  const { Component, PropTypes } = React\r\n  class ExpandedArea extends Component {\r\n    componentDidMount() {\r\n      console.warn('EXPANDED CLIENT HEIGHT', this.container.childNodes[0].clientHeight)\r\n    }\r\n    render() {\r\n      return (\r\n        <div\r\n          ref={x => this.container=x}\r\n          {...this.props}\r\n        />\r\n      )\r\n    }\r\n  }\r\n\r\n  return ({ cellCache\r\n          , cellRenderer\r\n          , columnSizeAndPositionManager\r\n          , columnStartIndex\r\n          , columnStopIndex\r\n          , horizontalOffsetAdjustment\r\n          , isScrolling\r\n          , rowSizeAndPositionManager\r\n          , rowStartIndex\r\n          , rowStopIndex\r\n          , scrollLeft\r\n          , scrollTop\r\n          , verticalOffsetAdjustment\r\n          } = {}) => {\r\n\r\n\r\n    let expandedOffset = 0\r\n\r\n    const expandedIndices = expandRowManager.getExpandedIndices()\r\n\r\n    const renderedCells = []\r\n\r\n    for (let rowIndex = rowStartIndex; rowIndex <= rowStopIndex; rowIndex++) {\r\n      let rowDatum = rowSizeAndPositionManager.getSizeAndPositionOfCell(rowIndex)\r\n\r\n      let isExpandable = expandRowManager.isExpandable(rowIndex)\r\n      let isExpanded = expandedIndices.includes(rowIndex)\r\n\r\n      let expanderOffset = 0\r\n      if(isExpandable) {\r\n        const expanderKey = `${rowIndex}-expander`\r\n        expanderOffset = expandRowManager.getExpanderWidth(rowIndex)\r\n        let expander = (\r\n          <div\r\n            key={expanderKey}\r\n            style={ { height: rowDatum.size\r\n                    , left: horizontalOffsetAdjustment\r\n                    , top: rowDatum.offset + verticalOffsetAdjustment + expandedOffset\r\n                    , width: expanderOffset\r\n                    } }\r\n            className={expandRowManager.getExpanderClassName(rowIndex)}\r\n          >\r\n            <Expander expanded={isExpanded} handleExpand={() => expandRowManager.onToggleExpand(rowIndex)}/>\r\n          </div>\r\n        )\r\n        renderedCells.push(expander)\r\n      } else {\r\n        const expanderKey = `${rowIndex}-noexpander`\r\n        renderedCells.push(<div key={expanderKey} />)\r\n      }\r\n\r\n\r\n      for (let columnIndex = columnStartIndex; columnIndex <= columnStopIndex; columnIndex++) {\r\n        let columnDatum = columnSizeAndPositionManager.getSizeAndPositionOfCell(columnIndex)\r\n\r\n\r\n\r\n        let key = `${rowIndex}-${columnIndex}`\r\n        let renderedCell\r\n\r\n        // Avoid re-creating cells while scrolling.\r\n        // This can lead to the same cell being created many times and can cause performance issues for \"heavy\" cells.\r\n        // If a scroll is in progress- cache and reuse cells.\r\n        // This cache will be thrown away once scrolling completes.\r\n        if (isScrolling) {\r\n          if (!cellCache[key]) {\r\n            cellCache[key] = cellRenderer({\r\n              columnIndex,\r\n              isScrolling,\r\n              rowIndex\r\n            })\r\n          }\r\n          renderedCell = cellCache[key]\r\n        // If the user is no longer scrolling, don't cache cells.\r\n        // This makes dynamic cell content difficult for users and would also lead to a heavier memory footprint.\r\n        } else {\r\n          renderedCell = cellRenderer({\r\n            columnIndex,\r\n            isScrolling,\r\n            rowIndex\r\n          })\r\n        }\r\n\r\n        if (renderedCell == null || renderedCell === false)\r\n          continue\r\n\r\n        const style = { height: rowDatum.size\r\n                      , left: isExpandable && columnIndex === 0 ? columnDatum.offset + horizontalOffsetAdjustment + expanderOffset : columnDatum.offset + horizontalOffsetAdjustment\r\n                      , top: rowDatum.offset + verticalOffsetAdjustment + expandedOffset\r\n                      , width: isExpandable && columnIndex === 0 ? columnDatum.size - expanderOffset : columnDatum.size\r\n                      }\r\n        const child = (\r\n          <div\r\n            key={key}\r\n            className='Grid__cell'\r\n            style={style}\r\n          >\r\n            {renderedCell}\r\n          </div>\r\n        )\r\n\r\n        renderedCells.push(child)\r\n      }\r\n\r\n      if(isExpanded) {\r\n        const key=`${rowIndex}-expanded`\r\n        const style = { /*height: expandRowManager.getHeight(rowIndex)\r\n                      ,*/ left: horizontalOffsetAdjustment\r\n                      , top: rowDatum.offset + rowDatum.size + verticalOffsetAdjustment + expandedOffset\r\n                      , width: '100%'\r\n                      }\r\n        const content = expandRowManager.getContent(rowIndex, state)\r\n        const expanded = (\r\n          <AutoSizer key={key} onResize={\r\n            (dimensions, eventArgs) => {\r\n              console.warn('attempting to resize gridSizer to', dimensions)\r\n              onResize(dimensions)\r\n            }\r\n          } traverseSource={x => x.childNodes[0]} direction=\"up\">\r\n            <ExpandedArea\r\n              style={style}\r\n              className={expandRowManager.getClassName(rowIndex)}\r\n            >\r\n              {expandRowManager.getContent(rowIndex, state)}\r\n            </ExpandedArea>\r\n          </AutoSizer>\r\n        )\r\n        renderedCells.push(expanded)\r\n        //expandedOffset += height\r\n      }\r\n    }\r\n\r\n    return renderedCells\r\n  }\r\n\r\n\r\n}\r\n"
+  },
+  {
+    "__docId__": 17,
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "createExpandableCellRangeRenderer",
+    "memberof": "lib/components/react-virtualized/internal/createExpandableCellRangeRenderer.js",
+    "longname": "lib/components/react-virtualized/internal/createExpandableCellRangeRenderer.js~createExpandableCellRangeRenderer",
+    "access": null,
+    "export": true,
+    "importPath": "redux-grid/lib/components/react-virtualized/internal/createExpandableCellRangeRenderer.js",
+    "importStyle": "createExpandableCellRangeRenderer",
+    "description": "Default implementation of cellRangeRenderer used by Grid.\nThis renderer supports cell-caching while the user is scrolling.",
+    "lineNumber": 7,
+    "params": [
+      {
+        "name": "objectPattern",
+        "types": [
+          "{\"React\": *, \"onResize\": *, \"AutoSizer\": *, \"Expander\": *, \"expandRowManager\": *, \"state\": *}"
+        ],
+        "defaultRaw": {
+          "React": null,
+          "onResize": null,
+          "AutoSizer": null,
+          "Expander": null,
+          "expandRowManager": null,
+          "state": null
+        },
+        "defaultValue": "{\"React\":null,\"onResize\":null,\"AutoSizer\":null,\"Expander\":null,\"expandRowManager\":null,\"state\":null}"
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 18,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "lib/components/react-virtualized/internal/utils/CellSizeAndPositionManager.js",
+    "memberof": null,
+    "longname": "lib/components/react-virtualized/internal/utils/CellSizeAndPositionManager.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "/**\r\n * Just-in-time calculates and caches size and position information for a collection of cells.\r\n */\r\nexport default class CellSizeAndPositionManager {\r\n  constructor({ cellCount\r\n              , cellSizeGetter\r\n              , estimatedCellSize\r\n              }) {\r\n    this._cellSizeGetter = cellSizeGetter\r\n    this._cellCount = cellCount\r\n    this._estimatedCellSize = estimatedCellSize\r\n\r\n    // Cache of size and position data for cells, mapped by cell index.\r\n    // Note that invalid values may exist in this map so only rely on cells up to this._lastMeasuredIndex\r\n    this._cellSizeAndPositionData = {}\r\n\r\n    // Measurements for cells up to this index can be trusted; cells afterward should be estimated.\r\n    this._lastMeasuredIndex = -1\r\n  }\r\n\r\n  configure = ( { cellCount\r\n                , estimatedCellSize\r\n                } ) => {\r\n    this._cellCount = cellCount\r\n    this._estimatedCellSize = estimatedCellSize\r\n  };\r\n  getCellCount = () => this._cellCount;\r\n  getEstimatedCellSize = () => this._estimatedCellSize;\r\n  getLastMeasuredIndex = () => this._lastMeasuredIndex;\r\n\r\n  /**\r\n   * This method returns the size and position for the cell at the specified index.\r\n   * It just-in-time calculates (or used cached values) for cells leading up to the index.\r\n   */\r\n  getSizeAndPositionOfCell = index => {\r\n    if (index < 0 || index >= this._cellCount)\r\n      throw Error(`Requested index ${index} is outside of range 0..${this._cellCount}`)\r\n\r\n    if (index > this._lastMeasuredIndex) {\r\n      let lastMeasuredCellSizeAndPosition = this.getSizeAndPositionOfLastMeasuredCell()\r\n      let offset = lastMeasuredCellSizeAndPosition.offset + lastMeasuredCellSizeAndPosition.size\r\n\r\n      for (var i = this._lastMeasuredIndex + 1; i <= index; i++) {\r\n        let size = this._cellSizeGetter({ index: i })\r\n\r\n        if (size == null || isNaN(size)) {\r\n          throw Error(`Invalid size returned for cell ${i} of value ${size}`)\r\n        }\r\n\r\n        this._cellSizeAndPositionData[i] = {\r\n          offset,\r\n          size\r\n        }\r\n\r\n        offset += size\r\n      }\r\n\r\n      this._lastMeasuredIndex = index\r\n    }\r\n\r\n    return this._cellSizeAndPositionData[index]\r\n  };\r\n\r\n  getSizeAndPositionOfLastMeasuredCell = () => {\r\n    return this._lastMeasuredIndex >= 0\r\n      ? this._cellSizeAndPositionData[this._lastMeasuredIndex]\r\n      : {\r\n        offset: 0,\r\n        size: 0\r\n      }\r\n  };\r\n\r\n  /**\r\n   * Total size of all cells being measured.\r\n   * This value will be completedly estimated initially.\r\n   * As cells as measured the estimate will be updated.\r\n   */\r\n  getTotalSize = () => {\r\n    const lastMeasuredCellSizeAndPosition = this.getSizeAndPositionOfLastMeasuredCell()\r\n    return lastMeasuredCellSizeAndPosition.offset + lastMeasuredCellSizeAndPosition.size + (this._cellCount - this._lastMeasuredIndex - 1) * this._estimatedCellSize\r\n  };\r\n\r\n  /**\r\n   * Determines a new offset that ensures a certain cell is visible, given the current offset.\r\n   * If the cell is already visible then the current offset will be returned.\r\n   * If the current offset is too great or small, it will be adjusted just enough to ensure the specified index is visible.\r\n   *\r\n   * @param align Desired alignment within container; one of \"auto\" (default), \"start\", or \"end\"\r\n   * @param containerSize Total size (width or height) of the container\r\n   * @param currentOffset Container's current (x or y) offset\r\n   * @return Offset to use to ensure the specified cell is visible\r\n   */\r\n  getUpdatedOffsetForIndex = ({ align = 'auto'\r\n                              , containerSize\r\n                              , currentOffset\r\n                              , targetIndex\r\n                              }) => {\r\n    const datum = this.getSizeAndPositionOfCell(targetIndex)\r\n    const maxOffset = datum.offset\r\n    const minOffset = maxOffset - containerSize + datum.size\r\n\r\n    switch (align) {\r\n      case 'start':\r\n        return maxOffset\r\n      case 'end':\r\n        return minOffset\r\n      case 'center':\r\n        return maxOffset - (containerSize + datum.size) / 2\r\n      default:\r\n        return Math.max(minOffset, Math.min(maxOffset, currentOffset))\r\n    }\r\n  };\r\n\r\n  getVisibleCellRange = ( { containerSize\r\n                          , offset\r\n                          } ) => {\r\n    const totalSize = this.getTotalSize()\r\n\r\n    if (totalSize === 0) {\r\n      return {}\r\n    }\r\n\r\n    const maxOffset = offset + containerSize\r\n    const start = this._findNearestCell(offset)\r\n\r\n    const datum = this.getSizeAndPositionOfCell(start)\r\n    offset = datum.offset + datum.size\r\n\r\n    let stop = start\r\n\r\n    while (offset < maxOffset && stop < this._cellCount - 1) {\r\n      stop++\r\n\r\n      offset += this.getSizeAndPositionOfCell(stop).size\r\n    }\r\n\r\n    return {\r\n      start,\r\n      stop\r\n    }\r\n  };\r\n\r\n  /**\r\n   * Clear all cached values for cells after the specified index.\r\n   * This method should be called for any cell that has changed its size.\r\n   * It will not immediately perform any calculations; they'll be performed the next time getSizeAndPositionOfCell() is called.\r\n   */\r\n  resetCell = index => this._lastMeasuredIndex = index - 1;\r\n\r\n  _binarySearch = ( { high\r\n                    , low\r\n                    , offset\r\n                    }) => {\r\n    let middle\r\n    let currentOffset\r\n\r\n    while (low <= high) {\r\n      middle = low + Math.floor((high - low) / 2)\r\n      currentOffset = this.getSizeAndPositionOfCell(middle).offset\r\n\r\n      if (currentOffset === offset)\r\n        return middle\r\n      else if (currentOffset < offset)\r\n        low = middle + 1\r\n      else if (currentOffset > offset)\r\n        high = middle - 1\r\n    }\r\n\r\n    if (low > 0)\r\n      return low - 1\r\n  };\r\n\r\n  _exponentialSearch = ({ index\r\n                        , offset\r\n                        }) => {\r\n    let interval = 1\r\n\r\n    while (\r\n      index < this._cellCount &&\r\n      this.getSizeAndPositionOfCell(index).offset < offset\r\n    ) {\r\n      index += interval\r\n      interval *= 2\r\n    }\r\n\r\n    return this._binarySearch({\r\n      high: Math.min(index, this._cellCount - 1),\r\n      low: Math.floor(index / 2),\r\n      offset\r\n    })\r\n  };\r\n\r\n  /**\r\n   * Searches for the cell (index) nearest the specified offset.\r\n   *\r\n   * If no exact match is found the next lowest cell index will be returned.\r\n   * This allows partially visible cells (with offsets just before/above the fold) to be visible.\r\n   */\r\n  _findNearestCell = offset => {\r\n    if (isNaN(offset))\r\n      throw Error(`Invalid offset ${offset} specified`)\r\n\r\n    // Our search algorithms find the nearest match at or below the specified offset.\r\n    // So make sure the offset is at least 0 or no match will be found.\r\n    offset = Math.max(0, offset)\r\n\r\n    const lastMeasuredCellSizeAndPosition = this.getSizeAndPositionOfLastMeasuredCell()\r\n    const lastMeasuredIndex = Math.max(0, this._lastMeasuredIndex)\r\n\r\n    if (lastMeasuredCellSizeAndPosition.offset >= offset) {\r\n      // If we've already measured cells within this range just use a binary search as it's faster.\r\n      return this._binarySearch({\r\n        high: lastMeasuredIndex,\r\n        low: 0,\r\n        offset\r\n      })\r\n    } else {\r\n      // If we haven't yet measured this high, fallback to an exponential search with an inner binary search.\r\n      // The exponential search avoids pre-computing sizes for the full set of cells as a binary search would.\r\n      // The overall complexity for this approach is O(log n).\r\n      return this._exponentialSearch({\r\n        index: lastMeasuredIndex,\r\n        offset\r\n      })\r\n    }\r\n  };\r\n}\r\n\r\n/*\r\ntype CellSizeAndPositionManagerConstructorParams = {\r\n  cellCount: number,\r\n  cellSizeGetter: Function,\r\n  estimatedCellSize: number\r\n};\r\n\r\ntype ConfigureParams = {\r\n  cellCount: number,\r\n  estimatedCellSize: number\r\n};\r\n\r\ntype GetVisibleCellRangeParams = {\r\n  containerSize: number,\r\n  offset: number\r\n};\r\n\r\ntype SizeAndPositionData = {\r\n  offset: number,\r\n  size: number\r\n};\r\n\r\ntype VisibleCellRange = {\r\n  start: ?number,\r\n  stop: ?number\r\n};\r\n*/\r\n"
+  },
+  {
+    "__docId__": 19,
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "CellSizeAndPositionManager",
+    "memberof": "lib/components/react-virtualized/internal/utils/CellSizeAndPositionManager.js",
+    "longname": "lib/components/react-virtualized/internal/utils/CellSizeAndPositionManager.js~CellSizeAndPositionManager",
+    "access": null,
+    "export": true,
+    "importPath": "redux-grid/lib/components/react-virtualized/internal/utils/CellSizeAndPositionManager.js",
+    "importStyle": "CellSizeAndPositionManager",
+    "description": "Just-in-time calculates and caches size and position information for a collection of cells.",
+    "lineNumber": 4,
+    "interface": false
+  },
+  {
+    "__docId__": 20,
+    "kind": "constructor",
+    "static": false,
+    "variation": null,
+    "name": "constructor",
+    "memberof": "lib/components/react-virtualized/internal/utils/CellSizeAndPositionManager.js~CellSizeAndPositionManager",
+    "longname": "lib/components/react-virtualized/internal/utils/CellSizeAndPositionManager.js~CellSizeAndPositionManager#constructor",
+    "access": null,
+    "description": null,
+    "lineNumber": 5,
+    "undocument": true,
+    "params": [
+      {
+        "name": "objectPattern",
+        "types": [
+          "{\"cellCount\": *, \"cellSizeGetter\": *, \"estimatedCellSize\": *}"
+        ],
+        "defaultRaw": {
+          "cellCount": null,
+          "cellSizeGetter": null,
+          "estimatedCellSize": null
+        },
+        "defaultValue": "{\"cellCount\":null,\"cellSizeGetter\":null,\"estimatedCellSize\":null}"
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 21,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "_cellSizeGetter",
+    "memberof": "lib/components/react-virtualized/internal/utils/CellSizeAndPositionManager.js~CellSizeAndPositionManager",
+    "longname": "lib/components/react-virtualized/internal/utils/CellSizeAndPositionManager.js~CellSizeAndPositionManager#_cellSizeGetter",
+    "access": null,
+    "description": null,
+    "lineNumber": 9,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 22,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "_cellCount",
+    "memberof": "lib/components/react-virtualized/internal/utils/CellSizeAndPositionManager.js~CellSizeAndPositionManager",
+    "longname": "lib/components/react-virtualized/internal/utils/CellSizeAndPositionManager.js~CellSizeAndPositionManager#_cellCount",
+    "access": null,
+    "description": null,
+    "lineNumber": 10,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 23,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "_estimatedCellSize",
+    "memberof": "lib/components/react-virtualized/internal/utils/CellSizeAndPositionManager.js~CellSizeAndPositionManager",
+    "longname": "lib/components/react-virtualized/internal/utils/CellSizeAndPositionManager.js~CellSizeAndPositionManager#_estimatedCellSize",
+    "access": null,
+    "description": null,
+    "lineNumber": 11,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 24,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "_cellSizeAndPositionData",
+    "memberof": "lib/components/react-virtualized/internal/utils/CellSizeAndPositionManager.js~CellSizeAndPositionManager",
+    "longname": "lib/components/react-virtualized/internal/utils/CellSizeAndPositionManager.js~CellSizeAndPositionManager#_cellSizeAndPositionData",
+    "access": null,
+    "description": null,
+    "lineNumber": 15,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 25,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "_lastMeasuredIndex",
+    "memberof": "lib/components/react-virtualized/internal/utils/CellSizeAndPositionManager.js~CellSizeAndPositionManager",
+    "longname": "lib/components/react-virtualized/internal/utils/CellSizeAndPositionManager.js~CellSizeAndPositionManager#_lastMeasuredIndex",
+    "access": null,
+    "description": null,
+    "lineNumber": 18,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 26,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "lib/helpers/FakeObjectDataListStore.js",
+    "memberof": null,
+    "longname": "lib/helpers/FakeObjectDataListStore.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import faker from 'faker'\r\n\r\nexport default class FakeObjectDataListStore {\r\n  constructor(/*number*/ size){\r\n    this.size = size || 2000\r\n    this._cache = []\r\n  }\r\n\r\n  createFakeRowObjectData(/*number*/ index) /*object*/ {\r\n    return {\r\n      id: index,\r\n      avartar: faker.image.avatar(),\r\n      city: faker.address.city(),\r\n      email: faker.internet.email(),\r\n      firstName: faker.name.firstName(),\r\n      lastName: faker.name.lastName(),\r\n      street: faker.address.streetName(),\r\n      zipCode: faker.address.zipCode(),\r\n      date: faker.date.past(),\r\n      bs: faker.company.bs(),\r\n      catchPhrase: faker.company.catchPhrase(),\r\n      companyName: faker.company.companyName(),\r\n      words: faker.lorem.words(),\r\n      sentence: faker.lorem.sentence()\r\n    }\r\n  }\r\n\r\n  getObjectAt(/*number*/ index) /*?object*/ {\r\n    if (index < 0 || index > this.size){\r\n      return undefined\r\n    }\r\n    if (this._cache[index] === undefined) {\r\n      this._cache[index] = this.createFakeRowObjectData(index)\r\n    }\r\n    return this._cache[index]\r\n  }\r\n\r\n  /**\r\n  * Populates the entire cache with data.\r\n  * Use with Caution! Behaves slowly for large sizes\r\n  * ex. 100,000 rows\r\n  */\r\n  getAll() {\r\n    if (this._cache.length < this.size) {\r\n      for (var i = 0; i < this.size; i++) {\r\n        this.getObjectAt(i)\r\n      }\r\n    }\r\n    return this._cache.slice()\r\n  }\r\n\r\n  getSize() {\r\n    return this.size\r\n  }\r\n}\r\n"
+  },
+  {
+    "__docId__": 27,
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "FakeObjectDataListStore",
+    "memberof": "lib/helpers/FakeObjectDataListStore.js",
+    "longname": "lib/helpers/FakeObjectDataListStore.js~FakeObjectDataListStore",
+    "access": null,
+    "export": true,
+    "importPath": "redux-grid/lib/helpers/FakeObjectDataListStore.js",
+    "importStyle": "FakeObjectDataListStore",
+    "description": null,
+    "lineNumber": 3,
+    "undocument": true,
+    "interface": false
+  },
+  {
+    "__docId__": 28,
+    "kind": "constructor",
+    "static": false,
+    "variation": null,
+    "name": "constructor",
+    "memberof": "lib/helpers/FakeObjectDataListStore.js~FakeObjectDataListStore",
+    "longname": "lib/helpers/FakeObjectDataListStore.js~FakeObjectDataListStore#constructor",
+    "access": null,
+    "description": null,
+    "lineNumber": 4,
+    "undocument": true,
+    "params": [
+      {
+        "name": "size",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 29,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "size",
+    "memberof": "lib/helpers/FakeObjectDataListStore.js~FakeObjectDataListStore",
+    "longname": "lib/helpers/FakeObjectDataListStore.js~FakeObjectDataListStore#size",
+    "access": null,
+    "description": null,
+    "lineNumber": 5,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 30,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "_cache",
+    "memberof": "lib/helpers/FakeObjectDataListStore.js~FakeObjectDataListStore",
+    "longname": "lib/helpers/FakeObjectDataListStore.js~FakeObjectDataListStore#_cache",
+    "access": null,
+    "description": null,
+    "lineNumber": 6,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 31,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "createFakeRowObjectData",
+    "memberof": "lib/helpers/FakeObjectDataListStore.js~FakeObjectDataListStore",
+    "longname": "lib/helpers/FakeObjectDataListStore.js~FakeObjectDataListStore#createFakeRowObjectData",
+    "access": null,
+    "description": null,
+    "lineNumber": 9,
+    "undocument": true,
+    "params": [
+      {
+        "name": "index",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 32,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "getObjectAt",
+    "memberof": "lib/helpers/FakeObjectDataListStore.js~FakeObjectDataListStore",
+    "longname": "lib/helpers/FakeObjectDataListStore.js~FakeObjectDataListStore#getObjectAt",
+    "access": null,
+    "description": null,
+    "lineNumber": 28,
+    "undocument": true,
+    "params": [
+      {
+        "name": "index",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 33,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "getAll",
+    "memberof": "lib/helpers/FakeObjectDataListStore.js~FakeObjectDataListStore",
+    "longname": "lib/helpers/FakeObjectDataListStore.js~FakeObjectDataListStore#getAll",
+    "access": null,
+    "description": "Populates the entire cache with data.\nUse with Caution! Behaves slowly for large sizes\nex. 100,000 rows",
+    "lineNumber": 43,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 34,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "getSize",
+    "memberof": "lib/helpers/FakeObjectDataListStore.js~FakeObjectDataListStore",
+    "longname": "lib/helpers/FakeObjectDataListStore.js~FakeObjectDataListStore#getSize",
+    "access": null,
+    "description": null,
+    "lineNumber": 52,
+    "undocument": true,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 35,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "lib/index.js",
+    "memberof": null,
+    "longname": "lib/index.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import * as create from './components/create'\r\n\r\n/**\r\n * redux-grid\r\n * Requires dependencies { React, FixedDataTable, connect } and exports a higher order component and controls that can select from redux state.\r\n * @param  {[type]} dependencies [description]\r\n * @return {[type]}              [description]\r\n */\r\nexport default dependencies => Object.keys(create).reduce((reduxGrid, x) => ({ ...reduxGrid, [x]: create[x](dependencies) }), {})\r\n"
+  },
+  {
+    "__docId__": 37,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Infinity",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Infinity",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 38,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "NaN",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~NaN",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 39,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "undefined",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~undefined",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 40,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "null",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~null",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 41,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Object",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Object",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 42,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "object",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~object",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 43,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Function",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Function",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 44,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "function",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~function",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 45,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Boolean",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Boolean",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 46,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "boolean",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~boolean",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 47,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Symbol",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Symbol",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 48,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Error",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Error",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 49,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "EvalError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/EvalError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~EvalError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 50,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "InternalError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/InternalError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~InternalError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 51,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "RangeError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RangeError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~RangeError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 52,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "ReferenceError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~ReferenceError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 53,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "SyntaxError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~SyntaxError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 54,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "TypeError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~TypeError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 55,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "URIError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/URIError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~URIError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 56,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Number",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Number",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 57,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "number",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~number",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 58,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Date",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Date",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 59,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "String",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~String",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 60,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "string",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~string",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 61,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "RegExp",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~RegExp",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 62,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 63,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Int8Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int8Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Int8Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 64,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Uint8Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint8Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 65,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Uint8ClampedArray",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8ClampedArray",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint8ClampedArray",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 66,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Int16Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int16Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Int16Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 67,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Uint16Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint16Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint16Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 68,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Int32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int32Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Int32Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 69,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Uint32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint32Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 70,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Float32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Float32Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 71,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Float64Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float64Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Float64Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 72,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Map",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Map",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 73,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Set",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Set",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 74,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "WeakMap",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~WeakMap",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 75,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "WeakSet",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~WeakSet",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 76,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "ArrayBuffer",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~ArrayBuffer",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 77,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "DataView",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~DataView",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 78,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "JSON",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~JSON",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 79,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Promise",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Promise",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 80,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Generator",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Generator",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 81,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "GeneratorFunction",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~GeneratorFunction",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 82,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Reflect",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Reflect",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 83,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Proxy",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Proxy",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 85,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "CanvasRenderingContext2D",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~CanvasRenderingContext2D",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 86,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "DocumentFragment",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~DocumentFragment",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 87,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Element",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Element",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~Element",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 88,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Event",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Event",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~Event",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 89,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Node",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Node",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~Node",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 90,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "NodeList",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/NodeList",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~NodeList",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 91,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "XMLHttpRequest",
+    "externalLink": "https://developer.mozilla.org/en/docs/Web/API/XMLHttpRequest",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~XMLHttpRequest",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 92,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "AudioContext",
+    "externalLink": "https://developer.mozilla.org/en/docs/Web/API/AudioContext",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~AudioContext",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  }
+]

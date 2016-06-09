@@ -1,0 +1,43 @@
+{
+  "coverage": "50%",
+  "expectCount": 16,
+  "actualCount": 8,
+  "files": {
+    "lib/components/react-virtualized/internal/utils/CellSizeAndPositionManager.js": {
+      "expectCount": 2,
+      "actualCount": 1,
+      "undocumentLines": [
+        5
+      ]
+    },
+    "lib/helpers/FakeObjectDataListStore.js": {
+      "expectCount": 7,
+      "actualCount": 1,
+      "undocumentLines": [
+        3,
+        4,
+        9,
+        28,
+        52,
+        5
+      ]
+    },
+    "lib/components/createGrid.js": {
+      "expectCount": 5,
+      "actualCount": 5,
+      "undocumentLines": []
+    },
+    "lib/components/react-virtualized/internal/createExpandableCellRangeRenderer.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "lib/components/fixed-data-table/createGrid.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        6
+      ]
+    }
+  }
+}
