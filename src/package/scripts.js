@@ -19,15 +19,7 @@ export default ({}) => ({ 'start': 'run-p build-watch'
                         , 'build': 'babel src/lib -d lib'
                         , 'build-watch': 'npm run build -- --watch'
 
-                          /** TEST */
-                        , 'pretest': 'npm run build'
-                        , 'test': 'mocha --require test/mock/dom --harmony --es_staging --compilers .:test/compiler test/*.js'
-                        , 'test-watch': 'mocha --require test/mock/dom --harmony --es_staging --watch --compilers .:test/compiler test/*.js'
-                        , 'test-debug': 'node-debug --nodejs --harmony --no-preload --save-live-edit --hidden node_modules/ _mocha --watch --debug'
-
-
                           /** RELEASE */
-                        , '_prerelease': 'npm run test'
                         , 'release': 'npm version patch && npm publish'
                         , 'postrelease': 'npm run release-gh-pages'
 

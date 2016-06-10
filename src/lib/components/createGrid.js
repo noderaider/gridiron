@@ -18,16 +18,18 @@ export default function createGrid({ ReactVirtualized, FixedDataTable, ...rest }
  * @param  {[type]} options.PropTypes [description]
  * @return {[type]}                   [description]
  */
-export const createPropTypes = ({ PropTypes }) => ( { selectColumns: PropTypes.func.isRequired
-                                                    , selectRows: PropTypes.func.isRequired
-                                                    , maxHeight: PropTypes.number.isRequired
+export const createPropTypes = ({ PropTypes }) => ( { mapCols: PropTypes.func.isRequired
+                                                    , mapRows: PropTypes.func.isRequired
+                                                    , styles: PropTypes.object.isRequired
+                                                    , state: PropTypes.object.isRequired
+                                                    , maxHeight: PropTypes.number
                                                     } )
 
 /** Creates mapStateToProps for <Grid /> component */
-export const createMapStateToProps = ({}) => state => state
+export const createMapStateToProps = ({ getState } = {}) => state => ({ state: getState ? getState() : state })
 
 /** Creates mapDispatchToProps for <Grid /> component */
-export const createMapDispatchToProps = ({}) => dispatch => ({})
+export const createMapDispatchToProps = ({} = {}) => dispatch => ({})
 
 /**
  * Creates a react-redux style connect function tailed for <Grid />
@@ -35,10 +37,10 @@ export const createMapDispatchToProps = ({}) => dispatch => ({})
  * @param  {...Object} options.rest     The rest of the connect related dependencies.
  * @return {Grid}                       A higher order <Grid /> component.
  */
-export const createConnect = ({ connect, ...rest }) => {
+export const createConnect = ({ connect, getState, ...rest } = {}) => {
   should.exist(connect, 'redux connect is required for <Grid /> connect')
   connect.should.be.a('function')
-  const mapStateToProps = createMapStateToProps({ ...rest })
+  const mapStateToProps = createMapStateToProps({ getState, ...rest })
   should.exist(mapStateToProps, 'mapStateToProps is required for <Grid /> connect')
   mapStateToProps.should.be.a('function')
   const mapDispatchToProps = createMapDispatchToProps({ ...rest })

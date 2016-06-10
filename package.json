@@ -1,7 +1,7 @@
 {
   "name": "redux-grid",
   "version": "0.1.16",
-  "description": "Grid component built for Redux.",
+  "description": "Lightweight grid framework built on top of react-virtualized / fixed-data-table for easy highly customizable grids generated from redux state.",
   "main": "lib/index.js",
   "keywords": [
     "redux",
