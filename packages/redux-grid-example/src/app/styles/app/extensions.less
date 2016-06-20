@@ -1,0 +1,95 @@
+@import "mixins.less";
+
+// .m-all-Z { padding: Zpx; } where Z: 1-100
+.make-indexer-property(0, 200, m-all-, margin);
+
+// .m-top-Y {margin-top: Ypx;} where Y: 1-200
+.make-indexer-property(0, 200, m-top-, margin-top);
+
+// .m-bottom-Y {margin-bottom: Ypx;} where Y: 1-200
+.make-indexer-property(0, 200, m-bottom-, margin-bottom);
+
+// .m-left-X {margin-left: Xpx} where X: 1-100
+.make-indexer-property(0, 100, m-left-, margin-left);
+
+// .m-right-X {margin-right: Xpx} where X: 1-100
+.make-indexer-property(0, 100, m-right-, margin-right);
+
+// .p-all-X { padding: Zpx; } where Z: 1-100
+.make-indexer-property(0, 100, p-all-, padding);
+
+// .p-top-Y {padding-top: Ypx;} where Y: 1-200
+.make-indexer-property(0, 200, p-top-, padding-top);
+
+// .p-bottom-Y {padding-bottom: Ypx;} where Y: 1-200
+.make-indexer-property(0, 200, p-bottom-, padding-bottom);
+
+// .p-left-X {padding-left: Xpx} where X: 1-100
+.make-indexer-property(0, 100, p-left-, padding-left);
+
+// .p-right-X {padding-right: Xpx} where X: 1-100
+.make-indexer-property(0, 100, p-right-, padding-right);
+
+// .min-width-X { min-width: Xpx; } where X: 1-200
+.make-indexer-property(0, 200, min-width-, min-width);
+
+// .height-X { height: Xpx; } where X: 1-200
+.make-indexer-property(0, 200, height-, height);
+
+// .max-height-X { max-height: Xpx; } where X: 1-200
+.make-indexer-property(0, 200, max-height-, max-height);
+
+
+
+
+/*
+.make-indexer-property(@i, @max, @class-prefix, @prop, @unit: px, @increment: 1) when (@i <= @max) {
+  .@{class-prefix}@{i} {
+    @{prop}: unit(@i, @unit);
+  }
+  .make-indexer-property(@i+@increment, @max, @class-prefix, @prop, @unit, @increment);
+}
+*/
+
+.make-btn-variants(@variant) {
+    //.btn-@{variant} {
+//        .button-variant(color(@btn-@{variant}-color); color(@btn-@{variant}-bg); color(@btn-@{variant}-border);
+        //.button-variant(@btn-info-color; @btn-info-bg; @btn-info-border);
+    //}
+    /*
+    .btn-@{variant}-inverse {
+        .button-variant(@btn-@{variant}-color, @btn-@{variant}-bg-inverse, @btn-@{variant}-border-inverse);
+    }*/
+}
+/*
+.make-btn-variants-with-color(@variant, @color) {
+    @btn-@{variant}-color:              lighten(@color, 70%);
+    @btn-@{variant}-bg:                 @color;
+    @btn-@{variant}-border:             darken(@color, 5%);
+    @btn-@{variant}-color-inverse:      darken(@color, 70%);
+    @btn-@{variant}-border-inverse:     lighten(@color, 5%);
+    .make-btn-variant(@variant);
+}
+
+.make-btn-variants-with-color(lighter-one, @lighter-one);
+.make-btn-variants-with-color(lighter-two, @lighter-two);
+.make-btn-variants-with-color(darker-one, @darker-one);
+.make-btn-variants-with-color(darker-two, @darker-two);
+
+*/
+
+//*** BORDER STYLES ***//
+// .border-primary - .border-danger
+/*
+.make-border-property(primary, @brand-primary);
+.make-border-property(success, @brand-success);
+.make-border-property(info, @brand-info);
+.make-border-property(warning, @brand-warning);
+.make-border-property(danger, @brand-danger);
+*/
+//*** END BORDER STYLES ***//
+
+
+text {
+  font-family: Consolas, monaco, monospace;
+}

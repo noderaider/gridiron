@@ -1,0 +1,28 @@
+{
+  "appName": "redux-grid-example",
+  "environment": "debug",
+  "flags": {
+    "dev": true,
+    "prod": false,
+    "minify": false
+  },
+  "cors": {
+    "origins": [ "https?://.*{{HOSTNAME}}" ]
+  },
+  "fs": {
+    "ETC_ROOT": "../etc",
+    "BIN_ROOT": "../bin",
+    "LOG_ROOT": "../log",
+    "MOD_ROOT": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\redux-grid-example Space Program\\GameData"
+  },
+  "bindings": {
+    "cdn": [
+      [
+        "http",
+        {
+          "port": 1337
+        }
+      ]
+    ]
+  }
+}

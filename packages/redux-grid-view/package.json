@@ -14,9 +14,7 @@
     "postrelease": "npm run release-doc",
     "prerelease-doc": "npm run doc",
     "release-doc": "git subtree push --prefix doc origin gh-pages",
-    "postrelease-doc": "git commit -am \"doc-release\" && git push --follow-tags",
-    "upgrade": "ncu -a && npm update",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "postrelease-doc": "git commit -am \"doc-release\" && git push --follow-tags"
   },
   "devDependencies": {
     "babel-cli": "^6.7.7",

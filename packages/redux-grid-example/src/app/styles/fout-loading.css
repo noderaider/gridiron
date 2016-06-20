@@ -1,0 +1,15 @@
+.wf-loading [class^="icon-"],
+.wf-loading [class*=" icon-"],
+.wf-loading h1,
+.wf-loading h2,
+.wf-loading h3,
+.wf-loading h4,
+.wf-loading p,
+.wf-loading span,
+.wf-loading a,
+.wf-loading ul,
+.wf-loading li,
+.wf-loading i {
+    visibility: hidden;
+    opacity: 0;
+}
