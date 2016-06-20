@@ -1,6 +1,6 @@
 {
   "name": "redux-grid-example",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "description": "Example webpack project for redux-grid and related components. Showcases what can be done with redux-grid.",
   "main": "lib/index.js",
   "files": [
@@ -133,8 +133,8 @@
     "redux-devtools-chart-monitor": "^1.4.1",
     "redux-devtools-themes": "^1.0.0",
     "redux-form": "^5.2.3",
-    "redux-grid": "*",
-    "redux-grid-view": "*",
+    "redux-grid": "^0.2.1",
+    "redux-grid-view": "^0.2.1",
     "redux-idle-monitor": "^0.3.1",
     "redux-middleware": "^0.1.20",
     "redux-mux": "*",

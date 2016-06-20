@@ -1,6 +1,6 @@
 {
   "name": "redux-grid",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Lightweight grid framework built on top of react-virtualized / fixed-data-table for easy highly customizable grids generated from redux state.",
   "main": "lib/index.js",
   "keywords": [
@@ -76,7 +76,7 @@
     "react-addons-test-utils": "^15.1.0",
     "react-dom": "^15.1.0",
     "react-tools": "^0.13.3",
-    "redux-grid-view": "^0.2.0",
+    "redux-grid-view": "^0.2.1",
     "rimraf": "^2.5.2",
     "lerna": "2.0.0-beta.19"
   },
