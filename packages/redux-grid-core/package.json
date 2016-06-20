@@ -1,0 +1,19 @@
+{
+  "name": "redux-grid-core",
+  "version": "0.1.0",
+  "description": "Core library for redux-grid.",
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/noderaider/redux-grid.git"
+  },
+  "keywords": [
+    "redux-grid"
+  ],
+  "author": "Cole Chamberlain <cole.chamberlain@gmail.com> (https://github.com/cchamberlain)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/noderaider/redux-grid/issues"
+  },
+  "homepage": "https://github.com/noderaider/redux-grid#readme"
+}

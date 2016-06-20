@@ -1,0 +1,42 @@
+{
+  "coverage": "0%",
+  "expectCount": 11,
+  "actualCount": 0,
+  "files": {
+    "lib/utils/ColumnHelper.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        4
+      ]
+    },
+    "lib/utils/arrayHelper.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        2
+      ]
+    },
+    "lib/defaultStyles.js": {
+      "expectCount": 8,
+      "actualCount": 0,
+      "undocumentLines": [
+        104,
+        128,
+        15,
+        7,
+        88,
+        35,
+        120,
+        23
+      ]
+    },
+    "lib/utils/StyleHelper.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        1
+      ]
+    }
+  }
+}
