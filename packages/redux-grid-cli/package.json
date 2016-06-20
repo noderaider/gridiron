@@ -1,16 +1,16 @@
 {
   "name": "redux-grid-cli",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "CLI commands for scaffolding and setting up redux-grid projects.",
   "main": "lib/index.js",
   "keywords": [
     "redux-grid"
   ],
   "dependencies": {
-    "redux-grid": "*",
-    "redux-grid-core": "*",
-    "redux-grid-test": "*",
-    "redux-grid-view": "*"
+    "redux-grid": "^0.2.0",
+    "redux-grid-core": "^0.2.0",
+    "redux-grid-test": "^0.2.0",
+    "redux-grid-view": "^0.2.0"
   },
   "author": "Cole Chamberlain <cole.chamberlain@gmail.com> (https://github.com/cchamberlain)",
   "license": "MIT"
