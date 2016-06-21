@@ -1,5 +1,5 @@
 import Immutable from 'immutable'
-import { defaultThemeName, packageName } from '../../../config'
+import { title, subtitle, defaultThemeName, packageName } from '../../../config'
 import  { TOGGLE_VISIBILITY
         , SET_VISIBILITY
         , SET_THEME
@@ -29,12 +29,12 @@ function visibility(state = Immutable.Map(), action = {}) {
       const current = state.get(componentID)
       if(current) {
         const next = nextValue(current)
-        return state.setIn([componentID, 'value'], next)
+        return state.setIn([ componentID, 'value' ], next)
       }
       return state.set(componentID, Immutable.fromJS({ options, value }))
     case SET_VISIBILITY:
       if(state.has(componentID))
-        return state.setIn([componentID, 'value'], value)
+        return state.setIn([ componentID, 'value' ], value)
       return state.set(componentID, Immutable.fromJS({ options, value }))
   }
   return state
@@ -69,7 +69,7 @@ function tooltip(state = Immutable.Map(), action = {}) {
 }
 
 const initialText = { }
-function text(state = Immutable.Map({ title: packageName, subtitle: 'manager', packageName }), action = {}) {
+function text(state = Immutable.Map({ title, subtitle, packageName }), action = {}) {
   const { type, payload, error } = action
   if(error)
     return state

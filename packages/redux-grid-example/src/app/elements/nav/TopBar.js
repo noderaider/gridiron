@@ -25,6 +25,7 @@ export default class TopBar extends Component {
         <span style={header.title}>
           <a href="/" style={header.anchor}>{title}{subtitle ? <span style={header.subtitle}>{subtitle}</span> : null}</a>
         </span>
+        {/*
         {packageName ? <span style={header.banner}>
           <a href={`https://nodei.co/npm/${packageName}/`}>
             <img src={`https://nodei.co/npm/${packageName}.png?mini=true`} />
@@ -35,6 +36,7 @@ export default class TopBar extends Component {
             <FA name="cog" size="2x"/>
           </a>
         </span>
+      */}
       </header>
     )
   }

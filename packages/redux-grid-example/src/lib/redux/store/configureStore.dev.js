@@ -22,8 +22,10 @@ export default function configureStore(history, initialState) {
                           )
   const store = createStore(reducer, initialState, enhancer)
   const unsubscribe = subscribeStore(store)
+  /*
   if(IS_BROWSER)
     store.dispatch(idleActions.start())
+  */
   if(module.hot)
     module.hot.accept('../reducers', () => store.replaceReducer(require('../reducers').default))
   return store

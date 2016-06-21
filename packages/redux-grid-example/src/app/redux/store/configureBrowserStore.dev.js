@@ -16,15 +16,15 @@ const createBrowserStore = (history = browserHistory, initialState = getInitialS
   const store = configureStore(history, initialState)
   const syncedHistory = syncHistoryWithStore(browserHistory, store)
   saveStore(store, syncedHistory)
-  return [store, syncedHistory]
+  return [ store, syncedHistory ]
 }
 
 export default function configureBrowserStore(...opts) {
-  let [store, history] = createBrowserStore(...opts)
+  let [ store, history ] = createBrowserStore(...opts)
   const replaceStore = () => {
     store.unsubscribe()
     [store, history] = createBrowserStore(...opts)
   }
   if(module.hot) module.hot.accept('lib/redux/store/configureStore', replaceStore)
-  return [store, history]
+  return [ store, history ]
 }

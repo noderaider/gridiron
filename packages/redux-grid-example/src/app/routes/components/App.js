@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import IdleMonitor from 'react-redux-idle-monitor'
+import createIdleMonitor from 'react-redux-idle-monitor'
 
 import { client, log, IS_BROWSER } from 'config'
 import TopBar from 'app/elements/nav/TopBar'
@@ -8,11 +8,16 @@ import FooterBar from 'app/elements/nav/FooterBar'
 
 import { contextTypes, getTheme, defaultTheme } from 'lib/context'
 
+const IdleMonitor = createIdleMonitor({ React, connect })
 
-const gridProps = { xs: 12, xsOffset: 0
-                  , sm: 10, smOffset: 1
-                  , md: 8, mdOffset: 2
-                  , lg: 4, lgOffset: 4
+const gridProps = { xs: 12
+                  , sm: 10
+                  , md: 8
+                  , lg: 4
+                  , xsOffset: 0
+                  , smOffset: 1
+                  , mdOffset: 2
+                  , lgOffset: 4
                   }
 
 const browserInit = ({ theme }) => {

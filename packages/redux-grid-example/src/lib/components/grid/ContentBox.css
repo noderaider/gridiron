@@ -1,0 +1,30 @@
+.ContentBox {
+  display: flex;
+  flex-direction: column;
+  padding: 15px 20px 20px;
+  background-color: #FFF;
+  box-shadow: 1px 1px 1px 1px rgba(0,0,0,.15);
+  border-radius: 2px;
+  margin: 1rem;
+}
+
+.Header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-weight: normal;
+  justify-content: space-between;
+  margin: 0 0 1rem;
+}
+.Small {
+  font-size: .5em;
+
+}
+.Link:hover {
+  text-decoration: none;
+}
+
+.Paragraph {
+  line-height: 1.4rem;
+  margin: 0 0 1rem;
+}

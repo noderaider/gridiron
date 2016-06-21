@@ -16,7 +16,9 @@ export default function configureStore(history, initialState) {
   const enhancer = applyMiddleware(...middlewares)
   const store = createStore(reducer, initialState, enhancer)
   const unsubscribe = subscribeStore(store)
+  /*
   if(IS_BROWSER)
     store.dispatch(idleActions.start())
+  */
   return store
 }

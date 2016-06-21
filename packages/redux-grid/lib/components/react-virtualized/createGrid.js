@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -24,7 +26,13 @@ var _classnames = require('classnames');
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
+var _util = require('util');
+
+var _util2 = _interopRequireDefault(_util);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -66,11 +74,10 @@ function createGrid(_ref) {
 
       var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ReduxGrid).call(this, props));
 
-      _this.state = {
-        disableHeader: false,
-        headerHeight: 30,
-        height: 600,
-        hideIndexRow: false,
+      _this.state = { disableHeader: false,
+        headerHeight: 30
+        //, height: 600
+        , hideIndexRow: false,
         overscanRowCount: 10,
         rowHeight: 40,
         rowCount: 1000,
@@ -85,11 +92,12 @@ function createGrid(_ref) {
     _createClass(ReduxGrid, [{
       key: 'render',
       value: function render() {
+        var _this2 = this;
+
         var _props = this.props;
         var state = _props.state;
         var mapCols = _props.mapCols;
         var mapRows = _props.mapRows;
-        var getColWidths = _props.getColWidths;
         var maxHeight = _props.maxHeight;
         var styles = _props.styles;
         var _state = this.state;
@@ -143,33 +151,57 @@ function createGrid(_ref) {
           null,
           React.createElement(
             'div',
-            { style: { display: 'flex' } },
+            { style: { display: 'flex', height: 800 } },
             React.createElement(
               'div',
               { style: { flex: '1 1 auto' } },
               React.createElement(
                 AutoSizer,
-                { disableHeight: true },
-                function (_ref4) {
-                  var width = _ref4.width;
+                { detectedWidth: this.state.width, onResize: function onResize(_ref4) {
+                    var height = _ref4.height;
+                    var width = _ref4.width;
 
-                  var colWidths = getColWidths();
-                  var fixedColWidths = colWidths.filter(function (x) {
-                    return typeof x === 'number';
-                  });
-                  var fixedWidth = fixedColWidths.reduce(function (sum, x) {
-                    return sum += x;
-                  }, 0);
-                  var variableWidth = width - fixedWidth;
-                  var variableColCount = colWidths.length - fixedColWidths.length;
+                    console.info('RESIZED', height, width);
+                    _this2.setState({ height: height, width: width });
+                  } },
+                function (dimensions) {
+                  console.warn('INSIDE DIM', _this2.state.height, _this2.state.width);
+
                   return React.createElement(Grid, {
+                    ref: function ref(x) {
+                      return _this2.grid = x;
+                    },
                     className: styles.BodyGrid,
-                    width: width,
-                    height: height,
+                    width: _this2.state.width || dimensions.width,
+                    height: _this2.state.height || dimensions.height,
                     columnCount: colCount,
                     rowCount: getRowCount({ rows: rows }),
                     columnWidth: function columnWidth(_ref5) {
                       var index = _ref5.index;
+
+                      var width = _this2.state.width || dimensions.width;
+                      var height = _this2.state.height || dimensions.height;
+                      //const colWidths = getColWidths()
+                      var fixedColKeys = colKeys.filter(function (x) {
+                        var col = cols[x];
+                        return col.width && typeof col.width === 'number';
+                      });
+
+                      var fixedWidth = fixedColKeys.reduce(function (sum, key) {
+                        return sum += cols[key].width;
+                      }, 0);
+                      var variableWidth = width - fixedWidth;
+                      var variableColCount = colKeys.length - fixedColKeys.length;
+                      console.debug(_util2.default.inspect({ fixedColKeys: fixedColKeys, width: width, height: height }));
+                      var colWidths = colKeys.reduce(function (widthMap, key) {
+                        return _extends({}, widthMap, _defineProperty({}, key, fixedColKeys.includes(key) ? cols[key].width : variableWidth / variableColCount));
+                      }, {});
+
+                      var colKey = colKeys[index];
+                      var selectedCol = cols[colKey];
+
+                      console.info({ index: index, width: colWidths[colKey], colKey: colKey, selectedCol: selectedCol });
+                      return colWidths[colKey];
 
                       var colWidth = colWidths[index];
                       /** IF VARIABLE WIDTH */
@@ -178,7 +210,8 @@ function createGrid(_ref) {
                     },
                     rowHeight: function rowHeight(_ref6) {
                       var index = _ref6.index;
-                      return index === 0 ? 50 : 19;
+
+                      return index === 0 ? 50 : 25;
                     },
 
                     cellRangeRenderer: function cellRangeRenderer() {
@@ -215,8 +248,7 @@ function createGrid(_ref) {
                           // This cache will be thrown away once scrolling completes.
                           if (isScrolling) {
                             if (!cellCache[key]) {
-                              cellCache[key] = cellRenderer({
-                                columnIndex: columnIndex,
+                              cellCache[key] = cellRenderer({ columnIndex: columnIndex,
                                 isScrolling: isScrolling,
                                 rowIndex: rowIndex
                               });
@@ -225,8 +257,7 @@ function createGrid(_ref) {
                             // If the user is no longer scrolling, don't cache cells.
                             // This makes dynamic cell content difficult for users and would also lead to a heavier memory footprint.
                           } else {
-                              renderedCell = cellRenderer({
-                                columnIndex: columnIndex,
+                              renderedCell = cellRenderer({ columnIndex: columnIndex,
                                 isScrolling: isScrolling,
                                 rowIndex: rowIndex
                               });
@@ -266,15 +297,18 @@ function createGrid(_ref) {
                       var isScrolling = _ref8.isScrolling;
 
                       if (rowIndex === 0) {
+                        var currentCol = colKeys[columnIndex];
+                        var selectedCol = cols[currentCol];
                         return React.createElement(
                           'div',
                           { className: styles.headerCell },
-                          cols[colKeys[columnIndex]]
+                          selectedCol.render || selectedCol
                         );
                       }
+                      var className = (0, _classnames2.default)(styles.cell, rowIndex % 2 === 0 ? styles.evenRow : styles.oddRow);
                       return React.createElement(
                         'div',
-                        { className: rowIndex % 2 === 0 ? styles.evenRow : styles.oddRow },
+                        { className: className },
                         rows[rowIndex][columnIndex]
                       );
                     }
@@ -284,6 +318,11 @@ function createGrid(_ref) {
             )
           )
         );
+      }
+    }, {
+      key: 'componentDidUpdate',
+      value: function componentDidUpdate(prevProps, prevState) {
+        if (prevState.width !== this.state.width || prevState.height !== this.state.height) this.grid.recomputeGridSize();
       }
     }]);
 

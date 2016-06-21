@@ -3,6 +3,8 @@ import { createLogger } from 'bunyan'
 
 export const packageName = 'redux-grid-example'
 export const packageKey = 'redux-grid-example'
+export const title = 'redux-grid'
+export const subtitle = 'example'
 export const defaultThemeName = 'solarized-dark'
 export const faviconUrl = '/images/nintendo.ico'
 export const faviconPath = path.join(__dirname, 'public/images/nintendo.ico')

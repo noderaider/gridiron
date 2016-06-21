@@ -4,7 +4,8 @@
   "flags": {
     "dev": true,
     "prod": false,
-    "minify": false
+    "minify": false,
+    "render": false
   },
   "cors": {
     "origins": [ "https?://.*{{HOSTNAME}}" ]

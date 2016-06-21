@@ -9,13 +9,15 @@ import { renderToString } from 'react-dom/server'
 import { createMemoryHistory, match, RouterContext } from 'react-router'
 import { Provider } from 'react-redux'
 import { syncHistoryWithStore } from 'react-router-redux'
+import cookieParser from 'cookie-parser'
 import cookie from 'react-cookie'
 
 import { serialize } from 'fire-hydrant'
 import createInitialState from 'fire-hydrant/lib/react/createInitialState'
 
+import { getThemeForUrl } from '../context/theme'
 import { defaultTheme, getTheme } from '../context'
-import { packageName, packageKey, faviconUrl, log, IS_HOT, IS_DEV, noop, resolveRoot, initialState } from '../../config'
+import { server, packageName, packageKey, faviconUrl, log, IS_HOT, IS_DEV, noop, resolveRoot, initialState } from '../../config'
 import { deauthorized, hydrateIdentity } from '../redux/actions/identity'
 import minify from '../services/minify'
 import logging from '../services/logging'
@@ -57,9 +59,9 @@ const HTML = ({ content, state, theme }) => {
       <script src="/assets/commons.js" />
     </head>
     <body>
-      {theme ? <BodyInit theme={theme} /> : null}
-      {state ? <InitialState globalKey={packageKey} state={state} serialize={serialize} /> : null}
-      <div id="root" dangerouslySetInnerHTML={{ __html: content }}/>
+      <BodyInit theme={theme} />
+      {server.flags.render ? <InitialState globalKey={packageKey} state={state} serialize={serialize} /> : null}
+      {server.flags.render ? <div id="root" dangerouslySetInnerHTML={{ __html: content }}/> : <div id="root" />}
       <script src="/assets/app.js" />
     </body>
     </html>
@@ -75,52 +77,43 @@ const MiddlewareError = ({ error }) => {
   )
 }
 
-
 const renderHTML = props => `<!doctype html>
 ${renderToString(<HTML {...props} />)}`
-
 
 export default function configureAppRouter({ cors, paths }) {
   const { SRC_ROOT, APP_ROOT, LIB_ROOT, STATIC_ROOT, ASSETS_ROOT } = paths
   let router = Router()
-
   router.use((req, res, next) => {
     try {
-      //cors.handle(req, res)
-      cookie.plugToRequest(req, res)
       const memoryHistory = createMemoryHistory(req.path)
       let store = configureStore(memoryHistory)
       const history = syncHistoryWithStore(memoryHistory, store)
-      console.warn('STORE =>', store)
-
-/*
-      log.info(req.cookies, 'cookies')
-      try {
-        if(!req.cookies.tixidentity)
-          removeLegacyCookies()
-      } catch(err) {
-        log.error(err, 'An error occurred deleting legacy cookies')
-      }
-      */
+      console.info('MADE IT HERE')
 
       /* react router match history */
       match({ history, routes, location: req.url }, (error, redirectLocation, renderProps) => {
         if (error)
-          res.status(500).send(error.message)
+          return res.status(500).send(error.message)
         else if (redirectLocation)
-          res.redirect(302, redirectLocation.pathname + redirectLocation.search)
+          return res.redirect(302, redirectLocation.pathname + redirectLocation.search)
         else if (renderProps) {
-          const content = renderToString(<Provider store={store}><RouterContext {...renderProps} /></Provider>)
           const state = store.getState()
-          const theme = getTheme(state.visual.theme, { url: req.url })
-          res.send(renderHTML({ content, state, theme }))
-        } else
+          const theme = getThemeForUrl(state.visual.theme, req.url)
+          if(server.flags.render) {
+            const content = renderToString(<Provider store={store}><RouterContext {...renderProps} /></Provider>)
+            const html = renderHTML({ content, state, theme })
+            return res.send(html)
+          } else {
+            const html = renderHTML({ theme })
+            return res.send(html)
+          }
+        } else {
           next()
+        }
       })
     } catch(middlewareError) {
-      log.error(middlewareError, 'error occurred in App middleware')
-      const content = renderToString(<MiddlewareError error={middlewareError} />)
-      return res.status(500).send(renderHTML({ content, theme: defaultTheme }))
+      log.error(middlewareError, 'error occurred in App middleware, continuing...')
+      return res.status(500).send(middlewareError.message || middlewareError)
     }
   })
   return router
