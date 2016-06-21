@@ -43,7 +43,7 @@
     "release:minor": "npm version minor",
     "release:major": "npm version major",
     "postversion": "npm publish",
-    "postpublish": "run-s -ln git-push release-gh-pages",
+    "_postpublish": "run-s -ln git-push release-gh-pages",
     "prerelease-gh-pages": "npm run doc",
     "release-gh-pages": "run-s gh-pages-subtree gh-pages-push gh-pages-delete",
     "postrelease-gh-pages": "run-s -lnc clean-doc git-commit:doc && git push -u origin master --follow-tags",
