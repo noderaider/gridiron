@@ -3,5 +3,5 @@ if (global._babelPolyfill)
 global._babelPolyfill = true
 
 import 'core-js/shim'
-import 'regenerator/runtime'
+import 'regenerator-runtime/runtime'
 import 'es5-shim'

@@ -9,7 +9,6 @@ import * as ReactVirtualized from 'react-virtualized'
 import reduxGrid from 'redux-grid'
 import util from 'util'
 
-import './css/react-virtualized.css'
 import styles from './css/redux-grid.css'
 import { ContentBox } from './ContentBox'
 
@@ -29,7 +28,7 @@ const list = Immutable.List(rows)
 
 const getState = () => ({ rows, list })
 
-const { Grid, Header, Expander } = reduxGrid({ getState, React, ReactDOM, ReactCSSTransitionGroup, ReactVirtualized, connect, Immutable, ContentBox })
+const { CoreGrid, DrillGrid, Header, Expander } = reduxGrid({ getState, React, ReactDOM, ReactCSSTransitionGroup, ReactVirtualized, connect, Immutable, ContentBox })
 
 const mapCols = state => ({ name: { render: <Header>Name</Header>, width: 100 }
                           , interest: <Header>User Interest</Header>
@@ -37,9 +36,8 @@ const mapCols = state => ({ name: { render: <Header>Name</Header>, width: 100 }
                           , sex: <Header>Sex</Header>
                           })
 
-//const getColWidths = () => [ 100, 100, 100, null ]
 
-console.info('INFO', util.inspect({ Grid, Header, Expander }))
+console.info('INFO', util.inspect({ CoreGrid, DrillGrid, Header, Expander }))
 
 export default class ApiGrid extends Component {
   constructor(props) {
@@ -93,11 +91,10 @@ export default class ApiGrid extends Component {
 
 
     return (
-        <Grid
+        <DrillGrid
           styles={styles}
           mapCols={mapCols}
           mapRows={mapRows}
-          //getColWidths={getColWidths}
           expandedRows={this.state.expandedRows}
           expandRowManager={expandRowManager}
         />

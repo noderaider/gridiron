@@ -21,6 +21,14 @@ describe('reduxGrid', () => {
     it('should exist', () => should.exist(Grid))
     it('should shallow mount', () => (() => shallow(<Provider store={store}><Grid /></Provider>)).should.not.throw())
   })
+
+  describe('<DrillGrid />', () => {
+    const reducer = (state = {}, action = {}) => {}
+    const store = createStore(reducer)
+    const { DrillGrid } = reduxGrid({ React, ReactVirtualized, connect })
+    it('should exist', () => should.exist(DrillGrid))
+    it('should shallow mount', () => (() => shallow(<Provider store={store}><DrillGrid /></Provider>)).should.not.throw())
+  })
 })
 
 

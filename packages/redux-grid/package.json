@@ -3,6 +3,9 @@
   "version": "0.2.2",
   "description": "Lightweight grid framework built on top of react-virtualized / fixed-data-table for easy highly customizable grids generated from redux state.",
   "main": "lib/index.js",
+  "files": [
+    "lib"
+  ],
   "keywords": [
     "redux",
     "react",
@@ -46,7 +49,8 @@
     "ncp": "^2.0.0",
     "npm-run-all": "^2.1.1",
     "react-autosizer": "^0.1.6",
-    "redux-grid-core": "^0.2.2"
+    "redux-grid-core": "^0.2.2",
+    "solvent": "^0.2.2"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0",

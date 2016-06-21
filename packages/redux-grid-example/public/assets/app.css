@@ -2096,10 +2096,6 @@
   max-height: 100% !important;
 }
 
-.Grid__cell {
-  position: relative;
-}
-
 /* FlexTable default theme */
 
 .FlexTable__Grid {
@@ -2228,6 +2224,7 @@
 .VirtualScroll__row {
   position: absolute;
 }
+
 /*
 .FlexTable {
   width: 100%;
@@ -2273,9 +2270,7 @@
 }
 */
 
-
 /** GRID */
-
 
 /*
 .headerCell {
@@ -2286,32 +2281,21 @@
 }
 */
 
-
-.redux-grid__GridRow___2X3VV {
+/*
+.GridRow {
   margin-top: 15px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
+  flex-direction: row;
 }
+*/
 
-
-.redux-grid__GridColumn___1-PCw {
-  display: -webkit-box;
-  display: -ms-flexbox;
+/*
+.GridColumn {
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-flex: 1;
-      -ms-flex: 1 1 auto;
-          flex: 1 1 auto;
+  flex-direction: column;
+  flex: 1 1 auto;
 }
-
+*/
 
 .redux-grid__LeftSideGridContainer___3GXTV {
   -webkit-box-flex: 0;
@@ -2319,32 +2303,29 @@
           flex: 0 0 50px;
 }
 
-
 .redux-grid__BodyGrid___3-zIS {
   width: 100%;
   border: 1px solid #e0e0e0;
 }
 
-
-.redux-grid__evenRow___2gVWh,
-.redux-grid__oddRow___3anvQ {
+/*
+.evenRow,
+.oddRow {
   border-bottom: 1px solid #e0e0e0;
 }
-
-
-.redux-grid__oddRow___3anvQ {
+.oddRow {
   background-color: #fafafa;
 }
-
+*/
 
 .redux-grid__rowStyle___318yU {
   position: relative;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  min-height: 30px;
   //border: 1px solid red;
 }
-
 
 .drill {
   -webkit-animation-duration: 1s;
@@ -2353,7 +2334,6 @@
           animation-name: slidein;
   overflow: hidden;
 }
-
 
 @keyframes slidein {
   from {
@@ -2366,11 +2346,9 @@
   }
 }
 
-
 .rowSlide-enter {
   opacity: 0.01;
 }
-
 
 .rowSlide-enter.rowSlide-enter-active {
   opacity: 1;
@@ -2378,11 +2356,9 @@
   transition: opacity 500ms ease-in;
 }
 
-
 .rowSlide-leave {
   opacity: 1;
 }
-
 
 .rowSlide-leave.rowSlide-leave-active {
   opacity: 0.01;
@@ -2390,6 +2366,40 @@
   transition: opacity 300ms ease-in;
 }
 
+.Grid__cell {
+  position: relative;
+  display:-webkit-box;
+  display:-ms-flexbox;
+  display:flex;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  height: 100% !important;
+  border-right: 1px solid #e0e0e0;
+}
+
+.Grid__cell > * {
+  padding: 0 5px;
+}
+
+/*
+:global .Grid__cell + .Grid__cell {
+  border-left: 1px solid #e0e0e0;
+  border-right: 1px solid #e0e0e0;
+}
+*/
+
+/*
+:global .Grid__cell:first-child {
+  background-color: green;
+}
+*/
+
+.Grid__cell:last-child {
+  border-right: none;
+}
 
 .redux-grid__cell___2lvXT,
 .redux-grid__headerCell___3EbzD {
@@ -2398,28 +2408,24 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.redux-grid__headerCell___3EbzD {
+  font-weight: bold;
+}
+
+.redux-grid__cell___2lvXT {
+  //border-left: 1px solid #e0e0e0;
+  //border-right: 1px solid #e0e0e0;
+  //border-top:1px solid #e0e0e0;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  padding: 0 .5em;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
 }
-
-
-.redux-grid__cell___2lvXT {
-  border-right: 1px solid #e0e0e0;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-
-.redux-grid__headerCell___3EbzD {
-  font-weight: bold;
-  border-right: 1px solid #e0e0e0;
-}
-
 
 .redux-grid__centeredCell___z2Jiy {
   -webkit-box-align: center;
@@ -2429,13 +2435,11 @@
   text-align: center;
 }
 
-
 .redux-grid__letterCell___1AJww {
   font-size: 1.5em;
   color: #fff;
   text-align: center;
 }
-
 
 .redux-grid__noCells___3j3Oe {
   position: absolute;
@@ -2456,11 +2460,9 @@
   color: #bdbdbd;
 }
 
-
 .redux-grid__expander___2AyRr {
   position:absolute;
 }
-
 
 .redux-grid__expandedRow___2bI6b {
   background-color: rgb(100, 100, 200);

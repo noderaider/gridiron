@@ -1,4 +1,6 @@
-import * as create from './components/create'
+import * as components from './components'
+
+const capitalizeFirst = str => `${str[0].toUpperCase()}${str.slice(1)}`
 
 /**
  * redux-grid
@@ -6,4 +8,4 @@ import * as create from './components/create'
  * @param  {[type]} dependencies [description]
  * @return {[type]}              [description]
  */
-export default dependencies => Object.keys(create).reduce((reduxGrid, x) => ({ ...reduxGrid, [x]: create[x](dependencies) }), {})
+export default dependencies => Object.keys(components).reduce((reduxGrid, x) => ({ ...reduxGrid, [capitalizeFirst(x)]: components[x](dependencies) }), {})
