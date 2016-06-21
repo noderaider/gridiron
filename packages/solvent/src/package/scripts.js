@@ -49,7 +49,7 @@ export default ({}) => ({ 'start': 'run-p -lnc build-watch test-watch'
                         , 'release:minor': 'npm version minor'
                         , 'release:major': 'npm version major'
                         , 'postversion': 'npm publish'
-                        , 'postpublish': 'run-s -ln git-push release-gh-pages'
+                        , '_postpublish': 'run-s -ln git-push release-gh-pages'
 
                           /** GH-PAGES RELEASE */
                         , 'prerelease-gh-pages': 'npm run doc'
