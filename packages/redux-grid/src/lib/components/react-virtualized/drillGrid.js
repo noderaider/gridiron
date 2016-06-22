@@ -1,5 +1,6 @@
 import { DrillGrid as Core } from 'redux-grid-core'
 import coreGrid from './coreGrid'
+import expander from '../expander'
 const should = require('chai').should()
 
 export default function drillGrid (dependencies) {
@@ -18,6 +19,7 @@ export default function drillGrid (dependencies) {
   const list = Immutable.List(rows)
   const getState = () => ({ rows, list })
   const CoreGrid = coreGrid(dependencies)
+  const Expander = expander(dependencies)
 
   return class DrillGrid extends Component {
     static propTypes = Core.PropTypes(React);
@@ -28,38 +30,40 @@ export default function drillGrid (dependencies) {
     render() {
       const { styles, mapCols, mapRows, mapDrill, ...rest } = this.props
       const { drilledRows } = this.state
-      const isExpanded = index => drilledRows.includes(index)
-
-      const getExpandedIndices = () => this.state.drilledRows
-      const isExpandable = index => index > 0
-      const getClassName = index => styles.expandedRow
-      const getExpanderClassName = index => styles.expander
-      const getExpanderWidth = index => 25
       const onToggleExpand = index => {
         let newDrilledRows = drilledRows.includes(index) ? drilledRows.filter(x => x !== index) : [ ...drilledRows, index ]
         newDrilledRows.sort()
         this.setState({ drilledRows: newDrilledRows })
       }
 
-      const expandRowManager =  { getExpandedIndices
-                                , isExpandable
-                                , getContent: mapDrill
-                                , getClassName
-                                , getExpanderClassName
-                                , getExpanderWidth
-                                , onToggleExpand
-                                , rowStyle: styles.rowStyle
-                                , totalHeight: 0
-                                }
-
+      let spannedRows = []
+      const _mapCols = state => {
+        return  [ { id: 'expander', render: () => <Expander visible={false} />, width: 25, className: styles.minimal }
+                , ...mapCols(state)
+                ]
+      }
+      const _mapRows = state => {
+        const coreRows = mapRows(state)
+        return coreRows.reduce((rows, x, i) => {
+          if(this.state.drilledRows.includes(i))
+            return  [ ...rows, [ <Expander expanded={true} handleExpand={() => onToggleExpand(i)}/>
+                              , ...x
+                              ]
+                    , { span: true, render: () => mapDrill(state, i) }
+                    ]
+          return  [ ...rows,  [ <Expander expanded={false} handleExpand={() => onToggleExpand(i)}/>
+                              , ...x
+                              ]
+                  ]
+        }, [])
+      }
 
       return (
           <CoreGrid
+            {...rest}
             styles={styles}
-            mapCols={mapCols}
-            mapRows={mapRows}
-            expandedRows={this.state.expandedRows}
-            expandRowManager={expandRowManager}
+            mapCols={_mapCols}
+            mapRows={_mapRows}
           />
       )
     }

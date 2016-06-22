@@ -5,8 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Connect = exports.PropTypes = undefined;
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _CoreGrid = require('./CoreGrid');
 
 var CoreGrid = _interopRequireWildcard(_CoreGrid);
@@ -19,8 +17,12 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
  * @return {[type]}                   [description]
  */
 var PropTypes = exports.PropTypes = function PropTypes(React) {
-  return _extends({}, CoreGrid.PropTypes(React), { mapDrill: React.PropTypes.func.isRequired
-  });
+  return { mapCols: React.PropTypes.func.isRequired,
+    mapRows: React.PropTypes.func.isRequired,
+    mapDrill: React.PropTypes.func.isRequired,
+    styles: React.PropTypes.object.isRequired,
+    maxHeight: React.PropTypes.number
+  };
 };
 
 /**

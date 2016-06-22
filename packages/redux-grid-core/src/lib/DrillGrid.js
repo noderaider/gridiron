@@ -5,8 +5,11 @@ import * as CoreGrid from './CoreGrid'
  * @param  {[type]} options.PropTypes [description]
  * @return {[type]}                   [description]
  */
-export const PropTypes = React => ( { ...CoreGrid.PropTypes(React)
+export const PropTypes = React => ( { mapCols: React.PropTypes.func.isRequired
+                                    , mapRows: React.PropTypes.func.isRequired
                                     , mapDrill: React.PropTypes.func.isRequired
+                                    , styles: React.PropTypes.object.isRequired
+                                    , maxHeight: React.PropTypes.number
                                     } )
 
 

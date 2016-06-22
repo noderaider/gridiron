@@ -1,5 +1,4 @@
 const should = require('chai').should()
-
 /**
  * Creates a dependency resolver that will auto check incoming dependencies against a JavaScript type.
  * @param  {Object} dependencyTypes [description]

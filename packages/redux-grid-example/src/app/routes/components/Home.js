@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
 import { contextTypes } from 'lib/context'
-import ApiGrid from 'lib/components/grid/ApiGrid'
+import ReduxGrid from 'lib/components/grid/ReduxGrid'
 import PrimaryGrid from 'app/elements/grids/PrimaryGrid'
 import PageForm from 'app/elements/forms/PageForm'
 
@@ -12,7 +12,7 @@ class Home extends Component {
     const { title, subtitle, username, organization, email, full, packageName } = this.props
     const { style } = this.context.theme
     return (
-      <ApiGrid />
+      <ReduxGrid />
     )
   }
 }

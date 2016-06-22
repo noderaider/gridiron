@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 exports.default = drillGrid;
@@ -13,6 +15,10 @@ var _reduxGridCore = require('redux-grid-core');
 var _coreGrid = require('./coreGrid');
 
 var _coreGrid2 = _interopRequireDefault(_coreGrid);
+
+var _expander = require('../expander');
+
+var _expander2 = _interopRequireDefault(_expander);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -45,6 +51,7 @@ function drillGrid(dependencies) {
     return { rows: rows, list: list };
   };
   var CoreGrid = (0, _coreGrid2.default)(dependencies);
+  var Expander = (0, _expander2.default)(dependencies);
 
   return _temp = _class = function (_Component) {
     _inherits(DrillGrid, _Component);
@@ -73,25 +80,6 @@ function drillGrid(dependencies) {
 
         var drilledRows = this.state.drilledRows;
 
-        var isExpanded = function isExpanded(index) {
-          return drilledRows.includes(index);
-        };
-
-        var getExpandedIndices = function getExpandedIndices() {
-          return _this2.state.drilledRows;
-        };
-        var isExpandable = function isExpandable(index) {
-          return index > 0;
-        };
-        var getClassName = function getClassName(index) {
-          return styles.expandedRow;
-        };
-        var getExpanderClassName = function getExpanderClassName(index) {
-          return styles.expander;
-        };
-        var getExpanderWidth = function getExpanderWidth(index) {
-          return 25;
-        };
         var onToggleExpand = function onToggleExpand(index) {
           var newDrilledRows = drilledRows.includes(index) ? drilledRows.filter(function (x) {
             return x !== index;
@@ -100,24 +88,31 @@ function drillGrid(dependencies) {
           _this2.setState({ drilledRows: newDrilledRows });
         };
 
-        var expandRowManager = { getExpandedIndices: getExpandedIndices,
-          isExpandable: isExpandable,
-          getContent: mapDrill,
-          getClassName: getClassName,
-          getExpanderClassName: getExpanderClassName,
-          getExpanderWidth: getExpanderWidth,
-          onToggleExpand: onToggleExpand,
-          rowStyle: styles.rowStyle,
-          totalHeight: 0
+        var spannedRows = [];
+        var _mapCols = function _mapCols(state) {
+          return [{ id: 'expander', render: function render() {
+              return React.createElement(Expander, { visible: false });
+            }, width: 25, className: styles.minimal }].concat(_toConsumableArray(mapCols(state)));
+        };
+        var _mapRows = function _mapRows(state) {
+          var coreRows = mapRows(state);
+          return coreRows.reduce(function (rows, x, i) {
+            if (_this2.state.drilledRows.includes(i)) return [].concat(_toConsumableArray(rows), [[React.createElement(Expander, { expanded: true, handleExpand: function handleExpand() {
+                return onToggleExpand(i);
+              } })].concat(_toConsumableArray(x)), { span: true, render: function render() {
+                return mapDrill(state, i);
+              } }]);
+            return [].concat(_toConsumableArray(rows), [[React.createElement(Expander, { expanded: false, handleExpand: function handleExpand() {
+                return onToggleExpand(i);
+              } })].concat(_toConsumableArray(x))]);
+          }, []);
         };
 
-        return React.createElement(CoreGrid, {
+        return React.createElement(CoreGrid, _extends({}, rest, {
           styles: styles,
-          mapCols: mapCols,
-          mapRows: mapRows,
-          expandedRows: this.state.expandedRows,
-          expandRowManager: expandRowManager
-        });
+          mapCols: _mapCols,
+          mapRows: _mapRows
+        }));
       }
     }]);
 

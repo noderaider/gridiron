@@ -13,7 +13,7 @@
 
 :global .Collection__innerScrollContainer {
   box-sizing: border-box;
-  overflow: hidden;
+  overflow-y: hidden;
 }
 
 :global .Collection__cell {
@@ -35,7 +35,13 @@
 
 :global .Grid__innerScrollContainer {
   box-sizing: border-box;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  //clear: both !important;
+  /*
+  min-height: 100vh;
+  flex: 1;
+  */
   height: 100% !important;
   max-height: 100% !important;
 }
@@ -279,7 +285,6 @@
 .rowStyle {
   position: relative;
   display: flex;
-  min-height: 30px;
   //border: 1px solid red;
 }
 
@@ -351,6 +356,12 @@
 }
 
 
+.subgrid {
+  margin:0 !important;
+  padding:0 !important;
+  border: 1px solid rgb(200, 100, 100);
+}
+
 .cell,
 .headerCell {
   width: 100%;
@@ -370,6 +381,14 @@
   flex-direction: column;
   justify-content: space-around;
 }
+
+.minimal {
+  //flex: 0 1 25px !important;
+}
+.minimal  * {
+  //flex: 0 1 25px !important;
+}
+
 .centeredCell {
   align-items: center;
   text-align: center;

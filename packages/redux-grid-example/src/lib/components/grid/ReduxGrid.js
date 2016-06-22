@@ -30,16 +30,39 @@ const getState = () => ({ rows, list })
 
 const { CoreGrid, DrillGrid, Header, Expander } = reduxGrid({ getState, React, ReactDOM, ReactCSSTransitionGroup, ReactVirtualized, connect, Immutable, ContentBox })
 
+/*
 const mapCols = state => ({ name: { render: <Header>Name</Header>, width: 100 }
                           , interest: <Header>User Interest</Header>
                           , age: <Header>Age</Header>
                           , sex: <Header>Sex</Header>
                           })
+                          */
+const mapCols = state =>  [ { id: 'name', render: () => <Header>Name</Header>, width: 100 }
+                          , { id: 'interest', render: () => <Header>User Interest</Header> }
+                          , { id: 'age', render: () => <Header>Age</Header> }
+                          , { id: 'sex', render: () => <Header>Sex</Header> }
+                          ]
 
+const mapDrill = (state, index) => {
+  return <ReduxGrid isSubGrid={true} />
+  return (
+    <div style={{ border: '1px solid black' }}>
+      <h3>EXPANDED {JSON.stringify(state.rows[index])}</h3>
+      <hr />
+      <div>
+        <h4>MORE STUFF</h4>
+      </div>
+      <hr />
+      <div style={{ fontSize: '0.9em' }}>
+        FOOTER GOES HERE
+      </div>
+    </div>
+  )
+}
 
 console.info('INFO', util.inspect({ CoreGrid, DrillGrid, Header, Expander }))
 
-export default class ApiGrid extends Component {
+export default class ReduxGrid extends Component {
   constructor(props) {
     super(props)
     this.state = { expandedRows: [] }
@@ -60,26 +83,13 @@ export default class ApiGrid extends Component {
       this.setState({ expandedRows: newExpandedRows })
     }
 
-    const getContent = (index, state) => {
-      return (
-        <div style={{ border: '1px solid black' }}>
-          <h3>EXPANDED {JSON.stringify(state.rows[index])}</h3>
-          <hr />
-          <div>
-            <h4>MORE STUFF</h4>
-          </div>
-          <hr />
-          <div style={{ fontSize: '0.9em' }}>
-            FOOTER GOES HERE
-          </div>
-        </div>
-      )
-    }
+
+
     const getHeight = content => 150
 
     const expandRowManager =  { getExpandedIndices
                               , isExpandable
-                              , getContent
+                              //, getContent
                               , getHeight
                               , getClassName
                               , getExpanderClassName
@@ -95,8 +105,10 @@ export default class ApiGrid extends Component {
           styles={styles}
           mapCols={mapCols}
           mapRows={mapRows}
+          mapDrill={mapDrill}
           expandedRows={this.state.expandedRows}
           expandRowManager={expandRowManager}
+          {...this.props}
         />
     )
   }

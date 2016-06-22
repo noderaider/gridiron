@@ -132,21 +132,19 @@ export default function createGrid({ getState, React, connect, ReactVirtualized,
                           // This cache will be thrown away once scrolling completes.
                           if (isScrolling) {
                             if (!cellCache[key]) {
-                              cellCache[key] = cellRenderer({
-                                columnIndex,
-                                isScrolling,
-                                rowIndex
-                              })
+                              cellCache[key] = cellRenderer({ columnIndex
+                                                            , isScrolling
+                                                            , rowIndex
+                                                            })
                             }
                             renderedCell = cellCache[key]
                           // If the user is no longer scrolling, don't cache cells.
                           // This makes dynamic cell content difficult for users and would also lead to a heavier memory footprint.
                           } else {
-                            renderedCell = cellRenderer({
-                              columnIndex,
-                              isScrolling,
-                              rowIndex
-                            })
+                            renderedCell = cellRenderer({ columnIndex
+                                                        , isScrolling
+                                                        , rowIndex
+                                                        })
                           }
 
                           if (renderedCell == null || renderedCell === false)

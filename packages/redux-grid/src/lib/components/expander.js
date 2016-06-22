@@ -1,3 +1,4 @@
+import { Expander as Core } from 'redux-grid-core'
 const should = require('chai').should()
 
 export default ({ React }) => {
@@ -10,16 +11,21 @@ export default ({ React }) => {
                     }
   const expanderButtonStyle = { border: 0
                               , backgroundColor: 'transparent'
+                              , cursor: 'pointer'
                               }
 
-  return props => (
+  const Expander = props => (
     <span style={wrapStyle}>
-      <span>
-        <button style={expanderButtonStyle} onClick={props.handleExpand}>
-          <i className={`fa fa-${(props.expanded ? 'minus' : 'plus')}-square`} />
-        </button>
-      </span>
-      <span>{props.children}</span>
+      {props.visible ? (
+        <span>
+          <button style={expanderButtonStyle} onClick={props.handleExpand}>
+            <i className={`fa fa-${(props.expanded ? 'minus' : 'plus')}-square`} />
+          </button>
+        </span>
+      ) : null}
     </span>
   )
+  Expander.propTypes = Core.PropTypes(React)
+  Expander.defaultProps = Core.DefaultProps(React)
+  return Expander
 }

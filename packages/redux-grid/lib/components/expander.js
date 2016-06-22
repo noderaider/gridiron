@@ -3,6 +3,9 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _reduxGridCore = require('redux-grid-core');
+
 var should = require('chai').should();
 
 exports.default = function (_ref) {
@@ -16,14 +19,15 @@ exports.default = function (_ref) {
     justifyContent: 'space-between'
   };
   var expanderButtonStyle = { border: 0,
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    cursor: 'pointer'
   };
 
-  return function (props) {
+  var Expander = function Expander(props) {
     return React.createElement(
       'span',
       { style: wrapStyle },
-      React.createElement(
+      props.visible ? React.createElement(
         'span',
         null,
         React.createElement(
@@ -31,12 +35,10 @@ exports.default = function (_ref) {
           { style: expanderButtonStyle, onClick: props.handleExpand },
           React.createElement('i', { className: 'fa fa-' + (props.expanded ? 'minus' : 'plus') + '-square' })
         )
-      ),
-      React.createElement(
-        'span',
-        null,
-        props.children
-      )
+      ) : null
     );
   };
+  Expander.propTypes = _reduxGridCore.Expander.PropTypes(React);
+  Expander.defaultProps = _reduxGridCore.Expander.DefaultProps(React);
+  return Expander;
 };
