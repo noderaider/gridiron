@@ -31,6 +31,30 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "packages/redux-devtools-grid-monitor/src/lib/actions.js",
+			"settings":
+			{
+				"buffer_size": 180,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "packages/redux-devtools-grid-monitor/src/lib/brighten.js",
+			"settings":
+			{
+				"buffer_size": 438,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "packages/redux-grid-example/src/lib/components/grid/css/redux-grid.css",
+			"settings":
+			{
+				"buffer_size": 7630,
+				"line_ending": "Windows"
+			}
+		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -269,48 +293,114 @@
 	},
 	"expanded_folders":
 	[
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-devtools-grid-monitor",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-devtools-grid-monitor/src",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-devtools-grid-monitor/src/lib",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-devtools-grid-monitor/test",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/solvent",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/solvent/test",
 		"/C/Users/ColeChamberlain/noderaider/redux-grid",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid/src",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid/src/lib",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid/src/package",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-core/src",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-core/src/lib",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-core/src/package",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/src",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/src/package",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-cli",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-cli/src",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-cli/src/bin",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-cli/src/lib",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-cli/src/package"
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-devtools-grid-monitor",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-devtools-grid-monitor/src",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-devtools-grid-monitor/src/lib"
 	],
 	"file_history":
 	[
+		"/C/Users/ColeChamberlain/AppData/Roaming/Sublime Text 3/Packages/User/SideBarEnhancements/Open With/Side Bar.sublime-menu",
+		"/C/Users/ColeChamberlain/AppData/Roaming/Sublime Text 3/Packages/User/Side Bar.sublime-settings",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-devtools-grid-monitor/test/lib.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-devtools-grid-monitor/src/lib/index.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-devtools-grid-monitor/src/lib/GridMonitor.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-devtools-grid-monitor/src/lib/GridMonitorButton.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-devtools-grid-monitor/src/lib/GridMonitorEntryList.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-devtools-grid-monitor/src/lib/GridMonitorEntry.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-devtools-grid-monitor/src/lib/GridMonitorEntryAction.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-devtools-grid-monitor/src/lib/actions.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-devtools-grid-monitor/src/lib/brighten.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-devtools-grid-monitor/src/lib/GridMonitorEntryList",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/solvent/package.json",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/src/lib/components/grid/ReduxGrid.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-core/src/lib/Expander.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid/src/lib/components/expander.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/redux-grid.sublime-project",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-devtools-grid-monitor/package.json",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-devtools-grid-monitor/esdoc.json",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-devtools-grid-monitor/CNAME",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid/src/lib/components/react-virtualized/drillGrid.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/solvent/src/lib/index.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid/src/lib/components/react-virtualized/coreGrid.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-core/src/lib/CoreGrid.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-core/src/lib/DrillGrid.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid/src/lib/obsolete/createGrid-safe.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/src/app/routes/components/Home.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/solvent/src/lib/ioc/dependencyResolver.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-core/src/lib/ioc/dependencyResolver.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid/src/lib/index.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid/src/lib/components/index.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-test/test/reduxGrid.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/solvent/test/lib.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/solvent/.babelrc",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/solvent/src/package/scripts.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/solvent/esdoc.json",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/solvent/CNAME",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/solvent/README.md",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/solvent/md/README.md",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid/src/lib/components/drillGrid.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid/src/lib/components/coreGrid.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid/src/lib/components/fixed-data-table/coreGrid.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid/src/lib/components/fixed-data-table/DrillGrid.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-core/src/lib/index.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid/src/lib/components/CoreGrid.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid/src/lib/components/fixed-data-table/CoreGrid.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid/src/lib/components/DrillGrid.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid/src/lib/components/react-virtualized/DrillGrid.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-core/src/lib/Header.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/src/lib/components/grid/ApiGrid.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid/src/lib/components/react-virtualized/CoreGrid.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid/src/lib/components/react-virtualized/createDrillGrid.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-core/src/lib/propTypes",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-test/test/Grid.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/src/public/static/polyfill.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/node_modules/react-virtualized/dist/commonjs/AutoSizer/AutoSizer.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid/src/lib/components/react-virtualized/createGrid.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/src/lib/components/grid/css/react-virtualized.css",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/src/app/elements/nav/TopBar.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/src/webpack/postcss.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/src/webpack/module/loaders.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/src/app/routes/index.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/src/lib/redux/store/configureStore.dev.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/src/lib/redux/modules/redux-idle-monitor.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/webpack/postcss.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/src/app/redux/store/configureBrowserStore.dev.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/src/lib/redux/store/configureStore.prod.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/src/app/routes/components/Data.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/src/config-server.json",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/src/lib/router/configureAppRouter.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/etc/config/config-server.json",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/config-server.json",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/src/app/routes/components/App.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/src/lib/redux/reducers/visual.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/src/config.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/src/lib/context/theme/index.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/src/lib/context/theme/palette.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/config.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/src/app/entry/app.js",
+		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/src/lib/index.js",
 		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/src/package/scripts.js",
 		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-cli/package.json",
 		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid/package.json",
 		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-cli/src/bin/grid.js",
 		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-cli/src/lib/index.js",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-core/src/lib/index.js",
 		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/package.json",
 		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-cli/src/package/scripts.js",
 		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-core/package.json",
 		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/src/package/keywords.json",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/redux-grid.sublime-project",
 		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/README.md",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/src/app/routes/components/Home.js",
 		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/src/config-client.json",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/src/config-server.json",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/src/config.js",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/src/lib/router/configureAppRouter.js",
 		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/src/package.json",
 		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/src/package/description.js",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/etc/config/config-server.json",
 		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/etc/config/config-client.json",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/config.js",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/config-server.json",
 		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/config-client.json",
 		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-grid-example/src/package/name.js",
 		"/C/Users/ColeChamberlain/tixinc/js/src/lib/router/proxy.js",
@@ -344,78 +434,7 @@
 		"/C/Users/ColeChamberlain/tixinc/config/src/etc/server/prod.json",
 		"/C/Users/ColeChamberlain/tixinc/config/src/etc/server/test.json",
 		"/C/Users/ColeChamberlain/tixinc/js/js.sublime-project",
-		"/C/Users/ColeChamberlain/tixinc/js/src/config.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/lib/redux/actions/api.js",
-		"/C/Users/ColeChamberlain/tixinc/config/.gitignore",
-		"/C/Users/ColeChamberlain/tixinc/js/src/app/elements/nav/ClassicSections.js",
-		"/C/Users/ColeChamberlain/tixinc/js/config-client.json",
-		"/C/Users/ColeChamberlain/tixinc/config/src/lib/tls.js",
-		"/C/Users/ColeChamberlain/tixinc/config/src/lib/fs.js",
-		"/C/Users/ColeChamberlain/tixinc/config/src/lib/transforms/directify.js",
-		"/C/Users/ColeChamberlain/tixinc/config/src/lib/transforms/link.js",
-		"/C/Users/ColeChamberlain/tixinc/config/src/lib/services/configify.browser.js",
-		"/C/Users/ColeChamberlain/tixinc/config/src/lib/services/commandify.js",
-		"/C/Users/ColeChamberlain/tixinc/config/src/lib/services/commandify.browser.js",
-		"/C/Users/ColeChamberlain/tixinc/config/src/lib/services/json.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/package/scripts.js",
-		"/C/Users/ColeChamberlain/tixinc/config/lib/services/configify.js",
-		"/C/Users/ColeChamberlain/tixinc/js/.gitignore",
-		"/C/Users/ColeChamberlain/tixinc/js/src/lib/router/configureRouter.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/lib/components/grid/css/redux-grid.css",
-		"/C/Users/ColeChamberlain/tixinc/js/src/lib/components/grid/ApiGrid.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/lib/components/grid/css/react-virtualized.css",
-		"/C/Users/ColeChamberlain/tixinc/js/test/compiler/index.js",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/src/lib/components/createGrid.js",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/src/lib/components/react-virtualized/createGrid.js",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/src/lib/components/react-virtualized/internal/createExpandableCellRangeRenderer.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/lib/router/configureApiRouter.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/lib/cors.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/lib/redux/actions/identity.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/app/routes/routes/Data/components/Data.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/app/elements/nav/IdentityBar.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/app/elements/micro/core/Micro.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/app/elements/nav/FooterBar.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/app/elements/micro/TimeoutMicro.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/app/elements/micro/ThemeMicro.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/app/elements/micro/AllRightsReservedMicro.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/app/routes/routes/Data/components/Index.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/lib/components/grid/ContentBox.css",
-		"/C/Users/ColeChamberlain/tixinc/js/src/app/elements/nav/ClassicBanner.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/lib/redux/store/subscribeStore.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/app/elements/panels/base/CorePanel.css",
-		"/C/Users/ColeChamberlain/tixinc/js/src/app/elements/panels/base/CorePanel.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/lib/context/theme/overrides/theme.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/lib/context/theme/overrides/index.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/lib/context/theme/overrides/touchscreen.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/app/routes/components/Timeout.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/lib/styles/fonts/fout.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/app/fonts/fout.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/lib/components/grid/css/react-virtualized.module.css",
-		"/C/Users/ColeChamberlain/tixinc/js/src/webpack/module/loaders.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/app/elements/layout/AutoMargin.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/app/elements/nav/ClassicBar.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/app/elements/nav/ClassicFooter.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/app/elements/nav/TopBar.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/app/elements/nav/TopBar.gcss",
-		"/C/Users/ColeChamberlain/tixinc/js/src/app/entry/legacy.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/app/elements/nav/FooterBar.gcss",
-		"/C/Users/ColeChamberlain/tixinc/js/src/app/elements/layout/AutoMargin.css",
-		"/C/Users/ColeChamberlain/tixinc/js/src/app/elements/layout/JustifyCenter.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/app/elements/layout/JustifyCenter.css",
-		"/C/Users/ColeChamberlain/tixinc/js/src/app/legacy/styles/admin.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/webpack/postcss.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/lib/redux/middleware/persistenceMiddleware.js",
-		"/C/Users/ColeChamberlain/noderaider/local-storage/local-storage.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/app/vendor/modernizr/modernizr.js",
-		"/C/Users/ColeChamberlain/tixinc/js/test/grid.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/app/routes/routes/Identity/index.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/app/routes/helpers/routeIdentity.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/app/routes/routes/Identity/routes/Login/components/Login.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/app/routes/routes/Identity/routes/Deauthorize/components/Deauthorize.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/lib/services/persistence.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/app/routes/routes/Identity/components/Identity.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/app/routes/components/core/RoutingComponent.js",
-		"/C/Users/ColeChamberlain/tixinc/js/src/app/routes/routes/Identity/routes/Refresh/components/Refresh.js"
+		"/C/Users/ColeChamberlain/tixinc/js/src/config.js"
 	],
 	"find":
 	{
@@ -426,6 +445,9 @@
 		"height": 92.0,
 		"where_history":
 		[
+			"C:\\Users\\ColeChamberlain\\noderaider\\redux-grid\\packages\\redux-devtools-grid-monitor",
+			"C:\\Users\\ColeChamberlain\\noderaider\\redux-grid\\packages\\solvent",
+			"C:\\Users\\ColeChamberlain\\noderaider\\redux-grid\\packages\\redux-grid-example\\src",
 			"C:\\Users\\ColeChamberlain\\noderaider\\redux-grid\\packages\\redux-grid-example",
 			"C:\\Users\\ColeChamberlain\\tixinc\\js\\src",
 			"C:\\Users\\ColeChamberlain\\tixinc\\js\\src,C:\\Users\\ColeChamberlain\\tixinc\\js\\public",
@@ -489,6 +511,16 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"redux-grid-core",
+			"redux-grid",
+			"redux-grid-core",
+			"regenerator/runtime",
+			".start()",
+			"createActivityDetection",
+			"subtitle",
+			"modules/redux-grid",
+			"appName",
+			"redux-grid",
 			"kerbal",
 			"IS_DEV",
 			"so dev right now",
@@ -606,17 +638,7 @@
 			"NOT AUTHORIZED: REDIRECTING LOGIN ROUTER",
 			"app/theme",
 			"initialTheme",
-			"app/theme",
-			"PageStyle",
-			"ErrorVisual",
-			"import Access",
-			"Access",
-			"JustifyCenter",
-			"AutoMargin",
-			"app/context",
-			"NoAutoComplete",
-			"organizations/monikers",
-			"Hatch"
+			"app/theme"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -624,6 +646,8 @@
 		"regex": false,
 		"replace_history":
 		[
+			"redux-devtools-grid-monitor",
+			"solvent",
 			"redux-grid-example",
 			"lib/context",
 			"initialValue",
@@ -655,8 +679,151 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "packages/redux-devtools-grid-monitor/src/lib/actions.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 180,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								180,
+								180
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
+							"tabs_extra_last_activated": 1466628469.63,
+							"tabs_extra_last_activated_sheet_index": 0,
+							"tabs_extra_spawned": true,
+							"vintage":
+							{
+								"action": null,
+								"action_count": "",
+								"mode": "mode_normal",
+								"motion": null,
+								"motion_count": "",
+								"must_capture_register_name": false,
+								"partial_sequence": "",
+								"register": "\"",
+								"sequence": "",
+								"xpos": 0
+							}
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "packages/redux-devtools-grid-monitor/src/lib/brighten.js",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 438,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
+							"tab_size": 2,
+							"tabs_extra_spawned": true,
+							"translate_tabs_to_spaces": true,
+							"vintage":
+							{
+								"action": null,
+								"action_count": "",
+								"mode": "mode_normal",
+								"motion": null,
+								"motion_count": "",
+								"must_capture_register_name": false,
+								"partial_sequence": "",
+								"register": "\"",
+								"sequence": "",
+								"xpos": 0
+							}
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 2,
+					"file": "packages/redux-grid-example/src/lib/components/grid/css/redux-grid.css",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7630,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								546,
+								546
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/LESS/LESS.tmLanguage",
+							"tab_size": 2,
+							"tabs_extra_last_activated": 1466626224.8,
+							"tabs_extra_last_activated_sheet_index": 0,
+							"tabs_extra_spawned": true,
+							"translate_tabs_to_spaces": true,
+							"vintage":
+							{
+								"_vintageous_glue_until_normal_mode": false,
+								"action": null,
+								"action_count": "",
+								"mode": "mode_normal",
+								"motion": null,
+								"motion_count": "",
+								"must_capture_register_name": false,
+								"normal_insert_count": "1",
+								"partial_sequence": "",
+								"register": "\"",
+								"sequence": "",
+								"xpos": 27
+							}
+						},
+						"translation.x": 0.0,
+						"translation.y": 302.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -677,6 +844,12 @@
 				0,
 				1,
 				1
+			],
+			[
+				0,
+				1,
+				1,
+				2
 			]
 		],
 		"cols":
@@ -687,6 +860,7 @@
 		"rows":
 		[
 			0.0,
+			0.512205601333,
 			1.0
 		]
 	},
@@ -708,6 +882,10 @@
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"postcss.js",
+				"packages\\redux-grid-example\\webpack\\postcss.js"
+			],
 			[
 				"config-client.json",
 				"@tixinc\\js\\config-client.json"
@@ -1215,10 +1393,6 @@
 			[
 				"host.js",
 				"tixinc-js\\client\\elements\\Host.jsx"
-			],
-			[
-				"updates",
-				"tixinc-js\\client\\helpers\\updates.es"
 			]
 		],
 		"width": 0.0
@@ -1244,21 +1418,21 @@
 	"selected_group": 0,
 	"settings":
 	{
-		"_vintageous_last_buffer_search": "jest",
+		"_vintageous_last_buffer_search": "Log",
 		"_vintageous_last_buffer_search_command": "vi_slash",
 		"_vintageous_last_char_search_command": "vi_f",
 		"_vintageous_last_character_search": "f",
 		"_vintageous_reset_during_init": true,
 		"vintage":
 		{
-			"_cmdline_cd": "C:\\Users\\ColeChamberlain\\noderaider\\redux-grid\\packages\\redux-grid-core\\src\\lib"
+			"_cmdline_cd": "C:\\Users\\ColeChamberlain\\noderaider\\redux-grid\\packages\\redux-grid-example\\src\\lib\\components\\grid"
 		}
 	},
 	"show_minimap": true,
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 231.0,
+	"side_bar_width": 258.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

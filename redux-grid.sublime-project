@@ -32,6 +32,11 @@
       "path": "./packages/redux-grid-view/src"
     },
     {
+      "name": "packages/redux-devtools-grid-monitor",
+      "follow_symlinks": true,
+      "path": "./packages/redux-devtools-grid-monitor"
+    },
+    {
       "name": "packages/solvent",
       "follow_symlinks": true,
       "path": "./packages/solvent"

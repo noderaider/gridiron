@@ -2069,7 +2069,7 @@
 
 .Collection__innerScrollContainer {
   box-sizing: border-box;
-  overflow: hidden;
+  overflow-y: hidden;
 }
 
 .Collection__cell {
@@ -2091,7 +2091,13 @@
 
 .Grid__innerScrollContainer {
   box-sizing: border-box;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  //clear: both !important;
+  /*
+  min-height: 100vh;
+  flex: 1;
+  */
   height: 100% !important;
   max-height: 100% !important;
 }
@@ -2323,7 +2329,6 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  min-height: 30px;
   //border: 1px solid red;
 }
 
@@ -2401,6 +2406,12 @@
   border-right: none;
 }
 
+.redux-grid__subgrid___2O6sP {
+  margin:0 !important;
+  padding:0 !important;
+  border: 1px solid rgb(200, 100, 100);
+}
+
 .redux-grid__cell___2lvXT,
 .redux-grid__headerCell___3EbzD {
   width: 100%;
@@ -2425,6 +2436,14 @@
           flex-direction: column;
   -ms-flex-pack: distribute;
       justify-content: space-around;
+}
+
+.redux-grid__minimal___cDCzp {
+  //flex: 0 1 25px !important;
+}
+
+.redux-grid__minimal___cDCzp  * {
+  //flex: 0 1 25px !important;
 }
 
 .redux-grid__centeredCell___z2Jiy {

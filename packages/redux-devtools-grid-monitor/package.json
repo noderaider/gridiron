@@ -1,0 +1,80 @@
+{
+  "name": "redux-devtools-grid-monitor",
+  "version": "0.2.3",
+  "description": "redux-devtools visualizer utilizing redux-grid.",
+  "main": "lib/index.js",
+  "files": [
+    "lib"
+  ],
+  "keywords": [
+    "redux",
+    "devtools",
+    "redux-grid"
+  ],
+  "scripts": {
+    "start": "run-p build-watch",
+    "clean": "run-p clean-lib clean-doc",
+    "clean-lib": "rimraf lib",
+    "clean-doc": "rimraf doc",
+    "prebuild": "npm run clean",
+    "build": "babel src/lib -d lib",
+    "build-watch": "npm run build -- --watch",
+    "pretest-mocha": "npm run build",
+    "test-mocha": "mocha --harmony --es_staging --require test/require",
+    "test-mocha-md": "mocha --harmony --es_staging --require test/require --reporter markdown | tee TEST.md",
+    "test": "nyc npm run test-mocha",
+    "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
+    "test-watch": "npm run test-mocha -- --watch",
+    "release": "npm version patch && npm publish",
+    "postrelease": "npm run release-gh-pages",
+    "prerelease-gh-pages": "npm run doc",
+    "release-gh-pages": "run-s gh-pages-subtree gh-pages-push gh-pages-delete",
+    "postrelease-gh-pages": "npm run clean-doc && npm run git-save -- clean && git push -u origin master --follow-tags",
+    "predoc": "rimraf doc",
+    "doc": "esdoc -c ./esdoc.json && ncp CNAME doc/CNAME",
+    "postdoc": "npm run git-save -- doc",
+    "gh-pages-subtree": "git subtree split --prefix doc -b gh-pages",
+    "gh-pages-push": "git push -f origin gh-pages:gh-pages",
+    "gh-pages-delete": "git branch -D gh-pages",
+    "git-save": "git add -A && git commit -am ",
+    "upgrade": "ncu -a && npm update"
+  },
+  "dependencies": {
+    "chai": "^3.0.0",
+    "lodash.debounce": "^4.0.4",
+    "react-json-tree": "^0.7.0",
+    "react-pure-render": "^1.0.2",
+    "redux-devtools-themes": "^1.0.0",
+    "redux-grid": "^0.2.3"
+  },
+  "devDependencies": {
+    "babel-cli": "latest",
+    "babel-eslint": "latest",
+    "babel-plugin-transform-runtime": "latest",
+    "babel-preset-es2015": "latest",
+    "babel-preset-stage-0": "latest",
+    "babel-preset-react": "latest",
+    "babel-register": "latest",
+    "codecov": "latest",
+    "esdoc": "latest",
+    "esdoc-es7-plugin": "latest",
+    "eslint": "latest",
+    "eslint-plugin-react": "latest",
+    "mocha": "latest",
+    "ncp": "latest",
+    "npm-run-all": "latest",
+    "nyc": "latest",
+    "rewire": "latest",
+    "rimraf": "latest"
+  },
+  "author": "Cole Chamberlain <cole.chamberlain@gmail.com> (https://github.com/cchamberlain)",
+  "bugs": {
+    "url": "https://github.com/noderaider/redux-grid/issues"
+  },
+  "homepage": "https://github.com/noderaider/redux-grid#readme",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/noderaider/redux-grid.git"
+  }
+}

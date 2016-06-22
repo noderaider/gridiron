@@ -190,13 +190,13 @@ function coreGrid(dependencies) {
           { className: wrapperClass },
           React.createElement(
             'div',
-            { style: { display: 'flex', height: '100%', minHeight: 400 } },
+            { style: { display: 'flex' } },
             React.createElement(
               'div',
               { style: { flex: '1 1 auto' } },
               React.createElement(
                 AutoSizer,
-                { detectedWidth: this.state.width, onResize: function onResize(_ref4) {
+                { disableHeight: true, onResize: function onResize(_ref4) {
                     var height = _ref4.height;
                     var width = _ref4.width;
 

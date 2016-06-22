@@ -37,13 +37,21 @@
   box-sizing: border-box;
   overflow-x: hidden;
   overflow-y: auto;
+  height: initial !important;
+  max-height: initial !important;
+  //height: 100% !important;
+  //max-height: 100% !important;
   //clear: both !important;
   /*
   min-height: 100vh;
   flex: 1;
   */
-  height: 100% !important;
-  max-height: 100% !important;
+}
+
+:global .Grid__innerScrollContainer::after {
+  content: "";
+  display: block;
+  clear: both;
 }
 
 /* FlexTable default theme */

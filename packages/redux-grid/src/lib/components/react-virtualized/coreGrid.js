@@ -102,9 +102,9 @@ export default function coreGrid (dependencies) {
       const wrapperClass = classNames(this.props.isSubGrid === true ? styles.subgrid : null)
       return (
         <ContentBox className={wrapperClass}>
-          <div style={{ display: 'flex', height: '100%', minHeight: 400 }}>
+          <div style={{ display: 'flex' }}>
             <div style={{ flex: '1 1 auto' }}>
-              <AutoSizer detectedWidth={this.state.width} onResize={({ height, width }) => {
+              <AutoSizer disableHeight onResize={({ height, width }) => {
                 console.info('RESIZED', height, width)
                 this.setState({ height, width })
               }}>

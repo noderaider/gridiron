@@ -78,6 +78,10 @@
     "rewire": "latest",
     "rimraf": "latest"
   },
+  "peerDependencies": {
+    "react": "^0.14.0 || ^15.0.0-0",
+    "redux-devtools": "^3.0.0"
+  },
   "author": "Cole Chamberlain <cole.chamberlain@gmail.com> (https://github.com/cchamberlain)",
   "bugs": {
     "url": "https://github.com/noderaider/solvent/issues"

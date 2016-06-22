@@ -30,13 +30,7 @@ const getState = () => ({ rows, list })
 
 const { CoreGrid, DrillGrid, Header, Expander } = reduxGrid({ getState, React, ReactDOM, ReactCSSTransitionGroup, ReactVirtualized, connect, Immutable, ContentBox })
 
-/*
-const mapCols = state => ({ name: { render: <Header>Name</Header>, width: 100 }
-                          , interest: <Header>User Interest</Header>
-                          , age: <Header>Age</Header>
-                          , sex: <Header>Sex</Header>
-                          })
-                          */
+
 const mapCols = state =>  [ { id: 'name', render: () => <Header>Name</Header>, width: 100 }
                           , { id: 'interest', render: () => <Header>User Interest</Header> }
                           , { id: 'age', render: () => <Header>Age</Header> }
@@ -44,7 +38,7 @@ const mapCols = state =>  [ { id: 'name', render: () => <Header>Name</Header>, w
                           ]
 
 const mapDrill = (state, index) => {
-  return <ReduxGrid isSubGrid={true} />
+  //return <ReduxGrid isSubGrid={true} />
   return (
     <div style={{ border: '1px solid black' }}>
       <h3>EXPANDED {JSON.stringify(state.rows[index])}</h3>
