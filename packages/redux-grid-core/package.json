@@ -1,6 +1,6 @@
 {
   "name": "redux-grid-core",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Core library for redux-grid.",
   "main": "lib/index.js",
   "files": [
@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "chai": "^3.0.0",
-    "solvent": "^0.2.2"
+    "solvent": "^0.2.3"
   },
   "devDependencies": {
     "babel-cli": "latest",
