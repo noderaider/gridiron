@@ -13,20 +13,31 @@ function _objectDestructuringEmpty(obj) { if (obj == null) throw new TypeError("
 var should = require('chai').should();
 
 /**
- * Interface factory for <Grid /> components.
- * @param  {[type]} options.PropTypes [description]
- * @return {[type]}                   [description]
+ * PropTypes factory for <CoreGrid /> components.
  */
 var PropTypes = exports.PropTypes = function PropTypes(React) {
   return { mapCols: React.PropTypes.func.isRequired,
     mapRows: React.PropTypes.func.isRequired,
     styles: React.PropTypes.object.isRequired,
+    theme: React.PropTypes.object.isRequired,
+    gridStyle: React.PropTypes.object.isRequired,
     state: React.PropTypes.object.isRequired,
     maxHeight: React.PropTypes.number
   };
 };
 
-/** Creates mapStateToProps for <Grid /> component */
+/**
+ * DefaultProps factory for <CoreGrid /> components.
+ */
+var DefaultProps = exports.DefaultProps = function DefaultProps(React) {
+  return { gridStyle: {},
+    mapIds: function mapIds(state, index) {
+      return index;
+    }
+  };
+};
+
+/** Creates mapStateToProps for <CoreGrid /> component */
 var MapStateToProps = exports.MapStateToProps = function MapStateToProps() {
   var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
@@ -36,7 +47,7 @@ var MapStateToProps = exports.MapStateToProps = function MapStateToProps() {
   };
 };
 
-/** Creates mapDispatchToProps for <Grid /> component */
+/** Creates mapDispatchToProps for <CoreGrid /> component */
 var MapDispatchToProps = exports.MapDispatchToProps = function MapDispatchToProps() {
   var _ref2 = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
@@ -48,7 +59,7 @@ var MapDispatchToProps = exports.MapDispatchToProps = function MapDispatchToProp
 };
 
 /**
- * Creates a react-redux style connect function tailed for <Grid />
+ * Creates a react-redux style connect function tailored for <CoreGrid />
  * @param  {function}  options.connect  react-redux connect function dependency.
  * @param  {...Object} options.rest     The rest of the connect related dependencies.
  * @return {Grid}                       A higher order <Grid /> component.

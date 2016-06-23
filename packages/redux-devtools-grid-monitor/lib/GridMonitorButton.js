@@ -8,9 +8,11 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = require('react');
+exports.default = gridMonitorButton;
 
-var _react2 = _interopRequireDefault(_react);
+var _solvent2 = require('solvent');
+
+var _solvent3 = _interopRequireDefault(_solvent2);
 
 var _brighten = require('./brighten');
 
@@ -28,9 +30,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var styles = {
-  base: {
-    cursor: 'pointer',
+var styles = { base: { cursor: 'pointer',
     fontWeight: 'bold',
     borderRadius: 3,
     padding: 4,
@@ -46,92 +46,79 @@ var styles = {
   }
 };
 
-var GridMonitorButton = function (_Component) {
-  _inherits(GridMonitorButton, _Component);
+function gridMonitorButton(deps) {
+  var _solvent = (0, _solvent3.default)({ React: 'object' })(deps);
 
-  function GridMonitorButton(props) {
-    _classCallCheck(this, GridMonitorButton);
-
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(GridMonitorButton).call(this, props));
-
-    _this.shouldComponentUpdate = _function2.default;
+  var React = _solvent.React;
+  var Component = React.Component;
+  var PropTypes = React.PropTypes;
 
 
-    _this.handleMouseEnter = _this.handleMouseEnter.bind(_this);
-    _this.handleMouseLeave = _this.handleMouseLeave.bind(_this);
-    _this.handleMouseDown = _this.handleMouseDown.bind(_this);
-    _this.handleMouseUp = _this.handleMouseUp.bind(_this);
-    _this.onClick = _this.onClick.bind(_this);
+  return function (_Component) {
+    _inherits(GridMonitorButton, _Component);
 
-    _this.state = {
-      hovered: false,
-      active: false
-    };
-    return _this;
-  }
+    function GridMonitorButton(props) {
+      _classCallCheck(this, GridMonitorButton);
 
-  _createClass(GridMonitorButton, [{
-    key: 'handleMouseEnter',
-    value: function handleMouseEnter() {
-      this.setState({ hovered: true });
+      var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(GridMonitorButton).call(this, props));
+
+      _this.shouldComponentUpdate = _function2.default;
+
+      _this.handleMouseEnter = function () {
+        return _this.setState({ hovered: true });
+      };
+
+      _this.handleMouseLeave = function () {
+        return _this.setState({ hovered: false });
+      };
+
+      _this.handleMouseDown = function () {
+        return _this.setState({ active: true });
+      };
+
+      _this.handleMouseUp = function () {
+        return _this.setState({ active: false });
+      };
+
+      _this.onClick = function () {
+        if (!_this.props.enabled) return;
+        if (_this.props.onClick) _this.props.onClick();
+      };
+
+      _this.state = { hovered: false,
+        active: false
+      };
+      return _this;
     }
-  }, {
-    key: 'handleMouseLeave',
-    value: function handleMouseLeave() {
-      this.setState({ hovered: false });
-    }
-  }, {
-    key: 'handleMouseDown',
-    value: function handleMouseDown() {
-      this.setState({ active: true });
-    }
-  }, {
-    key: 'handleMouseUp',
-    value: function handleMouseUp() {
-      this.setState({ active: false });
-    }
-  }, {
-    key: 'onClick',
-    value: function onClick() {
-      if (!this.props.enabled) {
-        return;
-      }
-      if (this.props.onClick) {
-        this.props.onClick();
-      }
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var style = _extends({}, styles.base, {
-        backgroundColor: this.props.theme.base02
-      });
-      if (this.props.enabled && this.state.hovered) {
-        style = _extends({}, style, {
-          backgroundColor: (0, _brighten2.default)(this.props.theme.base02, 0.2)
+
+    _createClass(GridMonitorButton, [{
+      key: 'render',
+      value: function render() {
+        var style = _extends({}, styles.base, { backgroundColor: this.props.theme.base02
         });
+        if (this.props.enabled && this.state.hovered) {
+          style = _extends({}, style, { backgroundColor: (0, _brighten2.default)(this.props.theme.base02, 0.2)
+          });
+        }
+        if (!this.props.enabled) {
+          style = _extends({}, style, { opacity: 0.2,
+            cursor: 'text',
+            backgroundColor: 'transparent'
+          });
+        }
+        return React.createElement(
+          'a',
+          { onMouseEnter: this.handleMouseEnter,
+            onMouseLeave: this.handleMouseLeave,
+            onMouseDown: this.handleMouseDown,
+            onMouseUp: this.handleMouseUp,
+            onClick: this.onClick,
+            style: style },
+          this.props.children
+        );
       }
-      if (!this.props.enabled) {
-        style = _extends({}, style, {
-          opacity: 0.2,
-          cursor: 'text',
-          backgroundColor: 'transparent'
-        });
-      }
-      return _react2.default.createElement(
-        'a',
-        { onMouseEnter: this.handleMouseEnter,
-          onMouseLeave: this.handleMouseLeave,
-          onMouseDown: this.handleMouseDown,
-          onMouseUp: this.handleMouseUp,
-          onClick: this.onClick,
-          style: style },
-        this.props.children
-      );
-    }
-  }]);
+    }]);
 
-  return GridMonitorButton;
-}(_react.Component);
-
-exports.default = GridMonitorButton;
+    return GridMonitorButton;
+  }(Component);
+}

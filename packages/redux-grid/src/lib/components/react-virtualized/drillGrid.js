@@ -23,12 +23,13 @@ export default function drillGrid (dependencies) {
 
   return class DrillGrid extends Component {
     static propTypes = Core.PropTypes(React);
+    static defaultProps = Core.DefaultProps(React);
     constructor(props) {
       super(props)
       this.state = { drilledRows: [] }
     }
     render() {
-      const { styles, mapCols, mapRows, mapDrill, ...rest } = this.props
+      const { styles, mapCols, mapRows, mapIds, mapDrill, ...rest } = this.props
       const { drilledRows } = this.state
       const onToggleExpand = index => {
         let newDrilledRows = drilledRows.includes(index) ? drilledRows.filter(x => x !== index) : [ ...drilledRows, index ]
@@ -46,10 +47,11 @@ export default function drillGrid (dependencies) {
         const coreRows = mapRows(state)
         return coreRows.reduce((rows, x, i) => {
           if(this.state.drilledRows.includes(i))
-            return  [ ...rows, [ <Expander expanded={true} handleExpand={() => onToggleExpand(i)}/>
-                              , ...x
-                              ]
-                    , { span: true, render: () => mapDrill(state, i) }
+            return  [ ...rows,  [ <Expander expanded={true} handleExpand={() => onToggleExpand(i)}/>
+                                , ...x
+                                ]
+                                /** TODO: FINISH ID MAPPING FUNCTIONALITY */
+                    , { span: true, render: () => mapDrill(state, i) /*, mapIds(state, i))*/ }
                     ]
           return  [ ...rows,  [ <Expander expanded={false} handleExpand={() => onToggleExpand(i)}/>
                               , ...x

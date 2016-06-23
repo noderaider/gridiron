@@ -8,15 +8,14 @@ const should = require('chai').should()
 const IS_BROWSER = typeof window === 'object'
 
 
-const resolver = solvent( { getState: 'function'
-                          , React: 'object'
+const resolver = solvent( { React: 'object'
                           , connect: 'function'
                           , ReactVirtualized: 'object'
                           , Immutable: 'object'
-                          , ContentBox: 'function'
                           } )
-export default function coreGrid (dependencies) {
-  const { getState, React, connect, ReactVirtualized, Immutable, ContentBox } = resolver(dependencies)
+export default function coreGrid (deps) {
+  const { React, connect, ReactVirtualized, Immutable } = resolver(deps)
+  const { getState } = deps
   should.exist(React)
   should.exist(connect)
   should.exist(ReactVirtualized)
@@ -26,9 +25,8 @@ export default function coreGrid (dependencies) {
 
   class CoreGrid extends Component {
     static propTypes = Core.PropTypes(React);
-    static defaultProps = { maxHeight: 800
-                          , styles: {}
-                          }
+    static defaultProps = Core.DefaultProps(React);
+
     constructor(props) {
       super(props)
       this.state =  { disableHeader: false
@@ -45,7 +43,7 @@ export default function coreGrid (dependencies) {
                     }
     }
     render() {
-      const { state, mapCols, mapRows, maxHeight, styles } = this.props
+      const { state, mapCols, mapRows, mapIds, maxHeight, styles, theme, gridStyle } = this.props
 
       const { disableHeader
             , headerHeight
@@ -77,15 +75,10 @@ export default function coreGrid (dependencies) {
       cols.should.be.instanceof(Array)
       rows.should.be.instanceof(Array)
       const colCount = cols.length
-      const mapRow = ({ index, rows = mapRows(state) } = {}) => rows.size ? rows.get(index)
-                                                                          : rows[index]
       const getRowCount = ({ rows = mapRows(state) } = {}) => rows.size || rows.length
 
-      const rowPadding = 2
-      const cellPadding = 4
-
       const resolveColWidth = (calculated, { minWidth, maxWidth } = {}) => {
-        console.debug('RESOLVE COL WIDTH', calculated, minWidth, maxWidth)
+        //console.debug('RESOLVE COL WIDTH', calculated, minWidth, maxWidth)
         if(minWidth && calculated < minWidth) {
           console.debug('OVERRIDING CALCULATED WIDTH FOR MIN', calculated, minWidth)
           return minWidth
@@ -97,146 +90,144 @@ export default function coreGrid (dependencies) {
         return calculated
       }
 
-      console.info('USE BEZEL ?', this.props.useBezel, styles.noBezel)
+      const gridClass = classNames(styles.BodyGrid, theme.BodyGrid)
 
       const wrapperClass = classNames(this.props.isSubGrid === true ? styles.subgrid : null)
       return (
-        <ContentBox className={wrapperClass}>
-          <div style={{ display: 'flex' }}>
-            <div style={{ flex: '1 1 auto' }}>
-              <AutoSizer disableHeight onResize={({ height, width }) => {
-                console.info('RESIZED', height, width)
-                this.setState({ height, width })
-              }}>
+        <div className={styles.Grid__wrap}>
+          <AutoSizer style={{ width: '100%', height: '100%' }} onResize={({ height, width }) => {
+            console.info('RESIZED', height, width)
+            this.setState({ height, width })
+          }}>
 
-                {dimensions => {
-                  const width = this.state.width || dimensions.width
-                  const height = this.state.height || dimensions.height
-                  const fixedCols = cols.filter(x => x.width && typeof x.width === 'number')
+            {dimensions => {
+              const width = this.state.width || dimensions.width
+              const height = this.state.height || dimensions.height || 100
+              console.warn('HEIGHT CALCULATION', height)
+              const fixedCols = cols.filter(x => x.width && typeof x.width === 'number')
 
-                  const fixedWidth = fixedCols.reduce((sum, x) => sum += x.width, 0)
-                  const variableWidth = width - fixedWidth
-                  const variableColCount = cols.length - fixedCols.length
-                  const colWidths = cols.reduce((widthMap, x) => ({ ...widthMap, [x.id]: resolveColWidth(x.width ? x.width : variableWidth / variableColCount, x) }), {})
-                  return (
-                    <Grid
-                      ref={x => this.grid = x}
-                      className={styles.BodyGrid}
-                      width={this.state.width || dimensions.width}
-                      height={this.state.height || dimensions.height}
-                      columnCount={colCount}
-                      rowCount={getRowCount({ rows })}
-                      columnWidth={
+              const fixedWidth = fixedCols.reduce((sum, x) => sum += x.width, 0)
+              const variableWidth = width - fixedWidth
+              const variableColCount = cols.length - fixedCols.length
+              const colWidths = cols.reduce((widthMap, x) => ({ ...widthMap, [x.id]: resolveColWidth(x.width ? x.width : variableWidth / variableColCount, x) }), {})
+              return (
+                <Grid
+                  ref={x => this.grid = x}
+                  className={gridClass}
+                  style={gridStyle}
+                  width={this.state.width || dimensions.width}
+                  height={this.state.height || dimensions.height || 100}
+                  columnCount={colCount}
+                  rowCount={getRowCount({ rows })}
+                  columnWidth={
 
-                        ({ index }) => {
-                          const col = cols[index]
-                          return colWidths[col.id]
-                        }
-                      }
-                      rowHeight={
-                        ({ index }) => {
-                          return index === 0 ? 50 : 25
-                        }
-                      }
+                    ({ index }) => {
+                      const col = cols[index]
+                      return colWidths[col.id]
+                    }
+                  }
+                  rowHeight={
+                    ({ index }) => {
+                      return index === 0 ? 50 : 25
+                    }
+                  }
 
-                      cellRangeRenderer={
-                        ({ cellCache, cellRenderer, columnSizeAndPositionManager, columnStartIndex, columnStopIndex, horizontalOffsetAdjustment, isScrolling, rowSizeAndPositionManager, rowStartIndex, rowStopIndex, scrollLeft, scrollTop, verticalOffsetAdjustment } = {}) => {
-                          const renderedRows = []
-                          const width = this.state.width || dimensions.width
+                  cellRangeRenderer={
+                    ({ cellCache, cellRenderer, columnSizeAndPositionManager, columnStartIndex, columnStopIndex, horizontalOffsetAdjustment, isScrolling, rowSizeAndPositionManager, rowStartIndex, rowStopIndex, scrollLeft, scrollTop, verticalOffsetAdjustment } = {}) => {
+                      const renderedRows = []
+                      const width = this.state.width || dimensions.width
 
-                          for (let rowIndex = rowStartIndex; rowIndex <= rowStopIndex; rowIndex++) {
-                            const renderedCells = []
-                            let rowDatum = rowSizeAndPositionManager.getSizeAndPositionOfCell(rowIndex)
+                      for (let rowIndex = rowStartIndex; rowIndex <= rowStopIndex; rowIndex++) {
+                        const renderedCells = []
+                        let rowDatum = rowSizeAndPositionManager.getSizeAndPositionOfCell(rowIndex)
 
-                            if(spannedRows.includes(rowIndex)) {
-                              const key = `${rowIndex}-span`
-                              const child = (
-                                <div
-                                  key={key}
-                                  className='Grid__span'
-                                  style={ { width
-                                          } }
-                                >
-                                  {rows[rowIndex].render()}
-                                </div>
-                              )
-                              renderedCells.push(child)
-                              console.info('SPANNED ROW', rowIndex)
-                            } else {
-                              for (let columnIndex = columnStartIndex; columnIndex <= columnStopIndex; columnIndex++) {
-                                let columnDatum = columnSizeAndPositionManager.getSizeAndPositionOfCell(columnIndex)
+                        if(spannedRows.includes(rowIndex)) {
+                          const key = `${rowIndex}-span`
+                          const child = (
+                            <div
+                              key={key}
+                              className={styles.Grid__span}
+                              style={ { width
+                                      } }
+                            >
+                              {rows[rowIndex].render()}
+                            </div>
+                          )
+                          renderedCells.push(child)
+                          console.info('SPANNED ROW', rowIndex)
+                        } else {
+                          for (let columnIndex = columnStartIndex; columnIndex <= columnStopIndex; columnIndex++) {
+                            let columnDatum = columnSizeAndPositionManager.getSizeAndPositionOfCell(columnIndex)
 
-                                let key = `${rowIndex}-${columnIndex}`
-                                let renderedCell
+                            let key = `${rowIndex}-${columnIndex}`
+                            let renderedCell
 
-                                // Avoid re-creating cells while scrolling.
-                                // This can lead to the same cell being created many times and can cause performance issues for "heavy" cells.
-                                // If a scroll is in progress- cache and reuse cells.
-                                // This cache will be thrown away once scrolling completes.
-                                if (isScrolling) {
-                                  if (!cellCache[key]) {
-                                    cellCache[key] = cellRenderer({ columnIndex
-                                                                  , isScrolling
-                                                                  , rowIndex
-                                                                  })
-                                  }
-                                  renderedCell = cellCache[key]
-                                // If the user is no longer scrolling, don't cache cells.
-                                // This makes dynamic cell content difficult for users and would also lead to a heavier memory footprint.
-                                } else {
-                                  renderedCell = cellRenderer({ columnIndex
+                            // Avoid re-creating cells while scrolling.
+                            // This can lead to the same cell being created many times and can cause performance issues for "heavy" cells.
+                            // If a scroll is in progress- cache and reuse cells.
+                            // This cache will be thrown away once scrolling completes.
+                            if (isScrolling) {
+                              if (!cellCache[key]) {
+                                cellCache[key] = cellRenderer({ columnIndex
                                                               , isScrolling
                                                               , rowIndex
                                                               })
-                                }
-
-                                if (renderedCell === null || renderedCell === false)
-                                  continue
-
-
-                                /** STATIC HEIGHT ELEMENT */
-                                let child = (
-                                  <div
-                                    key={key}
-                                    className='Grid__cell'
-                                    style={ { height: rowDatum.size
-                                            //, left: columnDatum.offset + horizontalOffsetAdjustment
-                                            , width: columnDatum.size
-                                            } }
-                                  >
-                                    {renderedCell}
-                                  </div>
-                                )
-                                renderedCells.push(child)
                               }
+                              renderedCell = cellCache[key]
+                            // If the user is no longer scrolling, don't cache cells.
+                            // This makes dynamic cell content difficult for users and would also lead to a heavier memory footprint.
+                            } else {
+                              renderedCell = cellRenderer({ columnIndex
+                                                          , isScrolling
+                                                          , rowIndex
+                                                          })
                             }
-                            const rowStyle =  { //height: rowDatum.size
-                                              }
-                            renderedRows.push(<div key={`${rowIndex}-row`} id={`${rowIndex}-row`} className={styles.rowStyle} style={rowStyle}>{renderedCells}</div>)
-                          }
-                          return renderedRows
-                        }
-                      }
 
-                      cellRenderer={
-                        ({ columnIndex, rowIndex, isScrolling }) => {
-                          const col = cols[columnIndex]
-                          if(rowIndex === 0) {
-                            const headerClass = classNames(styles.headerCell, col.className)
-                            return <div className={headerClass}>{col.render()}</div>
-                          } else {
-                            const cellClass = classNames(styles.cell, col.className, rowIndex % 2 === 0 ? styles.evenRow : styles.oddRow)
-                            return <div className={cellClass}>{rows[rowIndex][columnIndex]}</div>
+                            if (renderedCell === null || renderedCell === false)
+                              continue
+
+
+                            /** STATIC HEIGHT ELEMENT */
+                            let child = (
+                              <div
+                                key={key}
+                                className='Grid__cell'
+                                style={ { height: rowDatum.size
+                                        //, left: columnDatum.offset + horizontalOffsetAdjustment
+                                        , width: columnDatum.size
+                                        } }
+                              >
+                                {renderedCell}
+                              </div>
+                            )
+                            renderedCells.push(child)
                           }
                         }
+                        const rowStyle =  { //height: rowDatum.size
+                                          }
+                        renderedRows.push(<div key={`${rowIndex}-row`} id={`${rowIndex}-row`} className={styles.rowStyle} style={rowStyle}>{renderedCells}</div>)
                       }
-                    />
-                  )
-                }}
-              </AutoSizer>
-            </div>
-          </div>
-        </ContentBox>
+                      return renderedRows
+                    }
+                  }
+
+                  cellRenderer={
+                    ({ columnIndex, rowIndex, isScrolling }) => {
+                      const col = cols[columnIndex]
+                      if(rowIndex === 0) {
+                        const headerClass = classNames(styles.headerCell, col.className)
+                        return <div className={headerClass}>{col.render()}</div>
+                      } else {
+                        const cellClass = classNames(styles.cell, col.className, rowIndex % 2 === 0 ? styles.evenRow : styles.oddRow)
+                        return <div className={cellClass}>{rows[rowIndex][columnIndex]}</div>
+                      }
+                    }
+                  }
+                />
+              )
+            }}
+          </AutoSizer>
+        </div>
       )
     }
     componentDidUpdate(prevProps, prevState) {

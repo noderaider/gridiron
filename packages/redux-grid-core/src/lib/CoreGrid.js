@@ -1,28 +1,34 @@
 const should = require('chai').should()
 
 /**
- * Interface factory for <Grid /> components.
- * @param  {[type]} options.PropTypes [description]
- * @return {[type]}                   [description]
+ * PropTypes factory for <CoreGrid /> components.
  */
 export const PropTypes = React => ( { mapCols: React.PropTypes.func.isRequired
                                     , mapRows: React.PropTypes.func.isRequired
                                     , styles: React.PropTypes.object.isRequired
+                                    , theme: React.PropTypes.object.isRequired
+                                    , gridStyle: React.PropTypes.object.isRequired
                                     , state: React.PropTypes.object.isRequired
                                     , maxHeight: React.PropTypes.number
                                     } )
 
+/**
+ * DefaultProps factory for <CoreGrid /> components.
+ */
+export const DefaultProps = React => ({ gridStyle: {}
+                                      , mapIds: (state, index) => index
+                                      })
 
 
 
-/** Creates mapStateToProps for <Grid /> component */
+/** Creates mapStateToProps for <CoreGrid /> component */
 export const MapStateToProps = ({ getState } = {}) => state => ({ state: getState ? getState() : state })
 
-/** Creates mapDispatchToProps for <Grid /> component */
+/** Creates mapDispatchToProps for <CoreGrid /> component */
 export const MapDispatchToProps = ({} = {}) => dispatch => ({})
 
 /**
- * Creates a react-redux style connect function tailed for <Grid />
+ * Creates a react-redux style connect function tailored for <CoreGrid />
  * @param  {function}  options.connect  react-redux connect function dependency.
  * @param  {...Object} options.rest     The rest of the connect related dependencies.
  * @return {Grid}                       A higher order <Grid /> component.

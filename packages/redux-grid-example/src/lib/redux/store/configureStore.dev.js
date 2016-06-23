@@ -4,6 +4,7 @@ import { combineReducers } from 'redux'
 import { thunk, createLogger } from 'redux-middleware'
 
 import { log, IS_BROWSER } from '../../../config'
+import DevTools from '../DevTools'
 import { middleware as idle, actions as idleActions } from '../modules/redux-idle-monitor'
 import subscribeStore from './subscribeStore'
 import * as reducers from '../reducers'
@@ -18,7 +19,8 @@ export default function configureStore(history, initialState) {
                       , createLogger({ logger: IS_BROWSER ? console : log })
                       ]
   const enhancer = compose( applyMiddleware(...middlewares)
-                          , getDevToolsEnhancer()
+                          , DevTools.instrument()
+                          //, getDevToolsEnhancer()
                           )
   const store = createStore(reducer, initialState, enhancer)
   const unsubscribe = subscribeStore(store)

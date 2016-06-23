@@ -74,9 +74,10 @@ function drillGrid(dependencies) {
         var styles = _props.styles;
         var mapCols = _props.mapCols;
         var mapRows = _props.mapRows;
+        var mapIds = _props.mapIds;
         var mapDrill = _props.mapDrill;
 
-        var rest = _objectWithoutProperties(_props, ['styles', 'mapCols', 'mapRows', 'mapDrill']);
+        var rest = _objectWithoutProperties(_props, ['styles', 'mapCols', 'mapRows', 'mapIds', 'mapDrill']);
 
         var drilledRows = this.state.drilledRows;
 
@@ -99,9 +100,11 @@ function drillGrid(dependencies) {
           return coreRows.reduce(function (rows, x, i) {
             if (_this2.state.drilledRows.includes(i)) return [].concat(_toConsumableArray(rows), [[React.createElement(Expander, { expanded: true, handleExpand: function handleExpand() {
                 return onToggleExpand(i);
-              } })].concat(_toConsumableArray(x)), { span: true, render: function render() {
+              } })].concat(_toConsumableArray(x))
+            /** TODO: FINISH ID MAPPING FUNCTIONALITY */
+            , { span: true, render: function render() {
                 return mapDrill(state, i);
-              } }]);
+              } /*, mapIds(state, i))*/ }]);
             return [].concat(_toConsumableArray(rows), [[React.createElement(Expander, { expanded: false, handleExpand: function handleExpand() {
                 return onToggleExpand(i);
               } })].concat(_toConsumableArray(x))]);
@@ -117,5 +120,5 @@ function drillGrid(dependencies) {
     }]);
 
     return DrillGrid;
-  }(Component), _class.propTypes = _reduxGridCore.DrillGrid.PropTypes(React), _temp;
+  }(Component), _class.propTypes = _reduxGridCore.DrillGrid.PropTypes(React), _class.defaultProps = _reduxGridCore.DrillGrid.DefaultProps(React), _temp;
 }

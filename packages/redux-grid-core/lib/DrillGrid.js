@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Connect = exports.PropTypes = undefined;
+exports.Connect = exports.DefaultProps = exports.PropTypes = undefined;
 
 var _CoreGrid = require('./CoreGrid');
 
@@ -19,9 +19,20 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 var PropTypes = exports.PropTypes = function PropTypes(React) {
   return { mapCols: React.PropTypes.func.isRequired,
     mapRows: React.PropTypes.func.isRequired,
+    mapIds: React.PropTypes.func.isRequired,
     mapDrill: React.PropTypes.func.isRequired,
     styles: React.PropTypes.object.isRequired,
     maxHeight: React.PropTypes.number
+  };
+};
+
+/**
+ * DefaultProps factory for <CoreGrid /> components.
+ */
+var DefaultProps = exports.DefaultProps = function DefaultProps(React) {
+  return { mapIds: function mapIds(state, index) {
+      return index;
+    }
   };
 };
 

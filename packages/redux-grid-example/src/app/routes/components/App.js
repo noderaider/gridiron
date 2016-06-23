@@ -5,6 +5,7 @@ import createIdleMonitor from 'react-redux-idle-monitor'
 import { client, log, IS_BROWSER } from 'config'
 import TopBar from 'app/elements/nav/TopBar'
 import FooterBar from 'app/elements/nav/FooterBar'
+import DevTools from 'lib/redux/DevTools'
 
 import { contextTypes, getTheme, defaultTheme } from 'lib/context'
 
@@ -54,6 +55,7 @@ class App extends Component {
           {children}
           <FooterBar />
         </div>
+        <DevTools />
         <IdleMonitor showStatus={true} />
       </div>
     )

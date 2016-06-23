@@ -10,6 +10,9 @@ import reduxGrid from 'redux-grid'
 import util from 'util'
 
 import styles from './css/redux-grid.css'
+import cream from './css/theme/cream.css'
+import subgrid from './css/theme/subgrid.css'
+
 import { ContentBox } from './ContentBox'
 
 const should = require('chai').should()
@@ -28,33 +31,73 @@ const list = Immutable.List(rows)
 
 const getState = () => ({ rows, list })
 
-const { CoreGrid, DrillGrid, Header, Expander } = reduxGrid({ getState, React, ReactDOM, ReactCSSTransitionGroup, ReactVirtualized, connect, Immutable, ContentBox })
+const { CoreGrid, DrillGrid, Header, Expander } = reduxGrid({ /*getState, */ React, ReactDOM, ReactCSSTransitionGroup, ReactVirtualized, connect, Immutable, ContentBox })
 
 
+/*
 const mapCols = state =>  [ { id: 'name', render: () => <Header>Name</Header>, width: 100 }
                           , { id: 'interest', render: () => <Header>User Interest</Header> }
                           , { id: 'age', render: () => <Header>Age</Header> }
                           , { id: 'sex', render: () => <Header>Sex</Header> }
                           ]
+                          */
+                          /*
+const mapCols = state => Object.keys(state).reduce((cols, x) => {
+  return [ ...cols, { id: x, render: () => <Header>{x}</Header> } ]
+}, [])
+*/
 
-const mapDrill = (state, index) => {
-  //return <ReduxGrid isSubGrid={true} />
+
+
+const mapCols = state => {
+  return  [ { id: 'index', render: () => <Header>Index</Header>, width: 100 }
+          , { id: 'key', render: () => <Header>Key</Header> }
+          ]
+}
+
+//const mapRows = state => state.rows.map(([ name, age, interest, sex ], index) => [ name, interest, age, sex ])
+const mapRows = state => Object.keys(state).reduce((rows, x, i) => {
+  return [ ...rows, [ i, x ] ]
+}, [])
+
+const mapIds = (state, index) => {
+  const stateKeys = Object.keys(state)
+  return stateKeys[index]
+}
+
+const mapDrill = (state, id) => {
+  const stateKey = Object.keys(state)[id]
+  const subState = state[stateKey]
+  const subStateKeys = Object.keys(subState)
+  console.info('STATE KEY', stateKey, subState, subStateKeys)
+  /*
+  const mapSubCols = s => {
+    return  [ { id: 'index', render: () => <Header>Index</Header> }
+            , { id: 'key', render: () => <Header>Key</Header> }
+            ]
+
+  }
+  */
+  const mapSubRows = s => {
+    return subStateKeys.reduce((rows, x, i) => {
+      return [ ...rows, [ i, x ] ]
+    }, [])
+  }
   return (
-    <div style={{ border: '1px solid black' }}>
-      <h3>EXPANDED {JSON.stringify(state.rows[index])}</h3>
-      <hr />
-      <div>
-        <h4>MORE STUFF</h4>
-      </div>
-      <hr />
-      <div style={{ fontSize: '0.9em' }}>
-        FOOTER GOES HERE
-      </div>
+    <div>
+      <span style={{ fontWeight: 'bold', letterSpacing: 3 }}>Subgrid for {id}</span>
+      <DrillGrid
+        styles={styles}
+        theme={subgrid}
+        mapCols={mapCols}
+        mapIds={mapIds}
+        mapRows={mapSubRows}
+        mapDrill={mapDrill}
+      />
     </div>
   )
 }
 
-console.info('INFO', util.inspect({ CoreGrid, DrillGrid, Header, Expander }))
 
 export default class ReduxGrid extends Component {
   constructor(props) {
@@ -63,11 +106,8 @@ export default class ReduxGrid extends Component {
   }
   render() {
     const { expandedRows } = this.state
-    const isExpanded = index => expandedRows.includes(index)
 
-    const mapRows = state => state.rows.map(([ name, age, interest, sex ], index) => [ name, interest, age, sex ])
     const getExpandedIndices = () => this.state.expandedRows
-    const isExpandable = index => index > 0
     const getClassName = index => styles.expandedRow
     const getExpanderClassName = index => styles.expander
     const getExpanderWidth = index => 25
@@ -77,31 +117,14 @@ export default class ReduxGrid extends Component {
       this.setState({ expandedRows: newExpandedRows })
     }
 
-
-
-    const getHeight = content => 150
-
-    const expandRowManager =  { getExpandedIndices
-                              , isExpandable
-                              //, getContent
-                              , getHeight
-                              , getClassName
-                              , getExpanderClassName
-                              , getExpanderWidth
-                              , onToggleExpand
-                              , rowStyle: styles.rowStyle
-                              , totalHeight: 0
-                              }
-
-
     return (
         <DrillGrid
           styles={styles}
+          theme={cream}
           mapCols={mapCols}
           mapRows={mapRows}
+          mapIds={mapIds}
           mapDrill={mapDrill}
-          expandedRows={this.state.expandedRows}
-          expandRowManager={expandRowManager}
           {...this.props}
         />
     )
