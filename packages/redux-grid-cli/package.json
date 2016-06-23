@@ -1,6 +1,6 @@
 {
   "name": "redux-grid-cli",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "CLI commands for scaffolding and setting up redux-grid projects.",
   "main": "lib/index.js",
   "bin": {
@@ -15,9 +15,9 @@
   ],
   "dependencies": {
     "chai": "^3.0.0",
-    "redux-grid": "^0.2.4",
-    "redux-grid-core": "^0.2.4",
-    "redux-grid-test": "^0.2.4",
+    "redux-grid": "^0.2.5",
+    "redux-grid-core": "^0.2.5",
+    "redux-grid-test": "^0.2.5",
     "redux-grid-view": "^0.2.2"
   },
   "devDependencies": {
