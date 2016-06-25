@@ -110,8 +110,8 @@ function coreGrid(deps) {
         var state = _props.state;
         var mapCols = _props.mapCols;
         var mapRows = _props.mapRows;
-        var mapIds = _props.mapIds;
         var maxHeight = _props.maxHeight;
+        var style = _props.style;
         var styles = _props.styles;
         var theme = _props.theme;
         var gridStyle = _props.gridStyle;
@@ -176,7 +176,7 @@ function coreGrid(deps) {
         var wrapperClass = (0, _classnames2.default)(this.props.isSubGrid === true ? styles.subgrid : null);
         return React.createElement(
           'div',
-          { className: styles.Grid__wrap },
+          { className: styles.Grid__wrap, style: style },
           React.createElement(
             AutoSizer,
             { style: { width: '100%', height: '100%' }, onResize: function onResize(_ref3) {
@@ -261,7 +261,6 @@ function coreGrid(deps) {
                         rows[rowIndex].render()
                       );
                       renderedCells.push(child);
-                      console.info('SPANNED ROW', rowIndex);
                     } else {
                       for (var columnIndex = columnStartIndex; columnIndex <= columnStopIndex; columnIndex++) {
                         var columnDatum = columnSizeAndPositionManager.getSizeAndPositionOfCell(columnIndex);
@@ -333,11 +332,11 @@ function coreGrid(deps) {
                       col.render()
                     );
                   } else {
-                    var cellClass = (0, _classnames2.default)(styles.cell, col.className, rowIndex % 2 === 0 ? styles.evenRow : styles.oddRow);
+                    var cellClass = (0, _classnames2.default)(styles.cell, col.className, rowIndex % 2 === 0 ? theme.evenRow : theme.oddRow);
                     return React.createElement(
                       'div',
                       { className: cellClass },
-                      rows[rowIndex][columnIndex]
+                      rows[rowIndex].render()[columnIndex]
                     );
                   }
                 }

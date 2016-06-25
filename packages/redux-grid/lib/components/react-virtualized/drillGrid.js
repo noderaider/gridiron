@@ -72,12 +72,12 @@ function drillGrid(dependencies) {
 
         var _props = this.props;
         var styles = _props.styles;
+        var theme = _props.theme;
         var mapCols = _props.mapCols;
         var mapRows = _props.mapRows;
-        var mapIds = _props.mapIds;
         var mapDrill = _props.mapDrill;
 
-        var rest = _objectWithoutProperties(_props, ['styles', 'mapCols', 'mapRows', 'mapIds', 'mapDrill']);
+        var rest = _objectWithoutProperties(_props, ['styles', 'theme', 'mapCols', 'mapRows', 'mapDrill']);
 
         var drilledRows = this.state.drilledRows;
 
@@ -91,28 +91,44 @@ function drillGrid(dependencies) {
 
         var spannedRows = [];
         var _mapCols = function _mapCols(state) {
-          return [{ id: 'expander', render: function render() {
+          return [{ id: 'expander',
+            render: function render() {
               return React.createElement(Expander, { visible: false });
-            }, width: 25, className: styles.minimal }].concat(_toConsumableArray(mapCols(state)));
+            },
+            width: 35,
+            className: styles.minimal
+          }].concat(_toConsumableArray(mapCols(state)));
         };
         var _mapRows = function _mapRows(state) {
           var coreRows = mapRows(state);
           return coreRows.reduce(function (rows, x, i) {
-            if (_this2.state.drilledRows.includes(i)) return [].concat(_toConsumableArray(rows), [[React.createElement(Expander, { expanded: true, handleExpand: function handleExpand() {
-                return onToggleExpand(i);
-              } })].concat(_toConsumableArray(x))
-            /** TODO: FINISH ID MAPPING FUNCTIONALITY */
-            , { span: true, render: function render() {
-                return mapDrill(state, i);
-              } /*, mapIds(state, i))*/ }]);
-            return [].concat(_toConsumableArray(rows), [[React.createElement(Expander, { expanded: false, handleExpand: function handleExpand() {
-                return onToggleExpand(i);
-              } })].concat(_toConsumableArray(x))]);
+            if (_this2.state.drilledRows.includes(i)) {
+              return [].concat(_toConsumableArray(rows), [{ id: x.id,
+                render: function render() {
+                  return [React.createElement(Expander, { expanded: true, handleExpand: function handleExpand() {
+                      return onToggleExpand(i);
+                    }, theme: theme })].concat(_toConsumableArray(x.render()));
+                }
+              }, { id: x.id + '_span',
+                span: true,
+                render: function render() {
+                  return mapDrill(state, x.id);
+                }
+              }]);
+            }
+            return [].concat(_toConsumableArray(rows), [{ id: x.id,
+              render: function render() {
+                return [React.createElement(Expander, { expanded: false, handleExpand: function handleExpand() {
+                    return onToggleExpand(i);
+                  }, theme: theme })].concat(_toConsumableArray(x.render()));
+              }
+            }]);
           }, []);
         };
 
         return React.createElement(CoreGrid, _extends({}, rest, {
           styles: styles,
+          theme: theme,
           mapCols: _mapCols,
           mapRows: _mapRows
         }));

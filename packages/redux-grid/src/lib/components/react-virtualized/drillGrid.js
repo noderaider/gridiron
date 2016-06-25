@@ -29,7 +29,7 @@ export default function drillGrid (dependencies) {
       this.state = { drilledRows: [] }
     }
     render() {
-      const { styles, mapCols, mapRows, mapIds, mapDrill, ...rest } = this.props
+      const { styles, theme, mapCols, mapRows, mapDrill, ...rest } = this.props
       const { drilledRows } = this.state
       const onToggleExpand = index => {
         let newDrilledRows = drilledRows.includes(index) ? drilledRows.filter(x => x !== index) : [ ...drilledRows, index ]
@@ -39,23 +39,36 @@ export default function drillGrid (dependencies) {
 
       let spannedRows = []
       const _mapCols = state => {
-        return  [ { id: 'expander', render: () => <Expander visible={false} />, width: 25, className: styles.minimal }
+        return  [ { id: 'expander'
+                  , render: () => <Expander visible={false} />
+                  , width: 35
+                  , className: styles.minimal
+                  }
                 , ...mapCols(state)
                 ]
       }
       const _mapRows = state => {
         const coreRows = mapRows(state)
         return coreRows.reduce((rows, x, i) => {
-          if(this.state.drilledRows.includes(i))
-            return  [ ...rows,  [ <Expander expanded={true} handleExpand={() => onToggleExpand(i)}/>
-                                , ...x
-                                ]
-                                /** TODO: FINISH ID MAPPING FUNCTIONALITY */
-                    , { span: true, render: () => mapDrill(state, i) /*, mapIds(state, i))*/ }
+          if(this.state.drilledRows.includes(i)) {
+            return  [ ...rows
+                    , { id: x.id
+                      , render: () => [ <Expander expanded={true} handleExpand={() => onToggleExpand(i)} theme={theme} />
+                                      , ...x.render()
+                                      ]
+                      }
+                    , { id: `${x.id}_span`
+                      , span: true
+                      , render: () => mapDrill(state, x.id)
+                      }
                     ]
-          return  [ ...rows,  [ <Expander expanded={false} handleExpand={() => onToggleExpand(i)}/>
-                              , ...x
-                              ]
+          }
+          return  [ ...rows
+                  , { id: x.id
+                    , render: () => [ <Expander expanded={false} handleExpand={() => onToggleExpand(i)} theme={theme} />
+                                    , ...x.render()
+                                    ]
+                    }
                   ]
         }, [])
       }
@@ -64,6 +77,7 @@ export default function drillGrid (dependencies) {
           <CoreGrid
             {...rest}
             styles={styles}
+            theme={theme}
             mapCols={_mapCols}
             mapRows={_mapRows}
           />

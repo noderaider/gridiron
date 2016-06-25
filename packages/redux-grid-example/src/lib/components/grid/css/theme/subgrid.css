@@ -2,3 +2,17 @@
   font-size:0.8em !important;
   border: 0;
 }
+
+.evenRow {
+  background-color: #efecca;
+}
+
+.oddRow {
+  background-color: #FFFEF1;
+}
+
+.expander {
+  color: #002f2f;
+  font-size: 0.8em;
+  //color: #046380;
+}

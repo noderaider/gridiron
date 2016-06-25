@@ -22,7 +22,7 @@ exports.default = function (_ref) {
   return function (props) {
     return React.createElement(
       'span',
-      { style: wrapStyle },
+      { style: wrapStyle, className: props.theme.header },
       React.createElement(
         'span',
         null,

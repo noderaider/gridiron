@@ -10,7 +10,7 @@ import reduxGrid from 'redux-grid'
 import util from 'util'
 
 import styles from './css/redux-grid.css'
-import cream from './css/theme/cream.css'
+import sandy from './css/theme/sandy.css'
 import subgrid from './css/theme/subgrid.css'
 
 import { ContentBox } from './ContentBox'
@@ -18,79 +18,55 @@ import { ContentBox } from './ContentBox'
 const should = require('chai').should()
 
 
-const rows =  [ [ 'jim', 26, 'being boring', 'male' ]
-              , [ 'tony', 37, 'skydiving', 'male' ]
-              , [ 'lisa', 40, 'sleeping', 'female' ]
-              , [ 'dan', 20, 'jumping', 'male' ]
-              , [ 'sarah', 15, 'eating', 'female' ]
-              , [ 'michael', 25, 'nothing', 'unsure' ]
-              , [ 'michelle', 35, 'idk', 'female' ]
-              ]
-
-const list = Immutable.List(rows)
-
-const getState = () => ({ rows, list })
-
-const { CoreGrid, DrillGrid, Header, Expander } = reduxGrid({ /*getState, */ React, ReactDOM, ReactCSSTransitionGroup, ReactVirtualized, connect, Immutable, ContentBox })
-
-
-/*
-const mapCols = state =>  [ { id: 'name', render: () => <Header>Name</Header>, width: 100 }
-                          , { id: 'interest', render: () => <Header>User Interest</Header> }
-                          , { id: 'age', render: () => <Header>Age</Header> }
-                          , { id: 'sex', render: () => <Header>Sex</Header> }
-                          ]
-                          */
-                          /*
-const mapCols = state => Object.keys(state).reduce((cols, x) => {
-  return [ ...cols, { id: x, render: () => <Header>{x}</Header> } ]
-}, [])
-*/
-
+const { CoreGrid, DrillGrid, Header, Expander } = reduxGrid({ React, ReactDOM, ReactCSSTransitionGroup, ReactVirtualized, connect, Immutable, ContentBox })
 
 
 const mapCols = state => {
-  return  [ { id: 'index', render: () => <Header>Index</Header>, width: 100 }
-          , { id: 'key', render: () => <Header>Key</Header> }
+  return  [ { id: 'id', render: () => <Header theme={sandy}>Path</Header>, width: 300 }
+          , { id: 'key', render: () => <Header theme={sandy}>State</Header> }
           ]
 }
 
-//const mapRows = state => state.rows.map(([ name, age, interest, sex ], index) => [ name, interest, age, sex ])
-const mapRows = state => Object.keys(state).reduce((rows, x, i) => {
-  return [ ...rows, [ i, x ] ]
-}, [])
 
-const mapIds = (state, index) => {
-  const stateKeys = Object.keys(state)
-  return stateKeys[index]
+const preStyle = { /*margin: 'initial'*/ }
+const Code = props => <pre style={preStyle}><code>{JSON.stringify(props.children)}</code></pre>
+const Arrows = props => (
+  <span>
+    {props.children.map((x, i) => {
+      return (
+        <span key={i}>
+          {x} {i < props.children.length - 1 ? <i style={{ fontSize: '0.7em', color: 'rgba(50, 50, 50, 1)' }} className="fa fa-caret-right fa-xs" /> : null}{' '}
+        </span>
+      )
+    })}
+  </span>
+)
+
+const mapIdRows = (ids = []) => state => {
+  const selectedState = ids.reduce((s, x) => s[x], state)
+
+  return Object.keys(selectedState).reduce((rows, x, i) => {
+    const id = [ ...ids, x ]
+    return  [ ...rows
+            , { id
+              , render: () => [ <Arrows>{id}</Arrows>, <Code>{JSON.stringify(selectedState[x])}</Code> ]
+              }
+            ]
+  }, [])
 }
 
-const mapDrill = (state, id) => {
-  const stateKey = Object.keys(state)[id]
-  const subState = state[stateKey]
-  const subStateKeys = Object.keys(subState)
-  console.info('STATE KEY', stateKey, subState, subStateKeys)
-  /*
-  const mapSubCols = s => {
-    return  [ { id: 'index', render: () => <Header>Index</Header> }
-            , { id: 'key', render: () => <Header>Key</Header> }
-            ]
-
-  }
-  */
-  const mapSubRows = s => {
-    return subStateKeys.reduce((rows, x, i) => {
-      return [ ...rows, [ i, x ] ]
-    }, [])
-  }
+const mapDrill = (state, parentId) => {
+  const mapSubRows = mapIdRows(parentId)
   return (
-    <div>
-      <span style={{ fontWeight: 'bold', letterSpacing: 3 }}>Subgrid for {id}</span>
+    <div style={{ margin: 10 }}>
+      <span style={{ fontFamily: 'monospace', fontWeight: 'bold', letterSpacing: 6, fontSize: '1em', color: '#2B3140' }}>
+        <Arrows>{parentId}</Arrows>
+      </span>
       <DrillGrid
+        style={{ marginTop: 10 }}
         styles={styles}
-        theme={subgrid}
+        theme={sandy}
         mapCols={mapCols}
-        mapIds={mapIds}
         mapRows={mapSubRows}
         mapDrill={mapDrill}
       />
@@ -99,34 +75,15 @@ const mapDrill = (state, id) => {
 }
 
 
-export default class ReduxGrid extends Component {
-  constructor(props) {
-    super(props)
-    this.state = { expandedRows: [] }
-  }
-  render() {
-    const { expandedRows } = this.state
+const ReduxGrid = props => (
+  <DrillGrid
+    styles={styles}
+    theme={sandy}
+    mapCols={mapCols}
+    mapRows={mapIdRows()}
+    mapDrill={mapDrill}
+    {...props}
+  />
+)
 
-    const getExpandedIndices = () => this.state.expandedRows
-    const getClassName = index => styles.expandedRow
-    const getExpanderClassName = index => styles.expander
-    const getExpanderWidth = index => 25
-    const onToggleExpand = index => {
-      let newExpandedRows = expandedRows.includes(index) ? expandedRows.filter(x => x !== index) : [ ...expandedRows, index ]
-      newExpandedRows.sort()
-      this.setState({ expandedRows: newExpandedRows })
-    }
-
-    return (
-        <DrillGrid
-          styles={styles}
-          theme={cream}
-          mapCols={mapCols}
-          mapRows={mapRows}
-          mapIds={mapIds}
-          mapDrill={mapDrill}
-          {...this.props}
-        />
-    )
-  }
-}
+export default ReduxGrid

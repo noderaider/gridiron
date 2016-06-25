@@ -19,7 +19,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 var PropTypes = exports.PropTypes = function PropTypes(React) {
   return { mapCols: React.PropTypes.func.isRequired,
     mapRows: React.PropTypes.func.isRequired,
-    mapIds: React.PropTypes.func.isRequired,
     mapDrill: React.PropTypes.func.isRequired,
     styles: React.PropTypes.object.isRequired,
     maxHeight: React.PropTypes.number
@@ -30,10 +29,7 @@ var PropTypes = exports.PropTypes = function PropTypes(React) {
  * DefaultProps factory for <CoreGrid /> components.
  */
 var DefaultProps = exports.DefaultProps = function DefaultProps(React) {
-  return { mapIds: function mapIds(state, index) {
-      return index;
-    }
-  };
+  return {};
 };
 
 /**

@@ -43,7 +43,7 @@ export default function coreGrid (deps) {
                     }
     }
     render() {
-      const { state, mapCols, mapRows, mapIds, maxHeight, styles, theme, gridStyle } = this.props
+      const { state, mapCols, mapRows, maxHeight, style, styles, theme, gridStyle } = this.props
 
       const { disableHeader
             , headerHeight
@@ -94,7 +94,7 @@ export default function coreGrid (deps) {
 
       const wrapperClass = classNames(this.props.isSubGrid === true ? styles.subgrid : null)
       return (
-        <div className={styles.Grid__wrap}>
+        <div className={styles.Grid__wrap} style={style}>
           <AutoSizer style={{ width: '100%', height: '100%' }} onResize={({ height, width }) => {
             console.info('RESIZED', height, width)
             this.setState({ height, width })
@@ -154,7 +154,6 @@ export default function coreGrid (deps) {
                             </div>
                           )
                           renderedCells.push(child)
-                          console.info('SPANNED ROW', rowIndex)
                         } else {
                           for (let columnIndex = columnStartIndex; columnIndex <= columnStopIndex; columnIndex++) {
                             let columnDatum = columnSizeAndPositionManager.getSizeAndPositionOfCell(columnIndex)
@@ -218,8 +217,8 @@ export default function coreGrid (deps) {
                         const headerClass = classNames(styles.headerCell, col.className)
                         return <div className={headerClass}>{col.render()}</div>
                       } else {
-                        const cellClass = classNames(styles.cell, col.className, rowIndex % 2 === 0 ? styles.evenRow : styles.oddRow)
-                        return <div className={cellClass}>{rows[rowIndex][columnIndex]}</div>
+                        const cellClass = classNames(styles.cell, col.className, rowIndex % 2 === 0 ? theme.evenRow : theme.oddRow)
+                        return <div className={cellClass}>{rows[rowIndex].render()[columnIndex]}</div>
                       }
                     }
                   }

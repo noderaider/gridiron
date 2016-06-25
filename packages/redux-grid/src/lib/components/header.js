@@ -13,7 +13,7 @@ export default ({ React }) => {
                             }
 
   return props => (
-    <span style={wrapStyle}>
+    <span style={wrapStyle} className={props.theme.header}>
       <span>{props.children}</span>
       <span>
         <button style={headerButtonStyle} onClick={props.handleSort}>

@@ -7,7 +7,6 @@ import * as CoreGrid from './CoreGrid'
  */
 export const PropTypes = React => ( { mapCols: React.PropTypes.func.isRequired
                                     , mapRows: React.PropTypes.func.isRequired
-                                    , mapIds: React.PropTypes.func.isRequired
                                     , mapDrill: React.PropTypes.func.isRequired
                                     , styles: React.PropTypes.object.isRequired
                                     , maxHeight: React.PropTypes.number
@@ -16,7 +15,7 @@ export const PropTypes = React => ( { mapCols: React.PropTypes.func.isRequired
 /**
  * DefaultProps factory for <CoreGrid /> components.
  */
-export const DefaultProps = React => ({ mapIds: (state, index) => index
+export const DefaultProps = React => ({
                                       })
 
 

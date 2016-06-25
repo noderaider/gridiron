@@ -1,25 +1,3 @@
-/* Collection default theme */
-
-:global .Collection {
-  position: relative;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-
-  /* Without this property, Chrome repaints the entire Collection any time a new row or column is added.
-     Firefox only repaints the new row or column (regardless of this property).
-     Safari and IE don't support the property at all. */
-  will-change: transform;
-}
-
-:global .Collection__innerScrollContainer {
-  box-sizing: border-box;
-  overflow-y: hidden;
-}
-
-:global .Collection__cell {
-  position: absolute;
-}
-
 /* Grid default theme */
 
 :global .Grid {
@@ -39,95 +17,11 @@
   overflow-y: auto;
   height: initial !important;
   max-height: initial !important;
-  //height: 100% !important;
-  //max-height: 100% !important;
-  //clear: both !important;
-  /*
-  min-height: 100vh;
-  flex: 1;
-  */
 }
-
-
-
-
-/*
-.FlexTable {
-  width: 100%;
-  margin-top: 15px;
-}
-.headerRow,
-.evenRow,
-.oddRow {
-  border-bottom: 1px solid #e0e0e0;
-}
-
-
-.oddRow {
-  background-color: #fafafa;
-}
-.headerColumn {
-  text-transform: none;
-}
-.exampleColumn {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.checkboxLabel {
-  margin-left: .5rem;
-}
-.checkboxLabel:first-of-type {
-  margin-left: 0;
-}
-
-.noRows {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1em;
-  color: #bdbdbd;
-}
-*/
 
 
 /** GRID */
 
-
-/*
-.headerCell {
-  display:flex;
-  flex-wrap:nowrap;
-  font-size:1.1em;
-  font-weight:bold;
-}
-*/
-
-
-/*
-.GridRow {
-  margin-top: 15px;
-  display: flex;
-  flex-direction: row;
-}
-*/
-/*
-.GridColumn {
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 auto;
-}
-*/
-
-.LeftSideGridContainer {
-  flex: 0 0 50px;
-}
 
 .BodyGrid {
   width: 100%;
@@ -135,20 +29,9 @@
   height: initial !important;
 }
 
-/*
-.evenRow,
-.oddRow {
-  border-bottom: 1px solid #e0e0e0;
-}
-.oddRow {
-  background-color: #fafafa;
-}
-*/
-
 .rowStyle {
   position: relative;
   display: flex;
-  //border: 1px solid red;
 }
 
 :global .drill {
@@ -193,26 +76,9 @@
   display:flex;
   flex-wrap: nowrap;
   justify-content: center;
-  height: 100% !important;
+  height: initial !important;
   border-right: 1px solid #e0e0e0;
 }
-
-:global .Grid__cell > * {
-  padding: 0 5px;
-}
-
-/*
-:global .Grid__cell + .Grid__cell {
-  border-left: 1px solid #e0e0e0;
-  border-right: 1px solid #e0e0e0;
-}
-*/
-
-/*
-:global .Grid__cell:first-child {
-  background-color: green;
-}
-*/
 
 :global .Grid__cell:last-child {
   border-right: none;
@@ -224,7 +90,7 @@
 }
 
 .Grid__span {
-  background-color: #eee;
+  //background-color: #046380;
   padding:5px;
 }
 
@@ -236,22 +102,25 @@
 
 .cell,
 .headerCell {
-  width: 100%;
-  height: 100%;
+  width: 100% !important;
+  height: initial !important;
   display: flex;
   border-bottom: 1px solid #e0e0e0;
 }
 .headerCell {
   font-weight: bold;
+  font-family: monospace;
+  display:flex;
+  flex-wrap:nowrap;
+  font-size:1.1em;
+  font-weight:bold;
 }
 
 
 .cell {
-  //border-left: 1px solid #e0e0e0;
-  //border-right: 1px solid #e0e0e0;
-  //border-top:1px solid #e0e0e0;
   flex-direction: column;
   justify-content: space-around;
+  padding: 5px;
 }
 
 .minimal {
