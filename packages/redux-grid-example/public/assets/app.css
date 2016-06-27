@@ -2084,6 +2084,7 @@
   border: 1px solid #e0e0e0;
   height: auto !important;
   height: initial !important;
+  //z-index: 5;
 }
 
 .redux-grid__rowStyle___318yU {
@@ -2125,16 +2126,14 @@
 }
 
 .redux-grid__Grid__span___i04BK {
-  //background-color: #046380;
-  padding:10px;
   height: 100%;
   width: 100% !important;
-  z-index:0;
+  //z-index:-1;
 }
 
 .drill {
-  -webkit-animation-duration: 500ms;
-          animation-duration: 500ms;
+  -webkit-animation-duration: 1000ms;
+          animation-duration: 1000ms;
   -webkit-animation-name: slidein;
           animation-name: slidein;
   overflow: hidden;
@@ -2142,14 +2141,16 @@
 
 @keyframes slidein {
   from {
-    -webkit-transform: translateX(-100%);
-            transform: translateX(-100%);
-    //height: 0
+    /*transform: translateY(-100%);
+    height: 0;*/
+    //height:0% !important;
+    max-height: 0;
   }
   to {
-    -webkit-transform: translateX(0);
-            transform: translateX(0);
-    //height: 100%
+    /*transform: translateY(0);
+    height: 100%;*/
+    //height:100% !important;
+    max-height: 100vh;
   }
 }
 
@@ -2191,7 +2192,6 @@
 }
 
 .redux-grid__headerCell___3EbzD {
-  font-family: monospace;
   -ms-flex-wrap:nowrap;
       flex-wrap:nowrap;
   font-size:1.1em;
@@ -2203,7 +2203,6 @@
   font-family: monospace;
   -ms-flex-wrap: nowrap;
       flex-wrap: nowrap;
-
 }
 
 .redux-grid__cell___2lvXT {
@@ -2213,7 +2212,7 @@
           flex-direction: column;
   -ms-flex-pack: distribute;
       justify-content: space-around;
-  padding: 5px;
+  padding: 0 4px;
 }
 
 .redux-grid__minimal___cDCzp {
@@ -2266,11 +2265,12 @@
   border-radius: 3px;
   box-shadow: 2px 2px 3px rgba(50, 50, 50, 0.5);
   border: 1px solid #046380;
+  font-family: monospace;
 }
 
 .sandy__header___3SMMj {
   color: #023240;
-  background-color: #ABC5FF;
+  background-color: rgba(100, 100, 100, 0.5);
   padding: 6px;
   margin: 3px;
   border-radius: 2px;
@@ -2300,23 +2300,52 @@
   font-size:1.5em;
   color: #002f2f;
 }
+
+.sandy__expanded___1jozo {
+  //padding:10px;
+  background-color: rgba(50, 50, 50, 0.3);
+}
 .subgrid__BodyGrid___3ezWR {
-  font-size:0.8em !important;
-  border: 0;
+  background-color: #fff;
+  padding: 0;
+  font-size: 0.85em;
+  font-family: monospace;
+  //border-radius: 3px;
+  //box-shadow: 2px 2px 3px rgba(50, 50, 50, 0.5);
+  //border: 1px solid #046380;
+}
+
+.subgrid__header___3yZEP {
+  color: #023240;
+  background-color: #ABC5FF;
+  padding: 6px;
+  margin: 3px;
+  border-radius: 2px;
+  font-weight: bold;
+}
+
+.subgrid__header___3yZEP:hover {
+  background-color: #7BB2E5;
+}
+
+.subgrid__footer___2yADB {
+  padding: 6px;
+  margin: 3px;
 }
 
 .subgrid__evenRow___1FOVp {
   background-color: #efecca;
+  color: #046D8D;
 }
 
 .subgrid__oddRow___2QM1g {
   background-color: #FFFEF1;
+  color: #046D8D;
 }
 
 .subgrid__expander___2vBp_ {
+  font-size:1.5em;
   color: #002f2f;
-  font-size: 0.8em;
-  //color: #046380;
 }
 .ContentBox__ContentBox___3PZxu {
   display: -webkit-box;
