@@ -32,26 +32,57 @@
 .rowStyle {
   position: relative;
   display: flex;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.rowStyle:last-child {
+  border-bottom: none;
+}
+
+
+:global .Grid__cell {
+  position: relative;
+  display:flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  height: initial !important;
+  border-right: 1px solid #e0e0e0;
+}
+
+:global .Grid__cell:last-child {
+  border-right: none;
+}
+
+.Grid__wrap > div > div {
+  /** Ensures subgrids take up their full height */
+  height: initial !important;
+  //width: 100% !important;
+}
+
+.Grid__span {
+  //background-color: #046380;
+  padding:10px;
+  height: 100%;
+  width: 100% !important;
+  z-index:0;
 }
 
 :global .drill {
-  animation-duration: 1s;
+  animation-duration: 500ms;
   animation-name: slidein;
   overflow: hidden;
 }
 
 :global @keyframes slidein {
   from {
-    //transform: scaleY(0);
-    max-height: 0
+    transform: translateX(-100%);
+    //height: 0
   }
   to {
-    //transform: scaleY(1);
-    max-height: 100%
+    transform: translateX(0);
+    //height: 100%
   }
 }
-
-
 
 :global .rowSlide-enter {
   opacity: 0.01;
@@ -71,28 +102,6 @@
   transition: opacity 300ms ease-in;
 }
 
-:global .Grid__cell {
-  position: relative;
-  display:flex;
-  flex-wrap: nowrap;
-  justify-content: center;
-  height: initial !important;
-  border-right: 1px solid #e0e0e0;
-}
-
-:global .Grid__cell:last-child {
-  border-right: none;
-}
-
-.Grid__wrap > div {
-  /** Ensures subgrids take up their full height */
-  height: 100% !important;
-}
-
-.Grid__span {
-  //background-color: #046380;
-  padding:5px;
-}
 
 .subgrid {
   margin:0 !important;
@@ -101,19 +110,24 @@
 }
 
 .cell,
-.headerCell {
+.headerCell,
+.footerCell {
   width: 100% !important;
   height: initial !important;
   display: flex;
-  border-bottom: 1px solid #e0e0e0;
 }
 .headerCell {
-  font-weight: bold;
   font-family: monospace;
-  display:flex;
   flex-wrap:nowrap;
   font-size:1.1em;
   font-weight:bold;
+}
+
+.footerCell {
+  font-weight: bold;
+  font-family: monospace;
+  flex-wrap: nowrap;
+
 }
 
 

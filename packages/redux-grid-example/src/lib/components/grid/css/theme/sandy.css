@@ -1,6 +1,5 @@
 .BodyGrid {
   background-color: #fff;
-  padding: 3px;
   border-radius: 3px;
   box-shadow: 2px 2px 3px rgba(50, 50, 50, 0.5);
   border: 1px solid #046380;
@@ -17,6 +16,11 @@
 
 .header:hover {
   background-color: #7BB2E5;
+}
+
+.footer {
+  padding: 6px;
+  margin: 3px;
 }
 
 .evenRow {

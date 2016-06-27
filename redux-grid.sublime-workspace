@@ -32,26 +32,10 @@
 	"buffers":
 	[
 		{
-			"file": "packages/redux-devtools-grid-monitor/src/lib/actions.js",
-			"settings":
-			{
-				"buffer_size": 180,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "packages/redux-devtools-grid-monitor/src/lib/brighten.js",
-			"settings":
-			{
-				"buffer_size": 438,
-				"line_ending": "Windows"
-			}
-		},
-		{
 			"file": "packages/redux-grid-example/src/lib/components/grid/css/redux-grid.css",
 			"settings":
 			{
-				"buffer_size": 7630,
+				"buffer_size": 2581,
 				"line_ending": "Windows"
 			}
 		}
@@ -293,20 +277,11 @@
 	},
 	"expanded_folders":
 	[
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-devtools-grid-monitor",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-devtools-grid-monitor/src",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-devtools-grid-monitor/src/lib",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-devtools-grid-monitor/test",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/solvent",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/solvent/test",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-devtools-grid-monitor",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-devtools-grid-monitor/src",
-		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-devtools-grid-monitor/src/lib"
+		"/C/Users/cchamberlain/noderaider/redux-grid/packages/redux-grid/src"
 	],
 	"file_history":
 	[
+		"/C/Users/cchamberlain/noderaider/redux-grid/packages/redux-devtools-grid-monitor/src/lib/actions.js",
 		"/C/Users/ColeChamberlain/AppData/Roaming/Sublime Text 3/Packages/User/SideBarEnhancements/Open With/Side Bar.sublime-menu",
 		"/C/Users/ColeChamberlain/AppData/Roaming/Sublime Text 3/Packages/User/Side Bar.sublime-settings",
 		"/C/Users/ColeChamberlain/noderaider/redux-grid/packages/redux-devtools-grid-monitor/test/lib.js",
@@ -433,8 +408,7 @@
 		"/C/Users/ColeChamberlain/tixinc/config/src/etc/server/classic.json",
 		"/C/Users/ColeChamberlain/tixinc/config/src/etc/server/prod.json",
 		"/C/Users/ColeChamberlain/tixinc/config/src/etc/server/test.json",
-		"/C/Users/ColeChamberlain/tixinc/js/js.sublime-project",
-		"/C/Users/ColeChamberlain/tixinc/js/src/config.js"
+		"/C/Users/ColeChamberlain/tixinc/js/js.sublime-project"
 	],
 	"find":
 	{
@@ -679,97 +653,8 @@
 	"groups":
 	[
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "packages/redux-devtools-grid-monitor/src/lib/actions.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 180,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								180,
-								180
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
-							"tabs_extra_last_activated": 1466628469.63,
-							"tabs_extra_last_activated_sheet_index": 0,
-							"tabs_extra_spawned": true,
-							"vintage":
-							{
-								"action": null,
-								"action_count": "",
-								"mode": "mode_normal",
-								"motion": null,
-								"motion_count": "",
-								"must_capture_register_name": false,
-								"partial_sequence": "",
-								"register": "\"",
-								"sequence": "",
-								"xpos": 0
-							}
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "packages/redux-devtools-grid-monitor/src/lib/brighten.js",
-					"semi_transient": true,
-					"settings":
-					{
-						"buffer_size": 438,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
-							"tab_size": 2,
-							"tabs_extra_spawned": true,
-							"translate_tabs_to_spaces": true,
-							"vintage":
-							{
-								"action": null,
-								"action_count": "",
-								"mode": "mode_normal",
-								"motion": null,
-								"motion_count": "",
-								"must_capture_register_name": false,
-								"partial_sequence": "",
-								"register": "\"",
-								"sequence": "",
-								"xpos": 0
-							}
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				}
 			]
 		},
 		{
@@ -777,27 +662,27 @@
 			"sheets":
 			[
 				{
-					"buffer": 2,
+					"buffer": 0,
 					"file": "packages/redux-grid-example/src/lib/components/grid/css/redux-grid.css",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7630,
+						"buffer_size": 2581,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								546,
-								546
+								1642,
+								1642
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/LESS/LESS.tmLanguage",
 							"tab_size": 2,
-							"tabs_extra_last_activated": 1466626224.8,
+							"tabs_extra_last_activated": 1466980820.19,
 							"tabs_extra_last_activated_sheet_index": 0,
 							"tabs_extra_spawned": true,
 							"translate_tabs_to_spaces": true,
@@ -814,14 +699,14 @@
 								"partial_sequence": "",
 								"register": "\"",
 								"sequence": "",
-								"xpos": 27
+								"xpos": 2
 							}
 						},
 						"translation.x": 0.0,
-						"translation.y": 302.0,
+						"translation.y": 1426.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 0,
 					"type": "text"
 				}
 			]
@@ -846,21 +731,21 @@
 				1
 			],
 			[
+				1,
 				0,
-				1,
-				1,
-				2
+				2,
+				1
 			]
 		],
 		"cols":
 		[
 			0.0,
+			0.617930204573,
 			1.0
 		],
 		"rows":
 		[
 			0.0,
-			0.512205601333,
 			1.0
 		]
 	},
@@ -1415,10 +1300,10 @@
 		],
 		"width": 458.0
 	},
-	"selected_group": 0,
+	"selected_group": 1,
 	"settings":
 	{
-		"_vintageous_last_buffer_search": "Log",
+		"_vintageous_last_buffer_search": "rowStyle",
 		"_vintageous_last_buffer_search_command": "vi_slash",
 		"_vintageous_last_char_search_command": "vi_f",
 		"_vintageous_last_character_search": "f",

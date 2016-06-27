@@ -18,18 +18,25 @@ import { ContentBox } from './ContentBox'
 const should = require('chai').should()
 
 
-const { CoreGrid, DrillGrid, Header, Expander } = reduxGrid({ React, ReactDOM, ReactCSSTransitionGroup, ReactVirtualized, connect, Immutable, ContentBox })
+const { CoreGrid, DrillGrid, Header, Footer, Expander } = reduxGrid({ React, ReactDOM, ReactCSSTransitionGroup, ReactVirtualized, connect, Immutable, ContentBox })
 
 
 const mapCols = state => {
-  return  [ { id: 'id', render: () => <Header theme={sandy}>Path</Header>, width: 300 }
-          , { id: 'key', render: () => <Header theme={sandy}>State</Header> }
+  return  [ { id: 'id'
+            , header: () => <Header theme={sandy}>Path</Header>
+            , footer: ({ rows }) => <Footer theme={sandy}>{rows.length} rows</Footer>
+            , width: 300
+            }
+          , { id: 'key'
+            , header: () => <Header theme={sandy}>State</Header>
+            //, footer: ({ rows }) => <Footer theme={sandy}>State</Footer>
+            }
           ]
 }
 
 
 const preStyle = { /*margin: 'initial'*/ }
-const Code = props => <pre style={preStyle}><code>{JSON.stringify(props.children)}</code></pre>
+const Code = props => <pre style={preStyle}><code>{JSON.stringify(props.children, null, 2)}</code></pre>
 const Arrows = props => (
   <span>
     {props.children.map((x, i) => {
@@ -49,7 +56,7 @@ const mapIdRows = (ids = []) => state => {
     const id = [ ...ids, x ]
     return  [ ...rows
             , { id
-              , render: () => [ <Arrows>{id}</Arrows>, <Code>{JSON.stringify(selectedState[x])}</Code> ]
+              , render: () => [ <Arrows>{id}</Arrows>, <Code>{selectedState[x]}</Code> ]
               }
             ]
   }, [])
@@ -58,7 +65,7 @@ const mapIdRows = (ids = []) => state => {
 const mapDrill = (state, parentId) => {
   const mapSubRows = mapIdRows(parentId)
   return (
-    <div style={{ margin: 10 }}>
+    <div style={{ marginTop: 10, marginBottom: 10 }}>
       <span style={{ fontFamily: 'monospace', fontWeight: 'bold', letterSpacing: 6, fontSize: '1em', color: '#2B3140' }}>
         <Arrows>{parentId}</Arrows>
       </span>

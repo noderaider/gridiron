@@ -31,6 +31,15 @@ Object.defineProperty(exports, 'header', {
   }
 });
 
+var _footer = require('./footer');
+
+Object.defineProperty(exports, 'footer', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_footer).default;
+  }
+});
+
 var _expander = require('./expander');
 
 Object.defineProperty(exports, 'expander', {

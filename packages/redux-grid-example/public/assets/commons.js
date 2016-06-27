@@ -76,19 +76,8 @@
 
 /******/ 	
 /******/ 	
-/******/ 	// Copied from https://github.com/facebook/react/blob/bef45b0/src/shared/utils/canDefineProperty.js
-/******/ 	var canDefineProperty = false;
-/******/ 	try {
-/******/ 		Object.defineProperty({}, "x", {
-/******/ 			get: function() {}
-/******/ 		});
-/******/ 		canDefineProperty = true;
-/******/ 	} catch(x) {
-/******/ 		// IE will fail on defineProperty
-/******/ 	}
-/******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "3aa4b567e0da8515e5db"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "641136d8f258856d3d26"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -111,7 +100,7 @@
 /******/ 		};
 /******/ 		for(var name in __webpack_require__) {
 /******/ 			if(Object.prototype.hasOwnProperty.call(__webpack_require__, name)) {
-/******/ 				if(canDefineProperty) {
+/******/ 				if(Object.defineProperty) {
 /******/ 					Object.defineProperty(fn, name, (function(name) {
 /******/ 						return {
 /******/ 							configurable: true,
@@ -154,7 +143,7 @@
 /******/ 				}
 /******/ 			});
 /******/ 		}
-/******/ 		if(canDefineProperty) {
+/******/ 		if(Object.defineProperty) {
 /******/ 			Object.defineProperty(fn, "e", {
 /******/ 				enumerable: true,
 /******/ 				value: ensure

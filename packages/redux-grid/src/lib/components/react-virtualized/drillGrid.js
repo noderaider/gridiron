@@ -7,17 +7,6 @@ export default function drillGrid (dependencies) {
   const { React, Immutable, connect } = dependencies
   const { Component, PropTypes } = React
 
-  const rows =  [ [ 'jim', 26, 'being boring', 'male' ]
-                , [ 'tony', 37, 'skydiving', 'male' ]
-                , [ 'lisa', 40, 'sleeping', 'female' ]
-                , [ 'dan', 20, 'jumping', 'male' ]
-                , [ 'sarah', 15, 'eating', 'female' ]
-                , [ 'michael', 25, 'nothing', 'unsure' ]
-                , [ 'michelle', 35, 'idk', 'female' ]
-                ]
-
-  const list = Immutable.List(rows)
-  const getState = () => ({ rows, list })
   const CoreGrid = coreGrid(dependencies)
   const Expander = expander(dependencies)
 
@@ -40,7 +29,8 @@ export default function drillGrid (dependencies) {
       let spannedRows = []
       const _mapCols = state => {
         return  [ { id: 'expander'
-                  , render: () => <Expander visible={false} />
+                  , header: () => <Expander visible={false} />
+                  , footer: () => <Expander visible={false} />
                   , width: 35
                   , className: styles.minimal
                   }

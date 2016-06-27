@@ -2,6 +2,16 @@
   "folders":
   [
     {
+      "name": "packages/react-pre",
+      "follow_symlinks": true,
+      "path": "./packages/react-pre"
+    },
+    {
+      "name": "packages/react-pre-test",
+      "follow_symlinks": true,
+      "path": "./packages/react-pre-test"
+    },
+    {
       "name": "packages/redux-grid",
       "follow_symlinks": true,
       "path": "./packages/redux-grid/src"
