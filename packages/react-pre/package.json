@@ -1,6 +1,6 @@
 {
   "name": "react-pre",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Enhanced pre element for react apps.",
   "main": "lib/index.js",
   "files": [
@@ -45,7 +45,7 @@
     "classnames": "^2.2.5",
     "ncp": "^2.0.0",
     "npm-run-all": "^2.1.1",
-    "solvent": "^0.2.4"
+    "solvent": "^0.4.1"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0",
