@@ -1,6 +1,6 @@
 {
   "name": "redux-grid-example",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Example webpack project for redux-grid and related components. Showcases what can be done with redux-grid.",
   "main": "lib/index.js",
   "files": [
