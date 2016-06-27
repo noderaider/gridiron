@@ -54,11 +54,11 @@ export default function coreGrid (deps) {
       const resolveColWidth = (calculated, { minWidth, maxWidth } = {}) => {
         //console.debug('RESOLVE COL WIDTH', calculated, minWidth, maxWidth)
         if(minWidth && calculated < minWidth) {
-          console.debug('OVERRIDING CALCULATED WIDTH FOR MIN', calculated, minWidth)
+          //console.debug('OVERRIDING CALCULATED WIDTH FOR MIN', calculated, minWidth)
           return minWidth
         }
         if(maxWidth && calculated > maxWidth) {
-          console.debug('OVERRIDING CALCULATED WIDTH FOR MAX', calculated, maxWidth)
+          //console.debug('OVERRIDING CALCULATED WIDTH FOR MAX', calculated, maxWidth)
           return maxWidth
         }
         return calculated
@@ -122,7 +122,7 @@ export default function coreGrid (deps) {
                             const child = (
                               <div
                                 key={key}
-                                className={classNames(styles.Grid__span, 'drill')}
+                                className={classNames(styles.Grid__span, theme.expanded, 'drill')}
                                 style={ { width
                                         } }
                               >

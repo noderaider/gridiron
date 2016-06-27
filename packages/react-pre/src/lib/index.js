@@ -8,4 +8,4 @@ const capitalizeFirst = str => `${str[0].toUpperCase()}${str.slice(1)}`
  * @param  {[type]} dependencies [description]
  * @return {[type]}              [description]
  */
-export default dependencies => Object.keys(components).reduce((reduxGrid, x) => ({ ...reduxGrid, [capitalizeFirst(x)]: components[x](dependencies) }), {})
+export default deps => Object.keys(components).reduce((reactPre, x) => ({ ...reactPre, [capitalizeFirst(x)]: components[x](deps) }), {})

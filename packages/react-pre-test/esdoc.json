@@ -7,6 +7,5 @@
   "includeSource": true,
   "plugins": [
     {"name": "esdoc-es7-plugin"}
-  ],
-  "title": "react-pre-test"
+  ]
 }

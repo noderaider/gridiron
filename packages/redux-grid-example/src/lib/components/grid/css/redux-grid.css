@@ -27,6 +27,7 @@
   width: 100%;
   border: 1px solid #e0e0e0;
   height: initial !important;
+  //z-index: 5;
 }
 
 .rowStyle {
@@ -60,27 +61,29 @@
 }
 
 .Grid__span {
-  //background-color: #046380;
-  padding:10px;
   height: 100%;
   width: 100% !important;
-  z-index:0;
+  //z-index:-1;
 }
 
 :global .drill {
-  animation-duration: 500ms;
+  animation-duration: 1000ms;
   animation-name: slidein;
   overflow: hidden;
 }
 
 :global @keyframes slidein {
   from {
-    transform: translateX(-100%);
-    //height: 0
+    /*transform: translateY(-100%);
+    height: 0;*/
+    //height:0% !important;
+    max-height: 0;
   }
   to {
-    transform: translateX(0);
-    //height: 100%
+    /*transform: translateY(0);
+    height: 100%;*/
+    //height:100% !important;
+    max-height: 100vh;
   }
 }
 
@@ -117,7 +120,6 @@
   display: flex;
 }
 .headerCell {
-  font-family: monospace;
   flex-wrap:nowrap;
   font-size:1.1em;
   font-weight:bold;
@@ -127,14 +129,12 @@
   font-weight: bold;
   font-family: monospace;
   flex-wrap: nowrap;
-
 }
-
 
 .cell {
   flex-direction: column;
   justify-content: space-around;
-  padding: 5px;
+  padding: 0 4px;
 }
 
 .minimal {

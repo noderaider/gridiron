@@ -1,18 +1,42 @@
 .BodyGrid {
-  font-size:0.8em !important;
-  border: 0;
+  background-color: #fff;
+  padding: 0;
+  font-size: 0.85em;
+  font-family: monospace;
+  //border-radius: 3px;
+  //box-shadow: 2px 2px 3px rgba(50, 50, 50, 0.5);
+  //border: 1px solid #046380;
+}
+
+.header {
+  color: #023240;
+  background-color: #ABC5FF;
+  padding: 6px;
+  margin: 3px;
+  border-radius: 2px;
+  font-weight: bold;
+}
+
+.header:hover {
+  background-color: #7BB2E5;
+}
+
+.footer {
+  padding: 6px;
+  margin: 3px;
 }
 
 .evenRow {
   background-color: #efecca;
+  color: #046D8D;
 }
 
 .oddRow {
   background-color: #FFFEF1;
+  color: #046D8D;
 }
 
 .expander {
+  font-size:1.5em;
   color: #002f2f;
-  font-size: 0.8em;
-  //color: #046380;
 }

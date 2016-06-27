@@ -19,3 +19,4 @@ export default function solvent(depTypes = {}) {
     return ({ ...deps, [x]: arg[x] })
   }, {})
 }
+

@@ -138,11 +138,11 @@ function coreGrid(deps) {
 
           //console.debug('RESOLVE COL WIDTH', calculated, minWidth, maxWidth)
           if (minWidth && calculated < minWidth) {
-            console.debug('OVERRIDING CALCULATED WIDTH FOR MIN', calculated, minWidth);
+            //console.debug('OVERRIDING CALCULATED WIDTH FOR MIN', calculated, minWidth)
             return minWidth;
           }
           if (maxWidth && calculated > maxWidth) {
-            console.debug('OVERRIDING CALCULATED WIDTH FOR MAX', calculated, maxWidth);
+            //console.debug('OVERRIDING CALCULATED WIDTH FOR MAX', calculated, maxWidth)
             return maxWidth;
           }
           return calculated;
@@ -235,7 +235,7 @@ function coreGrid(deps) {
                           'div',
                           {
                             key: key,
-                            className: (0, _classnames2.default)(styles.Grid__span, 'drill'),
+                            className: (0, _classnames2.default)(styles.Grid__span, theme.expanded, 'drill'),
                             style: { width: width
                             }
                           },
@@ -264,11 +264,11 @@ function coreGrid(deps) {
                             // If the user is no longer scrolling, don't cache cells.
                             // This makes dynamic cell content difficult for users and would also lead to a heavier memory footprint.
                           } else {
-                            renderedCell = cellRenderer({ columnIndex: columnIndex,
-                              isScrolling: isScrolling,
-                              rowIndex: rowIndex
-                            });
-                          }
+                              renderedCell = cellRenderer({ columnIndex: columnIndex,
+                                isScrolling: isScrolling,
+                                rowIndex: rowIndex
+                              });
+                            }
 
                           if (renderedCell === null || renderedCell === false) continue;
 

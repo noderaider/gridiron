@@ -2094,9 +2094,47 @@
   border-bottom: 1px solid #e0e0e0;
 }
 
+.redux-grid__rowStyle___318yU:last-child {
+  border-bottom: none;
+}
+
+.Grid__cell {
+  position: relative;
+  display:-webkit-box;
+  display:-ms-flexbox;
+  display:flex;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  height: auto !important;
+  height: initial !important;
+  border-right: 1px solid #e0e0e0;
+}
+
+.Grid__cell:last-child {
+  border-right: none;
+}
+
+.redux-grid__Grid__wrap___2zyjR > div > div {
+  /** Ensures subgrids take up their full height */
+  height: auto !important;
+  height: initial !important;
+  //width: 100% !important;
+}
+
+.redux-grid__Grid__span___i04BK {
+  //background-color: #046380;
+  padding:10px;
+  height: 100%;
+  width: 100% !important;
+  z-index:0;
+}
+
 .drill {
-  -webkit-animation-duration: 1s;
-          animation-duration: 1s;
+  -webkit-animation-duration: 500ms;
+          animation-duration: 500ms;
   -webkit-animation-name: slidein;
           animation-name: slidein;
   overflow: hidden;
@@ -2104,12 +2142,14 @@
 
 @keyframes slidein {
   from {
-    //transform: scaleY(0);
-    max-height: 0
+    -webkit-transform: translateX(-100%);
+            transform: translateX(-100%);
+    //height: 0
   }
   to {
-    //transform: scaleY(1);
-    max-height: 100%
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+    //height: 100%
   }
 }
 
@@ -2133,35 +2173,6 @@
   transition: opacity 300ms ease-in;
 }
 
-.Grid__cell {
-  position: relative;
-  display:-webkit-box;
-  display:-ms-flexbox;
-  display:flex;
-  -ms-flex-wrap: nowrap;
-      flex-wrap: nowrap;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  height: auto !important;
-  height: initial !important;
-  border-right: 1px solid #e0e0e0;
-}
-
-.Grid__cell:last-child {
-  border-right: none;
-}
-
-.redux-grid__Grid__wrap___2zyjR > div {
-  /** Ensures subgrids take up their full height */
-  height: 100% !important;
-}
-
-.redux-grid__Grid__span___i04BK {
-  //background-color: #046380;
-  padding:5px;
-}
-
 .redux-grid__subgrid___2O6sP {
   margin:0 !important;
   padding:0 !important;
@@ -2169,7 +2180,8 @@
 }
 
 .redux-grid__cell___2lvXT,
-.redux-grid__headerCell___3EbzD {
+.redux-grid__headerCell___3EbzD,
+.redux-grid__footerCell___2SArB {
   width: 100% !important;
   height: auto !important;
   height: initial !important;
@@ -2179,15 +2191,19 @@
 }
 
 .redux-grid__headerCell___3EbzD {
-  font-weight: bold;
   font-family: monospace;
-  display:-webkit-box;
-  display:-ms-flexbox;
-  display:flex;
   -ms-flex-wrap:nowrap;
       flex-wrap:nowrap;
   font-size:1.1em;
   font-weight:bold;
+}
+
+.redux-grid__footerCell___2SArB {
+  font-weight: bold;
+  font-family: monospace;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+
 }
 
 .redux-grid__cell___2lvXT {
@@ -2247,7 +2263,6 @@
 }
 .sandy__BodyGrid___3wS6W {
   background-color: #fff;
-  padding: 3px;
   border-radius: 3px;
   box-shadow: 2px 2px 3px rgba(50, 50, 50, 0.5);
   border: 1px solid #046380;
@@ -2264,6 +2279,11 @@
 
 .sandy__header___3SMMj:hover {
   background-color: #7BB2E5;
+}
+
+.sandy__footer___3muhd {
+  padding: 6px;
+  margin: 3px;
 }
 
 .sandy__evenRow___1x-4f {
