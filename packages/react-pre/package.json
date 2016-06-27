@@ -43,13 +43,8 @@
     "babel-runtime": "^6.9.0",
     "chai": "^3.5.0",
     "classnames": "^2.2.5",
-    "detect-resize": "^0.1.4",
-    "esdoc": "^0.4.7",
-    "esdoc-es7-plugin": "0.0.3",
     "ncp": "^2.0.0",
     "npm-run-all": "^2.1.1",
-    "react-autosizer": "^0.1.6",
-    "react-pre-core": "^0.3.0",
     "solvent": "^0.2.4"
   },
   "devDependencies": {
@@ -64,6 +59,8 @@
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
     "babel-register": "^6.9.0",
+    "esdoc": "^0.4.7",
+    "esdoc-es7-plugin": "0.0.3",
     "eslint": "^2.12.0",
     "eslint-plugin-babel": "*",
     "eslint-plugin-react": "*",
@@ -73,7 +70,6 @@
     "react-addons-test-utils": "^15.1.0",
     "react-dom": "^15.1.0",
     "react-tools": "^0.13.3",
-    "react-pre-view": "^0.2.2",
     "rimraf": "^2.5.2"
   },
   "author": "Cole Chamberlain <cole.chamberlain@gmail.com> (https://github.com/cchamberlain)",
