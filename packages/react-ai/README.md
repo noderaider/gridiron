@@ -15,12 +15,10 @@
 
 ```js
 import React from 'react'
-import { connect } from 'react-redux'
 import reactAI from 'react-ai'
 
-const AI = reactAI({ React, connect, ReactVirtualized })
+const AI = reactAI({ React })
 
-/** Create a grid to show users first name, last name, and age from redux */
 export default props => (
   <button onClick={AI.execute}>
     Feeling brave?
