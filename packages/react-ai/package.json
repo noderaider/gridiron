@@ -1,7 +1,7 @@
 {
-  "name": "react-pre",
+  "name": "react-ai",
   "version": "0.4.1",
-  "description": "Enhanced pre element for react apps.",
+  "description": "Intelligent React Toolset",
   "main": "lib/index.js",
   "files": [
     "lib"
@@ -45,6 +45,7 @@
     "classnames": "^2.2.5",
     "detect-resize": "^0.1.4",
     "ncp": "^2.0.0",
+    "react-pre": "^0.4.1",
     "solvent": "^0.2.4"
   },
   "devDependencies": {
@@ -71,17 +72,17 @@
     "react-addons-test-utils": "^15.1.0",
     "react-dom": "^15.1.0",
     "react-tools": "^0.13.3",
-    "react-pre-view": "^0.2.2",
+    "react-ai-view": "^0.2.2",
     "rimraf": "^2.5.2"
   },
   "author": "Cole Chamberlain <cole.chamberlain@gmail.com> (https://github.com/cchamberlain)",
   "bugs": {
-    "url": "https://github.com/cchamberlain/react-pre/issues"
+    "url": "https://github.com/cchamberlain/react-ai/issues"
   },
-  "homepage": "https://cchamberlain.github.io/react-pre",
+  "homepage": "https://cchamberlain.github.io/react-ai",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cchamberlain/react-pre.git"
+    "url": "git+https://github.com/cchamberlain/react-ai.git"
   }
 }

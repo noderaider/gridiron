@@ -199,7 +199,6 @@
     "less-loader": "^2.2.3",
     "mocha": "^2.4.5",
     "morgan": "^1.7.0",
-    "node-sass": "^3.4.2",
     "postcss-import": "^8.1.0",
     "postcss-loader": "^0.8.2",
     "react-addons-css-transition-group": "^15.0.1",

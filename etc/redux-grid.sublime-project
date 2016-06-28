@@ -2,6 +2,16 @@
   "folders":
   [
     {
+      "name": "packages/react-ai",
+      "follow_symlinks": true,
+      "path": "../packages/react-ai"
+    },
+    {
+      "name": "packages/react-ai-test",
+      "follow_symlinks": true,
+      "path": "../packages/react-ai-test"
+    },
+    {
       "name": "packages/react-pre",
       "follow_symlinks": true,
       "path": "../packages/react-pre"
