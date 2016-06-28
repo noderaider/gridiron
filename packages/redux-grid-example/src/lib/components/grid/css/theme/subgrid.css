@@ -1,6 +1,8 @@
 .BodyGrid {
   background-color: #fff;
   padding: 0;
+  margin: 4px;
+  margin-right: 8px;
   font-size: 0.85em;
   font-family: monospace;
   //border-radius: 3px;

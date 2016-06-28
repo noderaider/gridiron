@@ -1,14 +1,16 @@
 import { DrillGrid as Core } from 'redux-grid-core'
 import coreGrid from './coreGrid'
+import header from '../header'
 import expander from '../expander'
 const should = require('chai').should()
 
-export default function drillGrid (dependencies) {
-  const { React, Immutable, connect } = dependencies
+export default function drillGrid (deps) {
+  const { React, Immutable, connect } = deps
   const { Component, PropTypes } = React
 
-  const CoreGrid = coreGrid(dependencies)
-  const Expander = expander(dependencies)
+  const CoreGrid = coreGrid(deps)
+  const Header = header(deps)
+  const Expander = expander(deps)
 
   return class DrillGrid extends Component {
     static propTypes = Core.PropTypes(React);
@@ -29,7 +31,7 @@ export default function drillGrid (dependencies) {
       let spannedRows = []
       const _mapCols = state => {
         return  [ { id: 'expander'
-                  , header: () => <Expander visible={false} />
+                  , header: () => <Header theme={theme}><Expander visible={false} /></Header>
                   , footer: () => <Expander visible={false} />
                   , width: 35
                   , className: styles.minimal

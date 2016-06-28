@@ -25,12 +25,12 @@ const { Pre, Arrows } = reactPre({ React })
 
 const mapCols = state => {
   return  [ { id: 'id'
-            , header: () => <Header theme={sandy}>Path</Header>
-            , footer: ({ rows }) => <Footer theme={sandy}>{rows.length} rows</Footer>
+            , header: () => <Header hasSort={true} hasFilter={true} theme={sandy}>Path</Header>
+            , footer: ({ rows }) => <Footer hasSort={true} hasFilter={true} theme={sandy}>{rows.length} rows</Footer>
             , width: 300
             }
           , { id: 'key'
-            , header: () => <Header theme={sandy}>State</Header>
+            , header: () => <Header hasSort={true} hasFilter={true} theme={sandy}>State</Header>
             //, footer: ({ rows }) => <Footer theme={sandy}>State</Footer>
             }
           ]

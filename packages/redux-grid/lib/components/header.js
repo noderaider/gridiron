@@ -31,16 +31,16 @@ exports.default = function (_ref) {
       React.createElement(
         'span',
         null,
-        React.createElement(
+        props.hasSort ? React.createElement(
           'button',
           { style: headerButtonStyle, onClick: props.handleSort },
           React.createElement('i', { className: 'fa fa-sort-' + (props.asc ? 'asc' : 'desc') })
-        ),
-        React.createElement(
+        ) : null,
+        props.hasFilter ? React.createElement(
           'button',
           { style: headerButtonStyle, onClick: props.handleFilter },
           React.createElement('i', { className: 'fa fa-filter' })
-        )
+        ) : null
       )
     );
   };

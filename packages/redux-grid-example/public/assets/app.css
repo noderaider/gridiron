@@ -2270,15 +2270,16 @@
 
 .sandy__header___3SMMj {
   color: #023240;
-  background-color: rgba(100, 100, 100, 0.5);
-  padding: 6px;
-  margin: 3px;
-  border-radius: 2px;
+  background-color: rgba(120, 120, 120, 0.5);
+  border: 1px solid rgba(120, 120, 120, 0.5);
+  padding: 3px;
+  margin: 0;
+  //border-radius: 1px;
   font-weight: bold;
 }
 
 .sandy__header___3SMMj:hover {
-  background-color: #7BB2E5;
+  background-color: rgba(120, 120, 120, 0.55);
 }
 
 .sandy__footer___3muhd {

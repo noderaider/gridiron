@@ -16,12 +16,16 @@ export default ({ React }) => {
     <span style={wrapStyle} className={props.theme.header}>
       <span>{props.children}</span>
       <span>
-        <button style={headerButtonStyle} onClick={props.handleSort}>
-          <i className={`fa fa-sort-${(props.asc ? 'asc' : 'desc')}`} />
-        </button>
-        <button style={headerButtonStyle} onClick={props.handleFilter}>
-          <i className={`fa fa-filter${''}`} />
-        </button>
+        {props.hasSort ? (
+          <button style={headerButtonStyle} onClick={props.handleSort}>
+            <i className={`fa fa-sort-${(props.asc ? 'asc' : 'desc')}`} />
+          </button>
+        ) : null}
+        {props.hasFilter ? (
+          <button style={headerButtonStyle} onClick={props.handleFilter}>
+            <i className={`fa fa-filter${''}`} />
+          </button>
+        ) : null}
       </span>
     </span>
   )

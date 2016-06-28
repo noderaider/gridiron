@@ -16,6 +16,10 @@ var _coreGrid = require('./coreGrid');
 
 var _coreGrid2 = _interopRequireDefault(_coreGrid);
 
+var _header = require('../header');
+
+var _header2 = _interopRequireDefault(_header);
+
 var _expander = require('../expander');
 
 var _expander2 = _interopRequireDefault(_expander);
@@ -34,18 +38,19 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var should = require('chai').should();
 
-function drillGrid(dependencies) {
+function drillGrid(deps) {
   var _class, _temp;
 
-  var React = dependencies.React;
-  var Immutable = dependencies.Immutable;
-  var connect = dependencies.connect;
+  var React = deps.React;
+  var Immutable = deps.Immutable;
+  var connect = deps.connect;
   var Component = React.Component;
   var PropTypes = React.PropTypes;
 
 
-  var CoreGrid = (0, _coreGrid2.default)(dependencies);
-  var Expander = (0, _expander2.default)(dependencies);
+  var CoreGrid = (0, _coreGrid2.default)(deps);
+  var Header = (0, _header2.default)(deps);
+  var Expander = (0, _expander2.default)(deps);
 
   return _temp = _class = function (_Component) {
     _inherits(DrillGrid, _Component);
@@ -87,7 +92,11 @@ function drillGrid(dependencies) {
         var _mapCols = function _mapCols(state) {
           return [{ id: 'expander',
             header: function header() {
-              return React.createElement(Expander, { visible: false });
+              return React.createElement(
+                Header,
+                { theme: theme },
+                React.createElement(Expander, { visible: false })
+              );
             },
             footer: function footer() {
               return React.createElement(Expander, { visible: false });
