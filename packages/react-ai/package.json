@@ -1,6 +1,6 @@
 {
   "name": "react-ai",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "Intelligent React Toolset",
   "main": "lib/index.js",
   "files": [
@@ -45,7 +45,7 @@
     "classnames": "^2.2.5",
     "detect-resize": "^0.1.4",
     "ncp": "^2.0.0",
-    "react-pre": "^0.4.3",
+    "react-pre": "^0.4.5",
     "solvent": "^0.4.1"
   },
   "devDependencies": {
