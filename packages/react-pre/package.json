@@ -45,7 +45,7 @@
     "classnames": "^2.2.5",
     "detect-resize": "^0.1.4",
     "ncp": "^2.0.0",
-    "solvent": "^0.2.4"
+    "solvent": "^0.4.1"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0",
@@ -71,7 +71,6 @@
     "react-addons-test-utils": "^15.1.0",
     "react-dom": "^15.1.0",
     "react-tools": "^0.13.3",
-    "react-pre-view": "^0.2.2",
     "rimraf": "^2.5.2"
   },
   "author": "Cole Chamberlain <cole.chamberlain@gmail.com> (https://github.com/cchamberlain)",

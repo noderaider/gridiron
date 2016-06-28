@@ -1,6 +1,6 @@
 ## react-ai
 
-**Lightweight grid framework built on top of react-virtualized / fixed-data-table for easy highly customizable grids generated from redux state.**
+**Intelligent React Toolset**
 
 [![Build Status](https://travis-ci.org/noderaider/react-ai-test.svg?branch=master)](https://travis-ci.org/noderaider/react-ai-test)
 [![codecov](https://codecov.io/gh/noderaider/react-ai-test/branch/master/graph/badge.svg)](https://codecov.io/gh/noderaider/react-ai-test)
@@ -9,35 +9,22 @@
 
 ## Install
 
-`npm i -S react-ai`
+`npm install -S react-ai`
 
 ## Usage
-
-**UserGrid.js**
 
 ```js
 import React from 'react'
 import { connect } from 'react-redux'
-import ReactVirtualized from 'react-virtualized'
-import { createGrid } from 'react-ai'
+import reactAI from 'react-ai'
 
-const { Grid } = createGrid({ React, connect, ReactVirtualized })
+const AI = reactAI({ React, connect, ReactVirtualized })
 
 /** Create a grid to show users first name, last name, and age from redux */
 export default props => (
-  <Grid
-    mapCols={
-      /** Map redux state to object with column name keys and header component values */
-      state => ({ first: <div>First Name</div>
-                , last: <div>Last Name</div>
-                , age: { render: <div>Age</div>, width: 100 }
-                })
-    }
-    mapRows={
-      /** Map redux state to grid rows. */
-      state => state.users.map(x => [x.first, x.last, x.age])
-    }
-  />
+  <button onClick={AI.execute}>
+    Feeling brave?
+  </button>
 )
 ```
 
