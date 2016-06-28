@@ -1,6 +1,6 @@
 {
   "name": "redux-devtools-grid-monitor",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "redux-devtools visualizer utilizing redux-grid.",
   "main": "lib/index.js",
   "files": [
@@ -45,7 +45,7 @@
     "react-json-tree": "^0.7.0",
     "react-pure-render": "^1.0.2",
     "redux-devtools-themes": "^1.0.0",
-    "redux-grid": "^0.4.5",
+    "redux-grid": "^0.4.6",
     "solvent": "^0.4.1"
   },
   "devDependencies": {
