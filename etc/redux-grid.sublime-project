@@ -22,6 +22,16 @@
       "path": "../packages/react-pre-test"
     },
     {
+      "name": "packages/react-maximize",
+      "follow_symlinks": true,
+      "path": "../packages/react-maximize"
+    },
+    {
+      "name": "packages/react-maximize-test",
+      "follow_symlinks": true,
+      "path": "../packages/react-maximize-test"
+    },
+    {
       "name": "packages/redux-grid",
       "follow_symlinks": true,
       "path": "../packages/redux-grid/src"
@@ -47,9 +57,14 @@
       "path": "../packages/redux-grid-test/test"
     },
     {
-      "name": "packages/redux-grid-view",
+      "name": "packages/redux-grid-react",
       "follow_symlinks": true,
-      "path": "../packages/redux-grid-view/src"
+      "path": "../packages/redux-grid-react/src"
+    },
+    {
+      "name": "packages/redux-pager",
+      "follow_symlinks": true,
+      "path": "../packages/redux-pager/src"
     },
     {
       "name": "packages/redux-devtools-grid-monitor",

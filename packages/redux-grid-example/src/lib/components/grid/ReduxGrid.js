@@ -63,18 +63,34 @@ const wideStyle = { display: 'flex'
 
 const mapDrill = (state, parentId) => {
   return (
-      <Pager maxRecords={5} mapRows={createRowMapper({ ids: parentId })} styles={styles} theme={sandy}>
+    <ReduxGridDetail ids={parentId} />
+  )
+}
+
+class ReduxGridDetail extends Component {
+  constructor(props) {
+    super(props)
+    this.state =  { isMaximized: false
+                  }
+  }
+  render() {
+    const { ids } = this.props
+    return (
+      <Pager maxRecords={5} mapRows={createRowMapper({ ids })} styles={styles} theme={sandy}>
         {pager => (
           <DrillGrid
             styles={styles}
-            theme={subgrid}
+            theme={sandy}
             mapCols={mapCols}
             mapRows={pager.mapRows}
             mapDrill={mapDrill}
             header={
-              <span style={{ fontFamily: 'monospace', fontWeight: 'bold', letterSpacing: 6, fontSize: '1em' }}>
-                <Arrows>{parentId}</Arrows> details
-              </span>
+              <div style={wideStyle}>
+                <span style={{ fontFamily: 'monospace', fontWeight: 'bold', letterSpacing: 6, fontSize: '1em' }}>
+                  <Arrows>{ids}</Arrows> details
+                </span>
+                <Resize isMaximized={this.state.isMaximized} onMaximize={() => this.setState({ isMaximized: true })} onCompress={() => this.setState({ isMaximized: false })} />
+              </div>
             }
             footer={
               <div style={wideStyle}>
@@ -83,13 +99,13 @@ const mapDrill = (state, parentId) => {
                 <pager.PageStatus />
               </div>
             }
+            isMaximized={this.state.isMaximized}
           />
         )}
-    </Pager>
-
-  )
+      </Pager>
+    )
+  }
 }
-
 
 export default class ReduxGrid extends Component {
   constructor(props) {
@@ -103,7 +119,7 @@ export default class ReduxGrid extends Component {
         {pager => (
           <DrillGrid
             styles={styles}
-            theme={sandy}
+            theme={subgrid}
             mapCols={mapCols}
             mapRows={pager.mapRows}
             mapDrill={mapDrill}

@@ -46,8 +46,10 @@
   position: absolute;
   left: 0 !important;
   top: 0 !important;
+  right: 0 !important;
   margin: 0 !important;
   z-index: 99999;
+  height: 100vh;
 }
 
 @keyframes maximize {
@@ -74,7 +76,7 @@
 .rowStyle {
   position: relative;
   display: flex;
-  border-bottom: 1px solid #e0e0e0;
+  /*border-bottom: 1px solid #e0e0e0;*/
 }
 
 .rowStyle:last-child {
@@ -92,11 +94,6 @@
 }
 
 
-.Grid__span {
-  height: 100%;
-  width: 100% !important;
-}
-
 :global .drill {
   animation-duration: 1000ms;
   animation-name: slidein;
@@ -112,41 +109,8 @@
   }
 }
 
-
-.cell,
-.headerCell,
-.footerCell {
-  height: initial !important;
-  display: flex;
-}
-.headerCell {
-  flex-wrap:nowrap;
-  font-size:1.1em;
-  font-weight:bold;
-}
-
-.footerCell {
-  font-weight: bold;
-  font-family: monospace;
-  flex-wrap: nowrap;
-}
-
-
-.minimal {
-  border: 0;
-}
-
-
-.expander {
-  position:absolute;
-}
-
-.expandedRow {
-  background-color: rgb(100, 100, 200);
-  position:absolute;
-}
-
-.headerGrid, .footerGrid {
+.headerGrid,
+.footerGrid {
   display: flex;
   flex: 1 0 auto;
   justify-content: space-between;
@@ -158,35 +122,55 @@
   padding-right: 6px;
 }
 
-.headerCell, .footerCell {
+
+
+
+.cell,
+.headerCell,
+.footerCell {
+  height: initial !important;
+  display: flex;
+}
+
+.headerCell,
+.footerCell {
   display: flex;
   flex: 1 0 auto;
   flex-direction: column;
+  flex-wrap:nowrap;
   margin: 0;
   padding: 0;
-}
-
-.headerCell .innerCell {
-  margin: 2px;
-  border-radius: 4px;
-  font-weight: bold;
-}
-
-.footerCell .innerCell {
-  margin: 2px;
-  border-radius: 4px;
+  font-size:1.1em;
+  font-weight:bold;
 }
 
 .headerCell h3 {
   cursor: default;
 }
 
-.headerCell button {
+.headerGrid button,
+.headerCell button,
+.footerCell button,
+.footerGrid button {
   border: 1px solid transparent;
   cursor: pointer;
   background-color: transparent;
 }
 
+
+.minimal {
+  border: 0;
+}
+
+.expander {
+  position:absolute;
+}
+
+.headerCell .innerCell,
+.footerCell .innerCell {
+  margin: 4px;
+  border-radius: 4px;
+}
 
 .cell {
   display: flex;
@@ -199,7 +183,6 @@
   margin: 4px;
 }
 
-
 .select {
   position: relative;
   display: inline-flex;
@@ -208,12 +191,4 @@
   padding: 0;
   font-family: monospace;
   font-size: 0.8em;
-
 }
-/*
-.select * {
-  position:absolute;
-  z-index: 9999999;
-
-}
-*/

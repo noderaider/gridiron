@@ -12,6 +12,9 @@
   font-family: monospace;
 }
 
+.rowStyle {
+  /*border-bottom: 1px solid #e0e0e0;*/
+}
 
 .evenRow {
   background-color: rgb(234, 235, 220);
@@ -33,28 +36,31 @@
 }
 
 
-.headerGrid {
+.headerGrid,
+.footerGrid {
   color: #023240;
   background-color: rgba(120, 120, 120, 0.5);
   border-bottom: 1px solid rgba(120, 120, 120, 0.5);
 }
 
-.footerGrid {
-  color: #023240;
-  background-color: rgba(120, 120, 120, 0.5);
-}
-
-.headerCell, .footerCell {
+.headerCell,
+.footerCell {
   color: #023240;
   background-color: rgba(120, 120, 120, 0.5);
   border-right: 1px solid rgba(120, 120, 120, 0.5);
   border-bottom: 1px solid rgba(120, 120, 120, 0.5);
 }
 
-.headerCell:hover {
+.headerGrid:hover,
+.headerCell:hover,
+.footerCell:hover,
+.footerGrid:hover {
   background-color: rgba(120, 120, 120, 0.55);
 }
 
-.headerCell button:hover {
+.headerGrid button:hover,
+.headerCell button:hover,
+.footerCell button:hover,
+.footerGrid button:hover {
   border: 1px solid rgba(110, 110, 110, 0.55);
 }
