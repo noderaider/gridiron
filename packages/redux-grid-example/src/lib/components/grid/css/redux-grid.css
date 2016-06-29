@@ -11,24 +11,65 @@
   will-change: transform;
 }
 
+.container {
+  display: flex;
+  width: 100%;
+  max-width: 100%;
+}
+
+.innerContainer {
+  flex: 1 1 auto;
+  width: inherit !important;
+}
+
+.innerContainer > div {
+  height: initial !important;
+  width: inherit !important;
+}
+
+
+.compressed {
+  position: relative;
+}
+
+/** GRID */
+.BodyGrid {
+  border: 1px solid #e0e0e0;
+  height: initial !important;
+  width: inherit !important;
+}
+
+.container.maximized {
+  animation-duration: 200ms;
+  animation-name: maximize;
+
+  position: absolute;
+  left: 0 !important;
+  top: 0 !important;
+  margin: 0 !important;
+  z-index: 99999;
+}
+
+@keyframes maximize {
+  from {
+    transform: scaleY(0.5);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+
 :global .Grid__innerScrollContainer {
   box-sizing: border-box;
   overflow-x: hidden;
   overflow-y: auto;
   height: initial !important;
   max-height: initial !important;
+  width: inherit !important;
+  max-width: inherit !important;
 }
 
-
-/** GRID */
-
-
-.BodyGrid {
-  width: 100%;
-  border: 1px solid #e0e0e0;
-  height: initial !important;
-  //z-index: 5;
-}
 
 .rowStyle {
   position: relative;
@@ -41,29 +82,19 @@
 }
 
 
-:global .Grid__cell {
-  position: relative;
-  display:flex;
-  flex-wrap: nowrap;
-  justify-content: center;
-  height: initial !important;
+
+.headerCell, .cell, .footerCell {
   border-right: 1px solid #e0e0e0;
 }
 
-:global .Grid__cell:last-child {
+.headerCell:last-child, .cell:last-child, .footerCell:last-child {
   border-right: none;
 }
 
-.Grid__wrap > div > div {
-  /** Ensures subgrids take up their full height */
-  height: initial !important;
-  //width: 100% !important;
-}
 
 .Grid__span {
   height: 100%;
   width: 100% !important;
-  //z-index:-1;
 }
 
 :global .drill {
@@ -74,48 +105,17 @@
 
 :global @keyframes slidein {
   from {
-    /*transform: translateY(-100%);
-    height: 0;*/
-    //height:0% !important;
     max-height: 0;
   }
   to {
-    /*transform: translateY(0);
-    height: 100%;*/
-    //height:100% !important;
     max-height: 100vh;
   }
 }
 
-:global .rowSlide-enter {
-  opacity: 0.01;
-}
-
-:global .rowSlide-enter.rowSlide-enter-active {
-  opacity: 1;
-  transition: opacity 500ms ease-in;
-}
-
-:global .rowSlide-leave {
-  opacity: 1;
-}
-
-:global .rowSlide-leave.rowSlide-leave-active {
-  opacity: 0.01;
-  transition: opacity 300ms ease-in;
-}
-
-
-.subgrid {
-  margin:0 !important;
-  padding:0 !important;
-  border: 1px solid rgb(200, 100, 100);
-}
 
 .cell,
 .headerCell,
 .footerCell {
-  width: 100% !important;
   height: initial !important;
   display: flex;
 }
@@ -131,38 +131,9 @@
   flex-wrap: nowrap;
 }
 
-.cell {
-  flex-direction: column;
-  justify-content: space-around;
-  padding: 0 4px;
-}
 
 .minimal {
   border: 0;
-}
-
-.centeredCell {
-  align-items: center;
-  text-align: center;
-}
-
-.letterCell {
-  font-size: 1.5em;
-  color: #fff;
-  text-align: center;
-}
-
-.noCells {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1em;
-  color: #bdbdbd;
 }
 
 
@@ -174,3 +145,75 @@
   background-color: rgb(100, 100, 200);
   position:absolute;
 }
+
+.headerGrid, .footerGrid {
+  display: flex;
+  flex: 1 0 auto;
+  justify-content: space-between;
+  border-right: 0;
+  border-left: 0;
+  margin: 0;
+  font-weight: bold;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+.headerCell, .footerCell {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+}
+
+.headerCell .innerCell {
+  margin: 2px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.footerCell .innerCell {
+  margin: 2px;
+  border-radius: 4px;
+}
+
+.headerCell h3 {
+  cursor: default;
+}
+
+.headerCell button {
+  border: 1px solid transparent;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+
+.cell {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.innerCell {
+  margin: 4px;
+}
+
+
+.select {
+  position: relative;
+  display: inline-flex;
+  min-width: 80px;
+  margin: 0;
+  padding: 0;
+  font-family: monospace;
+  font-size: 0.8em;
+
+}
+/*
+.select * {
+  position:absolute;
+  z-index: 9999999;
+
+}
+*/

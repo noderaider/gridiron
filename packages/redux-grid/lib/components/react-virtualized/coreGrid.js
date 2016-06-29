@@ -22,10 +22,6 @@ var _expander = require('../expander');
 
 var _expander2 = _interopRequireDefault(_expander);
 
-var _createExpandableCellRangeRenderer = require('./internal/createExpandableCellRangeRenderer');
-
-var _createExpandableCellRangeRenderer2 = _interopRequireDefault(_createExpandableCellRangeRenderer);
-
 var _classnames = require('classnames');
 
 var _classnames2 = _interopRequireDefault(_classnames);
@@ -61,14 +57,14 @@ function coreGrid(deps) {
   var connect = _resolver.connect;
   var ReactVirtualized = _resolver.ReactVirtualized;
   var Immutable = _resolver.Immutable;
+  var Component = React.Component;
+  var PropTypes = React.PropTypes;
+  var cloneElement = React.cloneElement;
   var getState = deps.getState;
 
   should.exist(React);
   should.exist(connect);
   should.exist(ReactVirtualized);
-  var Component = React.Component;
-  var PropTypes = React.PropTypes;
-  var cloneElement = React.cloneElement;
   var AutoSizer = ReactVirtualized.AutoSizer;
   var FlexTable = ReactVirtualized.FlexTable;
   var FlexColumn = ReactVirtualized.FlexColumn;
@@ -89,6 +85,18 @@ function coreGrid(deps) {
       _this.state = {};
       return _this;
     }
+    /*
+    componentDidMount() {
+      this.recomputeID = setInterval(() => {
+        console.info('RECALCULATING GRID SIZE')
+        this.grid.recomputeGridSize()
+      }, 4000)
+    }
+    componentWillUnmount() {
+      clearInterval(this.recomputeID)
+    }
+    */
+
 
     _createClass(CoreGrid, [{
       key: 'render',
@@ -105,6 +113,10 @@ function coreGrid(deps) {
         var theme = _props.theme;
         var gridStyle = _props.gridStyle;
         var maxWidth = _props.maxWidth;
+        var header = _props.header;
+        var footer = _props.footer;
+        var isMaximized = _props.isMaximized;
+        var pager = _props.pager;
 
 
         should.exist(mapCols);
@@ -127,7 +139,7 @@ function coreGrid(deps) {
 
           var _ref$rows = _ref.rows;
           var rows = _ref$rows === undefined ? mapRows(state) : _ref$rows;
-          return (rows.size || rows.length) + 2;
+          return rows.size || rows.length;
         }; // 2 more than index for header and footer
 
         var resolveColWidth = function resolveColWidth(calculated) {
@@ -148,18 +160,18 @@ function coreGrid(deps) {
           return calculated;
         };
 
+        var containerClass = (0, _classnames2.default)(styles.container, theme.container, isMaximized ? styles.maximized : styles.compressed);
+        var innerContainerClass = (0, _classnames2.default)(styles.innerContainer, theme.innerContainer);
         var gridClass = (0, _classnames2.default)(styles.BodyGrid, theme.BodyGrid);
-
-        var wrapperClass = (0, _classnames2.default)(this.props.isSubGrid === true ? styles.subgrid : null);
         return React.createElement(
           'div',
-          { className: styles.Grid__wrap, style: _extends({}, style, { display: 'flex' }) },
+          { className: containerClass, style: style },
           React.createElement(
             'div',
-            { style: { flex: '1 1 auto' } },
+            { className: innerContainerClass },
             React.createElement(
               AutoSizer,
-              { style: { width: '100%', height: '100%' }, onResize: function onResize(_ref3) {
+              { onResize: function onResize(_ref3) {
                   var height = _ref3.height;
                   var width = _ref3.width;
 
@@ -170,8 +182,11 @@ function coreGrid(deps) {
                 var width = _this2.state.width || dimensions.width;
                 console.info('AUTODIMENSIONS =>', dimensions);
                 var height = _this2.state.height || dimensions.height || 100;
-                var fixedCols = cols.filter(function (x) {
-                  return x.width && typeof x.width === 'number';
+                var fixedWidthIndices = [];
+                var fixedCols = cols.filter(function (x, i) {
+                  var isFixed = x.width && typeof x.width === 'number';
+                  if (isFixed) fixedWidthIndices.push(i);
+                  return isFixed;
                 });
 
                 var fixedWidth = fixedCols.reduce(function (sum, x) {
@@ -225,23 +240,72 @@ function coreGrid(deps) {
                     var renderedRows = [];
                     var width = _this2.state.width || dimensions.width;
 
-                    for (var rowIndex = rowStartIndex; rowIndex <= rowStopIndex; rowIndex++) {
-                      var renderedCells = [];
-                      var rowDatum = rowSizeAndPositionManager.getSizeAndPositionOfCell(rowIndex);
+                    /** GRID ROW HEADER */
+                    if (header) renderedRows.push(React.createElement(
+                      'div',
+                      { key: 'grid-header', className: (0, _classnames2.default)(styles.headerGrid, theme.headerGrid) },
+                      typeof header === 'function' ? header() : header
+                    ));
 
-                      if (spannedRows.includes(rowIndex - 1)) {
+                    var gridRow = function gridRow(rowKey, cells, _ref7) {
+                      var _ref7$rowClass = _ref7.rowClass;
+                      var rowClass = _ref7$rowClass === undefined ? 'Grid__row' : _ref7$rowClass;
+                      var _ref7$rowStyle = _ref7.rowStyle;
+                      var rowStyle = _ref7$rowStyle === undefined ? {} : _ref7$rowStyle;
+                      var _ref7$cellClass = _ref7.cellClass;
+                      var cellClass = _ref7$cellClass === undefined ? 'Grid__cell' : _ref7$cellClass;
+                      var _ref7$cellStyle = _ref7.cellStyle;
+                      var cellStyle = _ref7$cellStyle === undefined ? {} : _ref7$cellStyle;
+
+                      should.exist(rowKey, 'rowKey is required');
+                      return React.createElement(
+                        'div',
+                        { key: rowKey, id: rowKey + '-row', className: styles.rowStyle, style: rowStyle },
+                        cells.map(function (x, i) {
+                          var computedStyle = typeof cellStyle === 'function' ? cellStyle(i) : cellStyle;
+                          if (fixedWidthIndices.includes(i)) {
+                            var datum = columnSizeAndPositionManager.getSizeAndPositionOfCell(i);
+                            computedStyle = _extends({}, computedStyle, { flex: '0 1 ' + datum.size + 'px' });
+                          }
+                          return React.createElement(
+                            'div',
+                            {
+                              key: rowKey + '-' + i,
+                              className: typeof cellClass === 'function' ? cellClass(i) : cellClass,
+                              style: computedStyle
+                            },
+                            React.createElement(
+                              'span',
+                              { className: (0, _classnames2.default)(styles.innerCell, theme.innerCell) },
+                              x
+                            )
+                          );
+                        })
+                      );
+                    };
+
+                    /** COLUMN HEADERS */
+                    renderedRows.push(gridRow('col-headers', cols.map(function (x) {
+                      return x.header({ rows: rows, theme: theme });
+                    }), { rowClass: styles.rowStyle, cellClass: function cellClass(i) {
+                        return (0, _classnames2.default)(styles.headerCell, theme.headerCell, cols[i].className);
+                      } }));
+
+                    var _loop = function _loop(rowIndex) {
+                      var renderedCells = [];
+
+                      if (spannedRows.includes(rowIndex)) {
+                        console.info('EXPANDED', rowIndex);
                         var key = rowIndex + '-span';
                         var child = React.createElement(
                           'div',
                           {
                             key: key,
-                            className: (0, _classnames2.default)(styles.Grid__span, theme.expanded, 'drill'),
-                            style: { width: width
-                            }
+                            className: (0, _classnames2.default)(styles.Grid__span, theme.expanded, 'drill')
                           },
-                          rows[rowIndex - 1].render()
+                          rows[rowIndex].render()
                         );
-                        renderedCells.push(child);
+                        renderedRows.push(child);
                       } else {
                         for (var columnIndex = columnStartIndex; columnIndex <= columnStopIndex; columnIndex++) {
                           var columnDatum = columnSizeAndPositionManager.getSizeAndPositionOfCell(columnIndex);
@@ -253,7 +317,8 @@ function coreGrid(deps) {
                           // This can lead to the same cell being created many times and can cause performance issues for "heavy" cells.
                           // If a scroll is in progress- cache and reuse cells.
                           // This cache will be thrown away once scrolling completes.
-                          if (isScrolling) {
+                          if (true === false) {
+                            //isScrolling) {
                             if (!cellCache[_key]) {
                               cellCache[_key] = cellRenderer({ columnIndex: columnIndex,
                                 isScrolling: isScrolling,
@@ -264,69 +329,48 @@ function coreGrid(deps) {
                             // If the user is no longer scrolling, don't cache cells.
                             // This makes dynamic cell content difficult for users and would also lead to a heavier memory footprint.
                           } else {
-                            renderedCell = cellRenderer({ columnIndex: columnIndex,
-                              isScrolling: isScrolling,
-                              rowIndex: rowIndex
-                            });
-                          }
+                              renderedCell = cellRenderer({ columnIndex: columnIndex,
+                                isScrolling: isScrolling,
+                                rowIndex: rowIndex
+                              });
+                            }
 
                           if (renderedCell === null || renderedCell === false) continue;
-
-                          /** STATIC HEIGHT ELEMENT */
-                          var _child = React.createElement(
-                            'div',
-                            {
-                              key: _key,
-                              className: 'Grid__cell',
-                              style: { height: rowDatum.size
-                                //, left: columnDatum.offset + horizontalOffsetAdjustment
-                                , width: columnDatum.size
-                              }
-                            },
-                            renderedCell
-                          );
-                          renderedCells.push(_child);
+                          renderedCells.push(renderedCell);
                         }
                       }
-                      var rowStyle = {//height: rowDatum.size
+                      //renderedRows.push(<div key={`${rowIndex}-row`} id={`${rowIndex}-row`} className={styles.rowStyle}>{renderedCells}</div>)
+                      var cellClass = function cellClass(i) {
+                        return (0, _classnames2.default)(styles.cell, theme.cell, cols[i].className, rowIndex % 2 === 0 ? theme.evenRow : theme.oddRow);
                       };
-                      renderedRows.push(React.createElement(
-                        'div',
-                        { key: rowIndex + '-row', id: rowIndex + '-row', className: styles.rowStyle, style: rowStyle },
-                        renderedCells
-                      ));
+                      renderedRows.push(gridRow(rowIndex, renderedCells, { rowClass: styles.rowStyle, cellClass: cellClass }));
+                    };
+
+                    for (var rowIndex = rowStartIndex; rowIndex <= rowStopIndex; rowIndex++) {
+                      _loop(rowIndex);
                     }
+
+                    renderedRows.push(gridRow('col-footers', cols.map(function (x) {
+                      return x.footer ? x.footer({ rows: rows, theme: theme }) : null;
+                    }), { rowClass: styles.rowStyle, cellClass: function cellClass(i) {
+                        return (0, _classnames2.default)(styles.footerCell, theme.footerCell, cols[i].className);
+                      } }));
+
+                    if (footer) renderedRows.push(React.createElement(
+                      'div',
+                      { key: 'grid-footer', className: (0, _classnames2.default)(styles.footerGrid, theme.footerGrid) },
+                      typeof footer === 'function' ? footer() : footer
+                    ));
                     return renderedRows;
                   },
 
-                  cellRenderer: function cellRenderer(_ref7) {
-                    var columnIndex = _ref7.columnIndex;
-                    var rowIndex = _ref7.rowIndex;
-                    var isScrolling = _ref7.isScrolling;
+                  cellRenderer: function cellRenderer(_ref8) {
+                    var columnIndex = _ref8.columnIndex;
+                    var rowIndex = _ref8.rowIndex;
+                    var isScrolling = _ref8.isScrolling;
 
                     var col = cols[columnIndex];
-                    if (rowIndex === 0) {
-                      var headerClass = (0, _classnames2.default)(styles.headerCell, col.className);
-                      return React.createElement(
-                        'div',
-                        { className: headerClass },
-                        col.header({ rows: rows })
-                      );
-                    } else if (rowIndex === rowCount - 1) {
-                      var footerClass = (0, _classnames2.default)(styles.footerCell, col.className);
-                      return React.createElement(
-                        'div',
-                        { className: footerClass },
-                        col.footer ? col.footer({ rows: rows }) : null
-                      );
-                    } else {
-                      var cellClass = (0, _classnames2.default)(styles.cell, col.className, rowIndex % 2 === 0 ? theme.evenRow : theme.oddRow);
-                      return React.createElement(
-                        'div',
-                        { className: cellClass },
-                        rows[rowIndex - 1].render()[columnIndex]
-                      );
-                    }
+                    return rows[rowIndex].render()[columnIndex];
                   }
                 });
               }
@@ -337,7 +381,10 @@ function coreGrid(deps) {
     }, {
       key: 'componentDidUpdate',
       value: function componentDidUpdate(prevProps, prevState) {
-        if (prevState.width !== this.state.width || prevState.height !== this.state.height) this.grid.recomputeGridSize();
+        if (prevState.width !== this.state.width || prevState.height !== this.state.height || prevProps.isMaximized !== this.props.isMaximized) {
+          console.info('RECALCULATING GRID SIZE');
+          this.grid.recomputeGridSize();
+        }
       }
     }]);
 

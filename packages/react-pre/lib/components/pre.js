@@ -46,7 +46,8 @@ function pre(deps) {
     display: 'flex',
     padding: 2,
     border: '2px solid rgba(100, 100, 255, 0.1)',
-    borderRadius: 2
+    borderRadius: 2,
+    margin: 0
   };
   var labelStyle = { borderRadius: 2,
     color: 'rgb(255, 255, 255)',
@@ -82,8 +83,6 @@ function pre(deps) {
 
   var immutableCommon = _extends({}, labelStyle, { fontSize: '0.95em',
     position: 'relative',
-    width: '80%',
-    minWidth: 140,
     minHeight: 22,
     color: 'rgb(0, 0, 0)'
   });
@@ -103,7 +102,9 @@ function pre(deps) {
     pointerEvents: 'none'
   };
   var floats = { float: 'left', clear: 'left' };
-  var inlineTable = { display: 'table' };
+  var inlineTable = { display: 'table',
+    width: '80%'
+  };
   return function (_Component) {
     _inherits(Pre, _Component);
 

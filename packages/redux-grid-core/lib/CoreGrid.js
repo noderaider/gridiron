@@ -22,7 +22,10 @@ var PropTypes = exports.PropTypes = function PropTypes(React) {
     theme: React.PropTypes.object.isRequired,
     gridStyle: React.PropTypes.object.isRequired,
     state: React.PropTypes.object.isRequired,
-    maxHeight: React.PropTypes.number
+    maxHeight: React.PropTypes.number,
+    header: React.PropTypes.any,
+    footer: React.PropTypes.any,
+    isMaximized: React.PropTypes.bool.isRequired
   };
 };
 
@@ -33,7 +36,8 @@ var DefaultProps = exports.DefaultProps = function DefaultProps(React) {
   return { gridStyle: {},
     mapIds: function mapIds(state, index) {
       return index;
-    }
+    },
+    isMaximized: false
   };
 };
 

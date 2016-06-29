@@ -1,3 +1,9 @@
+.container {
+  margin-top:20px;
+  margin-bottom:60px;
+}
+
+
 .BodyGrid {
   background-color: #fff;
   border-radius: 3px;
@@ -6,32 +12,14 @@
   font-family: monospace;
 }
 
-.header {
-  color: #023240;
-  background-color: rgba(120, 120, 120, 0.5);
-  border: 1px solid rgba(120, 120, 120, 0.5);
-  padding: 3px;
-  margin: 0;
-  //border-radius: 1px;
-  font-weight: bold;
-}
-
-.header:hover {
-  background-color: rgba(120, 120, 120, 0.55);
-}
-
-.footer {
-  padding: 6px;
-  margin: 3px;
-}
 
 .evenRow {
-  background-color: #efecca;
+  background-color: rgb(234, 235, 220);
   color: #046D8D;
 }
 
 .oddRow {
-  background-color: #FFFEF1;
+  background-color: rgb(255, 250, 225);
   color: #046D8D;
 }
 
@@ -41,6 +29,32 @@
 }
 
 .expanded {
-  //padding:10px;
   background-color: rgba(50, 50, 50, 0.3);
+}
+
+
+.headerGrid {
+  color: #023240;
+  background-color: rgba(120, 120, 120, 0.5);
+  border-bottom: 1px solid rgba(120, 120, 120, 0.5);
+}
+
+.footerGrid {
+  color: #023240;
+  background-color: rgba(120, 120, 120, 0.5);
+}
+
+.headerCell, .footerCell {
+  color: #023240;
+  background-color: rgba(120, 120, 120, 0.5);
+  border-right: 1px solid rgba(120, 120, 120, 0.5);
+  border-bottom: 1px solid rgba(120, 120, 120, 0.5);
+}
+
+.headerCell:hover {
+  background-color: rgba(120, 120, 120, 0.55);
+}
+
+.headerCell button:hover {
+  border: 1px solid rgba(110, 110, 110, 0.55);
 }

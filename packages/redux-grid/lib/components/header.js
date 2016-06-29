@@ -3,7 +3,21 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _reduxGridCore = require('redux-grid-core');
+
 var should = require('chai').should();
+
+var sortDirection = function sortDirection(value) {
+  switch (value) {
+    case 'asc':
+      return '-asc';
+    case 'desc':
+      return '-desc';
+    default:
+      return '';
+  }
+};
 
 exports.default = function (_ref) {
   var React = _ref.React;
@@ -15,11 +29,8 @@ exports.default = function (_ref) {
     alignItems: 'center',
     justifyContent: 'space-between'
   };
-  var headerButtonStyle = { border: 0,
-    backgroundColor: 'transparent'
-  };
 
-  return function (props) {
+  var Header = function Header(props) {
     return React.createElement(
       'span',
       { style: wrapStyle, className: props.theme.header },
@@ -33,15 +44,18 @@ exports.default = function (_ref) {
         null,
         props.hasSort ? React.createElement(
           'button',
-          { style: headerButtonStyle, onClick: props.handleSort },
-          React.createElement('i', { className: 'fa fa-sort-' + (props.asc ? 'asc' : 'desc') })
+          { onClick: props.handleSort },
+          React.createElement('i', { className: 'fa fa-sort' + sortDirection(props.sortDirection) })
         ) : null,
         props.hasFilter ? React.createElement(
           'button',
-          { style: headerButtonStyle, onClick: props.handleFilter },
+          { onClick: props.handleFilter },
           React.createElement('i', { className: 'fa fa-filter' })
         ) : null
       )
     );
   };
+  Header.propTypes = _reduxGridCore.Header.PropTypes(React);
+  Header.defaultProps = _reduxGridCore.Header.DefaultProps(React);
+  return Header;
 };

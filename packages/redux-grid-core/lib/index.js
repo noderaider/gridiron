@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Expander = exports.Header = exports.DrillGrid = exports.CoreGrid = undefined;
+exports.Resize = exports.Pager = exports.Expander = exports.Footer = exports.Header = exports.DrillGrid = exports.CoreGrid = undefined;
 
 var _CoreGrid = require('./CoreGrid');
 
@@ -17,13 +17,26 @@ var _Header = require('./Header');
 
 var Header = _interopRequireWildcard(_Header);
 
+var Footer = _interopRequireWildcard(_Header);
+
 var _Expander = require('./Expander');
 
 var Expander = _interopRequireWildcard(_Expander);
+
+var _Pager = require('./Pager');
+
+var Pager = _interopRequireWildcard(_Pager);
+
+var _Resize = require('./Resize');
+
+var Resize = _interopRequireWildcard(_Resize);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 exports.CoreGrid = CoreGrid;
 exports.DrillGrid = DrillGrid;
 exports.Header = Header;
+exports.Footer = Footer;
 exports.Expander = Expander;
+exports.Pager = Pager;
+exports.Resize = Resize;

@@ -1,3 +1,4 @@
+import { Footer as Core } from 'redux-grid-core'
 const should = require('chai').should()
 
 export default ({ React }) => {
@@ -8,13 +9,16 @@ export default ({ React }) => {
                     , alignItems: 'center'
                     , justifyContent: 'space-between'
                     }
-  const headerButtonStyle = { border: 0
+  const footerButtonStyle = { border: 0
                             , backgroundColor: 'transparent'
                             }
 
-  return props => (
+  const Footer = props => (
     <span style={wrapStyle} className={props.theme.footer}>
-      <span>{props.children}</span>
+      {props.children}
     </span>
   )
+  Footer.propTypes = Core.PropTypes(React)
+  Footer.defaultProps = Core.DefaultProps(React)
+  return Footer
 }

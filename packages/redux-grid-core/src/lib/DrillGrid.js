@@ -2,8 +2,6 @@ import * as CoreGrid from './CoreGrid'
 
 /**
  * Interface factory for <DrillGrid /> components.
- * @param  {[type]} options.PropTypes [description]
- * @return {[type]}                   [description]
  */
 export const PropTypes = React => ( { mapCols: React.PropTypes.func.isRequired
                                     , mapRows: React.PropTypes.func.isRequired

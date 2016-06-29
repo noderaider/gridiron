@@ -1,44 +1,56 @@
 .BodyGrid {
-  background-color: #fff;
+  margin:0;
   padding: 0;
-  margin: 4px;
-  margin-right: 8px;
+  border: none;
   font-size: 0.85em;
   font-family: monospace;
-  //border-radius: 3px;
-  //box-shadow: 2px 2px 3px rgba(50, 50, 50, 0.5);
-  //border: 1px solid #046380;
-}
-
-.header {
-  color: #023240;
-  background-color: #ABC5FF;
-  padding: 6px;
-  margin: 3px;
-  border-radius: 2px;
-  font-weight: bold;
-}
-
-.header:hover {
-  background-color: #7BB2E5;
-}
-
-.footer {
-  padding: 6px;
-  margin: 3px;
 }
 
 .evenRow {
-  background-color: #efecca;
+  background-color: rgb(210, 210, 210);
   color: #046D8D;
 }
 
 .oddRow {
-  background-color: #FFFEF1;
+  background-color: rgb(220, 220, 220);
   color: #046D8D;
 }
 
 .expander {
   font-size:1.5em;
   color: #002f2f;
+}
+
+.headerGrid {
+  color: #fff !important;
+  background-color: #000;
+  padding: 5px;
+}
+
+.headerCell {
+  color: #fff !important;
+  background-color: #000;
+}
+
+.headerCell:hover {
+  background-color: rgb(20, 20, 20);
+}
+
+.headerCell button {
+  color: #fff;
+}
+
+.headerCell button:hover {
+  border: 1px solid rgb(40, 40, 40);
+}
+
+.footerCell {
+  color: #fff;
+  background-color: #000;
+}
+
+.footerGrid {
+  color: #fff;
+  background-color: #000;
+  margin: 0
 }

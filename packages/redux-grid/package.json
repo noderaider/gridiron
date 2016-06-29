@@ -49,6 +49,7 @@
     "ncp": "^2.0.0",
     "npm-run-all": "^2.1.1",
     "react-autosizer": "^0.1.6",
+    "react-select": "^1.0.0-beta13",
     "redux-grid-core": "^0.4.1",
     "solvent": "^0.4.1"
   },

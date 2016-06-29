@@ -6,8 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 
 /**
  * PropTypes factory for <Expander /> components.
- * @param  {[type]} options.PropTypes [description]
- * @return {[type]}                   [description]
  */
 var PropTypes = exports.PropTypes = function PropTypes(React) {
   return { visible: React.PropTypes.bool
@@ -16,8 +14,6 @@ var PropTypes = exports.PropTypes = function PropTypes(React) {
 
 /**
  * DefaultProps factory for <Expander /> components.
- * @param  {[type]} options.PropTypes [description]
- * @return {[type]}                   [description]
  */
 var DefaultProps = exports.DefaultProps = function DefaultProps(React) {
   return { visible: true

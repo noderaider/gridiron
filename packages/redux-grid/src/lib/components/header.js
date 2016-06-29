@@ -1,4 +1,16 @@
+import { Header as Core } from 'redux-grid-core'
 const should = require('chai').should()
+
+const sortDirection = value => {
+  switch(value) {
+    case 'asc':
+      return '-asc'
+    case 'desc':
+      return '-desc'
+    default:
+      return ''
+  }
+}
 
 export default ({ React }) => {
   const wrapStyle = { display: 'flex'
@@ -8,25 +20,25 @@ export default ({ React }) => {
                     , alignItems: 'center'
                     , justifyContent: 'space-between'
                     }
-  const headerButtonStyle = { border: 0
-                            , backgroundColor: 'transparent'
-                            }
 
-  return props => (
+  const Header = props => (
     <span style={wrapStyle} className={props.theme.header}>
       <span>{props.children}</span>
       <span>
         {props.hasSort ? (
-          <button style={headerButtonStyle} onClick={props.handleSort}>
-            <i className={`fa fa-sort-${(props.asc ? 'asc' : 'desc')}`} />
+          <button onClick={props.handleSort}>
+            <i className={`fa fa-sort${sortDirection(props.sortDirection)}`} />
           </button>
         ) : null}
         {props.hasFilter ? (
-          <button style={headerButtonStyle} onClick={props.handleFilter}>
+          <button onClick={props.handleFilter}>
             <i className={`fa fa-filter${''}`} />
           </button>
         ) : null}
       </span>
     </span>
   )
+  Header.propTypes = Core.PropTypes(React)
+  Header.defaultProps = Core.DefaultProps(React)
+  return Header
 }

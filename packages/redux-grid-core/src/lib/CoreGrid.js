@@ -10,6 +10,9 @@ export const PropTypes = React => ( { mapCols: React.PropTypes.func.isRequired
                                     , gridStyle: React.PropTypes.object.isRequired
                                     , state: React.PropTypes.object.isRequired
                                     , maxHeight: React.PropTypes.number
+                                    , header: React.PropTypes.any
+                                    , footer: React.PropTypes.any
+                                    , isMaximized: React.PropTypes.bool.isRequired
                                     } )
 
 /**
@@ -17,6 +20,7 @@ export const PropTypes = React => ( { mapCols: React.PropTypes.func.isRequired
  */
 export const DefaultProps = React => ({ gridStyle: {}
                                       , mapIds: (state, index) => index
+                                      , isMaximized: false
                                       })
 
 

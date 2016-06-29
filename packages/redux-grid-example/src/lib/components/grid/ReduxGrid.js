@@ -4,8 +4,9 @@ import ReactDOM from 'react-dom'
 import ReactHeight from 'react-height'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
-import FixedDataTable from 'fixed-data-table'
 import * as ReactVirtualized from 'react-virtualized'
+import Select from 'react-select'
+import './css/react-select.gcss'
 import reduxGrid from 'redux-grid'
 import reactPre from 'react-pre'
 import util from 'util'
@@ -14,23 +15,21 @@ import styles from './css/redux-grid.css'
 import sandy from './css/theme/sandy.css'
 import subgrid from './css/theme/subgrid.css'
 
-import { ContentBox } from './ContentBox'
 
 const should = require('chai').should()
 
-
-const { CoreGrid, DrillGrid, Header, Footer, Expander } = reduxGrid({ React, ReactDOM, ReactCSSTransitionGroup, ReactVirtualized, connect, Immutable, ContentBox })
+const { CoreGrid, DrillGrid, Header, Footer, Expander, Pager, Resize } = reduxGrid({ React, ReactDOM, ReactVirtualized, connect, Select, Immutable })
 const { Pre, Arrows } = reactPre({ React })
 
 
 const mapCols = state => {
   return  [ { id: 'id'
-            , header: () => <Header hasSort={true} hasFilter={true} theme={sandy}>Path</Header>
-            , footer: ({ rows }) => <Footer hasSort={true} hasFilter={true} theme={sandy}>{rows.length} rows</Footer>
+            , header: ({ theme }) => <Header hasSort={true} hasFilter={true} theme={theme}>Path</Header>
+            //, footer: ({ rows }) => <Footer theme={sandy}>{rows.length} rows</Footer>
             , width: 300
             }
           , { id: 'key'
-            , header: () => <Header hasSort={true} hasFilter={true} theme={sandy}>State</Header>
+            , header: ({ theme }) => <Header hasSort={true} hasFilter={true} theme={theme}>State</Header>
             //, footer: ({ rows }) => <Footer theme={sandy}>State</Footer>
             }
           ]
@@ -38,7 +37,7 @@ const mapCols = state => {
 
 
 
-const mapIdRows = (ids = []) => state => {
+const createRowMapper = ({ ids = [], pager } = {}) => (state, { rows } = {}) => {
   const selectedState = ids.reduce((s, x) => s[x], state)
 
   return Object.keys(selectedState).reduce((rows, x, i) => {
@@ -51,35 +50,85 @@ const mapIdRows = (ids = []) => state => {
   }, [])
 }
 
+
+const wideStyle = { display: 'flex'
+                  , flexDirection: 'row'
+                  , flex: '1 0 auto'
+                  , justifyContent: 'space-between'
+                  , alignItems: 'center'
+                  , margin: 'auto'
+                  , padding: 5
+                  }
+
+
 const mapDrill = (state, parentId) => {
-  const mapSubRows = mapIdRows(parentId)
   return (
-    <div style={{ marginTop: 6, marginBottom: 4 }}>
-      <span style={{ marginLeft: '5%', fontFamily: 'monospace', fontWeight: 'bold', letterSpacing: 6, fontSize: '1em', color: '#2B3140' }}>
-        <Arrows>{parentId}</Arrows> details
-      </span>
-      <DrillGrid
-        style={{ marginTop: 10 }}
-        styles={styles}
-        theme={subgrid}
-        mapCols={mapCols}
-        mapRows={mapSubRows}
-        mapDrill={mapDrill}
-      />
-    </div>
+      <Pager maxRecords={5} mapRows={createRowMapper({ ids: parentId })} styles={styles} theme={sandy}>
+        {pager => (
+          <DrillGrid
+            styles={styles}
+            theme={subgrid}
+            mapCols={mapCols}
+            mapRows={pager.mapRows}
+            mapDrill={mapDrill}
+            header={
+              <span style={{ fontFamily: 'monospace', fontWeight: 'bold', letterSpacing: 6, fontSize: '1em' }}>
+                <Arrows>{parentId}</Arrows> details
+              </span>
+            }
+            footer={
+              <div style={wideStyle}>
+                <pager.Buttons />
+                <pager.RowStatus />
+                <pager.PageStatus />
+              </div>
+            }
+          />
+        )}
+    </Pager>
+
   )
 }
 
 
-const ReduxGrid = props => (
-  <DrillGrid
-    styles={styles}
-    theme={sandy}
-    mapCols={mapCols}
-    mapRows={mapIdRows()}
-    mapDrill={mapDrill}
-    {...props}
-  />
-)
+export default class ReduxGrid extends Component {
+  constructor(props) {
+    super(props)
+    this.state =  { isMaximized: false
+                  }
+  }
+  render() {
+    return (
+      <Pager maxRecords={5} mapRows={createRowMapper({ pager: this.state.pager })} styles={styles} theme={sandy}>
+        {pager => (
+          <DrillGrid
+            styles={styles}
+            theme={sandy}
+            mapCols={mapCols}
+            mapRows={pager.mapRows}
+            mapDrill={mapDrill}
+            header={
+              <div style={wideStyle}>
+                <h3 style={{ margin: 0, letterSpacing: 6 }}>redux-grid</h3>
+                <Resize isMaximized={this.state.isMaximized} onMaximize={() => this.setState({ isMaximized: true })} onCompress={() => this.setState({ isMaximized: false })} />
+              </div>
+            }
+            footer={
+              <div style={wideStyle}>
+                <pager.Buttons>
+                  <pager.PageSelect />
+                </pager.Buttons>
+                <pager.RowStatus />
+                <pager.PageStatus />
+              </div>
+            }
+            isMaximized={this.state.isMaximized}
+            {...this.props}
+          />
+        )}
+      </Pager>
+    )
+  }
+}
 
 export default ReduxGrid

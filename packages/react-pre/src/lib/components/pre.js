@@ -18,6 +18,7 @@ export default function pre (deps) {
                     , padding: 2
                     , border: '2px solid rgba(100, 100, 255, 0.1)'
                     , borderRadius: 2
+                    , margin: 0
                     }
   const labelStyle =  { borderRadius: 2
                       , color: 'rgb(255, 255, 255)'
@@ -61,8 +62,6 @@ export default function pre (deps) {
   const immutableCommon =   { ...labelStyle
                             , fontSize: '0.95em'
                             , position: 'relative'
-                            , width: '80%'
-                            , minWidth: 140
                             , minHeight: 22
                             , color: 'rgb(0, 0, 0)'
                             }
@@ -84,7 +83,9 @@ export default function pre (deps) {
                               , pointerEvents: 'none'
                               }
   const floats = { float: 'left', clear: 'left' }
-  const inlineTable = { display: 'table' }
+  const inlineTable = { display: 'table'
+                      , width: '80%'
+                      }
   return class Pre extends Component {
     render() {
       let parsed = this.parseJS(this.props.children)

@@ -65,6 +65,7 @@ export default function drillGrid (deps) {
         }, [])
       }
 
+
       return (
           <CoreGrid
             {...rest}

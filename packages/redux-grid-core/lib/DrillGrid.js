@@ -13,8 +13,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 /**
  * Interface factory for <DrillGrid /> components.
- * @param  {[type]} options.PropTypes [description]
- * @return {[type]}                   [description]
  */
 var PropTypes = exports.PropTypes = function PropTypes(React) {
   return { mapCols: React.PropTypes.func.isRequired,

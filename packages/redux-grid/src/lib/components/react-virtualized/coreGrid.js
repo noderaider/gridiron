@@ -1,7 +1,6 @@
 import { CoreGrid as Core } from 'redux-grid-core'
 import solvent from 'solvent'
 import expander from '../expander'
-import createExpandableCellRangeRenderer from './internal/createExpandableCellRangeRenderer'
 import classNames from 'classnames'
 import util from 'util'
 const should = require('chai').should()
@@ -14,11 +13,11 @@ const resolver = solvent( { React: 'object'
                           } )
 export default function coreGrid (deps) {
   const { React, connect, ReactVirtualized, Immutable } = resolver(deps)
+  const { Component, PropTypes, cloneElement } = React
   const { getState } = deps
   should.exist(React)
   should.exist(connect)
   should.exist(ReactVirtualized)
-  const { Component, PropTypes, cloneElement } = React
   const { AutoSizer, FlexTable, FlexColumn, SortDirection, SortIndicator, Grid } = ReactVirtualized
   const Expander = expander({ React })
 
@@ -30,8 +29,19 @@ export default function coreGrid (deps) {
       super(props)
       this.state =  {}
     }
+    /*
+    componentDidMount() {
+      this.recomputeID = setInterval(() => {
+        console.info('RECALCULATING GRID SIZE')
+        this.grid.recomputeGridSize()
+      }, 4000)
+    }
+    componentWillUnmount() {
+      clearInterval(this.recomputeID)
+    }
+    */
     render() {
-      const { state, mapCols, mapRows, maxHeight, style, styles, theme, gridStyle, maxWidth } = this.props
+      const { state, mapCols, mapRows, maxHeight, style, styles, theme, gridStyle, maxWidth, header, footer, isMaximized, pager } = this.props
 
       should.exist(mapCols)
       should.exist(mapRows)
@@ -49,7 +59,7 @@ export default function coreGrid (deps) {
       cols.should.be.instanceof(Array)
       rows.should.be.instanceof(Array)
       const colCount = cols.length
-      const getRowCount = ({ rows = mapRows(state) } = {}) => (rows.size || rows.length) + 2 // 2 more than index for header and footer
+      const getRowCount = ({ rows = mapRows(state) } = {}) => (rows.size || rows.length) // 2 more than index for header and footer
 
       const resolveColWidth = (calculated, { minWidth, maxWidth } = {}) => {
         //console.debug('RESOLVE COL WIDTH', calculated, minWidth, maxWidth)
@@ -64,13 +74,14 @@ export default function coreGrid (deps) {
         return calculated
       }
 
-      const gridClass = classNames(styles.BodyGrid, theme.BodyGrid)
 
-      const wrapperClass = classNames(this.props.isSubGrid === true ? styles.subgrid : null)
+      const containerClass = classNames(styles.container, theme.container, isMaximized ? styles.maximized : styles.compressed)
+      const innerContainerClass = classNames(styles.innerContainer, theme.innerContainer)
+      const gridClass = classNames(styles.BodyGrid, theme.BodyGrid)
       return (
-        <div className={styles.Grid__wrap} style={{ ...style, display: 'flex' }}>
-          <div style={{ flex: '1 1 auto' }}>
-            <AutoSizer style={{ width: '100%', height: '100%' }} onResize={({ height, width }) => {
+        <div className={containerClass} style={style}>
+          <div className={innerContainerClass}>
+            <AutoSizer onResize={({ height, width }) => {
               console.info('RESIZED', height, width)
               this.setState({ height, width })
             }}>
@@ -79,7 +90,12 @@ export default function coreGrid (deps) {
                 const width = this.state.width || dimensions.width
                 console.info('AUTODIMENSIONS =>', dimensions)
                 const height = this.state.height || dimensions.height || 100
-                const fixedCols = cols.filter(x => x.width && typeof x.width === 'number')
+                let fixedWidthIndices = []
+                const fixedCols = cols.filter((x, i) => {
+                  const isFixed = x.width && typeof x.width === 'number'
+                  if(isFixed) fixedWidthIndices.push(i)
+                  return isFixed
+                })
 
                 const fixedWidth = fixedCols.reduce((sum, x) => sum += x.width, 0)
                 const variableWidth = width - fixedWidth
@@ -113,23 +129,53 @@ export default function coreGrid (deps) {
                         const renderedRows = []
                         const width = this.state.width || dimensions.width
 
+                        /** GRID ROW HEADER */
+                        if(header)
+                          renderedRows.push(<div key="grid-header" className={classNames(styles.headerGrid, theme.headerGrid)}>{typeof header === 'function' ? header() : header}</div>)
+
+                        const gridRow = (rowKey, cells, { rowClass = 'Grid__row', rowStyle = {}, cellClass = 'Grid__cell', cellStyle = {} }) => {
+                          should.exist(rowKey, 'rowKey is required')
+                          return (
+                            <div key={rowKey} id={`${rowKey}-row`} className={styles.rowStyle} style={rowStyle}>
+                              {cells.map((x, i) => {
+                                let computedStyle = typeof cellStyle === 'function' ? cellStyle(i) : cellStyle
+                                if(fixedWidthIndices.includes(i)) {
+                                  const datum = columnSizeAndPositionManager.getSizeAndPositionOfCell(i)
+                                  computedStyle = { ...computedStyle, flex: `0 1 ${datum.size}px` }
+                                }
+                                return (
+                                  <div
+                                    key={`${rowKey}-${i}`}
+                                    className={typeof cellClass === 'function' ? cellClass(i) : cellClass}
+                                    style={computedStyle}
+                                  >
+                                    <span className={classNames(styles.innerCell, theme.innerCell)}>{x}</span>
+                                  </div>
+                              )
+                              })
+                            }
+                            </div>
+                          )
+                        }
+
+                        /** COLUMN HEADERS */
+                        renderedRows.push(gridRow('col-headers', cols.map(x => x.header({ rows, theme })), { rowClass: styles.rowStyle, cellClass: i => classNames(styles.headerCell, theme.headerCell, cols[i].className) }))
+
                         for (let rowIndex = rowStartIndex; rowIndex <= rowStopIndex; rowIndex++) {
                           const renderedCells = []
-                          let rowDatum = rowSizeAndPositionManager.getSizeAndPositionOfCell(rowIndex)
 
-                          if(spannedRows.includes(rowIndex - 1)) {
+                          if(spannedRows.includes(rowIndex)) {
+                            console.info('EXPANDED', rowIndex)
                             const key = `${rowIndex}-span`
                             const child = (
                               <div
                                 key={key}
                                 className={classNames(styles.Grid__span, theme.expanded, 'drill')}
-                                style={ { width
-                                        } }
                               >
-                                {rows[rowIndex - 1].render()}
+                                {rows[rowIndex].render()}
                               </div>
                             )
-                            renderedCells.push(child)
+                            renderedRows.push(child)
                           } else {
                             for (let columnIndex = columnStartIndex; columnIndex <= columnStopIndex; columnIndex++) {
                               let columnDatum = columnSizeAndPositionManager.getSizeAndPositionOfCell(columnIndex)
@@ -141,7 +187,7 @@ export default function coreGrid (deps) {
                               // This can lead to the same cell being created many times and can cause performance issues for "heavy" cells.
                               // If a scroll is in progress- cache and reuse cells.
                               // This cache will be thrown away once scrolling completes.
-                              if (isScrolling) {
+                              if (true === false) { //isScrolling) {
                                 if (!cellCache[key]) {
                                   cellCache[key] = cellRenderer({ columnIndex
                                                                 , isScrolling
@@ -160,28 +206,18 @@ export default function coreGrid (deps) {
 
                               if (renderedCell === null || renderedCell === false)
                                 continue
-
-
-                              /** STATIC HEIGHT ELEMENT */
-                              let child = (
-                                <div
-                                  key={key}
-                                  className='Grid__cell'
-                                  style={ { height: rowDatum.size
-                                          //, left: columnDatum.offset + horizontalOffsetAdjustment
-                                          , width: columnDatum.size
-                                          } }
-                                >
-                                  {renderedCell}
-                                </div>
-                              )
-                              renderedCells.push(child)
+                              renderedCells.push(renderedCell)
                             }
                           }
-                          const rowStyle =  { //height: rowDatum.size
-                                            }
-                          renderedRows.push(<div key={`${rowIndex}-row`} id={`${rowIndex}-row`} className={styles.rowStyle} style={rowStyle}>{renderedCells}</div>)
+                          //renderedRows.push(<div key={`${rowIndex}-row`} id={`${rowIndex}-row`} className={styles.rowStyle}>{renderedCells}</div>)
+                          const cellClass = i => classNames(styles.cell, theme.cell, cols[i].className, rowIndex % 2 === 0 ? theme.evenRow : theme.oddRow)
+                          renderedRows.push(gridRow(rowIndex, renderedCells, { rowClass: styles.rowStyle, cellClass }))
                         }
+
+                        renderedRows.push(gridRow('col-footers', cols.map(x => x.footer ? x.footer({ rows, theme }) : null), { rowClass: styles.rowStyle, cellClass: i => classNames(styles.footerCell, theme.footerCell, cols[i].className) }))
+
+                        if(footer)
+                          renderedRows.push(<div key="grid-footer" className={classNames(styles.footerGrid, theme.footerGrid)}>{typeof footer === 'function' ? footer() : footer}</div>)
                         return renderedRows
                       }
                     }
@@ -189,16 +225,7 @@ export default function coreGrid (deps) {
                     cellRenderer={
                       ({ columnIndex, rowIndex, isScrolling }) => {
                         const col = cols[columnIndex]
-                        if(rowIndex === 0) {
-                          const headerClass = classNames(styles.headerCell, col.className)
-                          return <div className={headerClass}>{col.header({ rows })}</div>
-                        } else if(rowIndex === rowCount - 1) {
-                          const footerClass = classNames(styles.footerCell, col.className)
-                          return <div className={footerClass}>{col.footer ? col.footer({ rows }) : null}</div>
-                        } else {
-                          const cellClass = classNames(styles.cell, col.className, rowIndex % 2 === 0 ? theme.evenRow : theme.oddRow)
-                          return <div className={cellClass}>{rows[rowIndex - 1].render()[columnIndex]}</div>
-                        }
+                        return rows[rowIndex].render()[columnIndex]
                       }
                     }
                   />
@@ -210,8 +237,10 @@ export default function coreGrid (deps) {
       )
     }
     componentDidUpdate(prevProps, prevState) {
-      if(prevState.width !== this.state.width || prevState.height !== this.state.height)
+      if(prevState.width !== this.state.width || prevState.height !== this.state.height || prevProps.isMaximized !== this.props.isMaximized) {
+        console.info('RECALCULATING GRID SIZE')
         this.grid.recomputeGridSize()
+      }
     }
   }
   return Core.Connect({ connect, getState })(CoreGrid)
