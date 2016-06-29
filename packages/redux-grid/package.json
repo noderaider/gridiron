@@ -1,6 +1,6 @@
 {
   "name": "redux-grid",
-  "version": "0.4.6",
+  "version": "0.5.0",
   "description": "Lightweight grid framework built on top of react-virtualized / fixed-data-table for easy highly customizable grids generated from redux state.",
   "main": "lib/index.js",
   "files": [
@@ -50,7 +50,7 @@
     "npm-run-all": "^2.1.1",
     "react-autosizer": "^0.1.6",
     "react-select": "^1.0.0-beta13",
-    "redux-grid-core": "^0.4.1",
+    "redux-grid-core": "^0.5.0",
     "solvent": "^0.4.1"
   },
   "devDependencies": {
