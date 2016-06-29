@@ -1,6 +1,6 @@
 {
   "name": "react-ai",
-  "version": "0.5.0",
+  "version": "0.5.2",
   "description": "Intelligent React Toolset",
   "main": "lib/index.js",
   "files": [
