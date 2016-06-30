@@ -1,6 +1,6 @@
 {
   "name": "redux-grid-test",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "Test framework for redux-grid and related components. Enables redux-grid to not carry heavyweight dependencies.",
   "main": "lib/index.js",
   "keywords": [
@@ -75,7 +75,7 @@
     "react-tools": "latest",
     "react-virtualized": "latest",
     "redux": "latest",
-    "redux-grid": "^0.5.2",
+    "redux-grid": "^0.5.3",
     "redux-grid-view": "^0.2.2",
     "rimraf": "latest",
     "sinon": "latest"
