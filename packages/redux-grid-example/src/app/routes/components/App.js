@@ -49,7 +49,7 @@ class App extends Component {
     const { style } = theme
 
     return (
-      <div>
+      <div style={{ marginBottom: 70 }}>
         <div style={style.app}>
           <TopBar title={title} subtitle={subtitle} username={username} email={email} packageName={packageName} />
           {children}

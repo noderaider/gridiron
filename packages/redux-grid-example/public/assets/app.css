@@ -2423,6 +2423,86 @@
     -webkit-transform: rotate(1turn);
   }
 }
+.react-maximize__maximize___3FLgR > .react-maximize__maximizeChildren___Ekqyo {
+  -webkit-animation-duration: 200ms;
+          animation-duration: 200ms;
+  -webkit-animation-name: react-maximize__to-maximize___2hWKE;
+          animation-name: react-maximize__to-maximize___2hWKE;
+  -webkit-animation-timing-function: ease-out;
+          animation-timing-function: ease-out;
+}
+
+.react-maximize__compress___X-c7m > .react-maximize__maximizeChildren___Ekqyo {
+  -webkit-animation-duration: 200ms;
+          animation-duration: 200ms;
+  -webkit-animation-name: react-maximize__to-compress___2lmjJ;
+          animation-name: react-maximize__to-compress___2lmjJ;
+  -webkit-animation-timing-function: ease-out;
+          animation-timing-function: ease-out;
+}
+
+.react-maximize__maximizeChildren___Ekqyo {
+  left: 0;
+  right: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 100vh;
+          flex: 1 1 100vh;
+  //min-height: 100vh;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+@-webkit-keyframes react-maximize__to-maximize___2hWKE {
+  from {
+    -webkit-transform: translateY(100vh);
+            transform: translateY(100vh);
+  }
+  to {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+}
+
+@keyframes react-maximize__to-maximize___2hWKE {
+  from {
+    -webkit-transform: translateY(100vh);
+            transform: translateY(100vh);
+  }
+  to {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+}
+
+@-webkit-keyframes react-maximize__to-compress___2lmjJ {
+  from {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+  to {
+    -webkit-transform: translateY(100vh);
+            transform: translateY(100vh);
+  }
+}
+
+@keyframes react-maximize__to-compress___2lmjJ {
+  from {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+  to {
+    -webkit-transform: translateY(100vh);
+            transform: translateY(100vh);
+  }
+}
 /* Grid default theme */
 
 .Grid {
@@ -2479,30 +2559,10 @@
   position: absolute;
   left: 0 !important;
   top: 0 !important;
+  right: 0 !important;
   margin: 0 !important;
   z-index: 99999;
-}
-
-@-webkit-keyframes redux-grid__maximize___2GLvQ {
-  from {
-    -webkit-transform: scaleY(0.5);
-            transform: scaleY(0.5);
-  }
-  to {
-    -webkit-transform: scaleY(1);
-            transform: scaleY(1);
-  }
-}
-
-@keyframes redux-grid__maximize___2GLvQ {
-  from {
-    -webkit-transform: scaleY(0.5);
-            transform: scaleY(0.5);
-  }
-  to {
-    -webkit-transform: scaleY(1);
-            transform: scaleY(1);
-  }
+  height: 100vh;
 }
 
 .Grid__innerScrollContainer {
@@ -2660,10 +2720,6 @@
   font-family: monospace;
   font-size: 0.8em;
 }
-.sandy__container___2CuJI {
-  margin-top:20px;
-  margin-bottom:60px;
-}
 
 
 .sandy__BodyGrid___3wS6W {
@@ -2674,34 +2730,28 @@
   font-family: monospace;
 }
 
-
 .sandy__rowStyle___1qxFv {
-  /*border-bottom: 1px solid #e0e0e0;*/
+  border-bottom: 1px solid #e0e0e0;
 }
-
 
 .sandy__evenRow___1x-4f {
   background-color: rgb(234, 235, 220);
   color: #046D8D;
 }
 
-
 .sandy__oddRow___1skEx {
   background-color: rgb(255, 250, 225);
   color: #046D8D;
 }
-
 
 .sandy__expander___2toHr {
   font-size:1.5em;
   color: #002f2f;
 }
 
-
 .sandy__expanded___1jozo {
   background-color: rgba(50, 50, 50, 0.3);
 }
-
 
 .sandy__headerGrid___krOWI,
 .sandy__footerGrid___1umpM {
@@ -2709,7 +2759,6 @@
   background-color: rgba(120, 120, 120, 0.5);
   border-bottom: 1px solid rgba(120, 120, 120, 0.5);
 }
-
 
 .sandy__headerCell___HdR8V,
 .sandy__footerCell___AsnHR {
@@ -2719,14 +2768,12 @@
   border-bottom: 1px solid rgba(120, 120, 120, 0.5);
 }
 
-
 .sandy__headerGrid___krOWI:hover,
 .sandy__headerCell___HdR8V:hover,
 .sandy__footerCell___AsnHR:hover,
 .sandy__footerGrid___1umpM:hover {
   background-color: rgba(120, 120, 120, 0.55);
 }
-
 
 .sandy__headerGrid___krOWI button:hover,
 .sandy__headerCell___HdR8V button:hover,

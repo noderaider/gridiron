@@ -92,8 +92,9 @@ const buildTheme = (name, palette, inverted=false) => {
                             , height: '100%'
                             , backgroundColor: color.primary
                             , color: color.secondary
+                            , paddingBottom: 40
                             }
-                    , footer: { }
+                    , footer: { wrapper: { zIndex: 1000, backgroundColor: '#f00' } }
                     , panel:  { backgroundColor: brand.default
                               , borderColor: color.tertiary
                               , borderStyle: 'solid'
@@ -121,7 +122,7 @@ const buildTheme = (name, palette, inverted=false) => {
                               , paddingRight: 4
                               , fontSize: 10
                               , fontWeight: 700
-                              , fontFamily: ['Helvetica Neue','Helvetica','Arial','sans-serif']
+                              , fontFamily: [ 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif' ]
                               , whiteSpace: 'nowrap'
                               , display: 'inline'
                               , cursor: 'default'
@@ -148,7 +149,7 @@ export const getTheme = (themeName = defaultTheme) => {
   if(!themeName.includes('-'))
     throw new Error(`Incorrect format provided => '${themeName}', must be of format 'scheme-(light|dark)'`)
 
-  const [schemeName, lightOrDark] = themeName.split('-')
+  const [ schemeName, lightOrDark ] = themeName.split('-')
   const inverted = lightOrDark === 'dark'
 
   const palette = getScheme(schemeName)

@@ -49,8 +49,10 @@
     "ncp": "^2.0.0",
     "npm-run-all": "^2.1.1",
     "react-autosizer": "^0.1.6",
+    "react-maximize": "^0.5.2",
     "react-select": "^1.0.0-beta13",
     "redux-grid-core": "^0.5.2",
+    "redux-pager": "^0.5.2",
     "solvent": "^0.4.1"
   },
   "devDependencies": {

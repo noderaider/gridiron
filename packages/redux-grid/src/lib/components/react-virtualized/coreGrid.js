@@ -10,16 +10,26 @@ const resolver = solvent( { React: 'object'
                           , connect: 'function'
                           , ReactVirtualized: 'object'
                           , Immutable: 'object'
+                          , Maximize: 'function'
                           } )
-export default function coreGrid (deps) {
-  const { React, connect, ReactVirtualized, Immutable } = resolver(deps)
+export default function coreGrid (deps, defaults = {}) {
+  const { React, connect, ReactVirtualized, Immutable, Maximize } = resolver(deps)
   const { Component, PropTypes, cloneElement } = React
-  const { getState } = deps
+  const { getState } = defaults
   should.exist(React)
   should.exist(connect)
   should.exist(ReactVirtualized)
   const { AutoSizer, FlexTable, FlexColumn, SortDirection, SortIndicator, Grid } = ReactVirtualized
   const Expander = expander({ React })
+
+  const wideStyle = { display: 'flex'
+                    , flexDirection: 'row'
+                    , flex: '1 0 auto'
+                    , justifyContent: 'space-between'
+                    , alignItems: 'center'
+                    , margin: 'auto'
+                    , padding: 5
+                    }
 
   class CoreGrid extends Component {
     static propTypes = Core.PropTypes(React);
@@ -29,26 +39,18 @@ export default function coreGrid (deps) {
       super(props)
       this.state =  {}
     }
-    /*
-    componentDidMount() {
-      this.recomputeID = setInterval(() => {
-        console.info('RECALCULATING GRID SIZE')
-        this.grid.recomputeGridSize()
-      }, 4000)
-    }
-    componentWillUnmount() {
-      clearInterval(this.recomputeID)
-    }
-    */
     render() {
-      const { state, mapCols, mapRows, maxHeight, style, styles, theme, gridStyle, maxWidth, header, footer, isMaximized, pager } = this.props
+      const { cols, rows, maxHeight, style, styles, theme, gridStyle, maxWidth, header, footer, pager, hasMaximize } = this.props
+      /*
 
       should.exist(mapCols)
       should.exist(mapRows)
       mapCols.should.be.a('function')
       mapRows.should.be.a('function')
+
       const cols = mapCols(state)
-      const rows = mapRows(state)
+      */
+      //const rows = mapRows(state)
       const spannedRows = rows.reduce((spanned, x, i) => {
         if(x.span === true)
           return [ ...spanned, i ]
@@ -59,7 +61,7 @@ export default function coreGrid (deps) {
       cols.should.be.instanceof(Array)
       rows.should.be.instanceof(Array)
       const colCount = cols.length
-      const getRowCount = ({ rows = mapRows(state) } = {}) => (rows.size || rows.length) // 2 more than index for header and footer
+      const getRowCount = ({ rows = rows /*= mapRows(state)*/ } = {}) => (rows.size || rows.length) // 2 more than index for header and footer
 
       const resolveColWidth = (calculated, { minWidth, maxWidth } = {}) => {
         //console.debug('RESOLVE COL WIDTH', calculated, minWidth, maxWidth)
@@ -75,20 +77,19 @@ export default function coreGrid (deps) {
       }
 
 
-      const containerClass = classNames(styles.container, theme.container, isMaximized ? styles.maximized : styles.compressed)
+      const containerClass = classNames(styles.container, theme.container)
       const innerContainerClass = classNames(styles.innerContainer, theme.innerContainer)
       const gridClass = classNames(styles.BodyGrid, theme.BodyGrid)
-      return (
+
+      const renderGrid = ({ preHeader, postHeader } = {}) => (
         <div className={containerClass} style={style}>
           <div className={innerContainerClass}>
             <AutoSizer onResize={({ height, width }) => {
-              console.info('RESIZED', height, width)
               this.setState({ height, width })
             }}>
 
               {dimensions => {
                 const width = this.state.width || dimensions.width
-                console.info('AUTODIMENSIONS =>', dimensions)
                 const height = this.state.height || dimensions.height || 100
                 let fixedWidthIndices = []
                 const fixedCols = cols.filter((x, i) => {
@@ -118,11 +119,7 @@ export default function coreGrid (deps) {
                         return colWidths[col.id]
                       }
                     }
-                    rowHeight={
-                      ({ index }) => {
-                        return index === 0 ? 50 : 25
-                      }
-                    }
+                    rowHeight={1}
 
                     cellRangeRenderer={
                       ({ cellCache, cellRenderer, columnSizeAndPositionManager, columnStartIndex, columnStopIndex, horizontalOffsetAdjustment, isScrolling, rowSizeAndPositionManager, rowStartIndex, rowStopIndex, scrollLeft, scrollTop, verticalOffsetAdjustment } = {}) => {
@@ -131,7 +128,13 @@ export default function coreGrid (deps) {
 
                         /** GRID ROW HEADER */
                         if(header)
-                          renderedRows.push(<div key="grid-header" className={classNames(styles.headerGrid, theme.headerGrid)}>{typeof header === 'function' ? header() : header}</div>)
+                          renderedRows.push(
+                            <div key="grid-header" className={classNames(styles.headerGrid, theme.headerGrid)}>
+                              {preHeader ? preHeader : null}
+                              {typeof header === 'function' ? header() : header}
+                              {postHeader ? postHeader : null}
+                            </div>
+                          )
 
                         const gridRow = (rowKey, cells, { rowClass = 'Grid__row', rowStyle = {}, cellClass = 'Grid__cell', cellStyle = {} }) => {
                           should.exist(rowKey, 'rowKey is required')
@@ -165,11 +168,11 @@ export default function coreGrid (deps) {
                           const renderedCells = []
 
                           if(spannedRows.includes(rowIndex)) {
-                            console.info('EXPANDED', rowIndex)
                             const key = `${rowIndex}-span`
                             const child = (
                               <div
                                 key={key}
+                                //style={wideStyle}
                                 className={classNames(styles.Grid__span, theme.expanded, 'drill')}
                               >
                                 {rows[rowIndex].render()}
@@ -209,15 +212,18 @@ export default function coreGrid (deps) {
                               renderedCells.push(renderedCell)
                             }
                           }
-                          //renderedRows.push(<div key={`${rowIndex}-row`} id={`${rowIndex}-row`} className={styles.rowStyle}>{renderedCells}</div>)
                           const cellClass = i => classNames(styles.cell, theme.cell, cols[i].className, rowIndex % 2 === 0 ? theme.evenRow : theme.oddRow)
                           renderedRows.push(gridRow(rowIndex, renderedCells, { rowClass: styles.rowStyle, cellClass }))
                         }
 
                         renderedRows.push(gridRow('col-footers', cols.map(x => x.footer ? x.footer({ rows, theme }) : null), { rowClass: styles.rowStyle, cellClass: i => classNames(styles.footerCell, theme.footerCell, cols[i].className) }))
 
-                        if(footer)
-                          renderedRows.push(<div key="grid-footer" className={classNames(styles.footerGrid, theme.footerGrid)}>{typeof footer === 'function' ? footer() : footer}</div>)
+                        if(footer) {
+                          renderedRows.push(
+                            <div key="grid-footer" style={wideStyle} className={classNames(styles.footerGrid, theme.footerGrid)}>
+                              {typeof footer === 'function' ? footer() : footer}
+                            </div>)
+                        }
                         return renderedRows
                       }
                     }
@@ -235,13 +241,22 @@ export default function coreGrid (deps) {
           </div>
         </div>
       )
+
+      if(hasMaximize) {
+        return (
+          <Maximize className={containerClass}>
+            {maximize => renderGrid({ postHeader: <maximize.Controls /> })}
+          </Maximize>
+        )
+      } else {
+        return renderGrid()
+      }
     }
     componentDidUpdate(prevProps, prevState) {
-      if(prevState.width !== this.state.width || prevState.height !== this.state.height || prevProps.isMaximized !== this.props.isMaximized) {
-        console.info('RECALCULATING GRID SIZE')
+      if(prevState.width !== this.state.width || prevState.height !== this.state.height) {
         this.grid.recomputeGridSize()
       }
     }
   }
-  return Core.Connect({ connect, getState })(CoreGrid)
+  return Core.Connect({ connect }, { getState })(CoreGrid)
 }

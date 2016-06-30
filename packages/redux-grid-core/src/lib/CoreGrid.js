@@ -5,10 +5,12 @@ const should = require('chai').should()
  */
 export const PropTypes = React => ( { mapCols: React.PropTypes.func.isRequired
                                     , mapRows: React.PropTypes.func.isRequired
+                                    , cols: React.PropTypes.array.isRequired
+                                    , rows: React.PropTypes.array.isRequired
                                     , styles: React.PropTypes.object.isRequired
                                     , theme: React.PropTypes.object.isRequired
                                     , gridStyle: React.PropTypes.object.isRequired
-                                    , state: React.PropTypes.object.isRequired
+                                    //, state: React.PropTypes.object.isRequired
                                     , maxHeight: React.PropTypes.number
                                     , header: React.PropTypes.any
                                     , footer: React.PropTypes.any
@@ -26,10 +28,15 @@ export const DefaultProps = React => ({ gridStyle: {}
 
 
 /** Creates mapStateToProps for <CoreGrid /> component */
-export const MapStateToProps = ({ getState } = {}) => state => ({ state: getState ? getState() : state })
+export const MapStateToProps = (deps, { getState } = {}) => (state, ownProps) => {
+  const resolvedState = getState ? getState() : state
+  return  { cols: ownProps.mapCols(resolvedState)
+          , rows: ownProps.mapRows(resolvedState)
+          }
+}
 
 /** Creates mapDispatchToProps for <CoreGrid /> component */
-export const MapDispatchToProps = ({} = {}) => dispatch => ({})
+export const MapDispatchToProps = (deps, { getState } = {}) => dispatch => ({})
 
 /**
  * Creates a react-redux style connect function tailored for <CoreGrid />
@@ -37,13 +44,13 @@ export const MapDispatchToProps = ({} = {}) => dispatch => ({})
  * @param  {...Object} options.rest     The rest of the connect related dependencies.
  * @return {Grid}                       A higher order <Grid /> component.
  */
-export const Connect = ({ connect, getState, ...rest } = {}) => {
+export const Connect = ({ connect, ...rest } = {}, { getState } = {}) => {
   should.exist(connect, 'redux connect is required for <Grid /> connect')
   connect.should.be.a('function')
-  const mapStateToProps = MapStateToProps({ getState, ...rest })
+  const mapStateToProps = MapStateToProps(rest, { getState })
   should.exist(mapStateToProps, 'mapStateToProps is required for <Grid /> connect')
   mapStateToProps.should.be.a('function')
-  const mapDispatchToProps = MapDispatchToProps({ ...rest })
+  const mapDispatchToProps = MapDispatchToProps(rest, { getState })
   should.exist(mapDispatchToProps, 'mapDispatchToProps is required for <Grid /> connect')
   mapDispatchToProps.should.be.a('function')
   return Component => connect(mapStateToProps, mapDispatchToProps)(Component)

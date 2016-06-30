@@ -28,39 +28,13 @@
 }
 
 
-.compressed {
-  position: relative;
-}
-
 /** GRID */
 .BodyGrid {
+  box-sizing:border-box;
   border: 1px solid #e0e0e0;
   height: initial !important;
   width: inherit !important;
 }
-
-.container.maximized {
-  animation-duration: 200ms;
-  animation-name: maximize;
-
-  position: absolute;
-  left: 0 !important;
-  top: 0 !important;
-  right: 0 !important;
-  margin: 0 !important;
-  z-index: 99999;
-  height: 100vh;
-}
-
-@keyframes maximize {
-  from {
-    transform: scaleY(0.5);
-  }
-  to {
-    transform: scaleY(1);
-  }
-}
-
 
 :global .Grid__innerScrollContainer {
   box-sizing: border-box;
@@ -114,6 +88,7 @@
   display: flex;
   flex: 1 0 auto;
   justify-content: space-between;
+  align-items: center;
   border-right: 0;
   border-left: 0;
   margin: 0;
@@ -121,8 +96,6 @@
   padding-left: 6px;
   padding-right: 6px;
 }
-
-
 
 
 .cell,

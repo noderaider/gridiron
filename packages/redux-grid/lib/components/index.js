@@ -58,13 +58,4 @@ Object.defineProperty(exports, 'pager', {
   }
 });
 
-var _resize = require('./resize');
-
-Object.defineProperty(exports, 'resize', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_resize).default;
-  }
-});
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

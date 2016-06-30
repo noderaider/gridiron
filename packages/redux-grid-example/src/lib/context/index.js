@@ -22,7 +22,7 @@ const paletteShape = PropTypes.shape( { scheme: PropTypes.string
                                       , yellow: PropTypes.string
                                       , orange: PropTypes.string
                                       , red:    PropTypes.string
-                                      , magenta:PropTypes.string
+                                      , magenta: PropTypes.string
                                       , violet: PropTypes.string
                                       , blue:   PropTypes.string
                                       , cyan:   PropTypes.string
@@ -62,6 +62,7 @@ const inputShape = PropTypes.shape( { color: PropTypes.string.isRequired
                                     } )
 
 const styleShape = PropTypes.shape( { app: PropTypes.object.isRequired
+                                    , footer: PropTypes.object.isRequired
                                     , panel: panelStyleShape
                                     , bold: boldShape
                                     , input: inputShape

@@ -32,8 +32,9 @@ export default class FooterBar extends Component {
     const { palette, color, brand, style } = this.context.theme
     const { footer } = style
 
+    /** TODO: FIGURE OUT WHERE THE FUCK THIS CONTEXT STYLES COMING FROM */
     return (
-      <div style={footer.wrapper}>
+      <div style={{ zIndex: 1000, ...footer.wrapper }}>
         <div style={footer.left}>
           <div style={footer.row}>
             <a href="https://js.org" target="_blank" title="JS.ORG | JavaScript Community">

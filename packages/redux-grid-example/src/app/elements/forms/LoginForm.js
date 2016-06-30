@@ -57,7 +57,7 @@ class LoginForm extends Component {
               </a>
             </div>
           </Col>
-          <Col xs={4} pullRight>
+          <Col xs={4} pullRight
 
                 type="submit"
                 style={style.bold}

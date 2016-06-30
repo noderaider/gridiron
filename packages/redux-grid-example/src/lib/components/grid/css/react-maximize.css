@@ -1,0 +1,40 @@
+.maximize > .maximizeChildren {
+  animation-duration: 200ms;
+  animation-name: to-maximize;
+  animation-timing-function: ease-out;
+}
+
+.compress > .maximizeChildren {
+  animation-duration: 200ms;
+  animation-name: to-compress;
+  animation-timing-function: ease-out;
+}
+
+.maximizeChildren {
+  left: 0;
+  right: 0;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: row;
+  align-items: center;
+  pointer-events: none;
+}
+
+@keyframes to-maximize {
+  from {
+    transform: translateY(100vh);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+
+@keyframes to-compress {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100vh);
+  }
+}
