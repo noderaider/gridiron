@@ -1,6 +1,6 @@
 {
   "name": "redux-pager",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "description": "Lightweight composable Redux pagination component.",
   "main": "lib/index.js",
   "files": [
