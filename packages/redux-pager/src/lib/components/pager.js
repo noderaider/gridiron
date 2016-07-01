@@ -3,13 +3,14 @@ import solvent from 'solvent'
 const should = require('chai').should()
 
 export default function pager (deps = {}, defaults = {}) {
-  const { React, connect } = solvent({ React: 'object', connect: 'function' })(deps)
+  const { React, connect, shallowCompare } = solvent({ React: 'object', connect: 'function', shallowCompare: 'function' })(deps)
   const { Component, PropTypes } = React
 
   const PagerComponents = pagerProps => {
     const { children, status, actions, content, styles, theme } = pagerProps
     should.exist(status.page, 'page should exist')
     status.page.should.be.a('number', 'page must be a number')
+
     return children({ status
                     , rows: status.rows
                     , actions
@@ -86,6 +87,7 @@ export default function pager (deps = {}, defaults = {}) {
   const propTypes = { children: PropTypes.func.isRequired
                     , styles: PropTypes.object.isRequired
                     , theme: PropTypes.object.isRequired
+                    , page: PropTypes.number.isRequired
                     , rowsPerPage: PropTypes.any.isRequired
                     , rowsPerPageOptions: PropTypes.arrayOf(PropTypes.any).isRequired
                     , mapRows: PropTypes.func.isRequired
@@ -100,6 +102,7 @@ export default function pager (deps = {}, defaults = {}) {
                                   , select: 'pagerSelect'
                                   }
                         , theme:  { select: 'pagerSelect' }
+                        , page: 0
                         , rowsPerPage: 5
                         , rowsPerPageOptions: [ 1, 2, 3, 4, 5, 10, 25, 50, 100, 500, 1000, 'All' ]
                         , typeSingular: 'record'
@@ -122,9 +125,18 @@ export default function pager (deps = {}, defaults = {}) {
     static defaultProps = defaultProps;
     constructor(props) {
       super(props)
-      this.state =  { page: 0
+      this.state =  { page: props.page
                     , rowsPerPage: props.rowsPerPage
                     }
+
+      console.warn('NEW PAGER', this.state)
+    }
+    shouldComponentUpdate(nextProps, nextState) {
+      return shallowCompare(this, nextProps, nextState)
+    }
+    componentDidUpdate() {
+      if(this.props.onChange)
+        this.props.onChange(this.state)
     }
     render() {
       const { mapRows, rowsPerPageOptions } = this.props

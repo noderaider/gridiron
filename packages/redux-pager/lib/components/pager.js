@@ -36,10 +36,11 @@ function pager() {
   var deps = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
   var defaults = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
-  var _solvent = (0, _solvent3.default)({ React: 'object', connect: 'function' })(deps);
+  var _solvent = (0, _solvent3.default)({ React: 'object', connect: 'function', shallowCompare: 'function' })(deps);
 
   var React = _solvent.React;
   var connect = _solvent.connect;
+  var shallowCompare = _solvent.shallowCompare;
   var Component = React.Component;
   var PropTypes = React.PropTypes;
 
@@ -54,6 +55,7 @@ function pager() {
 
     should.exist(status.page, 'page should exist');
     status.page.should.be.a('number', 'page must be a number');
+
     return children({ status: status,
       rows: status.rows,
       actions: actions,
@@ -184,6 +186,7 @@ function pager() {
   var propTypes = { children: PropTypes.func.isRequired,
     styles: PropTypes.object.isRequired,
     theme: PropTypes.object.isRequired,
+    page: PropTypes.number.isRequired,
     rowsPerPage: PropTypes.any.isRequired,
     rowsPerPageOptions: PropTypes.arrayOf(PropTypes.any).isRequired,
     mapRows: PropTypes.func.isRequired,
@@ -198,6 +201,7 @@ function pager() {
       select: 'pagerSelect'
     },
     theme: { select: 'pagerSelect' },
+    page: 0,
     rowsPerPage: 5,
     rowsPerPageOptions: [1, 2, 3, 4, 5, 10, 25, 50, 100, 500, 1000, 'All'],
     typeSingular: 'record',
@@ -301,13 +305,25 @@ function pager() {
 
       var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Pager).call(this, props));
 
-      _this.state = { page: 0,
+      _this.state = { page: props.page,
         rowsPerPage: props.rowsPerPage
       };
+
+      console.warn('NEW PAGER', _this.state);
       return _this;
     }
 
     _createClass(Pager, [{
+      key: 'shouldComponentUpdate',
+      value: function shouldComponentUpdate(nextProps, nextState) {
+        return shallowCompare(this, nextProps, nextState);
+      }
+    }, {
+      key: 'componentDidUpdate',
+      value: function componentDidUpdate() {
+        if (this.props.onChange) this.props.onChange(this.state);
+      }
+    }, {
       key: 'render',
       value: function render() {
         var _this2 = this;

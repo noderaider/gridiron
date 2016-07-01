@@ -1,0 +1,167 @@
+/* Grid default theme */
+
+:global .Grid {
+  position: relative;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+
+  /* Without this property, Chrome repaints the entire Grid any time a new row or column is added.
+     Firefox only repaints the new row or column (regardless of this property).
+     Safari and IE don't support the property at all. */
+  will-change: transform;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+  max-width: 100%;
+}
+
+.innerContainer {
+  flex: 1 1 auto;
+  width: inherit !important;
+}
+
+.innerContainer > div {
+  height: initial !important;
+  width: inherit !important;
+}
+
+
+/** GRID */
+.BodyGrid {
+  box-sizing:border-box;
+  border: 1px solid #e0e0e0;
+  height: initial !important;
+  width: inherit !important;
+}
+
+:global .Grid__innerScrollContainer {
+  box-sizing: border-box;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: initial !important;
+  max-height: initial !important;
+  width: inherit !important;
+  max-width: inherit !important;
+}
+
+
+.rowStyle {
+  position: relative;
+  display: flex;
+  /*border-bottom: 1px solid #e0e0e0;*/
+}
+
+.rowStyle:last-child {
+  border-bottom: none;
+}
+
+
+
+.headerCell, .cell, .footerCell {
+  border-right: 1px solid #e0e0e0;
+}
+
+.headerCell:last-child, .cell:last-child, .footerCell:last-child {
+  border-right: none;
+}
+
+
+:global .drill {
+  animation-duration: 1000ms;
+  animation-name: slidein;
+  overflow: hidden;
+}
+
+:global @keyframes slidein {
+  from {
+    max-height: 0;
+  }
+  to {
+    max-height: 100vh;
+  }
+}
+
+.headerGrid,
+.footerGrid {
+  display: flex;
+  flex: 1 0 auto;
+  justify-content: space-between;
+  align-items: center;
+  border-right: 0;
+  border-left: 0;
+  margin: 0;
+  font-weight: bold;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+
+.cell,
+.headerCell,
+.footerCell {
+  height: initial !important;
+  display: flex;
+}
+
+.headerCell,
+.footerCell {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  flex-wrap:nowrap;
+  margin: 0;
+  padding: 0;
+  font-size:1.1em;
+  font-weight:bold;
+}
+
+.headerCell h3 {
+  cursor: default;
+}
+
+.headerGrid button,
+.headerCell button,
+.footerCell button,
+.footerGrid button {
+  border: 1px solid transparent;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+
+.minimal {
+  border: 0;
+}
+
+.expander {
+  position:absolute;
+}
+
+.headerCell .innerCell,
+.footerCell .innerCell {
+  margin: 4px;
+  border-radius: 4px;
+}
+
+.cell {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.innerCell {
+  margin: 4px;
+}
+
+.select {
+  position: relative;
+  display: inline-flex;
+  min-width: 80px;
+  margin: 0;
+  padding: 0;
+  font-family: monospace;
+  font-size: 0.8em;
+}

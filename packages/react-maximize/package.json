@@ -44,6 +44,7 @@
     "chai": "^3.5.0",
     "classnames": "^2.2.5",
     "ncp": "^2.0.0",
+    "react-gateway": "^2.2.0",
     "solvent": "^0.4.1"
   },
   "devDependencies": {

@@ -27,14 +27,14 @@ class Micro extends Component {
     }
   }
   componentWillUnmount() {
-    const { tooltip } = this.props
+    const { actionType, tooltip } = this.props
     if(actionType === 'clipboard' && typeof tooltip !== 'undefined')
       this.clipboard.destroy()
   }
   render() {
     const { dispatch, visibility, componentID, children, actionType, actionData, onAction, tooltip, iconName, bsStyle } = this.props
     const tooltipID = getTooltipID(componentID)
-    const isToggled = visibility.getIn([componentID, 'value'], false)
+    const isToggled = visibility.getIn([ componentID, 'value' ], false)
 
     const microStyle =  { display: 'inline-block'
                         , fontStyle: isToggled ? 'italic' : 'normal'
@@ -80,7 +80,7 @@ class Micro extends Component {
   }
 }
 Micro.propTypes = { componentID: PropTypes.string.isRequired
-                  , actionType: PropTypes.oneOf(['toggleComponent', 'clipboard'])
+                  , actionType: PropTypes.oneOf([ 'toggleComponent', 'clipboard' ])
                   , actionData: PropTypes.any
                   , onAction: PropTypes.func
                   , children: PropTypes.any.isRequired

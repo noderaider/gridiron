@@ -12,7 +12,8 @@ export default class Label extends Component {
   render() {
     const { theme } = this.context
     const { style, brand } = theme
-    const { iconName, color, bsStyle, onClick, children } = this.props
+    const { color, onClick, children } = this.props
+    const { iconName, bsStyle, ...buttonProps } = this.props
 
     const resolvedColor = color || bsStyle ? theme.color.primary : style.label.color
     const resolvedBorderColor = bsStyle ? theme.color.secondary : style.label.color
@@ -27,7 +28,7 @@ export default class Label extends Component {
                         , cursor: onClick ? 'pointer' : 'default'
                         }
     return (
-      <button {...this.props} style={labelStyle}>
+      <button {...buttonProps} style={labelStyle}>
         {iconName ? <FA name={iconName} color={resolvedColor} /> : null}
         {' '}
         <span>{children}</span>

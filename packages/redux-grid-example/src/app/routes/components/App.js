@@ -1,4 +1,8 @@
 import React, { Component, PropTypes, cloneElement } from 'react'
+import shallowCompare from 'react/lib/shallowCompare'
+import * as ReactGateway from 'react-gateway'
+import CSSPropertyOperations from 'react/lib/shallowCompare'
+import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import createIdleMonitor from 'react-redux-idle-monitor'
 
@@ -12,7 +16,7 @@ import { contextTypes, getTheme, defaultTheme } from 'lib/context'
 import reactMaximize from 'react-maximize'
 import reactMaximizeStyles from './grid/css/react-maximize.css' // 'react-maximize/lib/styles.css'
 
-const { Maximize } = reactMaximize({ React, ReactDOM }, { styles: reactMaximizeStyles })
+const { Maximize } = reactMaximize({ React, ReactDOM, ReactGateway, shallowCompare, CSSPropertyOperations }, { styles: reactMaximizeStyles })
 
 const IdleMonitor = createIdleMonitor({ React, connect })
 

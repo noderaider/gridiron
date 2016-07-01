@@ -1,14 +1,14 @@
  const GH_PAGES_ROOT = 'doc'
 
 export default ({ path }) => {
-  const copyToRoot = ['etc/config/config-server.json', 'etc/config/config-client.json', 'src/public']
-  const copyToSrc = ['etc/config/config-server.json', 'etc/config/config-client.json']
+  const copyToRoot = [ 'etc/config/config-server.json', 'etc/config/config-client.json', 'src/public' ]
+  const copyToSrc = [ 'etc/config/config-server.json', 'etc/config/config-client.json' ]
 
   const scripts = { 'prebuild-package': 'rimraf package'
                   , 'build-package': 'babel src/package -d package'
                   , '_precopy-root-files': `rimraf ${copyToRoot.map(x => path.basename(x)).join(' ')}`
                   , 'copy-root-files': copyToRoot.map(x => `ncp ${x} ${path.basename(x)}`).join(' && ')
-                  , 'precopy-src-files': `rimraf ${copyToSrc.map(x => `src/${path.basename(x)}`).join(' ')}`
+                  , '_precopy-src-files': `rimraf ${copyToSrc.map(x => `src/${path.basename(x)}`).join(' ')}`
                   , 'copy-src-files': copyToSrc.map(x => `ncp ${x} src/${path.basename(x)}`).join(' && ')
 
                   , 'prebuild-webpack': 'run-p copy-root-files copy-src-files'

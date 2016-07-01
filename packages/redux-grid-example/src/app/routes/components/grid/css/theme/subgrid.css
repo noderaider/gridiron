@@ -1,0 +1,70 @@
+.BodyGrid {
+  margin:0;
+  padding: 0;
+  border: none;
+  font-size: 0.85em;
+  font-family: monospace;
+}
+
+.rowStyle {
+  /*border-bottom: 1px solid #e0e0e0;*/
+}
+
+.evenRow {
+  background-color: rgb(210, 210, 210);
+  color: #046D8D;
+}
+
+.oddRow {
+  background-color: rgb(220, 220, 220);
+  color: #046D8D;
+}
+
+.expander {
+  font-size:1.5em;
+  color: #002f2f;
+}
+
+.headerGrid,
+.footerGrid {
+  color: #fff !important;
+  background-color: #000;
+  padding: 5px;
+  margin: 0;
+}
+
+.headerCell,
+.footerCell {
+  color: #fff !important;
+  background-color: #000;
+  border-right: 1px solid #fff;
+}
+
+.headerGrid:hover,
+.headerCell:hover,
+.footerCell:hover,
+.footerGrid:hover {
+  background-color: rgb(20, 20, 20);
+}
+
+.headerGrid button,
+.headerCell button,
+.footerCell button,
+.footerGrid button {
+  color: #fff;
+}
+
+.headerGrid button:hover,
+.headerCell button:hover,
+.footerCell button:hover,
+.footerGrid button:hover {
+  border: 1px solid rgb(40, 40, 40);
+}
+
+
+
+
+.select {
+  color: rgb(255, 255, 255);
+  background-color: rgb(0, 0, 0);
+}
