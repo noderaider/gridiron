@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component, PropTypes, cloneElement } from 'react'
 import { connect } from 'react-redux'
 import createIdleMonitor from 'react-redux-idle-monitor'
 
@@ -8,6 +8,11 @@ import FooterBar from 'app/elements/nav/FooterBar'
 import DevTools from 'lib/redux/DevTools'
 
 import { contextTypes, getTheme, defaultTheme } from 'lib/context'
+
+import reactMaximize from 'react-maximize'
+import reactMaximizeStyles from './grid/css/react-maximize.css' // 'react-maximize/lib/styles.css'
+
+const { Maximize } = reactMaximize({ React, ReactDOM }, { styles: reactMaximizeStyles })
 
 const IdleMonitor = createIdleMonitor({ React, connect })
 
@@ -49,15 +54,19 @@ class App extends Component {
     const { style } = theme
 
     return (
-      <div style={{ marginBottom: 70 }}>
-        <div style={style.app}>
-          <TopBar title={title} subtitle={subtitle} username={username} email={email} packageName={packageName} />
-          {children}
-          <FooterBar />
-        </div>
-        <DevTools />
-        <IdleMonitor showStatus={true} />
-      </div>
+      <Maximize>
+        {maximize => (
+          <div style={{ marginBottom: 70 }}>
+            <div style={style.app}>
+              <TopBar title={title} subtitle={subtitle} username={username} email={email} packageName={packageName} />
+              {cloneElement(children, { maximize })}
+              <FooterBar />
+            </div>
+            <DevTools />
+            <IdleMonitor showStatus={true} />
+          </div>
+        )}
+      </Maximize>
     )
   }
 }

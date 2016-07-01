@@ -4,9 +4,9 @@
   animation-timing-function: ease-out;
 }
 
-.compress > .maximizeChildren {
+.restore > .maximizeChildren {
   animation-duration: 200ms;
-  animation-name: to-compress;
+  animation-name: to-restore;
   animation-timing-function: ease-out;
 }
 
@@ -30,7 +30,7 @@
 }
 
 
-@keyframes to-compress {
+@keyframes to-restore {
   from {
     transform: translateY(0);
   }

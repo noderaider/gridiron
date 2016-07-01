@@ -6,6 +6,6 @@ const applyCapitalization = str => str.length <= 2 ? str.toUpperCase() : `${str[
  * reduxPager
  * Requires dependencies { React } and returns a component with intelligence.
  */
-export default function reduxPager(deps) {
-  return Object.keys(components).reduce((libs, x) => ({ ...libs, [applyCapitalization(x)]: components[x](deps) }), {})
+export default function reduxPager(deps, defaults) {
+  return Object.keys(components).reduce((libs, x) => ({ ...libs, [applyCapitalization(x)]: components[x](deps, defaults) }), {})
 }

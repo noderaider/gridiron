@@ -37,6 +37,7 @@ function maximize() {
   var React = _solvent.React;
   var Component = React.Component;
   var PropTypes = React.PropTypes;
+  var cloneElement = React.cloneElement;
 
 
   return _temp = _class = function (_Component) {
@@ -47,7 +48,7 @@ function maximize() {
 
       var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Maximize).call(this, props));
 
-      _this.maximize = function () {
+      _this.maximize = function (id) {
         var _this$props = _this.props;
         var styles = _this$props.styles;
         var containerStyle = _this$props.containerStyle;
@@ -60,49 +61,24 @@ function maximize() {
         }, maximizeDelay);
       };
 
-      _this.compress = function () {
+      _this.restore = function (id) {
         var _this$props2 = _this.props;
         var styles = _this$props2.styles;
-        var compressDelay = _this$props2.compressDelay;
+        var restoreDelay = _this$props2.restoreDelay;
 
-        _this.setState({ containerClass: styles.compress });
+        _this.setState({ containerClass: styles.restore });
         setTimeout(function () {
           _this.parentNode.appendChild(_this.container);
           _this.setState({ isMaximized: false, containerClass: null, containerStyle: null });
-        }, compressDelay);
+        }, restoreDelay);
       };
 
-      _this.renderChildren = function () {
-        var _this$props3 = _this.props;
-        var children = _this$props3.children;
-        var maximizeContent = _this$props3.maximizeContent;
-        var compressContent = _this$props3.compressContent;
-        var styles = _this$props3.styles;
-        var isMaximized = _this.state.isMaximized;
-
-        var Controls = function Controls(props) {
-          return isMaximized ? React.createElement(
-            'button',
-            { onClick: _this.compress },
-            compressContent
-          ) : React.createElement(
-            'button',
-            { onClick: _this.maximize },
-            maximizeContent
-          );
-        };
-        var childrenStyle = isMaximized ? { position: 'absolute', minHeight: '100vh' } : { position: 'relative' };
-        return React.createElement(
-          'div',
-          { style: childrenStyle, className: styles.maximizeChildren },
-          children({ Controls: Controls })
-        );
-      };
-
+      _this.containers = new Map();
       _this.state = { isMaximized: false,
         containerClass: null,
         containerStyle: null,
-        lastScroll: { x: 0, y: 0 }
+        lastScroll: { x: 0, y: 0 },
+        maximized: []
       };
       return _this;
     }
@@ -130,8 +106,8 @@ function maximize() {
         }
       }
     }, {
-      key: 'render',
-      value: function render() {
+      key: 'renderBlah',
+      value: function renderBlah() {
         var _this2 = this;
 
         var _props = this.props;
@@ -158,10 +134,102 @@ function maximize() {
           React.createElement('div', {
             style: isMaximized ? backgroundStyle : { display: 'none' },
             onClick: function onClick() {
-              return isMaximized ? _this2.compress() : null;
+              return isMaximized ? _this2.restore() : null;
             }
           }),
           this.renderChildren()
+        );
+      }
+    }, {
+      key: 'render',
+      value: function render() {
+        var _this3 = this;
+
+        var _props2 = this.props;
+        var children = _props2.children;
+        var maximizeContent = _props2.maximizeContent;
+        var restoreContent = _props2.restoreContent;
+        var styles = _props2.styles;
+        var isMaximized = this.state.isMaximized;
+
+
+        var childrenStyle = isMaximized ? { position: 'absolute', minHeight: '100vh' } : { position: 'relative' };
+        var Container = function Container(props) {
+          var id = _this3.containers.size;
+          var getState = function getState() {
+            return _this3.containers.get(id);
+          };
+          var isMaximized = function isMaximized() {
+            return _this3.state.maximized.includes(id);
+          };
+          var maximize = function maximize() {
+            return _this3.setState({ maximized: _this3.state.maximized.concat(id) });
+          };
+          var restore = function restore() {
+            return _this3.setState({ maximized: _this3.state.maximized.slice(0, -1) });
+          };
+          var actions = { maximize: maximize, restore: restore, isMaximized: isMaximized };
+
+          var Controls = function Controls(props) {
+            return isMaximized() ? React.createElement(
+              'button',
+              { onClick: actions.restore },
+              restoreContent
+            ) : React.createElement(
+              'button',
+              { onClick: actions.maximize },
+              maximizeContent
+            );
+          };
+
+          var child = props.children({ Controls: Controls });
+          _this3.containers.set(id, { actions: actions, child: child });
+          return !isMaximized() || props.maximized ? child : null;
+        };
+        /*
+        Container.propTypes = { id: PropTypes.number.isRequired
+                              , mirror: PropTypes.bool.isRequired
+                              }
+        Container.defaultProps =  { mirror: false
+                                  }
+        */
+        var containerStyle = { border: '2px solid black',
+          display: 'flex',
+          flexDirection: 'column',
+          margin: 0,
+          padding: 0
+        };
+
+        var content = children({});
+
+        return React.createElement(
+          'div',
+          { ref: function ref(x) {
+              return _this3.container = x;
+            } },
+          React.createElement(
+            'div',
+            { key: 'root', style: { border: '1px dashed yellow' } },
+            Content
+          ),
+          this.state.maximized.length > 0 ? this.state.maximized.map(function (id) {
+            var _containers$get = _this3.containers.get(id);
+
+            var actions = _containers$get.actions;
+            var child = _containers$get.child;
+
+            return React.createElement(
+              'div',
+              { key: id,
+                style: _extends({}, _this3.props.containerStyle, _this3.props.style),
+                className: (0, _classnames2.default)(_this3.props.styles.maximize, _this3.props.className) },
+              React.createElement('div', {
+                style: _this3.props.backgroundStyle,
+                onClick: actions.restore
+              }),
+              child
+            );
+          }) : null
         );
       }
     }]);
@@ -174,11 +242,11 @@ function maximize() {
     containerStyle: PropTypes.object.isRequired,
     backgroundStyle: PropTypes.object.isRequired,
     maximizeContent: PropTypes.object.isRequired,
-    compressContent: PropTypes.object.isRequired,
+    restoreContent: PropTypes.object.isRequired,
     maximizeDelay: PropTypes.number.isRequired,
-    compressDelay: PropTypes.number.isRequired
+    restoreDelay: PropTypes.number.isRequired
   }, _class.defaultProps = _extends({ styles: { maximize: 'maximize',
-      compress: 'compress',
+      restore: 'restore',
       maximizeContent: 'maximizeContent'
     },
     style: {},
@@ -193,6 +261,7 @@ function maximize() {
       margin: 0,
       padding: 0,
       minHeight: '100vh'
+      //, zIndex: 10
     },
     backgroundStyle: { position: 'fixed',
       display: 'flex',
@@ -204,8 +273,13 @@ function maximize() {
       bottom: 0
     },
     maximizeContent: React.createElement('i', { className: 'fa fa-expand' }),
-    compressContent: React.createElement('i', { className: 'fa fa-compress' }),
+    restoreContent: React.createElement('i', { className: 'fa fa-compress' }),
     maximizeDelay: 200,
-    compressDelay: 200
+    restoreDelay: 200,
+    zIndexMin: 100
   }, defaults), _temp;
+  /*
+  renderContent = () => {
+    }
+  */
 }

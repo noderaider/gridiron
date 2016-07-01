@@ -5,12 +5,12 @@ import ReactHeight from 'react-height'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
 import * as ReactVirtualized from 'react-virtualized'
-import Select from 'react-select'
-import './css/react-select.gcss'
 import reduxGrid from 'redux-grid'
-import reduxPager from 'redux-pager'
 import reactPre from 'react-pre'
 import util from 'util'
+
+import reduxPager from 'redux-pager'
+import reduxPagerStyles from './css/redux-pager.css' // 'redux-pager/lib/styles.css'
 
 import reactMaximize from 'react-maximize'
 import reactMaximizeStyles from './css/react-maximize.css' // 'react-maximize/lib/styles.css'
@@ -23,8 +23,8 @@ import subgrid from './css/theme/subgrid.css'
 const should = require('chai').should()
 
 const { Maximize } = reactMaximize({ React, ReactDOM }, { styles: reactMaximizeStyles })
-const { Pager } = reduxPager({ React, connect }, {})
-const { CoreGrid, DrillGrid, Header, Footer, Expander } = reduxGrid({ React, ReactDOM, ReactVirtualized, connect, Select, Immutable, Maximize })
+const { Pager } = reduxPager({ React, connect }, { styles: reduxPagerStyles })
+const { CoreGrid, DrillGrid, Header, Footer, Expander } = reduxGrid({ React, ReactDOM, ReactVirtualized, connect, Immutable, Maximize })
 const { Pre, Arrows } = reactPre({ React })
 
 
@@ -59,7 +59,7 @@ const createRowMapper = ({ ids = [] } = {}) => (state, { rows } = {}) => {
 const mapDrill = (state, parentId) => <ReduxGridDetail ids={parentId} />
 
 const ReduxGridDetail = props => (
-  <Pager maxRecords={5} mapRows={createRowMapper({ ids: props.ids })} styles={styles} theme={sandy}>
+  <Pager maxRecords={5} mapRows={createRowMapper({ ids: props.ids })} theme={sandy}>
     {pager => (
       <DrillGrid
         styles={styles}
@@ -73,9 +73,10 @@ const ReduxGridDetail = props => (
           </span>
         }
         footer={
-          [ <pager.Buttons key="pager-buttons"><pager.PageSelect /></pager.Buttons>
+          [ <pager.Controls key="pager-buttons"><pager.Select /></pager.Controls>
           , <pager.RowStatus key="pager-row-status" />
           , <pager.PageStatus key="pager-page-status" />
+          , <pager.RowsPerPage label="Rows Per Page" key="rows-per-page" />
           ]
         }
         hasMaximize={true}
@@ -85,7 +86,7 @@ const ReduxGridDetail = props => (
 )
 
 const ReduxGrid = props => (
-  <Pager maxRecords={5} mapRows={createRowMapper()} styles={styles} theme={sandy}>
+  <Pager maxRecords={5} mapRows={createRowMapper()} theme={subgrid}>
     {pager => (
       <DrillGrid
         styles={styles}
@@ -97,12 +98,15 @@ const ReduxGrid = props => (
           <h3 style={{ margin: 0, letterSpacing: 6 }}>redux-grid</h3>
         }
         footer={
-          [ <pager.Buttons key="pager-buttons"><pager.PageSelect /></pager.Buttons>
-          , <pager.RowStatus key="pager-row-status" />
-          , <pager.PageStatus key="pager-page-status" />
+          [ <pager.Controls key="controls"><pager.Select /></pager.Controls>
+          , <pager.RowStatus key="row-status" />
+          , <pager.PageStatus key="page-status" />
+          , <pager.RowCount key="row-count" />
+          , <pager.RowsPerPage label="Rows Per Page" key="rows-per-page" />
           ]
         }
         hasMaximize={true}
+        maximize={props.maximize}
         {...props}
       />
     )}

@@ -48,8 +48,8 @@ var IS_BROWSER = (typeof window === 'undefined' ? 'undefined' : _typeof(window))
 var resolver = (0, _solvent2.default)({ React: 'object',
   connect: 'function',
   ReactVirtualized: 'object',
-  Immutable: 'object',
-  Maximize: 'function'
+  Immutable: 'object'
+  //, Maximize: 'function'
 });
 function coreGrid(deps) {
   var defaults = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
@@ -116,15 +116,7 @@ function coreGrid(deps) {
         var header = _props.header;
         var footer = _props.footer;
         var pager = _props.pager;
-        var hasMaximize = _props.hasMaximize;
-        /*
-          should.exist(mapCols)
-        should.exist(mapRows)
-        mapCols.should.be.a('function')
-        mapRows.should.be.a('function')
-          const cols = mapCols(state)
-        */
-        //const rows = mapRows(state)
+        var maximize = _props.maximize;
 
         var spannedRows = rows.reduce(function (spanned, x, i) {
           if (x.span === true) return [].concat(_toConsumableArray(spanned), [i]);
@@ -320,7 +312,7 @@ function coreGrid(deps) {
                             // This can lead to the same cell being created many times and can cause performance issues for "heavy" cells.
                             // If a scroll is in progress- cache and reuse cells.
                             // This cache will be thrown away once scrolling completes.
-                            if (true === false) {
+                            if (false) {
                               //isScrolling) {
                               if (!cellCache[_key]) {
                                 cellCache[_key] = cellRenderer({ columnIndex: columnIndex,
@@ -383,17 +375,7 @@ function coreGrid(deps) {
           );
         };
 
-        if (hasMaximize) {
-          return React.createElement(
-            Maximize,
-            { className: containerClass },
-            function (maximize) {
-              return renderGrid({ postHeader: React.createElement(maximize.Controls, null) });
-            }
-          );
-        } else {
-          return renderGrid();
-        }
+        return renderGrid();
       }
     }, {
       key: 'componentDidUpdate',

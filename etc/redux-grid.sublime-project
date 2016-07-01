@@ -32,6 +32,16 @@
       "path": "../packages/react-maximize-test"
     },
     {
+      "name": "packages/react-minimize",
+      "follow_symlinks": true,
+      "path": "../packages/react-minimize"
+    },
+    {
+      "name": "packages/react-bar",
+      "follow_symlinks": true,
+      "path": "../packages/react-bar"
+    },
+    {
       "name": "packages/redux-grid",
       "follow_symlinks": true,
       "path": "../packages/redux-grid/src"

@@ -24,8 +24,8 @@ var applyCapitalization = function applyCapitalization(str) {
  * reduxPager
  * Requires dependencies { React } and returns a component with intelligence.
  */
-function reduxPager(deps) {
+function reduxPager(deps, defaults) {
   return Object.keys(components).reduce(function (libs, x) {
-    return _extends({}, libs, _defineProperty({}, applyCapitalization(x), components[x](deps)));
+    return _extends({}, libs, _defineProperty({}, applyCapitalization(x), components[x](deps, defaults)));
   }, {});
 }

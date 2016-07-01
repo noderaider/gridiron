@@ -10,7 +10,7 @@ const resolver = solvent( { React: 'object'
                           , connect: 'function'
                           , ReactVirtualized: 'object'
                           , Immutable: 'object'
-                          , Maximize: 'function'
+                          //, Maximize: 'function'
                           } )
 export default function coreGrid (deps, defaults = {}) {
   const { React, connect, ReactVirtualized, Immutable, Maximize } = resolver(deps)
@@ -40,17 +40,7 @@ export default function coreGrid (deps, defaults = {}) {
       this.state =  {}
     }
     render() {
-      const { cols, rows, maxHeight, style, styles, theme, gridStyle, maxWidth, header, footer, pager, hasMaximize } = this.props
-      /*
-
-      should.exist(mapCols)
-      should.exist(mapRows)
-      mapCols.should.be.a('function')
-      mapRows.should.be.a('function')
-
-      const cols = mapCols(state)
-      */
-      //const rows = mapRows(state)
+      const { cols, rows, maxHeight, style, styles, theme, gridStyle, maxWidth, header, footer, pager, maximize } = this.props
       const spannedRows = rows.reduce((spanned, x, i) => {
         if(x.span === true)
           return [ ...spanned, i ]
@@ -190,7 +180,7 @@ export default function coreGrid (deps, defaults = {}) {
                               // This can lead to the same cell being created many times and can cause performance issues for "heavy" cells.
                               // If a scroll is in progress- cache and reuse cells.
                               // This cache will be thrown away once scrolling completes.
-                              if (true === false) { //isScrolling) {
+                              if (false) { //isScrolling) {
                                 if (!cellCache[key]) {
                                   cellCache[key] = cellRenderer({ columnIndex
                                                                 , isScrolling
@@ -242,15 +232,7 @@ export default function coreGrid (deps, defaults = {}) {
         </div>
       )
 
-      if(hasMaximize) {
-        return (
-          <Maximize className={containerClass}>
-            {maximize => renderGrid({ postHeader: <maximize.Controls /> })}
-          </Maximize>
-        )
-      } else {
-        return renderGrid()
-      }
+      return renderGrid()
     }
     componentDidUpdate(prevProps, prevState) {
       if(prevState.width !== this.state.width || prevState.height !== this.state.height) {

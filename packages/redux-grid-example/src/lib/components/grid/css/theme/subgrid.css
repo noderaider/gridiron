@@ -30,7 +30,6 @@
   color: #fff !important;
   background-color: #000;
   padding: 5px;
-  /* border-bottom: 1px solid #fff; */
   margin: 0;
 }
 
@@ -60,4 +59,12 @@
 .footerCell button:hover,
 .footerGrid button:hover {
   border: 1px solid rgb(40, 40, 40);
+}
+
+
+
+
+.select {
+  color: rgb(255, 255, 255);
+  background-color: rgb(0, 0, 0);
 }

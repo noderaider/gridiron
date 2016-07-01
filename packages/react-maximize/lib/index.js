@@ -21,7 +21,7 @@ var applyCapitalization = function applyCapitalization(str) {
 };
 
 /**
- * reactAI
+ * reactMaximize
  * Requires dependencies { React } and returns a component with intelligence.
  */
 function reactMaximize(deps, defaults) {

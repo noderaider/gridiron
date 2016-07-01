@@ -4,9 +4,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 exports.default = pager;
 
@@ -26,15 +26,17 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+var should = require('chai').should();
+
 function pager() {
-  var _this = this,
-      _class,
-      _temp;
+  var _class, _temp;
 
   var deps = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
   var defaults = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
-  var _solvent = (0, _solvent3.default)({ React: 'object', connect: 'function' }, defaults = {})(deps);
+  var _solvent = (0, _solvent3.default)({ React: 'object', connect: 'function' })(deps);
 
   var React = _solvent.React;
   var connect = _solvent.connect;
@@ -42,113 +44,254 @@ function pager() {
   var PropTypes = React.PropTypes;
 
 
-  var PagerComponents = function PagerComponents(props) {
-    var children = props.children;
-    var state = props.state;
-    var rows = props.rows;
-    var page = props.page;
-    var pages = props.pages;
-    var maxRecords = props.maxRecords;
-    var startIndex = props.startIndex;
-    var lastIndex = props.lastIndex;
-    var styles = props.styles;
-    var theme = props.theme;
-    var pageFirst = props.pageFirst;
-    var pageBack = props.pageBack;
-    var pageForward = props.pageForward;
-    var pageLast = props.pageLast;
-    var selectPage = props.selectPage;
+  var PagerComponents = function PagerComponents(pagerProps) {
+    var children = pagerProps.children;
+    var status = pagerProps.status;
+    var actions = pagerProps.actions;
+    var content = pagerProps.content;
+    var styles = pagerProps.styles;
+    var theme = pagerProps.theme;
 
-    return children({ state: state,
-      rows: rows,
-      Buttons: function Buttons(props) {
+    should.exist(status.page, 'page should exist');
+    status.page.should.be.a('number', 'page must be a number');
+    return children({ status: status,
+      rows: status.rows,
+      actions: actions,
+      Controls: function Controls(props) {
         return React.createElement(
           'span',
-          null,
+          { className: (0, _classnames2.default)(styles.controls) },
           React.createElement(
             'button',
-            { onClick: pageFirst, disabled: page === 0 },
-            React.createElement('i', { className: 'fa fa-fast-backward' })
+            { onClick: actions.fastBackward, className: (0, _classnames2.default)(styles.control), disabled: status.page === 0 },
+            React.createElement(content.FastBackward, _extends({}, pagerProps, props))
           ),
           ' ',
           React.createElement(
             'button',
-            { onClick: pageBack, disabled: page === 0 },
-            React.createElement('i', { className: 'fa fa-step-backward' })
+            { onClick: actions.stepBackward, className: (0, _classnames2.default)(styles.control), disabled: status.page === 0 },
+            React.createElement(content.StepBackward, _extends({}, pagerProps, props))
           ),
           ' ',
-          props.children ? props.children : null,
+          props.children ? React.createElement(
+            'span',
+            { className: (0, _classnames2.default)(styles.controlsChildren) },
+            props.children
+          ) : null,
           ' ',
           React.createElement(
             'button',
-            { onClick: pageForward, disabled: page === pages - 1 },
-            React.createElement('i', { className: 'fa fa-step-forward' })
+            { onClick: actions.stepForward, className: (0, _classnames2.default)(styles.control), disabled: status.page === status.pages - 1 },
+            React.createElement(content.StepForward, _extends({}, pagerProps, props))
           ),
           ' ',
           React.createElement(
             'button',
-            { onClick: pageLast, disabled: page === pages - 1 },
-            React.createElement('i', { className: 'fa fa-fast-forward' })
+            { onClick: actions.fastForward, className: (0, _classnames2.default)(styles.control), disabled: status.page === status.pages - 1 },
+            React.createElement(content.FastForward, _extends({}, pagerProps, props))
           )
         );
       },
-      PageSelect: function PageSelect(props) {
-        var options = Array.from(Array(_this.pages).keys()).map(function (x) {
-          return { value: x, label: x + 1 };
-        });
+      Select: function Select(props) {
+        return typeof status.rowsPerPage === 'number' && status.rowsPerPage > 0 ? React.createElement(
+          'select',
+          {
+            value: status.page,
+            onChange: function onChange(x) {
+              return actions.select(parseInt(x.target.value));
+            },
+            className: (0, _classnames2.default)(styles.select, theme.select)
+          },
+          Array.from(Array(status.pages).keys()).map(function (x) {
+            return React.createElement(
+              'option',
+              { key: x, value: x },
+              content.selectOption(_extends({}, pagerProps, props, { index: x }))
+            );
+          })
+        ) : React.createElement(
+          'span',
+          null,
+          'All'
+        );
+      },
+      RowsPerPage: function RowsPerPage(props) {
         return React.createElement(
           'span',
           null,
-          React.createElement(
+          props.label ? React.createElement(
             'label',
             null,
-            'Page:'
-          ),
+            props.label
+          ) : null,
+          ' ',
           React.createElement(
             'select',
-            { value: page + 1, onChange: function onChange(x) {
-                return selectPage(x.target.value - 1);
-              } },
-            React.createElement(
-              'option',
-              { value: 1 },
-              '1'
-            ),
-            React.createElement(
-              'option',
-              { value: 2 },
-              '2'
-            ),
-            React.createElement(
-              'option',
-              { value: 3 },
-              '3'
-            )
+            {
+              value: status.rowsPerPage,
+              onChange: function onChange(x) {
+                var value = x.target.value;
+
+                if (typeof value === 'string' && value.toLowerCase() === 'all') actions.rowsPerPage(value);else actions.rowsPerPage(parseInt(value));
+              },
+              className: (0, _classnames2.default)(styles.select, theme.select)
+            },
+            status.rowsPerPageOptions.map(function (x) {
+              return React.createElement(
+                'option',
+                { key: x, value: x },
+                content.rowsPerPageOption(_extends({}, pagerProps, props, { index: x }))
+              );
+            })
           )
         );
       },
       PageStatus: function PageStatus(props) {
         return React.createElement(
           'span',
-          null,
-          'Page ',
-          page + 1,
-          ' of ',
-          pages
+          { className: (0, _classnames2.default)(styles.pageStatus) },
+          React.createElement(content.PageStatus, _extends({}, pagerProps, props))
         );
       },
       RowStatus: function RowStatus(props) {
         return React.createElement(
           'span',
-          null,
-          'Showing rows ',
-          startIndex + 1,
-          ' through ',
-          lastIndex
+          { className: (0, _classnames2.default)(styles.rowStatus) },
+          React.createElement(content.RowStatus, _extends({}, pagerProps, props))
+        );
+      },
+      RowCount: function RowCount(props) {
+        return React.createElement(
+          'span',
+          { className: (0, _classnames2.default)(styles.rowCount) },
+          React.createElement(content.RowCount, _extends({}, pagerProps, props))
         );
       }
     });
   };
+
+  var contentShape = { FastBackward: PropTypes.any.isRequired,
+    StepBackward: PropTypes.any.isRequired,
+    StepForward: PropTypes.any.isRequired,
+    FastForward: PropTypes.any.isRequired,
+    PageStatus: PropTypes.any.isRequired,
+    RowStatus: PropTypes.any.isRequired,
+    RowCount: PropTypes.any.isRequired,
+    selectOption: PropTypes.func.isRequired,
+    rowsPerPageOption: PropTypes.func.isRequired
+  };
+
+  var propTypes = { children: PropTypes.func.isRequired,
+    styles: PropTypes.object.isRequired,
+    theme: PropTypes.object.isRequired,
+    rowsPerPage: PropTypes.any.isRequired,
+    rowsPerPageOptions: PropTypes.arrayOf(PropTypes.any).isRequired,
+    mapRows: PropTypes.func.isRequired,
+    typeSingular: PropTypes.string.isRequired,
+    typePlural: PropTypes.string.isRequired,
+    content: PropTypes.shape(contentShape).isRequired
+  };
+
+  var defaultProps = _extends({ styles: { controls: 'pagerControls',
+      controlsChildren: 'pagerControlsChildren',
+      control: 'pagerControl',
+      select: 'pagerSelect'
+    },
+    theme: { select: 'pagerSelect' },
+    rowsPerPage: 5,
+    rowsPerPageOptions: [1, 2, 3, 4, 5, 10, 25, 50, 100, 500, 1000, 'All'],
+    typeSingular: 'record',
+    typePlural: 'records',
+    content: { FastBackward: function FastBackward(_ref) {
+        var status = _ref.status;
+
+        var props = _objectWithoutProperties(_ref, ['status']);
+
+        return React.createElement('i', { className: 'fa fa-fast-backward' });
+      },
+      StepBackward: function StepBackward(_ref2) {
+        var status = _ref2.status;
+
+        var props = _objectWithoutProperties(_ref2, ['status']);
+
+        return React.createElement('i', { className: 'fa fa-step-backward' });
+      },
+      StepForward: function StepForward(_ref3) {
+        var status = _ref3.status;
+
+        var props = _objectWithoutProperties(_ref3, ['status']);
+
+        return React.createElement('i', { className: 'fa fa-step-forward' });
+      },
+      FastForward: function FastForward(_ref4) {
+        var status = _ref4.status;
+
+        var props = _objectWithoutProperties(_ref4, ['status']);
+
+        return React.createElement('i', { className: 'fa fa-fast-forward' });
+      },
+      PageStatus: function PageStatus(_ref5) {
+        var status = _ref5.status;
+
+        var props = _objectWithoutProperties(_ref5, ['status']);
+
+        return React.createElement(
+          'span',
+          null,
+          'Page ',
+          (status.page + 1).toLocaleString(),
+          ' of ',
+          status.pages
+        );
+      },
+      RowStatus: function RowStatus(_ref6) {
+        var status = _ref6.status;
+
+        var props = _objectWithoutProperties(_ref6, ['status']);
+
+        return React.createElement(
+          'span',
+          null,
+          'Showing ',
+          props.typePlural,
+          ' ',
+          (status.startIndex + 1).toLocaleString(),
+          ' through ',
+          status.lastIndex.toLocaleString(),
+          ' (',
+          status.totalRows.toLocaleString(),
+          ' total)'
+        );
+      },
+      RowCount: function RowCount(_ref7) {
+        var status = _ref7.status;
+
+        var props = _objectWithoutProperties(_ref7, ['status']);
+
+        return React.createElement(
+          'span',
+          null,
+          status.totalRows.toLocaleString(),
+          ' ',
+          status.totalRows === 1 ? props.typeSingular : props.typePlural
+        );
+      },
+      selectOption: function selectOption(_ref8) {
+        var index = _ref8.index;
+
+        var props = _objectWithoutProperties(_ref8, ['index']);
+
+        return (index + 1).toLocaleString();
+      },
+      rowsPerPageOption: function rowsPerPageOption(_ref9) {
+        var index = _ref9.index;
+
+        var props = _objectWithoutProperties(_ref9, ['index']);
+
+        return typeof index === 'number' ? index.toLocaleString() : index;
+      }
+    }
+  }, defaults);
 
   return _temp = _class = function (_Component) {
     _inherits(Pager, _Component);
@@ -156,79 +299,91 @@ function pager() {
     function Pager(props) {
       _classCallCheck(this, Pager);
 
-      var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(Pager).call(this, props));
+      var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Pager).call(this, props));
 
-      _this2.state = { page: 0,
-        pages: 1
+      _this.state = { page: 0,
+        rowsPerPage: props.rowsPerPage
       };
-      return _this2;
+      return _this;
     }
 
     _createClass(Pager, [{
       key: 'render',
       value: function render() {
-        var _this3 = this;
+        var _this2 = this;
 
         var _props = this.props;
-        var maxRecords = _props.maxRecords;
         var mapRows = _props.mapRows;
-        var page = this.state.page;
+        var rowsPerPageOptions = _props.rowsPerPageOptions;
+        var _state = this.state;
+        var page = _state.page;
+        var rowsPerPage = _state.rowsPerPage;
 
 
-        var mapStateToProps = function mapStateToProps(state) {
+        var mapStatus = function mapStatus(state) {
           var rows = mapRows(state);
-          var startIndex = page * maxRecords;
-          var endIndex = (page + 1) * maxRecords;
-          var pages = Math.ceil(rows.length / maxRecords);
+
+          if (typeof rowsPerPage !== 'number') {
+            return { rows: rows,
+              startIndex: 0,
+              lastIndex: rows.length,
+              page: page,
+              pages: 1,
+              rowsPerPage: rowsPerPage,
+              rowsPerPageOptions: rowsPerPageOptions,
+              totalRows: rows.size || rows.length
+            };
+          }
+
+          var startIndex = page * rowsPerPage;
+          var endIndex = (page + 1) * rowsPerPage;
+          var pages = Math.ceil(rows.length / rowsPerPage);
           var rowSlice = rows.slice(startIndex, endIndex);
           var lastIndex = startIndex + rowSlice.length;
 
-          console.warn('DATA', page, maxRecords, rowSlice, rows);
-
-          var pageFirst = function pageFirst() {
-            return _this3.setState({ page: 0 });
-          };
-          var pageBack = function pageBack() {
-            return _this3.setState({ page: page - 1 });
-          };
-          var pageForward = function pageForward() {
-            return _this3.setState({ page: page + 1 });
-          };
-          var pageLast = function pageLast() {
-            return _this3.setState({ page: pages - 1 });
-          };
-          var selectPage = function selectPage(x) {
-            return _this3.setState({ page: x });
-          };
-
-          return { state: _this3.state,
-            rows: rowSlice,
+          return { rows: rowSlice,
             page: page,
             pages: pages,
             startIndex: startIndex,
             lastIndex: lastIndex,
-            pageFirst: pageFirst,
-            pageBack: pageBack,
-            pageForward: pageForward,
-            pageLast: pageLast,
-            selectPage: selectPage
+            rowsPerPage: rowsPerPage,
+            rowsPerPageOptions: rowsPerPageOptions,
+            totalRows: rows.size || rows.length
           };
         };
-        var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-          return {};
+
+        var mapStateToProps = function mapStateToProps(state) {
+          var status = mapStatus(state);
+
+          var actions = { fastBackward: function fastBackward() {
+              return _this2.setState({ page: 0 });
+            },
+            stepBackward: function stepBackward() {
+              return _this2.setState({ page: page - 1 });
+            },
+            stepForward: function stepForward() {
+              return _this2.setState({ page: page + 1 });
+            },
+            fastForward: function fastForward() {
+              return _this2.setState({ page: status.pages - 1 });
+            },
+            select: function select(x) {
+              return _this2.setState({ page: x });
+            },
+            rowsPerPage: function rowsPerPage(x) {
+              return _this2.setState({ rowsPerPage: x, page: typeof x === 'number' ? Math.floor(status.startIndex / x) : 0 });
+            }
+          };
+
+          return { actions: actions,
+            status: status
+          };
         };
-        var ConnectedPager = connect(mapStateToProps, mapDispatchToProps)(PagerComponents);
+        var ConnectedPager = connect(mapStateToProps)(PagerComponents);
         return React.createElement(ConnectedPager, this.props);
       }
     }]);
 
     return Pager;
-  }(Component), _class.propTypes = { children: PropTypes.func.isRequired,
-    styles: PropTypes.object.isRequired,
-    maxRecords: PropTypes.number.isRequired,
-    mapRows: PropTypes.func.isRequired
-  }, _class.defaultProps = _extends({ styles: { pagerControls: 'pagerControls'
-    },
-    maxRecords: 5
-  }, defaults), _temp;
+  }(Component), _class.propTypes = propTypes, _class.defaultProps = defaultProps, _temp;
 }

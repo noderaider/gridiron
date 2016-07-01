@@ -2448,9 +2448,8 @@
   display: -ms-flexbox;
   display: flex;
   -webkit-box-flex: 1;
-      -ms-flex: 1 1 100vh;
-          flex: 1 1 100vh;
-  //min-height: 100vh;
+      -ms-flex: 1 1 auto;
+          flex: 1 1 auto;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
@@ -2458,6 +2457,7 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  pointer-events: none;
 }
 
 @-webkit-keyframes react-maximize__to-maximize___2hWKE {
@@ -2537,32 +2537,14 @@
   width: inherit !important;
 }
 
-.redux-grid__compressed___1jUGi {
-  position: relative;
-}
-
 /** GRID */
 
 .redux-grid__BodyGrid___3-zIS {
+  box-sizing:border-box;
   border: 1px solid #e0e0e0;
   height: auto !important;
   height: initial !important;
   width: inherit !important;
-}
-
-.redux-grid__container___1sC9w.redux-grid__maximized___2smOI {
-  -webkit-animation-duration: 200ms;
-          animation-duration: 200ms;
-  -webkit-animation-name: redux-grid__maximize___2GLvQ;
-          animation-name: redux-grid__maximize___2GLvQ;
-
-  position: absolute;
-  left: 0 !important;
-  top: 0 !important;
-  right: 0 !important;
-  margin: 0 !important;
-  z-index: 99999;
-  height: 100vh;
 }
 
 .Grid__innerScrollContainer {
@@ -2625,6 +2607,9 @@
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   border-right: 0;
   border-left: 0;
   margin: 0;
