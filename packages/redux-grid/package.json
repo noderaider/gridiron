@@ -1,6 +1,6 @@
 {
   "name": "redux-grid",
-  "version": "0.5.5",
+  "version": "0.5.6",
   "description": "Lightweight grid framework built on top of react-virtualized / fixed-data-table for easy highly customizable grids generated from redux state.",
   "main": "lib/index.js",
   "files": [
@@ -53,7 +53,7 @@
     "react-maximize": "^0.5.5",
     "react-minimize": "^0.5.5",
     "react-select": "^1.0.0-beta13",
-    "redux-grid-core": "^0.5.5",
+    "redux-grid-core": "^0.5.6",
     "redux-pager": "^0.5.5",
     "solvent": "^0.4.1"
   },
@@ -74,7 +74,7 @@
     "eslint-plugin-react": "*",
     "faker": "^3.1.0",
     "mocha": "^2.5.3",
-    "redux-grid-react": "^0.5.0",
+    "redux-grid-react": "^0.5.6",
     "react-maximize": "^0.5.5",
     "redux-pager": "^0.5.5",
     "rimraf": "^2.5.2"
