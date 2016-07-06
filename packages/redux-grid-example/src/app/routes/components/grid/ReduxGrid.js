@@ -6,9 +6,11 @@ import ReactHeight from 'react-height'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
 import * as ReactVirtualized from 'react-virtualized'
+import * as ReactGateway from 'react-gateway'
 import reduxGrid from 'redux-grid'
 import reactPre from 'react-pre'
 import util from 'util'
+
 
 import reduxPager from 'redux-pager'
 import reduxPagerStyles from './css/redux-pager.css' // 'redux-pager/lib/styles.css'
@@ -28,7 +30,16 @@ const { Pre, Arrows } = reactPre({ React })
 
 const mapCols = state => {
   return  [ { id: 'id'
-            , header: ({ theme }) => <Header hasSort={true} hasFilter={true} theme={theme}>Path</Header>
+            , header: ({ theme }) => (
+              <Header
+                checkbox={{ value: 'header_checkbox' }}
+                hasSort={true}
+                hasFilter={true}
+                theme={theme}
+              >
+                Path
+              </Header>
+            )
             //, footer: ({ rows }) => <Footer theme={sandy}>{rows.length} rows</Footer>
             , width: 300
             }
@@ -55,25 +66,22 @@ const createRowMapper = ({ ids = [] } = {}) => (state, { rows } = {}) => {
 
 
 class ReduxGrid extends Component {
-  constructor(props) {
-    super(props)
-    this.state = { pager: null, Container: props.maximize.container() }
-  }
   render() {
-    const { Container } = this.state
+    const { container } = this.props
     const ReduxGridDetail = detailProps => {
-      return props.maximize.container(({ Controls }) => (
+      return container(({ Controls, Box, isMaximized, id, actions }) => (
           <Pager maxRecords={5} mapRows={createRowMapper({ ids: detailProps.ids })} theme={sandy}>
-            {pager => (
+          {pager => (
+            <Box>
               <DrillGrid
                 styles={styles}
                 theme={sandy}
                 mapCols={mapCols}
                 mapRows={() => pager.rows}
-                mapDrill={(state, parentId) => <ReduxGridDetail ids={parentId} />}
+                mapDrill={(state, parentId) => <div>THIRD</div> /*<ReduxGridDetail ids={parentId} />*/}
                 header={
                   [ <span key="title" style={{ fontFamily: 'monospace', fontWeight: 'bold', letterSpacing: 6, fontSize: '1em' }}>
-                      <Arrows>{detailProps.ids}</Arrows> details
+                      <Arrows>{detailProps.ids}</Arrows> details ({id})
                     </span>
                   , <Controls key="maximize" />
                   ]
@@ -87,7 +95,8 @@ class ReduxGrid extends Component {
                 }
                 maximize={this.props.maximize}
               />
-            )}
+            </Box>
+          )}
           </Pager>
         )
       )
@@ -96,19 +105,20 @@ class ReduxGrid extends Component {
     const rowMapper = createRowMapper()
 
     return (
-      <Container>
-        {container => (
-          <Pager rowsPerPage={5} mapRows={rowMapper} theme={subgrid}>
-            {pager => (
-              <DrillGrid
+      container(
+        ({ Controls, Box, isMaximized, id, actions }) => (
+        <Pager rowsPerPage={5} mapRows={rowMapper} theme={subgrid}>
+        {pager => (
+          <Box>
+            <DrillGrid
                 styles={styles}
                 theme={subgrid}
                 mapCols={mapCols}
                 mapRows={() => pager.rows}
-                mapDrill={(state, parentId) => <div />} // <ReduxGridDetail ids={parentId} />}
+                mapDrill={(state, parentId) => <ReduxGridDetail ids={parentId} />}
                 header={
-                  [ <h3 key="title" style={{ margin: 0, letterSpacing: 6 }}>redux-grid</h3>
-                  , <span key="maximize">{container.controls}</span> //<Controls key="maximize" />
+                  [ <h3 key="title" style={{ margin: 0, letterSpacing: 6 }}>redux-grid - {id}</h3>
+                  , <Controls key="maximize" />
                   ]
                 }
                 footer={[ <pager.Controls key="pager-buttons"><pager.Select /></pager.Controls>
@@ -118,10 +128,12 @@ class ReduxGrid extends Component {
                         ]}
                 {...this.props}
               />
-            )}
-          </Pager>
+          </Box>
         )}
-      </Container>
+        </Pager>
+      )
+      )
+      //</Container>
     )
   }
 }

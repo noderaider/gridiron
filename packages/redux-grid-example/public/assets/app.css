@@ -2039,25 +2039,25 @@
 #TopBar__topbar___2DA_b button:hover {
   background-color: '#fff' !important;
 }
-.react-maximize__maximize___35VB0 > .react-maximize__maximizeChildren___2aE9x {
+.styles__maximize___1GSzQ > .styles__maximizeChildren___2rwbi {
   -webkit-animation-duration: 200ms;
           animation-duration: 200ms;
-  -webkit-animation-name: react-maximize__to-maximize___gSLVD;
-          animation-name: react-maximize__to-maximize___gSLVD;
+  -webkit-animation-name: styles__to-maximize___wmQ0G;
+          animation-name: styles__to-maximize___wmQ0G;
   -webkit-animation-timing-function: ease-out;
           animation-timing-function: ease-out;
 }
 
-.react-maximize__restore___2HFEG > .react-maximize__maximizeChildren___2aE9x {
+.styles__restore___2_R37 > .styles__maximizeChildren___2rwbi {
   -webkit-animation-duration: 200ms;
           animation-duration: 200ms;
-  -webkit-animation-name: react-maximize__to-restore___2W8Dy;
-          animation-name: react-maximize__to-restore___2W8Dy;
+  -webkit-animation-name: styles__to-restore___1zR9b;
+          animation-name: styles__to-restore___1zR9b;
   -webkit-animation-timing-function: ease-out;
           animation-timing-function: ease-out;
 }
 
-.react-maximize__maximizeChildren___2aE9x {
+.styles__maximizeChildren___2rwbi {
   left: 0;
   right: 0;
   display: -webkit-box;
@@ -2076,7 +2076,7 @@
   pointer-events: none;
 }
 
-@-webkit-keyframes react-maximize__to-maximize___gSLVD {
+@-webkit-keyframes styles__to-maximize___wmQ0G {
   from {
     -webkit-transform: translateY(100vh);
             transform: translateY(100vh);
@@ -2087,7 +2087,7 @@
   }
 }
 
-@keyframes react-maximize__to-maximize___gSLVD {
+@keyframes styles__to-maximize___wmQ0G {
   from {
     -webkit-transform: translateY(100vh);
             transform: translateY(100vh);
@@ -2098,7 +2098,7 @@
   }
 }
 
-@-webkit-keyframes react-maximize__to-restore___2W8Dy {
+@-webkit-keyframes styles__to-restore___1zR9b {
   from {
     -webkit-transform: translateY(0);
             transform: translateY(0);
@@ -2109,7 +2109,7 @@
   }
 }
 
-@keyframes react-maximize__to-restore___2W8Dy {
+@keyframes styles__to-restore___1zR9b {
   from {
     -webkit-transform: translateY(0);
             transform: translateY(0);

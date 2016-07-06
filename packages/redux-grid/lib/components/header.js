@@ -51,6 +51,23 @@ exports.default = function (_ref) {
           'button',
           { onClick: props.handleFilter },
           React.createElement('i', { className: 'fa fa-filter' })
+        ) : null,
+        props.checkbox ? props.checkbox.label ? React.createElement(
+          'label',
+          null,
+          React.createElement('input', { type: 'checkbox', id: props.checkbox.id, value: props.checkbox.value, checked: props.checkbox.checked }),
+          ' ',
+          props.checkbox.label
+        ) : React.createElement('input', { type: 'checkbox', id: props.checkbox.id, value: props.checkbox.value, checked: props.checkbox.checked }) : null,
+        props.radio ? React.createElement(
+          'span',
+          null,
+          props.radio.values.map(function (_ref2, i) {
+            var value = _ref2.value;
+            var _ref2$checked = _ref2.checked;
+            var checked = _ref2$checked === undefined ? false : _ref2$checked;
+            return React.createElement('input', { key: i, type: 'radio', name: props.radio.name, value: value, checked: checked });
+          })
         ) : null
       )
     );

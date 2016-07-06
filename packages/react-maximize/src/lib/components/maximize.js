@@ -1,36 +1,21 @@
 import Promise from 'bluebird'
 import classNames from 'classnames'
 import solvent from 'solvent'
+import container from './container'
+const should = require('chai').should()
 
 export default function maximize (deps = {}, defaults = {}) {
-  const { React, ReactDOM, ReactGateway, shallowCompare, CSSPropertyOperations } = solvent({ React: 'object', ReactDOM: 'object', ReactGateway: 'object', shallowCompare: 'function', CSSPropertyOperations: 'function' })(deps)
+  const { React, ReactDOM, ReactGateway, shallowCompare } = solvent({ React: 'object', ReactDOM: 'object', ReactGateway: 'object', shallowCompare: 'function' })(deps)
   const { Component, PropTypes, cloneElement } = React
   const { Gateway, GatewayDest, GatewayProvider } = ReactGateway
 
-
-  const Controls = props => {
-    const { isMaximized, content, actions } = props
-
-    return isMaximized() ? (
-      <button onClick={() => {
-          actions.restore()
-        }}>
-        {content.restore}
-      </button>
-    ) : (
-      <button onClick={() => {
-          actions.maximize()
-        }}>
-        {content.maximize}
-      </button>
-    )
-  }
+  const Container = container(deps, defaults)
 
 
   const contentShape =  { maximize: PropTypes.any.isRequired
                         , restore: PropTypes.any.isRequired
                         }
-  const propTypes = { children: PropTypes.func.isRequired
+  const propTypes = { children: PropTypes.any.isRequired
                     , style: PropTypes.object.isRequired
                     , className: PropTypes.string.isRequired
                     , styles: PropTypes.object.isRequired
@@ -76,7 +61,9 @@ export default function maximize (deps = {}, defaults = {}) {
                         , ...defaults
                         }
 
-  return class Maximize extends Component {
+
+
+  class Maximize extends Component {
     static propTypes = propTypes;
     static defaultProps = defaultProps;
     constructor(props) {
@@ -94,75 +81,65 @@ export default function maximize (deps = {}, defaults = {}) {
       this.parentNode = this.gateway.parentNode
     }
     shouldComponentUpdate(nextProps, nextState) {
-      return shallowCompare(this, nextProps, nextState)
+      return true
+      //return shallowCompare(this, nextProps, nextState)
     }
-    /*
-    componentDidUpdate(prevProps, prevState) {
-      const { isMaximized } = this.state
-      if(prevState.isMaximized !== isMaximized) {
-        if(isMaximized) {
-          this.setState({ lastScroll: { x: window.scrollX, y: window.scrollY } })
-          window.scrollTo(0, 0)
-        } else {
-          const { lastScroll } = this.state
-          window.scrollTo(lastScroll.x, lastScroll.y)
-          this.setState({ lastScroll: { x: 0, y: 0 } })
-        }
-      }
-    }
-    */
+
+    container = children => {
+      return (
+        <Container
+          id={(N => Array(N+1).join((Math.random().toString(36)+'00000000000000000').slice(2, 18)).slice(0, N))(5)}
+          maximize={id => new Promise((resolve, reject) => {
+            console.info('MAXIMIZING', id)
+            this.setState({ containers: this.state.containers.concat(id) }, () => resolve())
+          })}
+          restore={id => new Promise((resolve, reject) => {
+            const { containers } = this.state
+            const index = containers.indexOf(id)
+            index.should.be.at.least(0, `${id} does not exist in the list of state containers => ${JSON.stringify(containers)}`)
+
+            const newContainers = [ ...containers.slice(0, index), ...containers.slice(index + 1) ]
+            console.info('CONTAINER UNREGISTERED', index, id, containers, newContainers)
+            this.setState({ containers: newContainers }, () => resolve())
+          })}
+        >
+          {children}
+        </Container>
+      )
+    };
     render() {
-      const { children, backgroundStyle, style, className, styles } = this.props
-      const { isMaximized, containerClass, containerStyle, maximized } = this.state
-
-      const container = () => {
-        const id = this.containers.length
-        this.containers.push(id)
-        console.warn(`creating container with ID: ${id}`)
-        return props => {
-          const gatewayName = `${id}-page`
-          const isMaximized = () => maximized.includes(id)
-          const actions = { maximize: () => this.setState({ maximized: maximized.concat(id) })
-                          , restore: () => this.setState({ maximized: maximized.slice(0, -1) })
-                          }
-          const controls = (
-            <Controls
-              isMaximized={isMaximized}
-              actions={actions}
-              content={this.props.content}
-            />
-          )
-
-          return (
-            <div>
-              ID WITH {id}
-              <GatewayDest name={gatewayName} />
-              <Gateway into={maximized.includes(id) ? 'maximize' : gatewayName}>
-                {props.children({ controls })}
-              </Gateway>
-            </div>
-          )
-        }
-      }
+      const { children, containerClass, containerStyle, backgroundStyle, style, className, styles } = this.props
+      const { containers } = this.state
 
       return (
         <GatewayProvider ref={x => this.gateway=x}>
           <div>
             <div style={{ border: '1px dashed yellow' }}>
-              {children({ container })}
+              {children(this.container)}
             </div>
-            <div
-                style={{ ...this.props.containerStyle, ...this.props.style, border: '1px dashed red',  display: maximized.length > 0 ? 'block' : 'none' }}
-                className={classNames(this.props.styles.maximize, this.props.className)}>
+
+            {this.state.containers.map((x, i) => {
+              const destName = `maximize-${x}`
+              console.info('RENDERING CONTAINER')
+              return (
+              <div
+                key={i}
+                style={{ ...containerStyle, ...style, border: '1px dashed red', top: 0 }}
+                className={classNames(styles.maximize, className)}
+              >
                 <div
-                  style={this.props.backgroundStyle}
+                  style={backgroundStyle}
                   //onClick={actions.restore}
                 />
-                <GatewayDest name="maximize" />
-            </div>
+                <GatewayDest name={destName} />
+              </div>
+              )
+            })}
           </div>
         </GatewayProvider>
       )
     }
   }
+
+  return Maximize
 }

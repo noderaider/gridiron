@@ -35,6 +35,18 @@ export default ({ React }) => {
             <i className={`fa fa-filter${''}`} />
           </button>
         ) : null}
+        {props.checkbox ? props.checkbox.label ? (
+            <label><input type="checkbox" id={props.checkbox.id} value={props.checkbox.value} checked={props.checkbox.checked} /> {props.checkbox.label}</label>
+          ) : (
+            <input type="checkbox" id={props.checkbox.id} value={props.checkbox.value} checked={props.checkbox.checked} />
+          ) : null}
+        {props.radio ? (
+          <span>
+            {props.radio.values.map(({ value, checked = false }, i) => (
+              <input key={i} type="radio" name={props.radio.name} value={value} checked={checked} />
+            ))}
+          </span>
+        ) : null}
       </span>
     </span>
   )

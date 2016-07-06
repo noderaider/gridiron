@@ -13,10 +13,7 @@ import DevTools from 'lib/redux/DevTools'
 
 import { contextTypes, getTheme, defaultTheme } from 'lib/context'
 
-import reactMaximize from 'react-maximize'
-import reactMaximizeStyles from './grid/css/react-maximize.css' // 'react-maximize/lib/styles.css'
-
-const { Maximize } = reactMaximize({ React, ReactDOM, ReactGateway, shallowCompare, CSSPropertyOperations }, { styles: reactMaximizeStyles })
+import { Maximize } from 'lib/components/modules/react-maximize'
 
 const IdleMonitor = createIdleMonitor({ React, connect })
 
@@ -57,19 +54,20 @@ class App extends Component {
     const { dispatch, theme, title, subtitle, username, organization, email, full, packageName, errors, children } = this.props
     const { style } = theme
 
+
     return (
       <Maximize>
-        {maximize => (
-          <div style={{ marginBottom: 70 }}>
-            <div style={style.app}>
-              <TopBar title={title} subtitle={subtitle} username={username} email={email} packageName={packageName} />
-              {cloneElement(children, { maximize })}
-              <FooterBar />
-            </div>
-            <DevTools />
-            <IdleMonitor showStatus={true} />
+      {container => (
+        <div style={{ marginBottom: 70 }}>
+          <div style={style.app}>
+            <TopBar title={title} subtitle={subtitle} username={username} email={email} packageName={packageName} />
+            {cloneElement(children, { container })}
+            <FooterBar />
           </div>
-        )}
+          <DevTools />
+          <IdleMonitor showStatus={true} />
+        </div>
+      )}
       </Maximize>
     )
   }

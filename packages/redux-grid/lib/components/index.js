@@ -49,6 +49,15 @@ Object.defineProperty(exports, 'expander', {
   }
 });
 
+var _propagate = require('./propagate');
+
+Object.defineProperty(exports, 'propagate', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_propagate).default;
+  }
+});
+
 var _pager = require('./pager');
 
 Object.defineProperty(exports, 'pager', {

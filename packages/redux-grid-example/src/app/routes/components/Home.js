@@ -9,9 +9,9 @@ import PageForm from 'app/elements/forms/PageForm'
 class Home extends Component {
   static contextTypes = contextTypes;
   render() {
-    const { title, subtitle, username, organization, email, full, packageName, maximize } = this.props
+    const { title, subtitle, username, organization, email, full, packageName, container } = this.props
     const { style } = this.context.theme
-    return <ReduxGrid maximize={maximize} />
+    return <ReduxGrid container={container} />
     //return maximize.container(x => <ReduxGrid maximize={maximize}  />)
   }
 }

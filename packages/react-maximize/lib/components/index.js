@@ -13,4 +13,13 @@ Object.defineProperty(exports, 'maximize', {
   }
 });
 
+var _container = require('./container');
+
+Object.defineProperty(exports, 'container', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_container).default;
+  }
+});
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
