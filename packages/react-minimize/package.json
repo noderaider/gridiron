@@ -1,6 +1,6 @@
 {
   "name": "react-minimize",
-  "version": "0.5.3",
+  "version": "0.5.5",
   "description": "React control to maximize / compress components.",
   "main": "lib/index.js",
   "files": [
