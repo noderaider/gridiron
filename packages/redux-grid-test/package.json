@@ -76,7 +76,8 @@
     "react-virtualized": "latest",
     "redux": "latest",
     "redux-grid": "^0.5.5",
-    "redux-grid-view": "^0.2.2",
+    "redux-grid-core": "^0.5.5",
+    "redux-grid-react": "^0.5.5",
     "rimraf": "latest",
     "sinon": "latest"
   },

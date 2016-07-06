@@ -6,4 +6,6 @@ import * as Expander from './Expander'
 import * as Propagate from './Propagate'
 import * as Pager from './Pager'
 
-export { CoreGrid, DrillGrid, Header, Footer, Expander, Propagate, Pager }
+import factories from './factories'
+
+export { CoreGrid, DrillGrid, Header, Footer, Expander, Propagate, Pager, factories }
