@@ -3,14 +3,15 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.default = factories;
 
-var _watch = require('./watch');
+var _createPropagator = require('./createPropagator');
 
-Object.defineProperty(exports, 'watch', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_watch).default;
-  }
-});
+var _createPropagator2 = _interopRequireDefault(_createPropagator);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function factories(deps) {
+  return { propagator: (0, _createPropagator2.default)(deps)
+  };
+}

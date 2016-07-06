@@ -64,7 +64,7 @@
     {
       "name": "packages/redux-grid-test",
       "follow_symlinks": true,
-      "path": "../packages/redux-grid-test/test"
+      "path": "../packages/redux-grid-test"
     },
     {
       "name": "packages/redux-grid-react",

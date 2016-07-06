@@ -23,7 +23,7 @@ function transform(filename) {
   if (shouldStub(filename)) return reactStub
   else {
     var content = fs.readFileSync(filename, 'utf8')
-    return ReactTools.transform(content, {harmony: true})
+    return ReactTools.transform(content, { harmony: true })
   }
 }
 

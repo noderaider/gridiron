@@ -1,9 +1,18 @@
 /**
  * PropTypes factory for <Header /> components.
  */
-export const PropTypes = React => ( { } )
+export const PropTypes = React => ( { theme: React.PropTypes.object.isRequired
+                                    , styles: React.PropTypes.object.isRequired
+                                    , sort: React.PropTypes.object
+                                    , filter: React.PropTypes.object
+                                    , checkbox: React.PropTypes.object
+                                    , radio: React.PropTypes.object
+                                    , handleUpdate: React.PropTypes.func
+                                    } )
 
 /**
  * DefaultProps factory for <Header/> components.
  */
-export const DefaultProps = React => ({ })
+export const DefaultProps = React => ({ theme: {}
+                                      , styles: {}
+                                      })

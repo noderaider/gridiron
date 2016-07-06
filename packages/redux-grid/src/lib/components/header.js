@@ -13,6 +13,7 @@ const sortDirection = value => {
 }
 
 export default ({ React }) => {
+  const { Component, PropTypes } = React
   const wrapStyle = { display: 'flex'
                     , flexDirection: 'row'
                     , flexWrap: 'nowrap'
@@ -21,35 +22,61 @@ export default ({ React }) => {
                     , justifyContent: 'space-between'
                     }
 
-  const Header = props => (
-    <span style={wrapStyle} className={props.theme.header}>
-      <span>{props.children}</span>
-      <span>
-        {props.hasSort ? (
-          <button onClick={props.handleSort}>
-            <i className={`fa fa-sort${sortDirection(props.sortDirection)}`} />
-          </button>
-        ) : null}
-        {props.hasFilter ? (
-          <button onClick={props.handleFilter}>
-            <i className={`fa fa-filter${''}`} />
-          </button>
-        ) : null}
-        {props.checkbox ? props.checkbox.label ? (
-            <label><input type="checkbox" id={props.checkbox.id} value={props.checkbox.value} checked={props.checkbox.checked} /> {props.checkbox.label}</label>
-          ) : (
-            <input type="checkbox" id={props.checkbox.id} value={props.checkbox.value} checked={props.checkbox.checked} />
-          ) : null}
-        {props.radio ? (
+  class Header extends Component {
+    constructor(props) {
+      super(props)
+      this.state = { checked: false }
+
+    }
+    componentWillUpdate(...args) {
+      const { handleUpdate } = this.props
+      if(handleUpdate)
+        handleUpdate(this, ...args)
+    }
+    render() {
+      const { children
+            , styles
+            , theme
+            , sort
+            , filter
+            , checkbox
+            , radio
+            } = this.props
+
+      return (
+        <span style={wrapStyle} className={theme.header}>
+          <span>{children}</span>
           <span>
-            {props.radio.values.map(({ value, checked = false }, i) => (
-              <input key={i} type="radio" name={props.radio.name} value={value} checked={checked} />
-            ))}
+            {sort ? (
+              <button onClick={sort.handle}>
+                <i className={`fa fa-sort${sortDirection(sort.direction)}`} />
+              </button>
+            ) : null}
+            {filter ? (
+              <button onClick={filter.handle}>
+                <i className={`fa fa-filter${''}`} />
+              </button>
+            ) : null}
+            {checkbox ? checkbox.label ? (
+                <label><input type="checkbox" id={checkbox.id} onChange={this.handleChecked} value={checkbox.value} checked={checkbox.checked} /> {checkbox.label}</label>
+              ) : (
+                <input type="checkbox" id={checkbox.id} onChange={this.handleChecked} value={checkbox.value} checked={checkbox.checked} />
+              ) : null}
+            {radio ? (
+              <span>
+                {radio.values.map(({ value, checked = false }, i) => (
+                  <input key={i} type="radio" name={radio.name} value={value} checked={checked} />
+                ))}
+              </span>
+            ) : null}
           </span>
-        ) : null}
-      </span>
-    </span>
-  )
+        </span>
+      )
+    }
+    handleChecked = () => {
+      this.setState({ checked: !this.state.checked })
+    }
+  }
   Header.propTypes = Core.PropTypes(React)
   Header.defaultProps = Core.DefaultProps(React)
   return Header

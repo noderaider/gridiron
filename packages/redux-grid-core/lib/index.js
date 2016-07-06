@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.factories = exports.Pager = exports.Propagate = exports.Expander = exports.Footer = exports.Header = exports.DrillGrid = exports.CoreGrid = undefined;
+exports.factories = exports.Propagate = exports.Expander = exports.Footer = exports.Header = exports.DrillGrid = exports.CoreGrid = undefined;
 
 var _CoreGrid = require('./CoreGrid');
 
@@ -27,10 +27,6 @@ var _Propagate = require('./Propagate');
 
 var Propagate = _interopRequireWildcard(_Propagate);
 
-var _Pager = require('./Pager');
-
-var Pager = _interopRequireWildcard(_Pager);
-
 var _factories = require('./factories');
 
 var _factories2 = _interopRequireDefault(_factories);
@@ -45,5 +41,4 @@ exports.Header = Header;
 exports.Footer = Footer;
 exports.Expander = Expander;
 exports.Propagate = Propagate;
-exports.Pager = Pager;
 exports.factories = _factories2.default;

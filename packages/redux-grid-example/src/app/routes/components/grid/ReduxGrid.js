@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 import * as ReactVirtualized from 'react-virtualized'
 import * as ReactGateway from 'react-gateway'
 import reduxGrid from 'redux-grid'
+import { factories } from 'redux-grid-core'
 import reactPre from 'react-pre'
 import util from 'util'
 
@@ -24,30 +25,54 @@ import subgrid from './css/theme/subgrid.css'
 const should = require('chai').should()
 
 const { Pager } = reduxPager({ React, connect, shallowCompare }, { styles: reduxPagerStyles })
-const { CoreGrid, DrillGrid, Header, Footer, Expander } = reduxGrid({ React, ReactDOM, ReactVirtualized, connect, Immutable /*, Maximize*/ })
+const { propagator } = factories({ React })
+const { CoreGrid, DrillGrid, Header, Footer, Expander } = reduxGrid({ React, ReactDOM, ReactVirtualized, connect, Immutable })
 const { Pre, Arrows } = reactPre({ React })
 
+
+const _propagator = propagator((
+  <Header
+    checkbox={{ value: 'header_checkbox' }}
+    sort={{}}
+    filter={{}}
+    styles={styles}
+  >
+    Path
+  </Header>
+), { stateNames: [ 'checked' ] })
+
+_propagator.subscribe(({ props, state }) => console.info('PROPAGATED HEADER', { props, state }))
 
 const mapCols = state => {
   return  [ { id: 'id'
             , header: ({ theme }) => (
-              <Header
-                checkbox={{ value: 'header_checkbox' }}
-                hasSort={true}
-                hasFilter={true}
-                theme={theme}
-              >
-                Path
-              </Header>
+              <_propagator.Component theme={theme} />
             )
             //, footer: ({ rows }) => <Footer theme={sandy}>{rows.length} rows</Footer>
             , width: 300
             }
           , { id: 'key'
-            , header: ({ theme }) => <Header hasSort={true} hasFilter={true} theme={theme}>State</Header>
+            , header: ({ theme }) => (
+                <Header sort={{}} filter={{}} theme={theme} styles={styles}>
+                  State
+                </Header>
+              )
             //, footer: ({ rows }) => <Footer theme={sandy}>State</Footer>
             }
           ]
+}
+
+class Cell extends Component {
+  render() {
+    const { checkbox, children, propagated } = this.props
+    return (
+      <div>
+        <input type="checkbox" checked={propagated ? propagated.state.checked : false} />
+        <span><Pre>{propagated}</Pre></span>
+        {children}
+      </div>
+    )
+  }
 }
 
 
@@ -58,7 +83,10 @@ const createRowMapper = ({ ids = [] } = {}) => (state, { rows } = {}) => {
     const id = [ ...ids, x ]
     return  [ ...rows
             , { id
-              , render: () => [ <Arrows>{id}</Arrows>, <Pre>{selectedState[x]}</Pre> ]
+              , render: () => [ (
+
+                  _propagator.apply(<Cell><Arrows>{id}</Arrows></Cell>)
+                ), <Pre>{selectedState[x]}</Pre> ]
               }
             ]
   }, [])

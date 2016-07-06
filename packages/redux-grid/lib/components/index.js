@@ -58,13 +58,4 @@ Object.defineProperty(exports, 'propagate', {
   }
 });
 
-var _pager = require('./pager');
-
-Object.defineProperty(exports, 'pager', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_pager).default;
-  }
-});
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
