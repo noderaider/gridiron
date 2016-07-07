@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _reduxGridCore = require('redux-grid-core');
 
 var _classnames = require('classnames');
@@ -21,20 +23,29 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var should = require('chai').should();
 
 exports.default = function (_ref) {
+  var _class, _temp;
+
   var React = _ref.React;
   var Select = _ref.Select;
   var Component = React.Component;
 
 
-  return function (_Component) {
-    _inherits(Pager, _Component);
+  return _temp = _class = function (_Component) {
+    _inherits(Settings, _Component);
 
-    function Pager() {
-      _classCallCheck(this, Pager);
+    function Settings() {
+      _classCallCheck(this, Settings);
 
-      return _possibleConstructorReturn(this, Object.getPrototypeOf(Pager).apply(this, arguments));
+      return _possibleConstructorReturn(this, Object.getPrototypeOf(Settings).apply(this, arguments));
     }
 
-    return Pager;
-  }(Component);
+    _createClass(Settings, [{
+      key: 'render',
+      value: function render() {
+        return React.createElement('div', null);
+      }
+    }]);
+
+    return Settings;
+  }(Component), _class.propTypes = _reduxGridCore.Settings.PropTypes(React), _class.defaultProps = _reduxGridCore.Settings.DefaultProps(React), _temp;
 };

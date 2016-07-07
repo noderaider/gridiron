@@ -11,7 +11,8 @@ export default ({ React, Select }) => {
     static defaultProps = Core.DefaultProps(React);
     render() {
       return (
-
+        <div>
+        </div>
       )
     }
   }
