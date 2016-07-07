@@ -1,6 +1,6 @@
 {
   "name": "react-enhance",
-  "version": "0.5.0",
+  "version": "0.5.7",
   "description": "Component decorator for react components.",
   "main": "lib/index.js",
   "files": [

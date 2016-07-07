@@ -1,6 +1,6 @@
 {
   "name": "redux-grid",
-  "version": "0.5.6",
+  "version": "0.5.7",
   "description": "Lightweight grid framework built on top of react-virtualized / fixed-data-table for easy highly customizable grids generated from redux state.",
   "main": "lib/index.js",
   "files": [
@@ -52,10 +52,10 @@
     "react-bar": "^0.5.5",
     "react-maximize": "^0.5.5",
     "react-minimize": "^0.5.5",
-    "react-enhance": "^0.5.0",
+    "react-enhance": "^0.5.7",
     "react-stamp": "^0.5.1",
-    "redux-grid-core": "^0.5.6",
-    "redux-pager": "^0.5.5",
+    "redux-grid-core": "^0.5.7",
+    "redux-pager": "^0.5.7",
     "solvent": "^0.4.1"
   },
   "devDependencies": {
@@ -77,7 +77,7 @@
     "mocha": "^2.5.3",
     "redux-grid-react": "^0.5.6",
     "react-maximize": "^0.5.5",
-    "redux-pager": "^0.5.5",
+    "redux-pager": "^0.5.7",
     "rimraf": "^2.5.2"
   },
   "author": "Cole Chamberlain <cole.chamberlain@gmail.com> (https://github.com/cchamberlain)",
