@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
-import ReactCSSTransitionGroup from 'react/lib/ReactCSSTransitionGroup'
 import ReactDOM from 'react-dom'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import shallowCompare from 'react-addons-shallow-compare'
 import ReactHeight from 'react-height'
 import Immutable from 'immutable'
@@ -25,71 +25,91 @@ import subgrid from './css/theme/subgrid.css'
 const should = require('chai').should()
 
 const { Pager } = reduxPager({ React, connect, shallowCompare }, { styles: reduxPagerStyles })
-const { propagator } = factories({ React })
-const { CoreGrid, DrillGrid, Header, Footer, Expander } = reduxGrid({ React, ReactDOM, ReactVirtualized, connect, Immutable })
+const { header } = factories({ React })
+const { CoreGrid, DrillGrid, Footer, Expander } = reduxGrid({ React, ReactDOM, ReactVirtualized, connect, Immutable })
 const { Pre, Arrows } = reactPre({ React })
 
 
-const _propagator = propagator((
-  <Header
-    checkbox={{ value: 'header_checkbox' }}
-    sort={{}}
-    filter={{}}
-    styles={styles}
-  >
-    Path
-  </Header>
-), { stateNames: [ 'checked' ] })
 
-_propagator.subscribe(({ props, state }) => console.info('PROPAGATED HEADER', { props, state }))
+function createContext() {
+  const headers = [ header(), header() ]
 
-const mapCols = state => {
-  return  [ { id: 'id'
-            , header: ({ theme }) => (
-              <_propagator.Component theme={theme} />
-            )
-            //, footer: ({ rows }) => <Footer theme={sandy}>{rows.length} rows</Footer>
-            , width: 300
-            }
-          , { id: 'key'
-            , header: ({ theme }) => (
-                <Header sort={{}} filter={{}} theme={theme} styles={styles}>
-                  State
-                </Header>
-              )
-            //, footer: ({ rows }) => <Footer theme={sandy}>State</Footer>
-            }
-          ]
-}
+  const mapCols = state => {
+    return  [ { id: 'id'
+              , header: ({ theme }) => {
+                  const { Header } = headers[0]
+                  return (
+                    <Header
+                      checkbox={{ value: 'header_checkbox' }}
+                      sort={{}}
+                      filter={{}}
+                      styles={styles}
+                    >
+                      Path
+                    </Header>
+                  )
+              }
 
-class Cell extends Component {
-  render() {
-    const { checkbox, children, propagated } = this.props
-    return (
-      <div>
-        <input type="checkbox" checked={propagated ? propagated.state.checked : false} />
-        <span><Pre>{propagated}</Pre></span>
-        {children}
-      </div>
-    )
-  }
-}
-
-
-const createRowMapper = ({ ids = [] } = {}) => (state, { rows } = {}) => {
-  const selectedState = ids.reduce((s, x) => s[x], state)
-
-  return Object.keys(selectedState).reduce((rows, x, i) => {
-    const id = [ ...ids, x ]
-    return  [ ...rows
-            , { id
-              , render: () => [ (
-
-                  _propagator.apply(<Cell><Arrows>{id}</Arrows></Cell>)
-                ), <Pre>{selectedState[x]}</Pre> ]
+              //, footer: ({ rows }) => <Footer theme={sandy}>{rows.length} rows</Footer>
+              , width: 300
+              }
+            , { id: 'key'
+              , header: ({ theme }) => {
+                  const { Header } = headers[1]
+                  return (
+                    <Header sort={{}} filter={{}} theme={theme} styles={styles}>
+                      State
+                    </Header>
+                  )
+                }
+              //, footer: ({ rows }) => <Footer theme={sandy}>State</Footer>
               }
             ]
-  }, [])
+  }
+
+  const cellStyle = { display: 'flex'
+                    , flexDirection: 'row'
+                    , flexWrap: 'wrap'
+                    , justifyContent: 'space-between'
+                    , alignItems: 'center'
+                    }
+
+
+  const cell =  { state: { checked: false }
+                , render() {
+                    const { checkbox, children } = this.props
+                    const { pub, sub } = this.state
+                    const checkboxValue = this.latest([ 'state', 'checked' ], false)
+                    return (
+                      <div style={cellStyle}>
+                        <input type="checkbox" checked={checkboxValue} onChange={({ target }) => this.sub({ state: { checked: target.checked } })} />
+                        {children}
+                        <span><Pre>{this.state}</Pre></span>
+                      </div>
+                    )
+                  }
+                }
+
+  const Cell = headers[0].createSub(cell)
+
+
+  const createRowMapper = ({ ids = [] } = {}) => (state, { rows } = {}) => {
+    const selectedState = ids.reduce((s, x) => s[x], state)
+
+    return Object.keys(selectedState).reduce((rows, x, i) => {
+      const id = [ ...ids, x ]
+      return  [ ...rows
+              , { id
+                , render: () => [ (
+
+                    <Cell><Arrows>{id}</Arrows></Cell>
+                  ), <Pre>{selectedState[x]}</Pre> ]
+                }
+              ]
+    }, [])
+  }
+
+  return { mapCols, createRowMapper }
 }
 
 
@@ -97,6 +117,7 @@ class ReduxGrid extends Component {
   render() {
     const { container } = this.props
     const ReduxGridDetail = detailProps => {
+      const { mapCols, createRowMapper } = createContext()
       return container(({ Controls, Box, isMaximized, id, actions }) => (
           <Pager maxRecords={5} mapRows={createRowMapper({ ids: detailProps.ids })} theme={sandy}>
           {pager => (
@@ -130,12 +151,12 @@ class ReduxGrid extends Component {
       )
     }
 
-    const rowMapper = createRowMapper()
+    const { mapCols, createRowMapper } = createContext()
 
     return (
       container(
         ({ Controls, Box, isMaximized, id, actions }) => (
-        <Pager rowsPerPage={5} mapRows={rowMapper} theme={subgrid}>
+        <Pager rowsPerPage={5} mapRows={createRowMapper()} theme={subgrid}>
         {pager => (
           <Box>
             <DrillGrid

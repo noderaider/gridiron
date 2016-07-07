@@ -22,15 +22,6 @@ Object.defineProperty(exports, 'drillGrid', {
   }
 });
 
-var _header = require('./header');
-
-Object.defineProperty(exports, 'header', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_header).default;
-  }
-});
-
 var _footer = require('./footer');
 
 Object.defineProperty(exports, 'footer', {
@@ -46,15 +37,6 @@ Object.defineProperty(exports, 'expander', {
   enumerable: true,
   get: function get() {
     return _interopRequireDefault(_expander).default;
-  }
-});
-
-var _propagate = require('./propagate');
-
-Object.defineProperty(exports, 'propagate', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_propagate).default;
   }
 });
 

@@ -7,7 +7,6 @@ export const PropTypes = React => ( { theme: React.PropTypes.object.isRequired
                                     , filter: React.PropTypes.object
                                     , checkbox: React.PropTypes.object
                                     , radio: React.PropTypes.object
-                                    , handleUpdate: React.PropTypes.func
                                     } )
 
 /**

@@ -6,6 +6,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+exports.default = reduxGrid;
+
 var _components = require('./components');
 
 var components = _interopRequireWildcard(_components);
@@ -14,19 +16,16 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var capitalizeFirst = function capitalizeFirst(str) {
-  return '' + str[0].toUpperCase() + str.slice(1);
+var applyCapitalization = function applyCapitalization(str) {
+  return str.length <= 2 ? str.toUpperCase() : '' + str[0].toUpperCase() + str.slice(1);
 };
 
 /**
- * redux-grid
- * Requires dependencies { React, FixedDataTable, connect } and exports a higher order component and controls that can select from redux state.
- * @param  {[type]} dependencies [description]
- * @return {[type]}              [description]
+ * reduxGrid
+ * Requires dependencies { React } and returns a decorated component.
  */
-
-exports.default = function (dependencies) {
-  return Object.keys(components).reduce(function (reduxGrid, x) {
-    return _extends({}, reduxGrid, _defineProperty({}, capitalizeFirst(x), components[x](dependencies)));
+function reduxGrid(deps, defaults) {
+  return Object.keys(components).reduce(function (libs, x) {
+    return _extends({}, libs, _defineProperty({}, applyCapitalization(x), components[x](deps, defaults)));
   }, {});
-};
+}

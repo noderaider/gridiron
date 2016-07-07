@@ -1,11 +1,11 @@
 import * as components from './components'
 
-const capitalizeFirst = str => `${str[0].toUpperCase()}${str.slice(1)}`
+const applyCapitalization = str => str.length <= 2 ? str.toUpperCase() : `${str[0].toUpperCase()}${str.slice(1)}`
 
 /**
- * redux-grid
- * Requires dependencies { React, FixedDataTable, connect } and exports a higher order component and controls that can select from redux state.
- * @param  {[type]} dependencies [description]
- * @return {[type]}              [description]
+ * reduxGrid
+ * Requires dependencies { React } and returns a decorated component.
  */
-export default dependencies => Object.keys(components).reduce((reduxGrid, x) => ({ ...reduxGrid, [capitalizeFirst(x)]: components[x](dependencies) }), {})
+export default function reduxGrid(deps, defaults) {
+  return Object.keys(components).reduce((libs, x) => ({ ...libs, [applyCapitalization(x)]: components[x](deps, defaults) }), {})
+}

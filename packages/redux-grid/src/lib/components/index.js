@@ -1,7 +1,5 @@
 export { default as coreGrid } from './coreGrid'
 export { default as drillGrid } from './drillGrid'
-export { default as header } from './header'
 export { default as footer } from './footer'
 export { default as expander } from './expander'
-export { default as propagate } from './propagate'
 export { default as settings } from './settings'

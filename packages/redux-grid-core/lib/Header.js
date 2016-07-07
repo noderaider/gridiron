@@ -12,8 +12,7 @@ var PropTypes = exports.PropTypes = function PropTypes(React) {
     sort: React.PropTypes.object,
     filter: React.PropTypes.object,
     checkbox: React.PropTypes.object,
-    radio: React.PropTypes.object,
-    handleUpdate: React.PropTypes.func
+    radio: React.PropTypes.object
   };
 };
 

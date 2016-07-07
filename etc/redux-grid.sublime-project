@@ -4,42 +4,32 @@
     {
       "name": "packages/react-ai",
       "follow_symlinks": true,
-      "path": "../packages/react-ai"
+      "path": "../packages/react-ai/src"
     },
     {
-      "name": "packages/react-ai-test",
+      "name": "packages/react-enhance",
       "follow_symlinks": true,
-      "path": "../packages/react-ai-test"
+      "path": "../packages/react-enhance/src"
     },
     {
       "name": "packages/react-pre",
       "follow_symlinks": true,
-      "path": "../packages/react-pre"
-    },
-    {
-      "name": "packages/react-pre-test",
-      "follow_symlinks": true,
-      "path": "../packages/react-pre-test"
+      "path": "../packages/react-pre/src"
     },
     {
       "name": "packages/react-maximize",
       "follow_symlinks": true,
-      "path": "../packages/react-maximize"
-    },
-    {
-      "name": "packages/react-maximize-test",
-      "follow_symlinks": true,
-      "path": "../packages/react-maximize-test"
+      "path": "../packages/react-maximize/src"
     },
     {
       "name": "packages/react-minimize",
       "follow_symlinks": true,
-      "path": "../packages/react-minimize"
+      "path": "../packages/react-minimize/src"
     },
     {
       "name": "packages/react-bar",
       "follow_symlinks": true,
-      "path": "../packages/react-bar"
+      "path": "../packages/react-bar/src"
     },
     {
       "name": "packages/redux-grid",
@@ -85,12 +75,6 @@
       "name": "packages/solvent",
       "follow_symlinks": true,
       "path": "../packages/solvent"
-    },
-    {
-      "name": "redux-grid",
-      "follow_symlinks": true,
-      "path": "../",
-      "folder_exclude_patterns": []
     }
   ]
 }

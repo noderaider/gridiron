@@ -1,17 +1,22 @@
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+        value: true
 });
 exports.default = factories;
 
-var _createPropagator = require('./createPropagator');
+var _createPubSub = require('./createPubSub');
 
-var _createPropagator2 = _interopRequireDefault(_createPropagator);
+var _createPubSub2 = _interopRequireDefault(_createPubSub);
+
+var _createHeader = require('./createHeader');
+
+var _createHeader2 = _interopRequireDefault(_createHeader);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function factories(deps) {
-  return { propagator: (0, _createPropagator2.default)(deps)
-  };
+function factories(deps, defaults) {
+        return { pubSub: (0, _createPubSub2.default)(deps, defaults),
+                header: (0, _createHeader2.default)(deps, defaults)
+        };
 }

@@ -1,6 +1,8 @@
-import createPropagator from './createPropagator'
+import createPubSub from './createPubSub'
+import createHeader from './createHeader'
 
-export default function factories (deps) {
-  return  { propagator: createPropagator(deps)
+export default function factories (deps, defaults) {
+  return  { pubSub: createPubSub(deps, defaults)
+          , header: createHeader(deps, defaults)
           }
 }

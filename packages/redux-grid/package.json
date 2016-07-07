@@ -52,7 +52,8 @@
     "react-bar": "^0.5.5",
     "react-maximize": "^0.5.5",
     "react-minimize": "^0.5.5",
-    "react-select": "^1.0.0-beta13",
+    "react-enhance": "^0.5.0",
+    "react-stamp": "^0.5.1",
     "redux-grid-core": "^0.5.6",
     "redux-pager": "^0.5.5",
     "solvent": "^0.4.1"
