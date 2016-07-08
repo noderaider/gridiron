@@ -1,6 +1,6 @@
 {
   "name": "solvent",
-  "version": "0.4.1",
+  "version": "0.5.5",
   "description": "Simple dependency resolver designed for validating typed dependency contraints.",
   "main": "lib/index.js",
   "files": [

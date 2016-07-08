@@ -7,9 +7,14 @@
       "path": "../packages/react-ai/src"
     },
     {
-      "name": "packages/react-enhance",
+      "name": "packages/gridiron",
       "follow_symlinks": true,
-      "path": "../packages/react-enhance/src"
+      "path": "../packages/gridiron"
+    },
+    {
+      "name": "packages/react-pub-sub",
+      "follow_symlinks": true,
+      "path": "../packages/react-pub-sub"
     },
     {
       "name": "packages/react-pre",
@@ -44,7 +49,7 @@
     {
       "name": "packages/redux-grid-example",
       "follow_symlinks": true,
-      "path": "../packages/redux-grid-example/src"
+      "path": "../packages/redux-grid-example"
     },
     {
       "name": "packages/redux-grid-cli",
@@ -75,6 +80,11 @@
       "name": "packages/solvent",
       "follow_symlinks": true,
       "path": "../packages/solvent"
+    },
+    {
+      "name": "redux-grid",
+      "follow_symlinks": true,
+      "path": "../"
     }
   ]
 }

@@ -1,18 +1,18 @@
 {
-  "name": "react-enhance",
-  "version": "0.5.7",
-  "description": "Component decorator for react components.",
+  "name": "react-pub-sub",
+  "version": "0.5.8",
+  "description": "Factory for creating prop and state propagation between 1:N React components.",
   "main": "lib/index.js",
   "files": [
     "lib"
   ],
   "keywords": [
     "react",
-    "override",
-    "defaults",
-    "decorator",
-    "composition",
-    "sort"
+    "pubsub",
+    "publish",
+    "subscribe",
+    "propagate",
+    "propagation"
   ],
   "scripts": {
     "start": "run-p build-watch",
@@ -39,8 +39,10 @@
   "dependencies": {
     "babel-runtime": "^6.9.0",
     "chai": "^3.5.0",
+    "eventemitter3": "latest",
     "ncp": "^2.0.0",
-    "solvent": "^0.4.1"
+    "react-stamp": "latest",
+    "solvent": "^0.5.5"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0",
@@ -70,12 +72,12 @@
   },
   "author": "Cole Chamberlain <cole.chamberlain@gmail.com> (https://github.com/cchamberlain)",
   "bugs": {
-    "url": "https://github.com/cchamberlain/react-enhance/issues"
+    "url": "https://github.com/noderaider/react-pub-sub/issues"
   },
-  "homepage": "https://cchamberlain.github.io/react-enhance",
+  "homepage": "https://react-pub-sub.js.org",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cchamberlain/react-enhance.git"
+    "url": "git+https://github.com/noderaider/react-pub-sub.git"
   }
 }
