@@ -1,6 +1,6 @@
 {
   "name": "react-ai-test",
-  "version": "0.6.0",
+  "version": "0.6.3",
   "description": "Test framework for react-ai and related components. Enables react-ai to not carry heavyweight dependencies.",
   "main": "lib/index.js",
   "keywords": [
@@ -75,7 +75,7 @@
     "react-tools": "latest",
     "react-virtualized": "latest",
     "redux": "latest",
-    "react-ai": "^0.6.0",
+    "react-ai": "^0.6.3",
     "rimraf": "latest",
     "sinon": "latest"
   },

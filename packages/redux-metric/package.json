@@ -1,6 +1,6 @@
 {
   "name": "redux-metric",
-  "version": "0.6.0",
+  "version": "0.6.3",
   "description": "Redux connections for react-metric. (WIP)",
   "main": "lib/index.js",
   "files": [
@@ -44,7 +44,7 @@
     "chai": "^3.5.0",
     "classnames": "^2.2.5",
     "ncp": "^2.0.0",
-    "solvent": "*"
+    "solvent": "^0.6.3"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0",
