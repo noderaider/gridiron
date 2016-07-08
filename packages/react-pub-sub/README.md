@@ -54,5 +54,3 @@ render((
   </div>
 ), document.getElementById('root'))
 ```
-
-**In active development, come back in a few days.**

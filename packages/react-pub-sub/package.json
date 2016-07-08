@@ -4,7 +4,8 @@
   "description": "Factory for creating prop and state propagation between 1:N React components.",
   "main": "lib/index.js",
   "files": [
-    "lib"
+    "lib",
+    "README.md"
   ],
   "keywords": [
     "react",
