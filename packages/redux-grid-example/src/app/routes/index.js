@@ -4,6 +4,7 @@ import Home from './components/Home'
 export default ({ path: '/'
                 , component: App
                 , indexRoute: { component: Home }
+                , childRoutes: [ { path: '*', component: Home } ]
                 /*
                 , getChildRoutes(location, cb) {
                     require.ensure([], require => cb(null,  [ require('./routes/Frames').default
