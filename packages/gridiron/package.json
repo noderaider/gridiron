@@ -81,7 +81,7 @@
   "bugs": {
     "url": "https://github.com/noderaider/gridiron/issues"
   },
-  "homepage": "https://gridiron.js.org"
+  "homepage": "https://gridiron.js.org",
   "license": "MIT",
   "repository": {
     "type": "git",
