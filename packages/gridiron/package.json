@@ -49,12 +49,13 @@
     "ncp": "^2.0.0",
     "npm-run-all": "^2.1.1",
     "react-autosizer": "*",
-    "react-maximize": "^0.6.0",
-    "react-minimize": "^0.6.0",
-    "react-pub-sub": "^0.6.2",
-    "react-stamp": "^0.5.1",
-    "gridiron-core": "^0.6.2",
-    "redux-pager": "^0.6.0",
+    "react-maximize": "*",
+    "react-minimize": "*",
+    "react-pub-sub": "*",
+    "react-stamp": "latest",
+    "gridiron-core": "*",
+    "gridiron-react": "*",
+    "redux-pager": "*",
     "solvent": "*"
   },
   "devDependencies": {
@@ -74,19 +75,16 @@
     "eslint-plugin-react": "*",
     "faker": "^3.1.0",
     "mocha": "^2.5.3",
-    "gridiron-react": "^0.6.0",
-    "react-maximize": "^0.6.0",
-    "redux-pager": "^0.6.0",
     "rimraf": "^2.5.2"
   },
   "author": "Cole Chamberlain <cole.chamberlain@gmail.com> (https://github.com/cchamberlain)",
   "bugs": {
-    "url": "https://github.com/cchamberlain/gridiron/issues"
+    "url": "https://github.com/noderaider/gridiron/issues"
   },
-  "homepage": "https://cchamberlain.github.io/gridiron",
+  "homepage": "https://gridiron.js.org"
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cchamberlain/gridiron.git"
+    "url": "git+https://github.com/noderaider/gridiron.git"
   }
 }

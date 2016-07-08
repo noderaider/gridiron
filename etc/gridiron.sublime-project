@@ -29,7 +29,7 @@
     {
       "name": "packages/gridiron",
       "follow_symlinks": true,
-      "path": "../packages/gridiron/src"
+      "path": "../packages/gridiron"
     },
     {
       "name": "packages/gridiron-core",
@@ -39,12 +39,12 @@
     {
       "name": "packages/gridiron-react",
       "follow_symlinks": true,
-      "path": "../packages/gridiron-react/src"
+      "path": "../packages/gridiron-react"
     },
     {
       "name": "packages/gridiron-example",
       "follow_symlinks": true,
-      "path": "../packages/gridiron-example/src"
+      "path": "../packages/gridiron-example"
     },
     {
       "name": "packages/gridiron-cli",
