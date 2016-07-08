@@ -75,9 +75,10 @@
     "react-tools": "latest",
     "react-virtualized": "latest",
     "redux": "latest",
-    "gridiron": "^0.5.9",
-    "gridiron-core": "^0.5.9",
-    "gridiron-react": "^0.5.9",
+    "gridiron": "*",
+    "gridiron-core": "*",
+    "gridiron-cli": "*",
+    "gridiron-react": "*",
     "rimraf": "latest",
     "sinon": "latest"
   },

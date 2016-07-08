@@ -1,7 +1,7 @@
 {
   "name": "redux-devtools-grid-monitor",
   "version": "0.5.8",
-  "description": "redux-devtools visualizer utilizing redux-grid.",
+  "description": "redux-devtools visualizer utilizing gridiron.",
   "main": "lib/index.js",
   "files": [
     "lib"
@@ -9,7 +9,7 @@
   "keywords": [
     "redux",
     "devtools",
-    "redux-grid"
+    "gridiron"
   ],
   "scripts": {
     "start": "run-p build-watch",
@@ -45,8 +45,8 @@
     "react-json-tree": "^0.7.0",
     "react-pure-render": "^1.0.2",
     "redux-devtools-themes": "^1.0.0",
-    "redux-grid": "^0.5.8",
-    "solvent": "^0.4.1"
+    "gridiron": "*",
+    "solvent": "*"
   },
   "devDependencies": {
     "babel-cli": "latest",
@@ -70,12 +70,12 @@
   },
   "author": "Cole Chamberlain <cole.chamberlain@gmail.com> (https://github.com/cchamberlain)",
   "bugs": {
-    "url": "https://github.com/noderaider/redux-grid/issues"
+    "url": "https://github.com/noderaider/gridiron/issues"
   },
-  "homepage": "https://github.com/noderaider/redux-grid#readme",
+  "homepage": "https://github.com/noderaider/gridiron#readme",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/noderaider/redux-grid.git"
+    "url": "git+https://github.com/noderaider/gridiron.git"
   }
 }

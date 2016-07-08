@@ -15,10 +15,9 @@
   ],
   "dependencies": {
     "chai": "^3.0.0",
-    "gridiron": "^0.5.9",
-    "gridiron-core": "^0.5.9",
-    "gridiron-test": "^0.5.9",
-    "gridiron-view": "^0.2.2"
+    "gridiron": "*",
+    "gridiron-core": "*",
+    "gridiron-test": "*"
   },
   "devDependencies": {
     "babel-cli": "latest",

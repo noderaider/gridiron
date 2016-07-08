@@ -48,15 +48,14 @@
     "esdoc-es7-plugin": "0.0.3",
     "ncp": "^2.0.0",
     "npm-run-all": "^2.1.1",
-    "react-autosizer": "^0.1.6",
-    "react-bar": "^0.5.5",
-    "react-maximize": "^0.5.5",
-    "react-minimize": "^0.5.5",
-    "react-enhance": "^0.5.7",
+    "react-autosizer": "*",
+    "react-maximize": "*",
+    "react-minimize": "*",
+    "react-pub-sub": "*",
     "react-stamp": "^0.5.1",
-    "gridiron-core": "^0.5.9",
-    "redux-pager": "^0.5.7",
-    "solvent": "^0.4.1"
+    "gridiron-core": "*",
+    "redux-pager": "*",
+    "solvent": "*"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0",

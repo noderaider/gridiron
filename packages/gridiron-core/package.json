@@ -35,7 +35,7 @@
     "chai": "^3.0.0",
     "eventemitter3": "^1.2.0",
     "react-stamp": "^0.5.1",
-    "solvent": "^0.4.1"
+    "solvent": "*"
   },
   "devDependencies": {
     "babel-cli": "latest",

@@ -1,19 +1,24 @@
  const GH_PAGES_ROOT = 'doc'
 
 export default ({ path }) => {
-  const copyToRoot = [ 'etc/config/config-server.json', 'etc/config/config-client.json', 'src/public' ]
-  const copyToSrc = [ 'etc/config/config-server.json', 'etc/config/config-client.json' ]
+  const configRoot = env => `etc/config/${env}`
+
+  const clientConfig = env => `${configRoot(env)}/config-client.json`
+  const serverConfig = env => `${configRoot(env)}/config-server.json`
+  const configure = env => `ncp ${clientConfig(env)} config-client.json && ncp ${clientConfig(env)} src/config-client.json && ncp ${serverConfig(env)} config-server.json && ncp ${serverConfig(env)} src/config-server.json`
+
+  const copyToRoot = [ 'src/public' ]
 
   const scripts = { 'prebuild-package': 'rimraf package'
                   , 'build-package': 'babel src/package -d package'
                   , '_precopy-root-files': `rimraf ${copyToRoot.map(x => path.basename(x)).join(' ')}`
                   , 'copy-root-files': copyToRoot.map(x => `ncp ${x} ${path.basename(x)}`).join(' && ')
-                  , '_precopy-src-files': `rimraf ${copyToSrc.map(x => `src/${path.basename(x)}`).join(' ')}`
-                  , 'copy-src-files': copyToSrc.map(x => `ncp ${x} src/${path.basename(x)}`).join(' && ')
 
-                  , 'prebuild-webpack': 'run-p copy-root-files copy-src-files'
+                  , 'configure-dev': configure('dev')
+                  , 'configure-prod': configure('prod')
+
+                  , 'prebuild-webpack': 'npm run copy-root-files'
                   , 'build-webpack': 'babel src/webpack.config.js -o webpack.config.js && babel src/webpack.static.config.js -o webpack.static.config.js && babel src/webpack.server.config.js -o webpack.server.config.js && babel src/webpack -d webpack'
-                  , '_prebuild-config': 'rimraf config.js'
                   , 'build-config': 'babel src/config.js -o config.js && npm run build-webpack'
 
                   , 'webpack-static': 'webpack --config webpack.static.config.js --progress --profile --colors'
@@ -34,10 +39,11 @@ export default ({ path }) => {
                   , 'link-dev': 'npm link ../redux-load ../react-load ../redux-addons ../redux-blueprint ../redux-idle-monitor ../react-redux-idle-monitor ../gridiron ../gridiron-view ../redux-middleware ../redux-mux ../save-as'
                   , 'build-lib-dev': 'NODE_ENV=development npm run build-lib'
                   , 'build-lib-prod': 'NODE_ENV=production npm run build-lib'
+                  , 'prebuild-prod': 'npm run configure-prod'
                   , 'build-prod': 'NODE_ENV=production run-s build-app build-lib-prod build-bin'
                   , 'build-dev': 'NODE_ENV=development run-s build-app build-lib-dev build-bin'
                   , 'watch-start': 'npm run build-bin && node bin/run | bunyan'
-                  , 'prestart-hot': 'npm run build-config'
+                  , 'prestart-hot': 'run-s configure-dev build-config'
                   , 'start-hot': 'NODE_ENV=hot run-p build-app watch-server watch-bin'
                   , 'run-hot': 'NODE_ENV=hot node bin/run | bunyan'
                   , 'start': 'NODE_ENV=production npm run build-prod && node bin/run | bunyan'

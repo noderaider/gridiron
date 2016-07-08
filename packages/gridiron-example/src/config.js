@@ -19,7 +19,7 @@ export const server = IS_BROWSER ? noop() : require('./config-server.json')
 const configJSON = IS_BROWSER ? client : server
 export const packageJSON = require('./package.json')
 
-export const scheme = `http${client.environment === 'debug' ? '' : 's'}`
+export const scheme = `http${client.environment === 'dev' ? '' : 's'}`
 const portSuffix = (scheme === 'http' && client.port === 80) || (scheme === 'https' && client.port === 443) ? '' : `:${client.port}`
 
 export const baseUrl = `${scheme}://${client.hostname}${portSuffix}${client.path}`

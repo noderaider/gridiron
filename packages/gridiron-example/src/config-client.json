@@ -1,0 +1,34 @@
+{ "appName": "gridiron",
+  "environment": "dev",
+  "hostname": "localhost",
+  "port": 1337,
+  "path": "",
+  "state": {
+    "meta": {
+      "tokens": {
+        "persist": {
+          "type": "cookie",
+          "name": "appidentity",
+          "days": 14
+        },
+        "propTypes": {
+          "access": "string",
+          "refresh": "string"
+        },
+        "concatProps": ":",
+        "jsonProps": false,
+        "base64Props": true
+      },
+      "fingerprint": {
+        "persist": {
+          "type": "cookie",
+          "name": "appfingerprint",
+          "days": 365
+        },
+        "propTypes": "string",
+        "jsonProps": false,
+        "base64Props": true
+      }
+    }
+  }
+}

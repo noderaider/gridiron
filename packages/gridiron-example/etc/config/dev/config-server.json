@@ -1,6 +1,6 @@
 {
   "appName": "gridiron",
-  "environment": "debug",
+  "environment": "dev",
   "flags": {
     "dev": true,
     "prod": false,

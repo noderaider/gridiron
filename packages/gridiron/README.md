@@ -1,6 +1,6 @@
 ## gridiron
 
-**Lightweight grid framework built on top of react-virtualized / fixed-data-table for easy highly customizable grids generated from redux state.**
+**Feature-Packed Grid Framework**
 
 [![Build Status](https://travis-ci.org/noderaider/gridiron-test.svg?branch=master)](https://travis-ci.org/noderaider/gridiron-test)
 [![codecov](https://codecov.io/gh/noderaider/gridiron-test/branch/master/graph/badge.svg)](https://codecov.io/gh/noderaider/gridiron-test)
@@ -9,7 +9,7 @@
 
 ## Install
 
-`npm i -S gridiron`
+`npm install -S gridiron`
 
 ## Usage
 
@@ -19,9 +19,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import ReactVirtualized from 'react-virtualized'
-import { createGrid } from 'gridiron'
+import gridiron from 'gridiron'
 
-const { Grid } = createGrid({ React, connect, ReactVirtualized })
+const { DrillGrid } = gridiron({ React, connect, ReactVirtualized })
 
 /** Create a grid to show users first name, last name, and age from redux */
 export default props => (

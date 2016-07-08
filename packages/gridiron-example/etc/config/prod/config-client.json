@@ -2,7 +2,7 @@
   "environment": "prod",
   "hostname": "noderaider.github.io",
   "port": 443,
-  "path": "/gridiron"
+  "path": "/gridiron",
   "state": {
     "meta": {
       "tokens": {

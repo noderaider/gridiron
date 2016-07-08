@@ -1,8 +1,8 @@
 { "appName": "gridiron",
-  "environment": "debug",
+  "environment": "dev",
   "hostname": "localhost",
   "port": 1337,
-  "path": ""
+  "path": "",
   "state": {
     "meta": {
       "tokens": {
