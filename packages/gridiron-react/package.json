@@ -1,6 +1,6 @@
 {
   "name": "gridiron-react",
-  "version": "0.6.4",
+  "version": "0.7.0",
   "description": "React view components for gridiron.",
   "main": "lib/index.js",
   "scripts": {
@@ -35,8 +35,8 @@
   },
   "dependencies": {
     "classnames": "latest",
-    "gridiron-core": "^0.6.4",
-    "solvent": "^0.6.4"
+    "gridiron-core": "^0.7.0",
+    "solvent": "^0.7.0"
   },
   "repository": {
     "type": "git",
