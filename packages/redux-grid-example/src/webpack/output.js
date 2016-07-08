@@ -17,9 +17,9 @@ const getPublicPath = name => {
     case 'server':
       return '/lib/app'
     case 'static':
-      return `${baseUrl}/assets/`
+      return `${baseUrl}/redux-grid/assets/`
     default:
-      return `${baseUrl}/assets/`
+      return `${baseUrl}/redux-grid/assets/`
   }
 }
 

@@ -1,7 +1,7 @@
-{ "appName": "redux-grid-example",
+{ "appName": "redux-grid",
   "environment": "debug",
-  "hostname": "localhost",
-  "port": 1337,
+  "hostname": "noderaider.github.io",
+  "port": 443,
   "state": {
     "meta": {
       "tokens": {
