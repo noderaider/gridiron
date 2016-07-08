@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "release": "lerna publish --force-publish \*",
+    "release": "lerna publish --force-publish=*",
     "prerelease-pages": "lerna run --scope gridiron-example build-prod",
     "release-pages": "git subtree split --prefix packages/gridiron-example/public -b gh-pages && git push -f origin gh-pages:gh-pages",
     "postrelease-pages": "git branch -D gh-pages"
