@@ -1,6 +1,6 @@
 {
   "name": "gridiron-core",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Core library for gridiron.",
   "main": "lib/index.js",
   "files": [
@@ -35,6 +35,7 @@
     "chai": "^3.0.0",
     "eventemitter3": "^1.2.0",
     "react-stamp": "^0.5.1",
+    "react-pub-sub": "^0.6.1",
     "solvent": "*"
   },
   "devDependencies": {
