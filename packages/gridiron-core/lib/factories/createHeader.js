@@ -9,9 +9,9 @@ var _Header = require('../Header');
 
 var Core = _interopRequireWildcard(_Header);
 
-var _createPubSub = require('./createPubSub');
+var _reactPubSub = require('react-pub-sub');
 
-var _createPubSub2 = _interopRequireDefault(_createPubSub);
+var _reactPubSub2 = _interopRequireDefault(_reactPubSub);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -55,7 +55,7 @@ function createHeader(_ref) {
   var childrenStyle = { display: 'flex'
   };
 
-  var pubSub = (0, _createPubSub2.default)({ React: React });
+  var pubSub = (0, _reactPubSub2.default)({ React: React });
 
   var desc = { state: { checked: false },
     _handleChecked: function _handleChecked(e) {

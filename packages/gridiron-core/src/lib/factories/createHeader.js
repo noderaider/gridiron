@@ -1,5 +1,5 @@
 import * as Core from '../Header'
-import createPubSub from './createPubSub'
+import reactPubSub from 'react-pub-sub'
 const should = require('chai').should()
 
 const sortDirection = value => {
@@ -37,7 +37,7 @@ export default function createHeader ({ React }) {
 
 
 
-  const pubSub = createPubSub({ React })
+  const pubSub = reactPubSub({ React })
 
   const desc =  { state: { checked: false }
                 , _handleChecked (e) {

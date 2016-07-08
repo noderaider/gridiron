@@ -29,32 +29,32 @@
     {
       "name": "packages/gridiron",
       "follow_symlinks": true,
-      "path": "../packages/gridiron"
+      "path": "../packages/gridiron/src"
     },
     {
       "name": "packages/gridiron-core",
       "follow_symlinks": true,
-      "path": "../packages/gridiron-core"
-    },
-    {
-      "name": "packages/gridiron-example",
-      "follow_symlinks": true,
-      "path": "../packages/gridiron-example"
-    },
-    {
-      "name": "packages/gridiron-cli",
-      "follow_symlinks": true,
-      "path": "../packages/gridiron-cli"
-    },
-    {
-      "name": "packages/gridiron-test",
-      "follow_symlinks": true,
-      "path": "../packages/gridiron-test"
+      "path": "../packages/gridiron-core/src"
     },
     {
       "name": "packages/gridiron-react",
       "follow_symlinks": true,
-      "path": "../packages/gridiron-react"
+      "path": "../packages/gridiron-react/src"
+    },
+    {
+      "name": "packages/gridiron-example",
+      "follow_symlinks": true,
+      "path": "../packages/gridiron-example/src"
+    },
+    {
+      "name": "packages/gridiron-cli",
+      "follow_symlinks": true,
+      "path": "../packages/gridiron-cli/src"
+    },
+    {
+      "name": "packages/gridiron-test",
+      "follow_symlinks": true,
+      "path": "../packages/gridiron-test/src"
     },
     {
       "name": "packages/redux-pager",
@@ -69,7 +69,7 @@
     {
       "name": "packages/solvent",
       "follow_symlinks": true,
-      "path": "../packages/solvent"
+      "path": "../packages/solvent/src"
     },
     {
       "name": "gridiron",
