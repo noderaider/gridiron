@@ -8,5 +8,5 @@
   "plugins": [
     {"name": "esdoc-es7-plugin"}
   ],
-  "title": "gridiron"
+  "title": "gridiron-react"
 }

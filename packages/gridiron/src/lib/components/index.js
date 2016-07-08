@@ -1,1 +1,5 @@
-export { default as enhance } from './enhance'
+export { default as coreGrid } from './coreGrid'
+export { default as drillGrid } from './drillGrid'
+export { default as footer } from './footer'
+export { default as expander } from './expander'
+export { default as settings } from './settings'

@@ -1,0 +1,28 @@
+{
+  "appName": "gridiron",
+  "environment": "prod",
+  "flags": {
+    "dev": true,
+    "prod": false,
+    "minify": true,
+    "render": false
+  },
+  "cors": {
+    "origins": [ "https?://.*{{HOSTNAME}}" ]
+  },
+  "fs": {
+    "ETC_ROOT": "../etc",
+    "BIN_ROOT": "../bin",
+    "LOG_ROOT": "../log"
+  },
+  "bindings": {
+    "cdn": [
+      [
+        "https",
+        {
+          "port": 443
+        }
+      ]
+    ]
+  }
+}

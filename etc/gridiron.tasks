@@ -1,0 +1,13 @@
+> -cur_console:t:gridiron -cur_console:n -cur_console:d:%USERPROFILE%\noderaider\gridiron zsh -li
+
+-cur_console:t:p/gridiron-example -cur_console:s1THn -cur_console:d:%USERPROFILE%\noderaider\gridiron\packages\gridiron-example zsh -li
+
+-cur_console:t:p/gridiron -cur_console:s1THn -cur_console:d:%USERPROFILE%\noderaider\gridiron\packages\gridiron zsh -li
+
+-cur_console:t:p/gridiron-test -cur_console:s1TVn -cur_console:d:%USERPROFILE%\noderaider\gridiron\packages\gridiron-test zsh -li
+
+-cur_console:t:p/redux-pager -cur_console:s1TVn -cur_console:d:%USERPROFILE%\noderaider\gridiron\packages\redux-pager zsh -li
+
+-cur_console:t:p/gridiron-example -cur_console:s2TVn -cur_console:d:%USERPROFILE%\noderaider\gridiron\packages\gridiron-example zsh -li
+
+-cur_console:t:p/gridiron-core -cur_console:s3TVn -cur_console:d:%USERPROFILE%\noderaider\gridiron\packages\gridiron-core zsh -li

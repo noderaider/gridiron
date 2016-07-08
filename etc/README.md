@@ -6,5 +6,5 @@ ___
 
 #### Documentation
 
-* redux-grid.sublime-project - Sublime project file for working with redux-grid code base.
-* redux-grid.tasks - Tasks configuration for working with split pane ConEmu in Windows.
+* gridiron.sublime-project - Sublime project file for working with gridiron code base.
+* gridiron.tasks - Tasks configuration for working with split pane ConEmu in Windows.
