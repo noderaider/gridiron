@@ -1,8 +1,8 @@
 { "appName": "gridiron",
   "environment": "prod",
-  "hostname": "noderaider.github.io",
+  "hostname": "gridiron.js.org",
   "port": 443,
-  "path": "/gridiron",
+  "path": "",
   "state": {
     "meta": {
       "tokens": {
