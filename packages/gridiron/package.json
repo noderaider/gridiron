@@ -1,6 +1,6 @@
 {
   "name": "gridiron",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "Lightweight grid framework built on top of react-virtualized / fixed-data-table for easy highly customizable grids generated from redux state.",
   "main": "lib/index.js",
   "files": [
@@ -51,9 +51,9 @@
     "react-autosizer": "*",
     "react-maximize": "^0.6.0",
     "react-minimize": "^0.6.0",
-    "react-pub-sub": "^0.6.1",
+    "react-pub-sub": "^0.6.2",
     "react-stamp": "^0.5.1",
-    "gridiron-core": "^0.6.1",
+    "gridiron-core": "^0.6.2",
     "redux-pager": "^0.6.0",
     "solvent": "*"
   },
