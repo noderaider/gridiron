@@ -1,6 +1,6 @@
 {
   "name": "gridiron-cli",
-  "version": "0.5.8",
+  "version": "0.5.9",
   "description": "CLI commands for scaffolding and setting up gridiron projects.",
   "main": "lib/index.js",
   "bin": {
@@ -15,9 +15,9 @@
   ],
   "dependencies": {
     "chai": "^3.0.0",
-    "gridiron": "^0.5.8",
-    "gridiron-core": "^0.5.7",
-    "gridiron-test": "^0.5.8",
+    "gridiron": "^0.5.9",
+    "gridiron-core": "^0.5.9",
+    "gridiron-test": "^0.5.9",
     "gridiron-view": "^0.2.2"
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
 {
   "name": "gridiron-example",
-  "version": "0.5.8",
+  "version": "0.5.9",
   "description": "Example webpack project for gridiron and related components. Showcases what can be done with gridiron.",
   "main": "lib/index.js",
   "files": [
@@ -149,9 +149,9 @@
     "redux-devtools-multiple-monitors": "^1.0.1",
     "redux-devtools-themes": "^1.0.0",
     "redux-form": "^5.2.3",
-    "gridiron": "^0.5.8",
-    "gridiron-core": "^0.5.7",
-    "gridiron-react": "^0.5.6",
+    "gridiron": "^0.5.9",
+    "gridiron-core": "^0.5.9",
+    "gridiron-react": "^0.5.9",
     "redux-idle-monitor": "^0.3.1",
     "redux-middleware": "^0.1.20",
     "redux-mux": "*",
