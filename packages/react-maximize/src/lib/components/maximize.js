@@ -2,6 +2,7 @@ import Promise from 'bluebird'
 import classNames from 'classnames'
 import solvent from 'solvent'
 import container from './container'
+import { requestFullscreen, exitFullscreen } from '../utils/fullscreen'
 const should = require('chai').should()
 
 export default function maximize (deps = {}, defaults = {}) {
@@ -62,7 +63,6 @@ export default function maximize (deps = {}, defaults = {}) {
                         }
 
 
-
   class Maximize extends Component {
     static propTypes = propTypes;
     static defaultProps = defaultProps;
@@ -118,23 +118,24 @@ export default function maximize (deps = {}, defaults = {}) {
               {children(this.container)}
             </div>
 
-            {this.state.containers.map((x, i) => {
-              const destName = `maximize-${x}`
-              console.info('RENDERING CONTAINER')
-              return (
-              <div
-                key={i}
-                style={{ ...containerStyle, ...style, border: '1px dashed red', top: 0 }}
-                className={classNames(styles.maximize, className)}
-              >
-                <div
-                  style={backgroundStyle}
-                  //onClick={actions.restore}
-                />
-                <GatewayDest name={destName} />
-              </div>
-              )
-            })}
+            <div ref={x => this.fullscreen=x}>
+              {this.state.containers.map((x, i) => {
+                const destName = `maximize-${x}`
+                return (
+                  <div
+                    key={i}
+                    style={{ ...containerStyle, ...style, border: '1px dashed red', top: 0 }}
+                    className={classNames(styles.maximize, className)}
+                  >
+                    <div
+                      style={backgroundStyle}
+                      //onClick={actions.restore}
+                    />
+                    <GatewayDest name={destName} />
+                  </div>
+                )
+              })}
+            </div>
           </div>
         </GatewayProvider>
       )

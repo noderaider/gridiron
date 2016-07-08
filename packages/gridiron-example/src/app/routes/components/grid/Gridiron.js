@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 import * as ReactVirtualized from 'react-virtualized'
 import * as ReactGateway from 'react-gateway'
 import gridiron from 'gridiron'
+import gridironReact from 'gridiron-react'
 import { factories } from 'gridiron-core'
 import reactPre from 'react-pre'
 import util from 'util'
@@ -19,14 +20,15 @@ import reduxPagerStyles from './css/redux-pager.css' // 'redux-pager/lib/styles.
 
 import styles from './css/gridiron.css'
 import sandy from './css/theme/sandy.css'
-import subgrid from './css/theme/subgrid.css'
+import black from './css/theme/black.css'
 
 
 const should = require('chai').should()
 
 const { Pager } = reduxPager({ React, connect, shallowCompare }, { styles: reduxPagerStyles })
 const { header } = factories({ React })
-const { CoreGrid, DrillGrid, Footer, Expander } = gridiron({ React, ReactDOM, ReactVirtualized, connect, Immutable })
+const { Grid, AutoSizer } = gridironReact({ React, shallowCompare })
+const { CoreGrid, DrillGrid, Footer, Expander } = gridiron({ React, ReactDOM, Grid, AutoSizer, connect, Immutable })
 const { Pre, Arrows } = reactPre({ React })
 
 
@@ -119,15 +121,15 @@ export default class Gridiron extends Component {
     const ReduxGridDetail = detailProps => {
       const { mapCols, createRowMapper } = createContext()
       return container(({ Controls, Box, isMaximized, id, actions }) => (
-          <Pager maxRecords={5} mapRows={createRowMapper({ ids: detailProps.ids })} theme={sandy}>
+          <Pager maxRecords={5} mapRows={createRowMapper({ ids: detailProps.ids })} theme={black}>
           {pager => (
             <Box>
               <DrillGrid
                 styles={styles}
-                theme={sandy}
+                theme={black}
                 mapCols={mapCols}
                 mapRows={() => pager.rows}
-                mapDrill={(state, parentId) => <div>THIRD</div> /*<ReduxGridDetail ids={parentId} />*/}
+                mapDrill={(state, parentId) => <ReduxGridDetail ids={parentId} />}
                 header={
                   [ <span key="title" style={{ fontFamily: 'monospace', fontWeight: 'bold', letterSpacing: 6, fontSize: '1em' }}>
                       <Arrows>{detailProps.ids}</Arrows> details ({id})
@@ -156,12 +158,12 @@ export default class Gridiron extends Component {
     return (
       container(
         ({ Controls, Box, isMaximized, id, actions }) => (
-        <Pager rowsPerPage={5} mapRows={createRowMapper()} theme={subgrid}>
+        <Pager rowsPerPage={5} mapRows={createRowMapper()} theme={sandy}>
         {pager => (
           <Box>
             <DrillGrid
                 styles={styles}
-                theme={subgrid}
+                theme={sandy}
                 mapCols={mapCols}
                 mapRows={() => pager.rows}
                 mapDrill={(state, parentId) => <ReduxGridDetail ids={parentId} />}
@@ -170,9 +172,9 @@ export default class Gridiron extends Component {
                   , <Controls key="maximize" />
                   ]
                 }
-                footer={[ <pager.Controls key="pager-buttons"><pager.Select /></pager.Controls>
-                        , <pager.RowStatus key="pager-row-status" />
+                footer={[ <pager.Controls key="pager-buttons"><pager.RowStatus key="pager-row-status" /></pager.Controls>
                         , <pager.PageStatus key="pager-page-status" />
+                        , <pager.Select key="pager-select" />
                         , <pager.RowsPerPage label="Rows Per Page" key="rows-per-page" />
                         ]}
                 {...this.props}

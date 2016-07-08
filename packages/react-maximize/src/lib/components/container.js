@@ -1,6 +1,7 @@
 import Promise from 'bluebird'
 import classNames from 'classnames'
 import solvent from 'solvent'
+import { requestFullscreen, exitFullscreen } from '../utils/fullscreen'
 
 export default function container (deps = {}, defaults = {}) {
   const { React, ReactDOM, ReactGateway, shallowCompare } = solvent({ React: 'object', ReactDOM: 'object', ReactGateway: 'object', shallowCompare: 'function' })(deps)
@@ -79,7 +80,7 @@ export default function container (deps = {}, defaults = {}) {
       const boxStyle = {} // position: 'absolute' }
 
       return (
-        <div>
+        <div ref={x => this.box=x}>
           <GatewayDest name={gatewayName} />
           <Gateway into={isMaximized ? maximizeName : gatewayName}>
             <div style={boxStyle}>{children}</div>

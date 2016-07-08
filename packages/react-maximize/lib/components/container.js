@@ -22,6 +22,8 @@ var _solvent2 = require('solvent');
 
 var _solvent3 = _interopRequireDefault(_solvent2);
 
+var _fullscreen = require('../utils/fullscreen');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -121,6 +123,8 @@ function container() {
     _createClass(Box, [{
       key: 'render',
       value: function render() {
+        var _this2 = this;
+
         var _props = this.props;
         var id = _props.id;
         var isMaximized = _props.isMaximized;
@@ -143,7 +147,9 @@ function container() {
 
         return React.createElement(
           'div',
-          null,
+          { ref: function ref(x) {
+              return _this2.box = x;
+            } },
           React.createElement(GatewayDest, { name: gatewayName }),
           React.createElement(
             Gateway,
@@ -170,24 +176,24 @@ function container() {
     function Container(props) {
       _classCallCheck(this, Container);
 
-      var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(Container).call(this, props));
+      var _this3 = _possibleConstructorReturn(this, Object.getPrototypeOf(Container).call(this, props));
 
-      _this2.maximize = function () {
-        _this2.props.maximize(_this2.props.id).then(function () {
-          return _this2.setState({ isMaximized: true });
+      _this3.maximize = function () {
+        _this3.props.maximize(_this3.props.id).then(function () {
+          return _this3.setState({ isMaximized: true });
         });
       };
 
-      _this2.restore = function () {
-        _this2.props.restore(_this2.props.id).then(function () {
-          return _this2.setState({ isMaximized: false });
+      _this3.restore = function () {
+        _this3.props.restore(_this3.props.id).then(function () {
+          return _this3.setState({ isMaximized: false });
         });
       };
 
-      _this2.state = { isMaximized: false,
+      _this3.state = { isMaximized: false,
         lastScroll: { x: 0, y: 0 }
       };
-      return _this2;
+      return _this3;
     }
 
     _createClass(Container, [{

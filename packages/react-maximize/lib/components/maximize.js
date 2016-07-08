@@ -26,6 +26,8 @@ var _container = require('./container');
 
 var _container2 = _interopRequireDefault(_container);
 
+var _fullscreen = require('../utils/fullscreen');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
@@ -199,23 +201,28 @@ function maximize() {
               { style: { border: '1px dashed yellow' } },
               children(this.container)
             ),
-            this.state.containers.map(function (x, i) {
-              var destName = 'maximize-' + x;
-              console.info('RENDERING CONTAINER');
-              return React.createElement(
-                'div',
-                {
-                  key: i,
-                  style: _extends({}, containerStyle, style, { border: '1px dashed red', top: 0 }),
-                  className: (0, _classnames2.default)(styles.maximize, className)
-                },
-                React.createElement('div', {
-                  style: backgroundStyle
-                  //onClick={actions.restore}
-                }),
-                React.createElement(GatewayDest, { name: destName })
-              );
-            })
+            React.createElement(
+              'div',
+              { ref: function ref(x) {
+                  return _this2.fullscreen = x;
+                } },
+              this.state.containers.map(function (x, i) {
+                var destName = 'maximize-' + x;
+                return React.createElement(
+                  'div',
+                  {
+                    key: i,
+                    style: _extends({}, containerStyle, style, { border: '1px dashed red', top: 0 }),
+                    className: (0, _classnames2.default)(styles.maximize, className)
+                  },
+                  React.createElement('div', {
+                    style: backgroundStyle
+                    //onClick={actions.restore}
+                  }),
+                  React.createElement(GatewayDest, { name: destName })
+                );
+              })
+            )
           )
         );
       }

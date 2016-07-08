@@ -2410,70 +2410,72 @@
   color: rgb(0, 0, 0);
   background-color: rgb(255, 255, 255);
 }
-.subgrid__BodyGrid___MgcXo {
+.black__BodyGrid___3-U7J {
   margin:0;
-  padding: 0;
+  padding: 0 0 0 20px;
   border: none;
   font-size: 0.85em;
   font-family: monospace;
+  background-color:#222;
 }
 
-.subgrid__rowStyle___2Cks4 {
+.black__rowStyle___2oaaC {
   /*border-bottom: 1px solid #e0e0e0;*/
 }
 
-.subgrid__evenRow___xWS8c {
+.black__evenRow___18W4X {
   background-color: rgb(210, 210, 210);
   color: #046D8D;
 }
 
-.subgrid__oddRow___2EV-1 {
+.black__oddRow___2YWKX {
   background-color: rgb(220, 220, 220);
   color: #046D8D;
 }
 
-.subgrid__expander___1IJVD {
-  font-size:1.5em;
-  color: #002f2f;
+.black__expander___Cx0p4 {
+  font-size:2em;
+  color: rgba(200, 100, 100, 0.7);
 }
 
-.subgrid__headerGrid___32iMV,
-.subgrid__footerGrid___2Gbkg {
+.black__headerGrid___16Vqv,
+.black__footerGrid___1Jyc4 {
   color: #fff !important;
   background-color: #000;
   padding: 5px;
   margin: 0;
+  border-top-left-radius:5px;
 }
 
-.subgrid__headerCell___1j3hB,
-.subgrid__footerCell___39zv1 {
+.black__headerCell___1vBlx,
+.black__footerCell___3FLC7 {
   color: #fff !important;
   background-color: #000;
   border-right: 1px solid #fff;
 }
 
-.subgrid__headerGrid___32iMV:hover,
-.subgrid__headerCell___1j3hB:hover,
-.subgrid__footerCell___39zv1:hover,
-.subgrid__footerGrid___2Gbkg:hover {
+.black__headerGrid___16Vqv:hover,
+.black__headerCell___1vBlx:hover,
+.black__footerCell___3FLC7:hover,
+.black__footerGrid___1Jyc4:hover {
   background-color: rgb(20, 20, 20);
 }
 
-.subgrid__headerGrid___32iMV button,
-.subgrid__headerCell___1j3hB button,
-.subgrid__footerCell___39zv1 button,
-.subgrid__footerGrid___2Gbkg button {
+.black__headerGrid___16Vqv button,
+.black__headerCell___1vBlx button,
+.black__footerCell___3FLC7 button,
+.black__footerGrid___1Jyc4 button {
   color: #fff;
 }
 
-.subgrid__headerGrid___32iMV button:hover,
-.subgrid__headerCell___1j3hB button:hover,
-.subgrid__footerCell___39zv1 button:hover,
-.subgrid__footerGrid___2Gbkg button:hover {
+.black__headerGrid___16Vqv button:hover,
+.black__headerCell___1vBlx button:hover,
+.black__footerCell___3FLC7 button:hover,
+.black__footerGrid___1Jyc4 button:hover {
   border: 1px solid rgb(40, 40, 40);
 }
 
-.subgrid__select___2Hi4T {
+.black__select___BQkSJ {
   color: rgb(255, 255, 255);
   background-color: rgb(0, 0, 0);
 }

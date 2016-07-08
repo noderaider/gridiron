@@ -16,6 +16,15 @@
     "release-doc": "git subtree push --prefix doc origin gh-pages",
     "postrelease-doc": "git commit -am \"doc-release\" && git push --follow-tags"
   },
+  "dependencies": {
+    "classnames": "^2.2.5",
+    "detect-resize": "^0.1.5",
+    "dom-helpers": "^2.4.0",
+    "gridiron-core": "*",
+    "raf": "^3.2.0",
+    "react-stamp": "^0.5.1",
+    "solvent": "*"
+  },
   "devDependencies": {
     "babel-cli": "latest",
     "babel-core": "latest",
@@ -32,11 +41,6 @@
     "eslint-plugin-babel": "latest",
     "eslint-plugin-react": "latest",
     "rimraf": "latest"
-  },
-  "dependencies": {
-    "classnames": "latest",
-    "gridiron-core": "^0.7.0",
-    "solvent": "^0.7.0"
   },
   "repository": {
     "type": "git",
