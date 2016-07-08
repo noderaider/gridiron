@@ -1,6 +1,6 @@
 {
   "scripts": {
-   "release": "git subtree split --prefix packages/redux-grid-example/public -b gh-pages && git push -f origin gh-pages:gh-pages && git branch -D gh-pages",
+   "release": "git subtree split --prefix packages/redux-grid-example/public -b gh-pages && git push -f origin gh-pages:gh-pages && git branch -D gh-pages"
   },
   "devDependencies": {
     "lerna": "2.0.0-beta.19"
