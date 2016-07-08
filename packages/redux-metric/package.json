@@ -1,6 +1,6 @@
 {
   "name": "redux-metric",
-  "version": "0.5.2",
+  "version": "0.6.0",
   "description": "Redux connections for react-metric. (WIP)",
   "main": "lib/index.js",
   "files": [

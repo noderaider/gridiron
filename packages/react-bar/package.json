@@ -1,6 +1,6 @@
 {
   "name": "react-bar",
-  "version": "0.5.5",
+  "version": "0.6.0",
   "description": "React control to maximize / compress components.",
   "main": "lib/index.js",
   "files": [

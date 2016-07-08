@@ -1,6 +1,6 @@
 {
   "name": "react-maximize-test",
-  "version": "0.5.5",
+  "version": "0.6.0",
   "description": "Test framework for react-maximize and related components. Enables react-maximize to not carry heavyweight dependencies.",
   "main": "lib/index.js",
   "keywords": [
@@ -70,7 +70,7 @@
     "react-addons-shallow-compare": "latest",
     "react-addons-test-utils": "latest",
     "react-tools": "latest",
-    "react-maximize": "^0.5.5",
+    "react-maximize": "^0.6.0",
     "rimraf": "latest",
     "sinon": "latest"
   },
