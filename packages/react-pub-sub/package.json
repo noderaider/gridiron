@@ -1,6 +1,6 @@
 {
   "name": "react-pub-sub",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "description": "Factory for creating prop and state propagation between 1:N React components.",
   "main": "lib/index.js",
   "files": [
@@ -43,7 +43,7 @@
     "eventemitter3": "latest",
     "ncp": "^2.0.0",
     "react-stamp": "latest",
-    "solvent": "^0.6.3"
+    "solvent": "^0.6.4"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0",
