@@ -93,7 +93,6 @@ export default function configureAppRouter({ cors, paths }) {
       const memoryHistory = createMemoryHistory(req.path)
       let store = configureStore(memoryHistory)
       const history = syncHistoryWithStore(memoryHistory, store)
-      console.info('MADE IT HERE')
 
       /* react router match history */
       match({ history, routes, location: req.url }, (error, redirectLocation, renderProps) => {

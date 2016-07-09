@@ -1,6 +1,6 @@
 {
   "name": "universal-themes",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "Universal Themes for CSS Modules",
   "main": "lib/index.js",
   "scripts": {
@@ -17,14 +17,11 @@
     "postrelease-doc": "git commit -am \"doc-release\" && git push --follow-tags"
   },
   "dependencies": {
-    "solvent": "*"
-  },
-  "dependencies": {
     "chai": "latest",
     "classnames": "latest",
     "ncp": "latest",
     "npm-run-all": "latest",
-    "solvent": "*"
+    "solvent": "^0.7.2"
   },
   "devDependencies": {
     "babel-cli": "latest",

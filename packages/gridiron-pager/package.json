@@ -1,6 +1,6 @@
 {
   "name": "gridiron-pager",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "Pager component for gridiron framework.",
   "main": "lib/index.js",
   "scripts": {
@@ -19,12 +19,12 @@
   "dependencies": {
     "chai": "latest",
     "classnames": "latest",
-    "gridiron-core": "*",
+    "gridiron-core": "^0.7.2",
     "ncp": "latest",
     "npm-run-all": "latest",
     "react-stamp": "latest",
-    "redux-pager": "*",
-    "solvent": "*"
+    "redux-pager": "^0.7.2",
+    "solvent": "^0.7.2"
   },
   "devDependencies": {
     "babel-cli": "latest",

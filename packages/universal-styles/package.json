@@ -1,7 +1,7 @@
 {
   "name": "universal-styles",
-  "version": "0.7.1",
-  "description": "Universal Styles for CSS Modules",
+  "version": "0.7.2",
+  "description": "Universal Styles for CSS Modules and server side deferred rendering.",
   "main": "lib/index.js",
   "scripts": {
     "start": "babel src/lib -d lib --watch",
@@ -18,10 +18,7 @@
   },
   "dependencies": {
     "chai": "latest",
-    "classnames": "latest",
-    "ncp": "latest",
-    "npm-run-all": "latest",
-    "solvent": "*"
+    "serialize-javascript": "latest"
   },
   "devDependencies": {
     "babel-cli": "latest",
@@ -38,6 +35,8 @@
     "eslint": "latest",
     "eslint-plugin-babel": "latest",
     "eslint-plugin-react": "latest",
+    "ncp": "latest",
+    "npm-run-all": "latest",
     "rimraf": "latest"
   },
   "repository": {

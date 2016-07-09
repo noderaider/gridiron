@@ -1,6 +1,6 @@
 {
   "name": "react-maximize",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "React control to maximize / compress components.",
   "main": "lib/index.js",
   "files": [
@@ -45,7 +45,7 @@
     "classnames": "^2.2.5",
     "ncp": "^2.0.0",
     "react-gateway": "^2.2.0",
-    "solvent": "^0.7.1"
+    "solvent": "^0.7.2"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0",
