@@ -2,6 +2,11 @@
   "folders":
   [
     {
+      "name": "packages/try-defer",
+      "follow_symlinks": true,
+      "path": "../packages/try-defer"
+    },
+    {
       "name": "packages/universal-styles",
       "follow_symlinks": true,
       "path": "../packages/universal-styles"
