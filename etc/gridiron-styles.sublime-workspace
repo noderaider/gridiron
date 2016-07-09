@@ -1,0 +1,1353 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"LOCAL",
+				"LOCAL_STORAGE_KEY"
+			],
+			[
+				"ACTIVIT",
+				"activityDetectionAction"
+			],
+			[
+				"REMOVE",
+				"REMOVE_ERROR_AT_POS"
+			],
+			[
+				"REMOVE_ERR",
+				"REMOVE_ERROR_AT_POS_REDUCER"
+			],
+			[
+				"fout",
+				"foutStyles"
+			],
+			[
+				"SetEnvP",
+				"SetEnvPSModulePath"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 191.0,
+		"last_filter": "install",
+		"selected_items":
+		[
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"show all",
+				"SublimeLinter: Show All Errors"
+			],
+			[
+				"html",
+				"HTMLPrettify"
+			],
+			[
+				"show",
+				"SublimeLinter: Show All Errors"
+			],
+			[
+				"sublime",
+				"SublimeLinter: Clear Caches"
+			],
+			[
+				"sho",
+				"SublimeLinter: Show All Errors"
+			],
+			[
+				"reind",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"reindent",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"reinde",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"erro",
+				"SublimeLinter: Show All Errors"
+			],
+			[
+				"set syntax babel",
+				"Set Syntax: JavaScript (Babel)"
+			],
+			[
+				"set syntax html",
+				"Set Syntax: HTML (ASP)"
+			],
+			[
+				"postcss",
+				"Run PostCSS Sorting"
+			],
+			[
+				"set syntax html asp",
+				"Set Syntax: HTML (ASP)"
+			],
+			[
+				"indent",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"sort",
+				"Run PostCSS Sorting"
+			],
+			[
+				"select",
+				"OmniSharpSublime: Select Server Version"
+			],
+			[
+				"install ",
+				"Package Control: Install Package"
+			],
+			[
+				"set syntax asp",
+				"Set Syntax: HTML (ASP)"
+			],
+			[
+				"lint",
+				"SublimeLinter: Show All Errors"
+			],
+			[
+				"show error",
+				"SublimeLinter: Show All Errors"
+			],
+			[
+				"babel",
+				"Set Syntax: JavaScript (Babel)"
+			],
+			[
+				"error",
+				"SublimeLinter: Show All Errors"
+			],
+			[
+				"user ",
+				"Preferences: Settings - User"
+			],
+			[
+				"clear ca",
+				"SublimeLinter: Clear Caches"
+			],
+			[
+				"lint this vi",
+				"SublimeLinter: Lint This View"
+			],
+			[
+				"clear",
+				"SublimeLinter: Clear Caches"
+			],
+			[
+				"err",
+				"SublimeLinter: Show All Errors"
+			],
+			[
+				"lint this",
+				"SublimeLinter: Lint This View"
+			],
+			[
+				"clear c",
+				"SublimeLinter: Clear Caches"
+			],
+			[
+				"lint this v",
+				"SublimeLinter: Lint This View"
+			],
+			[
+				"bab",
+				"Set Syntax: JavaScript (Babel)"
+			],
+			[
+				"SNIPPet",
+				"Snippet: React: class component"
+			],
+			[
+				"babe",
+				"Set Syntax: JavaScript (Babel)"
+			],
+			[
+				"set syntax bab",
+				"Set Syntax: JavaScript (Babel)"
+			],
+			[
+				"lint error",
+				"SublimeLinter: Show All Errors"
+			],
+			[
+				"ind",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"choose ",
+				"SublimeLinter: Choose Gutter Theme"
+			],
+			[
+				"choose li",
+				"SublimeLinter: Choose Lint Mode"
+			],
+			[
+				"cache",
+				"SublimeLinter: Clear Caches"
+			],
+			[
+				"prefere",
+				"Preferences: SublimeLinter Settings – Default"
+			],
+			[
+				"eslint",
+				"SublimeLinter: Choose Lint Mode"
+			],
+			[
+				"remove p",
+				"Package Control: Remove Package"
+			],
+			[
+				"remove package",
+				"Package Control: Remove Package"
+			],
+			[
+				"install pack",
+				"Package Control: Install Package"
+			],
+			[
+				"snippet",
+				"Snippet: #!/usr/bin/env"
+			],
+			[
+				"syntax babel",
+				"Set Syntax: JavaScript (Babel)"
+			],
+			[
+				"syntax: bab",
+				"Set Syntax: JavaScript (Babel)"
+			],
+			[
+				"set syntax",
+				"Set Syntax: LESS"
+			],
+			[
+				"set syntax: java",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"json",
+				"Set Syntax: JSON"
+			],
+			[
+				"powershell",
+				"Set Syntax: PowerShell"
+			]
+		],
+		"width": 418.0
+	},
+	"console":
+	{
+		"height": 247.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/universal-styles/src",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/universal-styles/src/lib",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/universal-themes/src",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/universal-themes/src/lib",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/react-pre-themes"
+	],
+	"file_history":
+	[
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/react-pre-themes/package.json",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/react-pre-themes/README.md",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/react-pre-styles/package.json",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/react-pre-styles/README.md",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/react-bar-styles/package.json",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/react-bar-themes/package.json",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/react-bar-themes/README.md",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/react-bar-styles/README.md",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-themes/package.json",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/universal-themes/package.json",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/universal-styles/package.json",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/react-themes/package.json",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/react-themes/README.md",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/universal-themes/README.md",
+		"/C/Users/cchamberlain/noderaider/gridiron/etc/gridiron-styles.sublime-project",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/Home.js",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/App.js",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/elements/nav/TopBar.js",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/router/configureAppRouter.js",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/react-bar/package.json",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron/package.json",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-react/lib/components/logo.js",
+		"/C/Users/cchamberlain/noderaider/gridiron/etc/gridiron.sublime-project",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/gridiron/css/logo.css",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/gridiron/Logo.js",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-styles/src/lib/styles.css",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-styles/package.json",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-themes/README.md",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-styles/README.md",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/universal-styles/README.md",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-styles/src/lib/index.js",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-styles/esdoc.json",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/public/index.html",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/public/index.html",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/utils/ScalingCellSizeAndPositionManager.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-core/src/lib/factories/index.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/utils/CellSizeAndPositionManager.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/index.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/index.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/grid.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/defaultCellRangeRenderer.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/utils/calculateSizeAndPositionDataAndUpdateScrollOffset.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/grid/css/gridiron-responsive.css",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/package.json",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/package.json",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/package.json",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron/package.json",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/react-pub-sub/package.json",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/react-pub-sub/.npmignore",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/etc/gridiron.sublime-project",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/react-pub-sub/README.md",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-core/src/lib/factories/createHeader.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/react-pub-sub/src/lib/index.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/react-pub-sub/src/lib/createPubSub.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-core/package.json",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/public/CNAME",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/public/CNAME",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/etc/README.md",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/etc/config/prod/config-client.json",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/public/index.html",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/public/index.html",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/package/scripts.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/config.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/etc/config/dev/config-client.json",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/etc/config/dev/config-server.json",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/react-bar/package.json",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/redux-devtools-grid-monitor/package.json",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/redux-pager-test/package.json",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/redux-pager-react/package.json",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/redux-pager/package.json",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/redux-metric/package.json",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-test/esdoc.json",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/redux-devtools-grid-monitor/README.md",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/redux-devtools-grid-monitor/CNAME",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/redux-ai/package.json",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/react-visual/package.json",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/react-metric/package.json",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/react-ai/package.json",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/react-maximize/package.json",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/react-minimize/package.json",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/react-pre/package.json",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-test/package.json",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-cli/package.json",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-test/test/redux-grid.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron/src/lib/index.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/esdoc.json",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/README.md",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-test/README.md",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-test/test/redux-grid-core.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/config.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/README.md",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/grid/Gridiron.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/router/configureAppRouter.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/package.json",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/webpack/output.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-core/CNAME",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-core/esdoc.json",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-core/README.md",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron/CNAME",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron/esdoc.json",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron/README.md",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron/src/lib/components/drillGrid.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron/src/lib/components/expander.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron/src/lib/components/fixed-data-table/coreGrid.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron/src/lib/components/footer.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron/src/lib/components/react-virtualized/coreGrid.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron/src/lib/components/settings.js",
+		"/C/Users/ColeChamberlain/noderaider/localsync/packages/localsync/README.md",
+		"/C/Users/ColeChamberlain/noderaider/localsync/README.md",
+		"/C/Users/ColeChamberlain/noderaider/localsync/packages/localsync/test/index.js",
+		"/C/Users/ColeChamberlain/noderaider/localsync/packages/cookiesync/src/lib/index.js",
+		"/C/Users/ColeChamberlain/noderaider/localsync/packages/serversync/src/lib/index.js",
+		"/C/Users/ColeChamberlain/noderaider/localsync/packages/socketsync/src/lib/index.js",
+		"/C/Users/ColeChamberlain/noderaider/localsync/packages/storagesync/src/lib/index.js",
+		"/C/Users/ColeChamberlain/noderaider/localsync/packages/webrtcsync/src/lib/index.js",
+		"/C/Users/ColeChamberlain/noderaider/localsync/packages/localsync/src/lib/index.js",
+		"/C/Users/ColeChamberlain/noderaider/localsync/lerna.json",
+		"/C/Users/ColeChamberlain/noderaider/localsync/.gitignore",
+		"/C/Users/ColeChamberlain/noderaider/localsync/src/package/scripts.js",
+		"/C/Users/ColeChamberlain/noderaider/localsync/packages/serversync/CNAME",
+		"/C/Users/ColeChamberlain/noderaider/localsync/packages/webrtcsync/CNAME",
+		"/C/Users/ColeChamberlain/noderaider/localsync/packages/storagesync/CNAME",
+		"/C/Users/ColeChamberlain/noderaider/localsync/packages/socketsync/CNAME",
+		"/C/Users/ColeChamberlain/noderaider/localsync/packages/localsync/package.json",
+		"/C/Users/ColeChamberlain/noderaider/localsync/test/localsync.js",
+		"/C/Users/ColeChamberlain/noderaider/localsync/packages/cookiesync/test/index.js",
+		"/C/Users/ColeChamberlain/noderaider/localsync/packages/localsync/test/localsync.js",
+		"/C/Users/ColeChamberlain/noderaider/localsync/packages/socketsync/test/index.js"
+	],
+	"find":
+	{
+		"height": 28.0
+	},
+	"find_in_files":
+	{
+		"height": 92.0,
+		"where_history":
+		[
+			"C:\\Users\\cchamberlain\\noderaider\\gridiron\\packages\\react-pre-themes",
+			"C:\\Users\\cchamberlain\\noderaider\\gridiron\\packages\\react-pre-styles",
+			"C:\\Users\\cchamberlain\\noderaider\\gridiron\\packages\\react-bar-themes",
+			"C:\\Users\\cchamberlain\\noderaider\\gridiron\\packages\\react-bar-styles",
+			"C:\\Users\\cchamberlain\\noderaider\\gridiron\\packages\\react-themes",
+			"C:\\Users\\cchamberlain\\noderaider\\gridiron\\packages\\universal-themes",
+			"C:\\Users\\cchamberlain\\noderaider\\gridiron\\packages\\universal-styles",
+			"C:\\Users\\cchamberlain\\noderaider\\gridiron\\packages\\gridiron-themes",
+			"C:\\Users\\cchamberlain\\noderaider\\gridiron\\packages\\gridiron-styles",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\redux-devtools-grid-monitor\\src",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\redux-devtools-grid-monitor\\src\\",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\redux-devtools-grid-monitor\\src",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\redux-devtools-grid-monitor\\README.md",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\redux-devtools-grid-monitor\\package.json",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\redux-devtools-grid-monitor",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\gridiron-example",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\gridiron-react",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\gridiron-test",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\gridiron-cli",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\gridiron-core",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\gridiron",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\gridiron-react",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\gridiron-test",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\gridiron-cli",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\gridiron-example",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\gridiron-core",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\gridiron",
+			"C:\\Users\\ColeChamberlain\\noderaider\\localsync\\packages\\socketsync",
+			"C:\\Users\\ColeChamberlain\\noderaider\\localsync\\packages\\storagesync",
+			"C:\\Users\\ColeChamberlain\\noderaider\\localsync\\packages\\webrtcsync",
+			"C:\\Users\\ColeChamberlain\\noderaider\\localsync\\packages\\serversync",
+			"C:\\Users\\ColeChamberlain\\noderaider\\violin",
+			"C:\\Users\\ColeChamberlain\\noderaider\\prebuilt",
+			"C:\\Users\\ColeChamberlain\\noderaider\\edm",
+			"C:\\Users\\ColeChamberlain\\noderaider\\guitar",
+			"C:\\Users\\ColeChamberlain\\noderaider\\violin",
+			"C:\\Users\\ColeChamberlain\\noderaider\\marijuana",
+			"C:\\Users\\ColeChamberlain\\noderaider\\koaproxy\\test",
+			"C:\\Users\\ColeChamberlain\\noderaider\\koaproxy\\test\\es-http-proxy-test.js",
+			"C:\\Users\\ColeChamberlain\\noderaider\\koaproxy\\test",
+			"C:\\Users\\ColeChamberlain\\noderaider\\koaproxy\\src",
+			"C:\\Users\\ColeChamberlain\\noderaider\\koaproxy\\test",
+			"C:\\Users\\ColeChamberlain\\noderaider\\koaproxy\\src",
+			"C:\\Users\\ColeChamberlain\\noderaider\\koaproxy",
+			"C:\\Users\\ColeChamberlain\\noderaider\\koa-reverse-proxy\\src\\lib\\reverse-proxy",
+			"C:\\Users\\ColeChamberlain\\noderaider\\koa-reverse-proxy",
+			"C:\\Users\\ColeChamberlain\\noderaider\\redux-grid",
+			"C:\\Users\\ColeChamberlain\\noderaider\\universal-cors",
+			"C:\\Users\\ColeChamberlain\\noderaider\\localsync",
+			"C:\\Users\\ColeChamberlain\\noderaider\\detect-resize",
+			"C:\\Users\\ColeChamberlain\\noderaider\\localsync\\src",
+			"C:\\Users\\ColeChamberlain\\noderaider\\localsync",
+			"C:\\Users\\ColeChamberlain\\noderaider\\redux-idle-monitor\\src",
+			"C:\\Users\\ColeChamberlain\\noderaider\\redux-idle-monitor",
+			"C:\\Users\\ColeChamberlain\\noderaider\\localsync",
+			"C:\\Users\\ColeChamberlain\\noderaider\\redux-idle-monitor/src",
+			"C:\\Users\\ColeChamberlain\\cchamberlain\\redux-idle-monitor/src",
+			"C:\\Users\\ColeChamberlain\\cchamberlain\\process-mux",
+			"C:\\Users\\ColeChamberlain\\cchamberlain\\kerbal\\src",
+			"C:\\Users\\ColeChamberlain\\cchamberlain\\redux-idle-monitor\\src",
+			"C:\\Users\\ColeChamberlain\\cchamberlain\\redux-webpack-boilerplate\\src",
+			"C:\\Users\\ColeChamberlain\\cchamberlain\\redux-idle-monitor\\src",
+			"C:\\Users\\ColeChamberlain\\cchamberlain\\redux-webpack-boilerplate\\src",
+			"C:\\Users\\ColeChamberlain\\cchamberlain\\redux-idle-monitor\\src",
+			"C:\\Users\\ColeChamberlain\\cchamberlain\\redux-webpack-boilerplate\\src",
+			"C:\\Users\\ColeChamberlain\\cchamberlain\\react-hatch\\src",
+			"C:\\Users\\ColeChamberlain\\cchamberlain\\react-hatch",
+			"C:\\Users\\ColeChamberlain\\cchamberlain\\redux-webpack-boilerplate\\src",
+			"C:\\Users\\ColeChamberlain\\tixinc\\js\\src",
+			"C:\\Users\\ColeChamberlain\\cchamberlain\\griddle-overhaul-connector\\src,C:\\Users\\ColeChamberlain\\cchamberlain\\griddle-overhaul-core\\src,C:\\Users\\ColeChamberlain\\cchamberlain\\griddle-overhaul-render\\src",
+			"C:\\Users\\ColeChamberlain\\tixinc\\js\\src",
+			"C:\\Users\\ColeChamberlain\\cchamberlain\\redux-webpack-boilerplate\\src",
+			"C:\\Users\\ColeChamberlain\\tixinc\\js\\src",
+			"C:\\Users\\ColeChamberlain\\cchamberlain\\tixinc\\src",
+			"C:\\Users\\ColeChamberlain\\cchamberlain\\redux-idle-monitor\\src",
+			"C:\\Users\\ColeChamberlain\\redux-idle-monitor\\src",
+			"C:\\Users\\ColeChamberlain\\tixinc\\js\\src",
+			"C:\\Users\\ColeChamberlain\\tixinc\\js",
+			"C:\\Users\\cchamberlain\\tixinc\\js",
+			"C:\\Users\\ColeChamberlain\\tixinc\\js\\src,C:\\Users\\ColeChamberlain\\cchamberlain\\redux-addons\\src,C:\\Users\\ColeChamberlain\\cchamberlain\\redux-middleware\\src,C:\\Users\\ColeChamberlain\\cchamberlain\\redux-idle-monitor\\src",
+			"C:\\Users\\ColeChamberlain\\tixinc\\js\\src,-*.min.js",
+			"C:\\Users\\cchamberlain\\tixinc\\js\\src,-*.min.js",
+			"C:\\Users\\cchamberlain\\tixinc\\js\\src,C:\\Users\\cchamberlain\\tixinc\\tix.com,-*.min.js",
+			"C:\\Users\\cchamberlain\\tixinc\\js\\src,C:\\Users\\cchamberlain\\tixinc\\tix.com",
+			"C:\\Users\\cchamberlain\\tixinc\\js",
+			"C:\\Users\\cchamberlain\\tixinc\\js\\src,C:\\Users\\cchamberlain\\tixinc\\tix.com",
+			"<current file>",
+			"C:\\Users\\cchamberlain\\tixinc\\js\\src,C:\\Users\\cchamberlain\\tixinc\\tix.com",
+			"C:\\Users\\cchamberlain\\tixinc\\js\\src",
+			"C:\\Users\\cchamberlain\\tixinc\\js",
+			"C:\\Users\\cchamberlain\\tixinc\\js\\src",
+			"C:\\Users\\cchamberlain\\tixinc\\js",
+			"C:\\Users\\cchamberlain\\tixinc\\js\\src",
+			"C:\\Users\\cchamberlain\\tixinc\\config\\src",
+			"C:\\Users\\cchamberlain\\tixinc\\js\\src",
+			"C:\\Users\\cchamberlain\\cchamberlain\\react-idle-timer\\src",
+			"C:\\Users\\cchamberlain\\tixinc\\config\\src",
+			"C:\\Users\\cchamberlain\\tixinc\\js\\src",
+			"C:\\Users\\cchamberlain\\tixinc\\js",
+			"C:\\Users\\cchamberlain\\tixinc\\config\\src\\json",
+			"C:\\Users\\cchamberlain\\tixinc\\config\\src",
+			"C:\\Users\\cchamberlain\\tixinc\\config",
+			"C:\\Users\\cchamberlain\\tixinc\\js",
+			"C:\\Users\\cchamberlain\\tixinc\\js\\src",
+			"C:\\Users\\cchamberlain\\tixinc\\config\\src",
+			"C:\\Users\\cchamberlain\\tixinc\\js\\src",
+			"C:\\Users\\cchamberlain\\tixinc\\config\\src",
+			"C:\\Users\\cchamberlain\\tixinc\\config",
+			"C:\\Users\\cchamberlain\\tixinc\\js",
+			"C:\\Users\\cchamberlain\\tixinc\\js\\src",
+			"C:\\Users\\cchamberlain\\tixinc\\js",
+			"C:\\Users\\cchamberlain\\tixinc\\services",
+			"C:\\Users\\cchamberlain\\tixinc\\net",
+			"C:\\Users\\cchamberlain\\tixinc\\config",
+			"C:\\Users\\cchamberlain\\tixinc\\tixinc-js",
+			"C:\\Users\\cchamberlain\\tixinc\\tixinc-js\\src",
+			"C:\\Users\\cchamberlain\\tixinc\\tixinc-js",
+			"C:\\Users\\cchamberlain\\cchamberlain\\powerapi",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"gridiron-themes",
+			"gridiron-styles",
+			"gridiron-themes",
+			"gridiron-styles",
+			"gridiron-themes",
+			"gridiron-styles",
+			"gridiron-react",
+			"redux-grid",
+			"reduxGrid",
+			"redux-grid",
+			"webrtc",
+			"localsync",
+			"serversync",
+			"localsync",
+			"guitar",
+			"marijuana",
+			"edm",
+			"marijuana",
+			"localsync",
+			"max_wait",
+			"#setupOutgoing",
+			".to.be('hello there')",
+			"to.be('ECONNRESET')",
+			".to.be('Hello over websockets')",
+			".to.be('ECONNREFUSED')",
+			".to.be.an(Error)",
+			"to.be.eql",
+			"m",
+			"reverse-proxy",
+			"http-proxy",
+			"node-http-proxy",
+			"http-proxy",
+			"node-http-proxy",
+			"createProxyServer",
+			"expect.js",
+			"httpProxy",
+			"http-proxy",
+			"node-http-proxy",
+			"setting autosizer dimensions",
+			"detect-resize",
+			"localsync#start",
+			"localsync",
+			"cellData",
+			"createLocalSync",
+			"bunyan",
+			"getLocalActive",
+			"setLocal",
+			"setLocalActive",
+			"setLocalInit",
+			"procmux",
+			"createStartDetection",
+			"bunyan-fork",
+			"STARTED",
+			"STARTED @",
+			"IS_BROWSER",
+			"IDLEMONITOR_LAST_ACTIVE",
+			"IS_BROWSER",
+			"IdleMonitor",
+			"activity detection is not running",
+			", initialState",
+			"initialState",
+			"text.get",
+			"hydrateImmutable",
+			"configureBrowserStore",
+			"configureStore",
+			"states",
+			"multiplexer",
+			"resetBl",
+			"RESET",
+			"detection",
+			"react-tooltip",
+			"HotMicro",
+			"'server'",
+			"=== 'server",
+			"hydrateStore",
+			"hydrateTokens",
+			"getLocal",
+			"getIdleStatus",
+			"activity detection starting",
+			"setLocalActive",
+			"337ab7;",
+			"'controls",
+			"index",
+			"style/index",
+			"createClientLogger",
+			"createServerLogger",
+			"config.server",
+			"config.client",
+			"timings =>",
+			"THISSSS WORKS",
+			"initializeGrid",
+			"storeBoundActions",
+			"griddle",
+			"solarized",
+			"tix",
+			"musical",
+			"isPaused",
+			"elapsedMS",
+			"threshold",
+			"ErrorFilter",
+			"LoginForm",
+			"ErrorPanel",
+			"ErrorFilter",
+			"@reduxForm",
+			"filters/ErrorFilter",
+			"ErrorFilter",
+			"transform-decorators-legacy",
+			"create-fragment",
+			"redux-idle-monitor",
+			"user-secret\"",
+			"user-secret'",
+			"timeout'",
+			"timeout",
+			"actions/timeout",
+			"activeState",
+			"_STATE",
+			"idleState",
+			"STOP DETECTION SIGNALED",
+			"DETECTOR ACTIVITY",
+			"DETECTOR_ACTIVITY",
+			"translateActionBlueprints",
+			"cleanActionName",
+			"createDispatcher",
+			"actionDefinition",
+			"fastState set",
+			"NO SKIP RESTART",
+			"idle monitor stopped",
+			"USER ACTIVE"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"react-pre-themes",
+			"react-pre-styles",
+			"react-bar-themes",
+			"react-bar-styles",
+			"react-themes",
+			"universal-themes",
+			"universal-styles",
+			"gridiron-themes",
+			"gridiron-styles",
+			"gridiron",
+			"socket",
+			"storagesync",
+			"webrtcsync",
+			"serversync",
+			"violin",
+			"prebuilt",
+			"edm",
+			"violin",
+			"guitar",
+			"violin",
+			"marijuana",
+			".to.eql('hello there')",
+			"to.eql('ECONNRESET')",
+			".to.eql('Hello over websockets')",
+			".to.eql('ECONNREFUSED')",
+			".to.be.instanceof(Error)",
+			"to.eql",
+			"es-http-proxy",
+			"reverseProxy",
+			"reverse-proxy",
+			"koa-reverse-proxy",
+			"universal-cors",
+			"detect-resize",
+			"localsync",
+			"process-mux",
+			"initialValue",
+			"fragmentType",
+			"domElement",
+			"props.fragmentType",
+			"getFragmentType",
+			"data-fragment-type",
+			"Static",
+			"Expander",
+			"popHTMLControl",
+			"resetComponents",
+			"criteria-component",
+			"componentRadioAll",
+			"componentRadioNone",
+			"componentRadioChoose",
+			"componentRadio",
+			"ClientIDMode=\"Predictable\"",
+			"byIDPrefix",
+			"byIDSuffix",
+			"'ext"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 28.0
+	},
+	"input":
+	{
+		"height": 35.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "Packages/Kulture/ASP.NET.sublime-build",
+	"project": "gridiron-styles.sublime-project",
+	"replace":
+	{
+		"height": 52.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"visual",
+				"redux-webpack-boilerplate\\src\\lib\\redux\\reducers\\visual.js"
+			],
+			[
+				"identity.js",
+				"@tixinc\\js-app\\state\\actions\\identity.js"
+			],
+			[
+				"adminpanel",
+				"js\\src\\app\\elements\\panels\\AdminPanel.jsx"
+			],
+			[
+				"sidebar",
+				"js\\src\\app\\elements\\nav\\SideBar.jsx"
+			],
+			[
+				"timeout.jsx",
+				"js\\src\\app\\containers\\Timeout.jsx"
+			],
+			[
+				"hatch.jsx",
+				"js\\src\\app\\controls\\hatch.jsx"
+			],
+			[
+				"polyfill.js",
+				"js\\src\\public\\static\\polyfill.js"
+			],
+			[
+				"loading.js",
+				"js\\src\\app\\entry\\loading.jsx"
+			],
+			[
+				"timeout.js",
+				"js\\src\\app\\styles\\timeout.js"
+			],
+			[
+				"timeout",
+				"js\\src\\app\\containers\\Timeout.jsx"
+			],
+			[
+				"tixadmin",
+				"tix.com\\Clients\\TixAdmin\\TixAdmin.master"
+			],
+			[
+				"tixadmin.ma",
+				"tix.com\\Clients\\TixAdmin\\TixAdmin.master"
+			],
+			[
+				"package.json",
+				"tix.com\\package.json"
+			],
+			[
+				"theme.js",
+				"js\\src\\app\\theme.js"
+			],
+			[
+				"palette",
+				"js\\src\\app\\palette.js"
+			],
+			[
+				"tixadmin.master",
+				"tix.com\\Clients\\TixAdmin\\TixAdmin.master"
+			],
+			[
+				"tix.css",
+				"js\\src\\app\\legacy\\styles\\skins\\tix.css"
+			],
+			[
+				"global.asa",
+				"tix.com\\Global.asa"
+			],
+			[
+				"dcmegamen",
+				"tix.com\\Clients\\Tix\\CSS\\dcmegamenu.css"
+			],
+			[
+				"megamenu.css",
+				"js\\src\\app\\legacy\\styles\\dcmegamenu.css"
+			],
+			[
+				"legacy.js",
+				"js\\src\\app\\entry\\legacy.js"
+			],
+			[
+				"legacy.jsx",
+				"js\\src\\app\\legacy\\elements\\render.jsx"
+			],
+			[
+				"headbottom.asp",
+				"tix.com\\Asp\\Include\\HeadBottom.asp"
+			],
+			[
+				"apphead",
+				"tix.com\\Asp\\Include\\AppHead.asp"
+			],
+			[
+				"managementinclude.asp",
+				"tix.com\\Include\\ManagementInclude.asp"
+			],
+			[
+				"default.asp",
+				"tix.com\\Management\\Default.asp"
+			],
+			[
+				"pagetopin",
+				"tix.com\\PageTopInclude.asp"
+			],
+			[
+				"nocachein",
+				"tix.com\\NoCacheInclude.asp"
+			],
+			[
+				"pagetopinclude.asp",
+				"tix.com\\PageTopInclude.asp"
+			],
+			[
+				"privatelab",
+				"tix.com\\PrivateLabelInclude.asp"
+			],
+			[
+				"banner.html",
+				"tix.com\\Clients\\Tix\\Banner.html"
+			],
+			[
+				"apphead.asp",
+				"tix.com\\Asp\\Include\\AppHead.asp"
+			],
+			[
+				"head",
+				"tix.com\\Forms\\Controls\\AppHead.ascx"
+			],
+			[
+				"tooltip",
+				"js\\src\\app\\legacy\\elements\\Tooltip.jsx"
+			],
+			[
+				"expander",
+				"js\\src\\app\\legacy\\elements\\Expander.jsx"
+			],
+			[
+				"micro.jsx",
+				"js\\src\\app\\elements\\micro\\core\\Micro.jsx"
+			],
+			[
+				"tooltip.jsx",
+				"js\\src\\app\\legacy\\elements\\Tooltip.jsx"
+			],
+			[
+				"timeout.css",
+				"js\\src\\app\\containers\\Timeout.css"
+			],
+			[
+				"hatch.less",
+				"js\\src\\app\\controls\\hatch.less"
+			],
+			[
+				"footer",
+				"js\\src\\app\\elements\\nav\\FooterBar.jsx"
+			],
+			[
+				"footerbar",
+				"js\\src\\app\\elements\\nav\\FooterBar.jsx"
+			],
+			[
+				"identity.jsx",
+				"js\\src\\app\\controls\\identity.jsx"
+			],
+			[
+				"themepanel",
+				"js\\app\\elements\\panels\\ThemePanel.jsx"
+			],
+			[
+				"messagetemplateediotr.js",
+				"js\\obsolete\\tix.com\\UserControls\\Javascript\\MessageTemplateEditor.obsolete.js"
+			],
+			[
+				"messagetemplateeditor",
+				"tix.com\\UserControls\\MessageTemplateEditor.ascx"
+			],
+			[
+				"web.config",
+				"tix.com\\web.config"
+			],
+			[
+				"seatstatus",
+				"tix.com\\UserControls\\SeatStatus.ascx"
+			],
+			[
+				"eventselection",
+				"tix.com\\UserControls\\EventSelection.ascx"
+			],
+			[
+				"criteriacontrol.js",
+				"js\\src\\app\\legacy\\CriteriaControl.js"
+			],
+			[
+				"criteriacontrol",
+				"js\\app\\legacy\\CriteriaControl.js"
+			],
+			[
+				"render.jsx",
+				"js\\app\\legacy\\elements\\render.jsx"
+			],
+			[
+				"render",
+				"js\\src\\app\\legacy\\elements\\render.jsx"
+			],
+			[
+				"renderer",
+				"config\\src\\app\\controls\\renderer.jsx"
+			],
+			[
+				"criteriacomponent",
+				"js\\src\\app\\legacy\\elements\\CriteriaComponent.jsx"
+			],
+			[
+				"eventselection.ascx.cs",
+				"tix.com\\UserControls\\EventSelection.ascx.cs"
+			],
+			[
+				"eventselection.ascx",
+				"tix.com\\UserControls\\EventSelection.ascx"
+			],
+			[
+				"eventdetailreport.aspx",
+				"tix.com\\Reports\\EventDetailReport.aspx"
+			],
+			[
+				"organizationsettings",
+				"tix.com\\Management\\OrganizationSettings.aspx"
+			],
+			[
+				"organizationsettings.aspx.cs",
+				"tix.com\\Management\\OrganizationSettings.aspx.cs"
+			],
+			[
+				"organizationsett",
+				"tix.com\\Management\\OrganizationSettings.aspx"
+			],
+			[
+				"organizationsettings.aspx",
+				"tix.com\\Management\\OrganizationSettings.aspx"
+			],
+			[
+				"organizationoptions.",
+				"tix.com\\Management\\OrganizationOptions.asp"
+			],
+			[
+				"criteria",
+				"tix.com\\UserControls\\CriteriaControl.ascx"
+			],
+			[
+				"package.",
+				"tix.com\\package.json"
+			],
+			[
+				"adminpane",
+				"js\\src\\app\\elements\\panels\\AdminPanel.jsx"
+			],
+			[
+				"entry/command",
+				"config\\src\\entry\\commandify.jsx"
+			],
+			[
+				"client.jsx",
+				"js\\src\\app\\elements\\Client.jsx"
+			],
+			[
+				"identitycontroller",
+				"net\\Tix.Web.Core\\Controllers\\Api\\IdentityController.cs"
+			],
+			[
+				"host.jsx",
+				"js\\src\\app\\elements\\Host.jsx"
+			],
+			[
+				"api.js",
+				"js\\src\\app\\services\\api.js"
+			],
+			[
+				"topbar",
+				"js\\src\\app\\elements\\nav\\TopBar.jsx"
+			],
+			[
+				"topbar.jsx",
+				"config\\src\\app\\nav\\TopBar.jsx"
+			],
+			[
+				"sidemenu",
+				"js\\src\\app\\elements\\nav\\SideMenu.jsx"
+			],
+			[
+				"debugpan",
+				"js\\src\\app\\elements\\panels\\DebugPanel.jsx"
+			],
+			[
+				"reauthroz",
+				"js\\client\\controls\\reauthorize.jsx"
+			],
+			[
+				"footerb",
+				"js\\client\\elements\\nav\\FooterBar.jsx"
+			],
+			[
+				"app.jsx",
+				"config\\src\\app.jsx"
+			],
+			[
+				"api/index",
+				"tixinc-js\\src\\app\\api\\index.js"
+			],
+			[
+				"reactrenderer",
+				"tixinc-js\\src\\app\\ReactRenderer.jsx"
+			],
+			[
+				"shoppingcart/dire",
+				"tixinc-js\\src\\app\\core\\panels\\orderdetails\\shoppingcart\\directive.js"
+			],
+			[
+				"client/main",
+				"tixinc-js\\src\\client\\main.jsx"
+			],
+			[
+				"login/directive",
+				"tixinc-js\\src\\client\\core\\modals\\login\\directive.js"
+			],
+			[
+				"login/view",
+				"tixinc-js\\src\\client\\core\\modals\\login\\view.html"
+			],
+			[
+				"login/direc",
+				"tixinc-js\\src\\client\\core\\panels\\login\\directive.js"
+			],
+			[
+				"mixins/index",
+				"tixinc-js\\src\\ext\\lodash\\mixins\\index.js"
+			],
+			[
+				"mixins/function",
+				"tixinc-js\\src\\ext\\lodash\\mixins\\function.js"
+			],
+			[
+				"mixins/obje",
+				"tixinc-js\\src\\ext\\lodash\\mixins\\object.js"
+			],
+			[
+				"mixins/string",
+				"tixinc-js\\src\\ext\\lodash\\mixins\\string.js"
+			],
+			[
+				"ticket/servi",
+				"tixinc-js\\client\\areas\\ticket\\service.js"
+			],
+			[
+				"encodingindex",
+				"tixinc-js\\client\\core\\base\\encoding\\index.js"
+			],
+			[
+				"telephoneindex",
+				"tixinc-js\\client\\core\\filters\\telephone\\index.js"
+			],
+			[
+				"cookie/index",
+				"tixinc-js\\client\\core\\base\\cookie\\index.js"
+			],
+			[
+				"identity/controller",
+				"tixinc-js\\client\\core\\base\\identity\\controller.js"
+			],
+			[
+				"signalr/contr",
+				"tixinc-js\\client\\core\\base\\signalr\\controller.js"
+			],
+			[
+				"token/service",
+				"tixinc-js\\client\\core\\base\\token\\service.js"
+			],
+			[
+				"login/dire",
+				"tixinc-js\\client\\core\\panels\\login\\directive.js"
+			],
+			[
+				"dashboard/directive",
+				"tixinc-js\\client\\core\\panels\\dashboard\\directive.js"
+			],
+			[
+				"login/di",
+				"tixinc-js\\client\\core\\modals\\login\\directive.js"
+			],
+			[
+				"customerinfo",
+				"tixinc-js\\client\\core\\panels\\orderdetails\\customerinfo\\directive.js"
+			],
+			[
+				"passwordreset/d",
+				"tixinc-js\\client\\core\\panels\\passwordreset\\directive.js"
+			],
+			[
+				"main/directive",
+				"tixinc-js\\client\\core\\menu\\main\\directive.js"
+			],
+			[
+				"maintreemu",
+				"tixinc-js\\client\\core\\menu\\main\\treemenu.js"
+			],
+			[
+				"shoppingcart/directive",
+				"tixinc-js\\client\\core\\panels\\orderdetails\\shoppingcart\\directive.js"
+			],
+			[
+				"topbar/dire",
+				"tixinc-js\\client\\core\\nav\\topbar\\directive.js"
+			],
+			[
+				"functions.js",
+				"tixinc-js\\client\\config\\functions.js"
+			],
+			[
+				"host.js",
+				"tixinc-js\\client\\elements\\Host.jsx"
+			],
+			[
+				"updates",
+				"tixinc-js\\client\\helpers\\updates.es"
+			],
+			[
+				"state.shim",
+				"tixinc-js\\client\\helpers\\state.shim.es"
+			],
+			[
+				"state.e",
+				"tixinc-js\\client\\helpers\\state.es"
+			],
+			[
+				"pipeline.shim",
+				"tixinc-js\\client\\helpers\\pipeline.shim.es"
+			],
+			[
+				"pipeline.es",
+				"tixinc-js\\client\\helpers\\pipeline.es"
+			],
+			[
+				"functions.shim",
+				"tixinc-js\\client\\helpers\\functions.shim.es"
+			],
+			[
+				"helpers",
+				"ext\\helpers.js"
+			],
+			[
+				"async",
+				"tixinc-js\\client\\helpers\\async.es"
+			],
+			[
+				"fa.j",
+				"app\\elements\\fa.jsx"
+			],
+			[
+				"nav.jsx",
+				"app\\elements\\nav.jsx"
+			],
+			[
+				"endpoints.l",
+				"app\\elements\\endpoints.less"
+			],
+			[
+				"endpoints.js",
+				"app\\containers\\Endpoints.jsx"
+			],
+			[
+				"extensions",
+				"app\\styles\\extensions.less"
+			],
+			[
+				"enpoints.less",
+				"app\\elements\\endpoints.less"
+			],
+			[
+				"app.less",
+				"app\\containers\\App.less"
+			],
+			[
+				"endpoints.",
+				"app\\elements\\endpoints.less"
+			],
+			[
+				"colors",
+				"app\\styles\\colors.less"
+			],
+			[
+				"endpoints.less",
+				"app\\elements\\endpoints.less"
+			],
+			[
+				"endpoints.le",
+				"app\\elements\\endpoints.less"
+			],
+			[
+				"setup",
+				"app\\containers\\Setup.jsx"
+			],
+			[
+				"application",
+				"powerapi\\app\\containers\\Application.jsx"
+			],
+			[
+				"server.js",
+				"powerapi\\lib\\server.js"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 375.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 458.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+		"_vintageous_last_buffer_search": "gridiron",
+		"_vintageous_last_buffer_search_command": "vi_slash",
+		"_vintageous_reset_during_init": true,
+		"vintage":
+		{
+			"_cmdline_cd": "C:\\Users\\cchamberlain\\noderaider\\gridiron\\packages\\gridiron-example\\src\\app\\routes\\components"
+		}
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 361.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

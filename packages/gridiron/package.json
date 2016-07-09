@@ -1,7 +1,7 @@
 {
   "name": "gridiron",
   "version": "0.7.1",
-  "description": "Lightweight grid framework built on top of react-virtualized / fixed-data-table for easy highly customizable grids generated from redux state.",
+  "description": "Feature-Packed Grid Framework",
   "main": "lib/index.js",
   "files": [
     "lib"
@@ -47,7 +47,7 @@
     "esdoc": "^0.4.7",
     "esdoc-es7-plugin": "0.0.3",
     "ncp": "^2.0.0",
-    "npm-run-all": "^2.1.1",
+    "npm-run-all": "latest",
     "react-autosizer": "*",
     "react-maximize": "^0.7.1",
     "react-minimize": "^0.7.1",

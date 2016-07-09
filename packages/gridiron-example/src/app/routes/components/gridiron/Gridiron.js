@@ -5,8 +5,6 @@ import shallowCompare from 'react-addons-shallow-compare'
 import ReactHeight from 'react-height'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
-import * as ReactVirtualized from 'react-virtualized'
-import * as ReactGateway from 'react-gateway'
 import gridiron from 'gridiron'
 import gridironReact from 'gridiron-react'
 import { factories } from 'gridiron-core'
@@ -18,7 +16,7 @@ import reduxPager from 'redux-pager'
 import reduxPagerStyles from './css/redux-pager.css' // 'redux-pager/lib/styles.css'
 
 
-import styles from './css/gridiron.css'
+import styles from 'gridiron-styles'
 import sandy from './css/theme/sandy.css'
 import black from './css/theme/black.css'
 

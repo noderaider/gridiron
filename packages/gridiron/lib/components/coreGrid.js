@@ -119,7 +119,7 @@ function coreGrid(deps) {
         rows.should.be.instanceof(Array);
         var colCount = cols.length;
         var getRowCount = function getRowCount() {
-          var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+          var _ref = arguments.length <= 0 || arguments[0] === undefined ? /*= mapRows(state)*/{} : arguments[0];
 
           var _ref$rows = _ref.rows;
           var rows = _ref$rows === undefined ? rows : _ref$rows;
@@ -315,11 +315,11 @@ function coreGrid(deps) {
                               // If the user is no longer scrolling, don't cache cells.
                               // This makes dynamic cell content difficult for users and would also lead to a heavier memory footprint.
                             } else {
-                              renderedCell = cellRenderer({ columnIndex: columnIndex,
-                                isScrolling: isScrolling,
-                                rowIndex: rowIndex
-                              });
-                            }
+                                renderedCell = cellRenderer({ columnIndex: columnIndex,
+                                  isScrolling: isScrolling,
+                                  rowIndex: rowIndex
+                                });
+                              }
 
                             if (renderedCell === null || renderedCell === false) continue;
                             renderedCells.push(renderedCell);

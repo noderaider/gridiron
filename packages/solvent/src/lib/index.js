@@ -20,3 +20,9 @@ export default function solvent(depTypes = {}) {
   }, {})
 }
 
+
+export const TYPES =  { React: { React: 'object' }
+                      , ReactDOM: { ReactDOM: 'object' }
+                      , connect: { connect: 'function' }
+                      , shallowCompare: { shallowCompare: 'function' }
+                      }

@@ -11,9 +11,15 @@ import TopBar from 'app/elements/nav/TopBar'
 import FooterBar from 'app/elements/nav/FooterBar'
 import DevTools from 'lib/redux/DevTools'
 
+
 import { contextTypes, getTheme, defaultTheme } from 'lib/context'
 
 import { Maximize } from 'lib/components/modules/react-maximize'
+
+import gridironReact from 'gridiron-react'
+import gridironStyles from 'gridiron-styles'
+
+const { Logo } = gridironReact({ React, shallowCompare }, { styles: gridironStyles })
 
 const IdleMonitor = createIdleMonitor({ React, connect })
 
@@ -60,7 +66,7 @@ class App extends Component {
       {container => (
         <div style={{ marginBottom: 70 }}>
           <div style={style.app}>
-            <TopBar title={title} subtitle={subtitle} username={username} email={email} packageName={packageName} />
+            <TopBar logo={<Logo />} title={title} subtitle={subtitle} username={username} email={email} packageName={packageName} />
             {cloneElement(children, { container })}
             <FooterBar />
           </div>

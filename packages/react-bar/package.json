@@ -1,20 +1,19 @@
 {
   "name": "react-bar",
   "version": "0.7.1",
-  "description": "React control to maximize / compress components.",
+  "description": "React Docked Menu Bars",
   "main": "lib/index.js",
   "files": [
     "lib"
   ],
   "keywords": [
-    "component",
     "react",
-    "maximize",
-    "minimize",
-    "compress",
-    "window",
-    "dom",
-    "sort"
+    "component",
+    "bar",
+    "topbar",
+    "sidebar",
+    "nav",
+    "menu"
   ],
   "scripts": {
     "start": "run-p build-watch",

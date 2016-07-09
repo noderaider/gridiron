@@ -2,6 +2,61 @@
   "folders":
   [
     {
+      "name": "packages/gridiron",
+      "follow_symlinks": true,
+      "path": "../packages/gridiron"
+    },
+    {
+      "name": "packages/gridiron-core",
+      "follow_symlinks": true,
+      "path": "../packages/gridiron-core"
+    },
+    {
+      "name": "packages/gridiron-cli",
+      "follow_symlinks": true,
+      "path": "../packages/gridiron-cli"
+    },
+    {
+      "name": "packages/gridiron-test",
+      "follow_symlinks": true,
+      "path": "../packages/gridiron-test"
+    },
+    {
+      "name": "packages/gridiron-react",
+      "follow_symlinks": true,
+      "path": "../packages/gridiron-react"
+    },
+    {
+      "name": "packages/gridiron-redux",
+      "follow_symlinks": true,
+      "path": "../packages/gridiron-redux"
+    },
+    {
+      "name": "packages/gridiron-example",
+      "follow_symlinks": true,
+      "path": "../packages/gridiron-example"
+    },
+    {
+      "name": "packages/gridiron-pager",
+      "follow_symlinks": true,
+      "path": "../packages/gridiron-pager"
+    },
+    {
+      "name": "packages/react-bar",
+      "follow_symlinks": true,
+      "path": "../packages/react-bar"
+    },
+    {
+      "name": "packages/redux-pager",
+      "follow_symlinks": true,
+      "path": "../packages/redux-pager"
+    },
+    {
+      "name": "packages/redux-devtools-grid-monitor",
+      "follow_symlinks": true,
+      "path": "../packages/redux-devtools-grid-monitor/src"
+    },
+    {
       "name": "packages/react-ai",
       "follow_symlinks": true,
       "path": "../packages/react-ai/src"
@@ -25,46 +80,6 @@
       "name": "packages/react-minimize",
       "follow_symlinks": true,
       "path": "../packages/react-minimize/src"
-    },
-    {
-      "name": "packages/gridiron",
-      "follow_symlinks": true,
-      "path": "../packages/gridiron"
-    },
-    {
-      "name": "packages/gridiron-core",
-      "follow_symlinks": true,
-      "path": "../packages/gridiron-core/src"
-    },
-    {
-      "name": "packages/gridiron-react",
-      "follow_symlinks": true,
-      "path": "../packages/gridiron-react"
-    },
-    {
-      "name": "packages/gridiron-example",
-      "follow_symlinks": true,
-      "path": "../packages/gridiron-example"
-    },
-    {
-      "name": "packages/gridiron-cli",
-      "follow_symlinks": true,
-      "path": "../packages/gridiron-cli/src"
-    },
-    {
-      "name": "packages/gridiron-test",
-      "follow_symlinks": true,
-      "path": "../packages/gridiron-test/src"
-    },
-    {
-      "name": "packages/redux-pager",
-      "follow_symlinks": true,
-      "path": "../packages/redux-pager/src"
-    },
-    {
-      "name": "packages/redux-devtools-grid-monitor",
-      "follow_symlinks": true,
-      "path": "../packages/redux-devtools-grid-monitor/src"
     },
     {
       "name": "packages/solvent",

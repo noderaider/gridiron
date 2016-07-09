@@ -7,13 +7,14 @@ import './TopBar.css'
 import { contextTypes } from 'lib/context'
 
 export default class TopBar extends Component {
-  static propTypes =  { title: PropTypes.string.isRequired
+  static propTypes =  { logo: PropTypes.element
+                      , title: PropTypes.string
                       , subtitle: PropTypes.string
                       , packageName: PropTypes.string
                       }
   static contextTypes = contextTypes;
   render() {
-    const { title, subtitle, packageName } = this.props
+    const { logo, title, subtitle, packageName } = this.props
     const { palette, color, brand, style } = this.context.theme
     const { header } = style
 
@@ -22,6 +23,7 @@ export default class TopBar extends Component {
         <button style={header.hamburger}>
           <FA name="bars" size="lg" />
         </button>
+        {logo ? <span>{logo}</span> : null}
         <span style={header.title}>
           <a href="/" style={header.anchor}>{title}{subtitle ? <span style={header.subtitle}>{subtitle}</span> : null}</a>
         </span>

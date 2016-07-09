@@ -1,0 +1,70 @@
+{
+  "folders":
+  [
+    {
+      "name": "packages/universal-styles",
+      "follow_symlinks": true,
+      "path": "../packages/universal-styles"
+    },
+    {
+      "name": "packages/universal-themes",
+      "follow_symlinks": true,
+      "path": "../packages/universal-themes"
+    },
+    {
+      "name": "packages/react-themes",
+      "follow_symlinks": true,
+      "path": "../packages/react-themes"
+    },
+    {
+      "name": "packages/gridiron-styles",
+      "follow_symlinks": true,
+      "path": "../packages/gridiron-styles"
+    },
+    {
+      "name": "packages/gridiron-themes",
+      "follow_symlinks": true,
+      "path": "../packages/gridiron-themes"
+    },
+    {
+      "name": "packages/react-bar-styles",
+      "follow_symlinks": true,
+      "path": "../packages/react-bar-styles"
+    },
+    {
+      "name": "packages/react-bar-themes",
+      "follow_symlinks": true,
+      "path": "../packages/react-bar-themes"
+    },
+    {
+      "name": "packages/react-pre-styles",
+      "follow_symlinks": true,
+      "path": "../packages/react-pre-styles"
+    },
+    {
+      "name": "packages/react-pre-themes",
+      "follow_symlinks": true,
+      "path": "../packages/react-pre-themes"
+    },
+    {
+      "name": "packages/react-maximize-styles",
+      "follow_symlinks": true,
+      "path": "../packages/react-maximize-styles"
+    },
+    {
+      "name": "packages/react-maximize-themes",
+      "follow_symlinks": true,
+      "path": "../packages/react-maximize-themes"
+    },
+    {
+      "name": "packages/react-minimize-styles",
+      "follow_symlinks": true,
+      "path": "../packages/react-minimize-styles"
+    },
+    {
+      "name": "packages/react-minimize-themes",
+      "follow_symlinks": true,
+      "path": "../packages/react-minimize-themes"
+    }
+  ]
+}

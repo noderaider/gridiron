@@ -1,0 +1,57 @@
+{
+  "name": "gridiron-themes",
+  "version": "0.7.1",
+  "description": "React Component Styles for CSS Modules",
+  "main": "lib/index.js",
+  "scripts": {
+    "start": "babel src/lib -d lib --watch",
+    "prebuild": "rimraf build",
+    "build": "ncp src/lib lib && babel src/lib/index.js -o lib/index.js",
+    "predoc": "rimraf doc",
+    "doc": "esdoc -c ./esdoc.json",
+    "prerelease": "npm run build",
+    "release": "npm version patch && npm publish",
+    "postrelease": "npm run release-doc",
+    "prerelease-doc": "npm run doc",
+    "release-doc": "git subtree push --prefix doc origin gh-pages",
+    "postrelease-doc": "git commit -am \"doc-release\" && git push --follow-tags"
+  },
+  "dependencies": {
+    "chai": "latest",
+    "classnames": "latest",
+    "gridiron-core": "*",
+    "ncp": "latest",
+    "npm-run-all": "latest",
+    "solvent": "*",
+    "react-stamp": "latest",
+    "react-themes": "*"
+  },
+  "devDependencies": {
+    "babel-cli": "latest",
+    "babel-core": "latest",
+    "babel-eslint": "latest",
+    "babel-loader": "latest",
+    "babel-plugin-react-transform": "latest",
+    "babel-plugin-transform-runtime": "latest",
+    "babel-preset-es2015": "latest",
+    "babel-preset-react": "latest",
+    "babel-preset-stage-0": "latest",
+    "esdoc": "latest",
+    "esdoc-es7-plugin": "latest",
+    "eslint": "latest",
+    "eslint-plugin-babel": "latest",
+    "eslint-plugin-react": "latest",
+    "isomorphic-style-loader": "^1.0.0",
+    "rimraf": "latest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cchamberlain/gridiron-themes.git"
+  },
+  "author": "Cole Chamberlain <cole.chamberlain@gmail.com> (https://github.com/cchamberlain)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cchamberlain/gridiron-themes/issues"
+  },
+  "homepage": "https://cchamberlain.github.io/gridiron-themes"
+}

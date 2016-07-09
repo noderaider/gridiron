@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.TYPES = undefined;
 
 var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
 
@@ -33,7 +34,6 @@ exports.default = solvent;
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var should = require('chai').should();
-
 /**
  * Creates a dependency resolver that will auto check incoming dependencies against a JavaScript type.
  * @param  {Object} dependencyTypes [description]
@@ -57,3 +57,9 @@ function solvent() {
     }, {});
   };
 }
+
+var TYPES = exports.TYPES = { React: { React: 'object' },
+  ReactDOM: { ReactDOM: 'object' },
+  connect: { connect: 'function' },
+  shallowCompare: { shallowCompare: 'function' }
+};
