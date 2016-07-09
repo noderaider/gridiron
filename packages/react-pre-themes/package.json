@@ -1,6 +1,6 @@
 {
   "name": "react-pre-themes",
-  "version": "0.7.3",
+  "version": "0.8.0",
   "description": "React Component Styles for CSS Modules",
   "main": "lib/index.js",
   "scripts": {
@@ -21,9 +21,9 @@
     "classnames": "latest",
     "ncp": "latest",
     "npm-run-all": "latest",
-    "solvent": "^0.7.3",
+    "solvent": "^0.8.0",
     "react-stamp": "latest",
-    "react-themes": "^0.7.3"
+    "react-themes": "^0.8.0"
   },
   "devDependencies": {
     "babel-cli": "latest",
