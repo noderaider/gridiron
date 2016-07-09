@@ -15,14 +15,19 @@
 ```js
 import tryDefer from 'try-defer'
 
-const [touchWindow, { replay, serialize, reactReplay }] = tryDefer((...args) => {
-  window.alert('THIS THROWS ON SERVER, FINE ON BROWSER')
-})
+const [ inBrowser
+      , { replay, serialize, reactReplay }
+      ] = tryDefer(() => typeof window === 'object')
 
-/** This may or may not work. If it does not work, it will be routed into the deferred function. */
-touchWindow()
-touchWindow()
-touchWindow()
+const alert = inBrowser((...args) => window.alert(`ONLY RUN ON BROWSER => ${JSON.stringify(args)}`))
+const setBG = inBrowser((color) => document.body.style.backgroundColor = color)
+
+/** This may or may not work. If it is bypassed or causes an error, it will be accumulated in the replay event to be executed at a deferred time.
+alert(1, 2, 3)
+setBG('yellow')
+alert('deffferrrrr')
+alert('this is in browser')
+setBG('blue')
 
 // ...
 

@@ -3,23 +3,30 @@
  * @param  {Function} fn     The function that may fail
  * @return {Function}        A replica of the function that will internally catch errors and allow them to be executed sequentially at a deferred time.
  */
-export default function tryDefer (fn) {
+export default function tryDefer (condition) {
   let _queue: []
+  let enqueue = (fn, args, errors) => _queue.push({ fn, args, errors })
 
   function _flush () {
-    const q = _queue
+    const queue = _queue
     _queue = []
-    return q
+    return queue
   }
 
-  function replay (q = _flush()) {
-    while(q.length > 0) {
-      const { fn, args, errors } = q.shift()
-      try {
+  function replay (queue = _flush()) {
+    while(queue.length > 0) {
+      attempt(queue.shift())
+    }
+  }
+
+  function attempt ({ fn, args, errors = [], attempt = 0 }) {
+    try {
+      if(condition && condition())
         fn(...args)
-      } catch(err) {
-        _queue.push({ fn, args, errors: errors.concat(err) })
-      }
+      else
+        enqueue(fn, args, errors, attempt + 1)
+    } catch(err) {
+      enqueue(fn, args, [ ...errors, err ], attempt + 1)
     }
   }
 
@@ -36,13 +43,8 @@ if(typeof window === 'object') {
     return props => <script dangerouslySetInnerHTML={{ __html: serialize() }} />
   }
 
-  function execute(...args) {
-    try {
-      fn(...args)
-    } catch(err) {
-      _queue.push({ fn, args, errors: [ err ] })
-    }
-  }
-
-  return [ execute, { replay, serialize, reactReplay } ]
+  /** Returns a 2 item array of thunk that wraps a function and functions for replaying in various scenarios. */
+  return ([ fn => (...args) => attempt({ fn, args })
+          , { replay, serialize, reactReplay }
+          ])
 }
