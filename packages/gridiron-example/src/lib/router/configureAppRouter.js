@@ -24,7 +24,7 @@ import logging from '../services/logging'
 import { removeLegacyCookies } from '../services/persistence'
 import configureStore from '../redux/store/configureStore.js'
 import routes from '../app/routes'
-
+import util from 'util'
 
 const BodyInit = ({ theme }) => {
   const { style } = theme
@@ -45,6 +45,7 @@ const InitialState = createInitialState({ React, Immutable })
 
 const HTML = ({ content, state, theme }) => {
   const title = `gridiron-example${IS_HOT ? ' is so hot right now...' : (IS_DEV ? ' is so dev right now...' : '')}`
+  throw new Error(util.inspect(global.__universal__))
   const Styles = global.__universal__ ? global.__universal__.reactStyles(React) : null
   return (
     <html lang="en">

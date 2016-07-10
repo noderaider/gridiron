@@ -1,6 +1,6 @@
 {
   "name": "universal-styles",
-  "version": "0.8.2",
+  "version": "0.8.3",
   "description": "Universal Styles for CSS Modules and server side deferred rendering.",
   "main": "lib/index.js",
   "scripts": {

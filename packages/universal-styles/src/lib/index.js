@@ -4,10 +4,7 @@
  * @param  {[type]}   window [description]
  * @return {[type]}          [description]
  */
-export default function universalStyles (fn, window = window || global) {
-  if(!window.__universal__)
-    window.__universal__ = _create()
-
+export default function universalStyles (fn, window = global || window) {
   function _create () {
     return  { _queue: []
             , replay
@@ -15,6 +12,9 @@ export default function universalStyles (fn, window = window || global) {
             , reactStyles
             }
   }
+
+  if(!window.__universal__)
+    window.__universal__ = _create()
 
   function replay () {
     const queue = window.__universal__._queue
@@ -34,7 +34,9 @@ if(typeof window === 'object') {
 }`
   }
 
-  const reactStyles = React => props => <script dangerouslySetInnerHTML={{ __html: serialize() }} />
+  function reactStyles(React) {
+    return props => <script dangerouslySetInnerHTML={{ __html: serialize() }} />
+  }
 
   return function enqueue (...args) {
     window.__universal__._queue.push({ fn, args })

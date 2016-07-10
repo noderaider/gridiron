@@ -66,7 +66,7 @@ class App extends Component {
       {container => (
         <div style={{ marginBottom: 70 }}>
           <div style={style.app}>
-            <TopBar logo={<Logo />} title={title} subtitle={subtitle} username={username} email={email} packageName={packageName} />
+            <TopBar logo={<Logo />} username={username} email={email} packageName={packageName} />
             {cloneElement(children, { container })}
             <FooterBar />
           </div>
