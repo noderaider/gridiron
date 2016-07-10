@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { contextTypes } from 'lib/context'
+import contextTypes from 'lib/context'
 
 const htmlStyle = theme => ({ height: '100%'
                             , backgroundColor: theme.style.app.backgroundColor

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { Row, Col } from 'react-bootstrap'
-import { contextTypes } from 'lib/context'
+import contextTypes from 'lib/context'
 import FA, { faSizeOptions } from 'app/elements/visual/FA'
 //import 'styles/bootstrap-core'
 

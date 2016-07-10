@@ -25,17 +25,20 @@ import { removeLegacyCookies } from '../services/persistence'
 import configureStore from '../redux/store/configureStore.js'
 import routes from '../app/routes'
 import util from 'util'
+import { reactStyles } from 'universal-styles'
 
 const BodyInit = ({ theme }) => {
   const { style } = theme
   const { backgroundColor, margin, padding } = style.body
   const __html = minify(`
+  /*
   document.body.style.backgroundColor = '${backgroundColor}'
   document.body.style.margin = '${margin}'
   document.body.style.padding = '${padding}'
   console.groupCollapsed('${packageName} => init')
   if(!window.google_tag_manager) console.info("GTM BLOCKED => consider disabling ad block so we can see how much usage we're getting")
   console.groupEnd()
+  */
 `)
   return <script dangerouslySetInnerHTML={{ __html }}/>
 }
@@ -43,10 +46,8 @@ const BodyInit = ({ theme }) => {
 const InitialState = createInitialState({ React, Immutable })
 
 
-const HTML = ({ content, state, theme }) => {
+const HTML = ({ content, state, theme, styles }) => {
   const title = `gridiron-example${IS_HOT ? ' is so hot right now...' : (IS_DEV ? ' is so dev right now...' : '')}`
-  throw new Error(util.inspect(global.__universal__))
-  const Styles = global.__universal__ ? global.__universal__.reactStyles(React) : null
   return (
     <html lang="en">
     <head>
@@ -55,7 +56,7 @@ const HTML = ({ content, state, theme }) => {
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <title>{title}</title>
       <link rel="icon" href={faviconUrl} type="image/x-icon" />
-      {Styles ? <Styles /> : null}
+      {styles}
       <link rel="stylesheet" href="/assets/app.css" type="text/css" />
       <script dangerouslySetInnerHTML={{ __html: `(function(d) {
         var config = { kitId: 'xsj1dhs', scriptTimeout: 3000, async: true },
@@ -108,7 +109,8 @@ export default function configureAppRouter({ cors, paths }) {
           const theme = getThemeForUrl(state.visual.theme, req.url)
           if(server.flags.render) {
             const content = renderToString(<Provider store={store}><RouterContext {...renderProps} /></Provider>)
-            const html = renderHTML({ content, state, theme })
+            const Styles = reactStyles(React)
+            const html = renderHTML({ content, state, theme, styles: Styles ? <Styles /> : null })
             return res.send(html)
           } else {
             const html = renderHTML({ theme })
@@ -119,8 +121,9 @@ export default function configureAppRouter({ cors, paths }) {
         }
       })
     } catch(middlewareError) {
+      throw new Error()
       log.error(middlewareError, 'error occurred in App middleware, continuing...')
-      return res.status(500).send(middlewareError.message || middlewareError)
+      return res.status(500).send(`${middlewareError.message || middlewareError} => ${util.inspect(global.__universal__)}`)
     }
   })
   return router

@@ -7,6 +7,11 @@
       "path": "../packages/universal-styles"
     },
     {
+      "name": "packages/universal-style-loader",
+      "follow_symlinks": true,
+      "path": "../packages/universal-style-loader"
+    },
+    {
       "name": "packages/universal-themes",
       "follow_symlinks": true,
       "path": "../packages/universal-themes"

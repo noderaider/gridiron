@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
-import { contextTypes } from 'lib/context'
+import contextTypes from 'lib/context'
 import Gridiron from './gridiron/Gridiron'
 
 class Home extends Component {

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 //import Placeholders from 'vendor/placeholders'
-import { contextTypes } from 'lib/context'
+import contextTypes from 'lib/context'
 
 const noop = () => {}
 

@@ -114,7 +114,7 @@ export default function maximize (deps = {}, defaults = {}) {
       return (
         <GatewayProvider ref={x => this.gateway=x}>
           <div>
-            <div style={{ border: '1px dashed yellow' }}>
+            <div>
               {children(this.container)}
             </div>
 
@@ -124,7 +124,7 @@ export default function maximize (deps = {}, defaults = {}) {
                 return (
                   <div
                     key={i}
-                    style={{ ...containerStyle, ...style, border: '1px dashed red', top: 0 }}
+                    style={{ ...containerStyle, ...style, top: 0 }}
                     className={classNames(styles.maximize, className)}
                   >
                     <div

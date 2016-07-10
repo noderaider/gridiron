@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import FA from 'app/elements/visual/FA'
-import { contextTypes } from 'lib/context'
+import contextTypes from 'lib/context'
 
 export default class Label extends Component {
   static propTypes =  { iconName: PropTypes.string

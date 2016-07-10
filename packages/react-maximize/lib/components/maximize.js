@@ -198,7 +198,7 @@ function maximize() {
             null,
             React.createElement(
               'div',
-              { style: { border: '1px dashed yellow' } },
+              null,
               children(this.container)
             ),
             React.createElement(
@@ -212,7 +212,7 @@ function maximize() {
                   'div',
                   {
                     key: i,
-                    style: _extends({}, containerStyle, style, { border: '1px dashed red', top: 0 }),
+                    style: _extends({}, containerStyle, style, { top: 0 }),
                     className: (0, _classnames2.default)(styles.maximize, className)
                   },
                   React.createElement('div', {

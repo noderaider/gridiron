@@ -4,7 +4,7 @@ import { appName } from 'config'
 
 import './TopBar.css'
 
-import { contextTypes } from 'lib/context'
+import contextTypes from 'lib/context'
 
 export default class TopBar extends Component {
   static propTypes =  { logo: PropTypes.element
@@ -20,12 +20,11 @@ export default class TopBar extends Component {
 
     return (
       <header style={header.wrapper} id="topbar">
-        <button style={header.hamburger}>
-          <FA name="bars" size="lg" />
+        <button style={header.hamburger} className="hamburger">
+          <FA name="bars" size="lg" style={{ color: 'rgb(50, 100, 150)' }} />
         </button>
-        {logo ? <span>{logo}</span> : null}
         <span style={header.title}>
-          <a href="/" style={header.anchor}>{title}{subtitle ? <span style={header.subtitle}>{subtitle}</span> : null}</a>
+          <a href="/" style={header.anchor}>{logo ? logo : null}{title}{subtitle ? <span style={header.subtitle}>{subtitle}</span> : null}</a>
         </span>
         {/*
         {packageName ? <span style={header.banner}>

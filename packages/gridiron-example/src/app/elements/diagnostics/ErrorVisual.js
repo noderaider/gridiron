@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import JsonVisual from './JsonVisual'
-import { contextTypes } from 'lib/context'
+import contextTypes from 'lib/context'
 
 export default class ErrorVisual extends Component {
   static contextTypes = contextTypes;

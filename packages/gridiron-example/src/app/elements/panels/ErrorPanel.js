@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 import ErrorFilter from 'app/elements/forms/filters/ErrorFilter'
 
-import { contextTypes } from 'lib/context'
+import contextTypes from 'lib/context'
 import CorePanel from './base/CorePanel'
 import ErrorVisual from 'app/elements/diagnostics/ErrorVisual'
 

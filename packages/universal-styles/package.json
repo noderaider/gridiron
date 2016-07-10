@@ -5,8 +5,8 @@
   "main": "lib/index.js",
   "scripts": {
     "start": "babel src/lib -d lib --watch",
-    "prebuild": "rimraf build",
-    "build": "ncp src/lib lib && babel src/lib/index.js -o lib/index.js",
+    "prebuild": "rimraf lib",
+    "build": "babel src/lib/index.js -o lib/index.js",
     "predoc": "rimraf doc",
     "doc": "esdoc -c ./esdoc.json",
     "prerelease": "npm run build",

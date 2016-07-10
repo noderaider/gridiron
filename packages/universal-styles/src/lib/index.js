@@ -1,44 +1,21 @@
-/**
- * Creates a global object that allows replaying style events at a deferred time.
- * @param  {Function} fn     The function that will not work in a server environment.
- * @param  {[type]}   window [description]
- * @return {[type]}          [description]
- */
-export default function universalStyles (fn, window = global || window) {
-  function _create () {
-    return  { _queue: []
-            , replay
-            , serialize
-            , reactStyles
-            }
-  }
+import tryDefer from 'try-defer'
 
-  if(!window.__universal__)
-    window.__universal__ = _create()
+export default function universalStyles (condition = typeof window === 'object') {
+  if(global.__universal__)
+    return global.__universal__._context
 
-  function replay () {
-    const queue = window.__universal__._queue
-    window.__universal__._queue = []
-    while(queue.length > 0) {
-      const { fn, args } = queue.shift()
-      fn(...args)
-    }
-  }
+  let [ _context, defer ] = tryDefer(condition)
+  global.__universal__ =  { _context
+                          , ...defer
+                          }
+  return _context
+}
 
-  function serialize() {
-    const serialized = require('serialize-javascript')(window.__universal__)
-    return `
-if(typeof window === 'object') {
-  window.__universal__ = JSON.parse(${serialized});
-  window.__universal__.replay()
-}`
-  }
-
-  function reactStyles(React) {
-    return props => <script dangerouslySetInnerHTML={{ __html: serialize() }} />
-  }
-
-  return function enqueue (...args) {
-    window.__universal__._queue.push({ fn, args })
-  }
+export function reactStyles(React) {
+  if(!global.__universal__ || !global.__universal__.reactReplay)
+    return null
+  const { reactReplay } = global.__universal__
+  if(typeof reactReplay !== 'function')
+    throw new Error(`reactReplay was not a function => ${JSON.stringify({ reactReplay })}`)
+  return reactReplay(React)
 }

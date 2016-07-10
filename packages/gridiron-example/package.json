@@ -129,6 +129,7 @@
     "react-bootstrap": "latest",
     "react-cookie": "latest",
     "react-dom": "^15.2.0",
+    "react-gateway": "^2.2.0",
     "react-hatch": "latest",
     "react-height": "latest",
     "react-maximize": "^0.8.1",
@@ -172,7 +173,10 @@
     "serve-favicon": "^2.3.0",
     "serve-file": "^0.1.4",
     "style-loader": "^0.13.1",
+    "try-defer": "*",
     "uglify-js": "^2.6.2",
+    "universal-style-loader": "*",
+    "universal-styles": "*",
     "webpack-stats-plugin": "^0.1.1"
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
-import { contextTypes } from 'lib/context'
+import contextTypes from 'lib/context'
 
 export const faSizeOptions = ['lg', 'xl', '2x', '3x', '4x', '5x']
 const faPropTypes = { name: PropTypes.string.isRequired

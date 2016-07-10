@@ -170,5 +170,61 @@
 
 
 .logo {
+  /*
   font-family: "coquette",fantasy;
+  font-family: "industry-inc-bevel",sans-serif;
+  font-family: "acier-bat-noir",sans-serif;
+  font-family: "modesto-open-shadow",sans-serif;
+  font-family: "modesto-initials-inline",sans-serif;
+
+  font-family: "citizen",sans-serif;
+  */
+  font-family: "boucherie-block",sans-serif;
+  display: flex;
+  font-size:1.4em;
+  flex-direction: row;
+  align-items: center;
+
+}
+
+:global .hamburger:hover {
+  animation-duration: 1000ms;
+  animation-name: hovery;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-out;
+}
+
+a:hover .logo {
+  animation-duration: 1000ms;
+  animation-name: hovery;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-out;
+}
+
+
+@keyframes hovery {
+  from {
+    transform: scaleX(1);
+    text-shadow: none;
+  }
+  50% {
+    transform: scaleX(1.1);
+    text-shadow: 2px 2px rgba(255, 255, 255, 0.3);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+
+:global #topbar * {
+  //color: rgb(50, 100, 150);
+}
+
+:global .logo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+
 }

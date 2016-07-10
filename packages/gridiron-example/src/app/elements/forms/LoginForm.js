@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { reduxForm } from 'redux-form'
 import { Row, Col } from 'react-bootstrap'
 import Input from './controls/Input'
-import { contextTypes } from 'lib/context'
+import contextTypes from 'lib/context'
 
 const validate = values => {
   const errors = {}

@@ -1,5 +1,7 @@
 import { PropTypes } from 'react'
 
+export { getTheme, schemeNames } from './theme'
+
 export const gridPropsShape = PropTypes.shape({ xs: PropTypes.number
                                               , sm: PropTypes.number
                                               , md: PropTypes.number

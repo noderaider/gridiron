@@ -1,6 +1,5 @@
 import React, { Component, PropTypes, cloneElement } from 'react'
 import shallowCompare from 'react/lib/shallowCompare'
-import * as ReactGateway from 'react-gateway'
 import CSSPropertyOperations from 'react/lib/shallowCompare'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
@@ -12,12 +11,13 @@ import FooterBar from 'app/elements/nav/FooterBar'
 import DevTools from 'lib/redux/DevTools'
 
 
-import { contextTypes, getTheme, defaultTheme } from 'lib/context'
+import contextTypes, { schemeNames, getTheme } from 'lib/context'
 
 import { Maximize } from 'lib/components/modules/react-maximize'
 
 import gridironReact from 'gridiron-react'
 import gridironStyles from 'gridiron-styles'
+console.warn('CONTEXT TYPES', contextTypes)
 
 const { Logo } = gridironReact({ React, shallowCompare }, { styles: gridironStyles })
 
@@ -81,7 +81,7 @@ class App extends Component {
 
 function mapStateToProps(state) {
   const { visual, errors } = state
-  return  { theme: visual.theme ? getTheme(visual.theme) : defaultTheme
+  return  { theme: getTheme('solarized-dark') //visual.theme ? getTheme(visual.theme) : defaultTheme
           , title: visual.text.get('title')
           , subtitle: visual.text.get('subtitle')
           , username: visual.text.get('username')

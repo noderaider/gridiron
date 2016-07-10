@@ -5,7 +5,7 @@ export const packageName = 'gridiron-example'
 export const packageKey = 'gridiron-example'
 export const title = 'gridiron'
 export const subtitle = 'example'
-export const defaultThemeName = 'solarized-dark'
+export const defaultThemeName = 'solarized-light'
 export const faviconUrl = '/images/nintendo.ico'
 export const faviconPath = path.join(__dirname, 'public/images/nintendo.ico')
 
