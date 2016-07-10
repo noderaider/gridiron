@@ -34,9 +34,7 @@ if(typeof window === 'object') {
 }`
   }
 
-  function reactStyles (React) {
-    return props => <script dangerouslySetInnerHTML={{ __html: serialize() }} />
-  }
+  const reactStyles = React => props => <script dangerouslySetInnerHTML={{ __html: serialize() }} />
 
   return function enqueue (...args) {
     window.__universal__._queue.push({ fn, args })
