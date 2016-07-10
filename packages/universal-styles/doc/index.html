@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl">
+  <title data-ice="title">API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/cchamberlain/universal-styles" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-universalStyles">universalStyles</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="universal-styles">universal-styles</h1>
+<p><strong>Universal Styles for CSS Modules and server side deferred rendering.</strong></p>
+<p><code>npm i -S universal-styles</code></p>
+<p><a href="https://nodei.co/npm/universal-styles/"><img src="https://nodei.co/npm/universal-styles.png?stars=true&amp;downloads=true" alt="NPM"></a></p>
+<h2 id="why-">Why?</h2>
+<p><strong>I built this library to solve the many issues surrounding server-side rendering of css (specifically within library projects for my use case).</strong></p>
+<h2 id="usage">Usage</h2>
+<pre><code><code class="source-code prettyprint">import universalStyles from &apos;universal-styles&apos;
+
+function addStyles(...args) {
+  if(typeof window === &apos;object&apos;) {
+    /** We are in a browser and can access the window */
+
+    /** ...CODE THAT TOUCHES WINDOW, DOCUMENT, etc. GOES HERE... */
+  } else {
+    /** We are on the server and need to defer until a browser is available */
+
+    const enqueue = universalStyles(addStyles)
+    enqueue(...args)
+  }
+}</code>
+</code></pre><p>By default, this module will accrue styles and link css urls when server rendering into a global.<strong>universal</strong> object. If you do nothing, universal-styles should never throw, but the styles will not be applied to anything (from the server render). There are a few options depending on your needs to get the styles on the page, server-side.</p>
+<h4 id="1-replay-function">1. replay function</h4>
+<ul>
+<li>Executes the same functions, with the same arguments, in the same order that were enqueued across all files.</li>
+<li>Will try and access window and other DOM globals (if the enqueued functions did). If they do not exist, it will repeat the same server fallback over again.</li>
+</ul>
+<pre><code class="lang-js"><code class="source-code prettyprint">global.__universal__.replay()</code>
+</code></pre>
+<h4 id="2-serialize-function">2. serialize function</h4>
+<ul>
+<li>Prints out a raw string that can be embedded in a web page head template (if you are not server rendering with React).</li>
+<li>Will embed all the style loading code with the styles and will run as soon as it is hit in the web page load.</li>
+<li>Does not interact with window, document or other DOM globals. (EVENTUALLY)</li>
+</ul>
+<pre><code><code class="source-code prettyprint">/** RENDER SOME STUFF THAT CAUSES STYLE LOADERS TO GET ENQUEUED */
+/** ... */
+
+/** Prints out raw string styles to template into head and clears the buffer out for the next server render */
+const styles = global.__universal__.serialize()
+
+const html = `&lt;!doctype html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    ${styles}
+  &lt;/head&gt;
+  &lt;body&gt;
+    ${content}
+  &lt;/body&gt;
+&lt;/html&gt;</code>
+</code></pre><h4 id="3-reactstyles-function-recommended-for-react-apps-">3. reactStyles function (recommended for react apps)</h4>
+<ul>
+<li>Recommended for server-side rendering in React applications.</li>
+<li>Prints out a &lt;Styles /&gt; React component that can be rendered into the head tag (full react-router example below).</li>
+<li>Does not interact with window, document or other DOM globals. (EVENTUALLY)</li>
+<li>By using a factory, this library needs no npm React dependency.</li>
+</ul>
+<pre><code class="lang-jsx"><code class="source-code prettyprint">import React from &apos;react&apos;
+import { renderToString } from &apos;react-dom/server&apos;
+import { createMemoryHistory, match, RouterContext } from &apos;react-router&apos;
+import { Provider } from &apos;react-redux&apos;
+import { syncHistoryWithStore } from &apos;react-router-redux&apos;
+
+//....
+
+router.use((req, res, next) =&gt; {
+  let memoryHistory = createMemoryHistory(req.path)
+  let store = configureStore(memoryHistory)
+  let history = syncHistoryWithStore(memoryHistory, store)
+
+  /* react router match history */
+  match({ history, routes, location: req.url }, (error, redirectLocation, renderProps) =&gt; {
+    const content = renderToString(&lt;Provider store={store}&gt;&lt;RouterContext {...renderProps} /&gt;&lt;/Provider&gt;)
+
+    /** Returns a component that applies styles and clears the buffer for the next server render */
+    const Styles = global.__universal__.reactStyles(React)
+
+    const html = `&lt;!doctype html&gt;
+    ${renderToString((
+      &lt;html&gt;
+        &lt;head&gt;
+          &lt;Styles /&gt;
+        &lt;/head&gt;
+        &lt;body&gt;
+          {content}
+        &lt;/body&gt;
+      &lt;/html&gt;
+    )}`
+
+    res.send(html)
+  })
+
+})</code>
+</code></pre>
+</div>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
