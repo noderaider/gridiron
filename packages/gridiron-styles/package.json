@@ -1,6 +1,6 @@
 {
   "name": "gridiron-styles",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "React Component Styles for CSS Modules",
   "main": "lib/index.js",
   "scripts": {
@@ -29,7 +29,7 @@
     "react-stamp": "latest",
     "solvent": "^0.8.1",
     "universal-style-loader": "^0.13.14",
-    "universal-styles": "^0.8.1"
+    "universal-styles": "^0.8.2"
   },
   "devDependencies": {
     "babel-cli": "latest",
