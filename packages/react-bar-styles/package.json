@@ -1,6 +1,6 @@
 {
   "name": "react-bar-styles",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "React Component Styles for CSS Modules",
   "main": "lib/index.js",
   "scripts": {
@@ -22,8 +22,8 @@
     "ncp": "latest",
     "npm-run-all": "latest",
     "react-stamp": "latest",
-    "solvent": "^0.8.0",
-    "universal-styles": "^0.8.0"
+    "solvent": "^0.8.1",
+    "universal-styles": "^0.8.1"
   },
   "devDependencies": {
     "babel-cli": "latest",

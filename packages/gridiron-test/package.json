@@ -1,6 +1,6 @@
 {
   "name": "gridiron-test",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Test framework for gridiron and related components. Enables gridiron to not carry heavyweight dependencies.",
   "main": "lib/index.js",
   "keywords": [
@@ -75,10 +75,10 @@
     "react-tools": "latest",
     "react-virtualized": "latest",
     "redux": "latest",
-    "gridiron": "^0.8.0",
-    "gridiron-core": "^0.8.0",
-    "gridiron-cli": "^0.8.0",
-    "gridiron-react": "^0.8.0",
+    "gridiron": "^0.8.1",
+    "gridiron-core": "^0.8.1",
+    "gridiron-cli": "^0.8.1",
+    "gridiron-react": "^0.8.1",
     "rimraf": "latest",
     "sinon": "latest"
   },
