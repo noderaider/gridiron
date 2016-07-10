@@ -18,7 +18,8 @@
   },
   "dependencies": {
     "chai": "latest",
-    "serialize-javascript": "latest"
+    "serialize-javascript": "latest",
+    "try-defer": "latest"
   },
   "devDependencies": {
     "babel-cli": "latest",

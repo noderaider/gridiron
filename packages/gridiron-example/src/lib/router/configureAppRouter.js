@@ -45,6 +45,7 @@ const InitialState = createInitialState({ React, Immutable })
 
 const HTML = ({ content, state, theme }) => {
   const title = `gridiron-example${IS_HOT ? ' is so hot right now...' : (IS_DEV ? ' is so dev right now...' : '')}`
+  const Styles = global.__universal__ ? global.__universal__.reactStyles(React) : null
   return (
     <html lang="en">
     <head>
@@ -53,6 +54,7 @@ const HTML = ({ content, state, theme }) => {
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <title>{title}</title>
       <link rel="icon" href={faviconUrl} type="image/x-icon" />
+      {Styles ? <Styles /> : null}
       <link rel="stylesheet" href="/assets/app.css" type="text/css" />
       <script dangerouslySetInnerHTML={{ __html: `(function(d) {
         var config = { kitId: 'xsj1dhs', scriptTimeout: 3000, async: true },

@@ -34,7 +34,7 @@ const getCdnBinding = () => new Map(server.bindings.cdn)
 const hotConfigName = 'app'
 const configureServer = ({ paths }) => {
   let serverMap = new Map()
-  for(let [scheme, binding] of getCdnBinding().entries()) {
+  for(let [ scheme, binding ] of getCdnBinding().entries()) {
     let app = Object.assign(express(), { settings: server, locals: paths })
 
     /** Enable proxying */
