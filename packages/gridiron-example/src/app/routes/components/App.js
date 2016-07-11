@@ -4,6 +4,7 @@ import CSSPropertyOperations from 'react/lib/shallowCompare'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import createIdleMonitor from 'react-redux-idle-monitor'
+import { deserialize } from 'try-defer'
 
 import { client, log, IS_BROWSER } from 'config'
 import TopBar from 'app/elements/nav/TopBar'
@@ -47,6 +48,7 @@ class App extends Component {
   static propTypes = { dispatch: PropTypes.func.isRequired };
   static childContextTypes = contextTypes;
   componentDidMount() {
+    deserialize()
     require('app/fonts/fout')
     require('app/fonts/Lato-Regular.ttf')
     require('app/fonts/Lato-Bold.ttf')

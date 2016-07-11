@@ -4,14 +4,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; }; /**
-                                                                                                                                                                                                                                                   * MIT License http://www.opensource.org/licenses/mit-license.php
-                                                                                                                                                                                                                                                   * Author Tobias Koppers @sokra (style-loader)
-                                                                                                                                                                                                                                                   * Refactored by Cole Chamberlain <cole.chamberlain@gmail.com> @noderaider (ES2016 / universal-style-loader)
-                                                                                                                                                                                                                                                   */
-
-exports.default = addStyles;
-
 var _memoize = require('../utils/memoize');
 
 var _memoize2 = _interopRequireDefault(_memoize);
@@ -21,6 +13,12 @@ var _universalStyles = require('universal-styles');
 var _universalStyles2 = _interopRequireDefault(_universalStyles);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * MIT License http://www.opensource.org/licenses/mit-license.php
+ * Author Tobias Koppers @sokra (style-loader)
+ * Refactored by Cole Chamberlain <cole.chamberlain@gmail.com> @noderaider (ES2016 / universal-style-loader)
+ */
 
 var isOldIE = (0, _memoize2.default)(function () {
   return (/msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase())
@@ -34,44 +32,43 @@ var singletonElement = null;
 var singletonCounter = 0;
 var styleElementsInsertedAtTop = [];
 
+var universalContext = (0, _universalStyles2.default)();
+exports.default = universalContext(addStyles);
+
+
 function addStyles(list, options) {
-  if ((typeof window === 'undefined' ? 'undefined' : _typeof(window)) === 'object') {
-    options = options || {};
-    // Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-    // tags it will allow on a page
-    if (typeof options.singleton === 'undefined') options.singleton = isOldIE();
+  options = options || {};
+  // Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+  // tags it will allow on a page
+  if (typeof options.singleton === 'undefined') options.singleton = isOldIE();
 
-    // By default, add <style> tags to the bottom of <head>.
-    if (typeof options.insertAt === 'undefined') options.insertAt = 'bottom';
+  // By default, add <style> tags to the bottom of <head>.
+  if (typeof options.insertAt === 'undefined') options.insertAt = 'bottom';
 
-    var styles = listToStyles(list);
-    addStylesToDOM(styles, options);
+  var styles = listToStyles(list);
+  addStylesToDOM(styles, options);
 
-    return function update(newList) {
-      var mayRemove = [];
-      for (var i = 0; i < styles.length; i++) {
-        var item = styles[i];
-        var domStyle = stylesInDOM[item.id];
-        domStyle.refs--;
-        mayRemove.push(domStyle);
+  return function update(newList) {
+    var mayRemove = [];
+    for (var i = 0; i < styles.length; i++) {
+      var item = styles[i];
+      var domStyle = stylesInDOM[item.id];
+      domStyle.refs--;
+      mayRemove.push(domStyle);
+    }
+    if (newList) {
+      var newStyles = listToStyles(newList);
+      addStylesToDOM(newStyles, options);
+    }
+    for (var i = 0; i < mayRemove.length; i++) {
+      var domStyle = mayRemove[i];
+      if (domStyle.refs === 0) {
+        for (var j = 0; j < domStyle.parts.length; j++) {
+          domStyle.parts[j]();
+        }delete stylesInDOM[domStyle.id];
       }
-      if (newList) {
-        var newStyles = listToStyles(newList);
-        addStylesToDOM(newStyles, options);
-      }
-      for (var i = 0; i < mayRemove.length; i++) {
-        var domStyle = mayRemove[i];
-        if (domStyle.refs === 0) {
-          for (var j = 0; j < domStyle.parts.length; j++) {
-            domStyle.parts[j]();
-          }delete stylesInDOM[domStyle.id];
-        }
-      }
-    };
-  } else {
-    var enqueue = (0, _universalStyles2.default)(addStyles);
-    enqueue(list, options);
-  }
+    }
+  };
 }
 
 function addStylesToDOM(styles, options) {

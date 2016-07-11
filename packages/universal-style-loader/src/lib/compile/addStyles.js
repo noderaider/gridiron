@@ -14,43 +14,41 @@ let singletonElement = null
 let singletonCounter = 0
 let styleElementsInsertedAtTop = []
 
-export default function addStyles (list, options) {
-  if(typeof window === 'object') {
-    options = options || {}
-    // Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-    // tags it will allow on a page
-    if (typeof options.singleton === 'undefined') options.singleton = isOldIE()
+const universalContext = universalStyles()
+export default universalContext(addStyles)
 
-    // By default, add <style> tags to the bottom of <head>.
-    if (typeof options.insertAt === 'undefined') options.insertAt = 'bottom'
+function addStyles (list, options) {
+  options = options || {}
+  // Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+  // tags it will allow on a page
+  if (typeof options.singleton === 'undefined') options.singleton = isOldIE()
 
-    var styles = listToStyles(list)
-    addStylesToDOM(styles, options)
+  // By default, add <style> tags to the bottom of <head>.
+  if (typeof options.insertAt === 'undefined') options.insertAt = 'bottom'
 
-    return function update(newList) {
-      var mayRemove = []
-      for(var i = 0; i < styles.length; i++) {
-        var item = styles[i]
-        var domStyle = stylesInDOM[item.id]
-        domStyle.refs--
-        mayRemove.push(domStyle)
-      }
-      if(newList) {
-        var newStyles = listToStyles(newList)
-        addStylesToDOM(newStyles, options)
-      }
-      for(var i = 0; i < mayRemove.length; i++) {
-        var domStyle = mayRemove[i]
-        if(domStyle.refs === 0) {
-          for(var j = 0; j < domStyle.parts.length; j++)
-            domStyle.parts[j]()
-          delete stylesInDOM[domStyle.id]
-        }
+  var styles = listToStyles(list)
+  addStylesToDOM(styles, options)
+
+  return function update(newList) {
+    var mayRemove = []
+    for(var i = 0; i < styles.length; i++) {
+      var item = styles[i]
+      var domStyle = stylesInDOM[item.id]
+      domStyle.refs--
+      mayRemove.push(domStyle)
+    }
+    if(newList) {
+      var newStyles = listToStyles(newList)
+      addStylesToDOM(newStyles, options)
+    }
+    for(var i = 0; i < mayRemove.length; i++) {
+      var domStyle = mayRemove[i]
+      if(domStyle.refs === 0) {
+        for(var j = 0; j < domStyle.parts.length; j++)
+          domStyle.parts[j]()
+        delete stylesInDOM[domStyle.id]
       }
     }
-  } else {
-    const enqueue = universalStyles(addStyles)
-    enqueue(list, options)
   }
 }
 

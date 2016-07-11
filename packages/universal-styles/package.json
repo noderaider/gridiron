@@ -6,7 +6,7 @@
   "scripts": {
     "start": "babel src/lib -d lib --watch",
     "prebuild": "rimraf lib",
-    "build": "babel src/lib/index.js -o lib/index.js",
+    "build": "babel src/lib -d lib",
     "predoc": "rimraf doc",
     "doc": "esdoc -c ./esdoc.json",
     "prerelease": "npm run build",
@@ -19,7 +19,7 @@
   "dependencies": {
     "chai": "latest",
     "serialize-javascript": "latest",
-    "try-defer": "latest"
+    "try-defer": "*"
   },
   "devDependencies": {
     "babel-cli": "latest",

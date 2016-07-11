@@ -1,10 +1,10 @@
-import tryDefer from 'try-defer'
+import { browserDefer } from 'try-defer'
 
-export default function universalStyles (condition = typeof window === 'object') {
+export default function universalStyles () {
   if(global.__universal__)
     return global.__universal__._context
 
-  let [ _context, defer ] = tryDefer(condition)
+  let [ _context, defer ] = browserDefer({ tracing: true })
   global.__universal__ =  { _context
                           , ...defer
                           }

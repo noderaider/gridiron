@@ -32,10 +32,18 @@
 	"buffers":
 	[
 		{
-			"file": "/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-styles/src/lib/styles.css",
+			"file": "/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-styles/src/lib/styles.css",
 			"settings":
 			{
 				"buffer_size": 3721,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "gridiron-styles.sublime-project",
+			"settings":
+			{
+				"buffer_size": 1912,
 				"line_ending": "Windows"
 			}
 		}
@@ -281,9 +289,20 @@
 	},
 	"expanded_folders":
 	[
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/universal-styles/src",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/universal-styles/src/lib",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/universal-style-loader/src",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/universal-style-loader/src/lib",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/universal-style-loader/src/lib/compile",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-styles",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-styles/src",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-styles/src/lib"
 	],
 	"file_history":
 	[
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/universal-style-loader/src/lib/compile/addStyleUrls.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/universal-style-loader/src/lib/compile/addStyles.js",
+		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-styles/src/lib/styles.css",
 		"/C/Users/cchamberlain/noderaider/gridiron/packages/universal-styles/src/lib/index.js",
 		"/C/Users/cchamberlain/noderaider/gridiron/packages/universal-styles/package.json",
 		"/C/Users/cchamberlain/noderaider/gridiron/packages/universal-style-loader/package.json",
@@ -293,7 +312,6 @@
 		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-styles/node_modules/style-loader/addStyles.js",
 		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-styles/src/webpack/devtool.js",
 		"/C/Users/cchamberlain/noderaider/gridiron/packages/universal-styles/README.md",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-styles/src/lib/styles.css",
 		"/C/Users/cchamberlain/noderaider/gridiron/packages/try-defer/src/lib/index.js",
 		"/C/Users/cchamberlain/noderaider/gridiron/packages/try-defer/README.md",
 		"/C/Users/cchamberlain/noderaider/gridiron/packages/try-defer/package.json",
@@ -409,9 +427,7 @@
 		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/README.md",
 		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/grid/Gridiron.js",
 		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/router/configureAppRouter.js",
-		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/package.json",
-		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/webpack/output.js",
-		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-core/CNAME"
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/package.json"
 	],
 	"find":
 	{
@@ -757,13 +773,13 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-styles/src/lib/styles.css",
-					"semi_transient": false,
+					"file": "/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-styles/src/lib/styles.css",
+					"semi_transient": true,
 					"settings":
 					{
 						"buffer_size": 3721,
@@ -773,40 +789,90 @@
 						"selection":
 						[
 							[
-								3088,
-								3088
+								0,
+								0
 							]
 						],
 						"settings":
 						{
-							"highlight_line": true,
-							"syntax": "Packages/Syntax Highlighting for PostCSS/Syntaxes/PostCSS.tmLanguage",
-							"tabs_extra_last_activated": 1468133408.38,
+							"syntax": "Packages/LESS/LESS.tmLanguage",
+							"tab_size": 2,
+							"tabs_extra_last_activated": 1468248821.96,
 							"tabs_extra_last_activated_sheet_index": 0,
 							"tabs_extra_spawned": true,
+							"translate_tabs_to_spaces": true,
 							"vintage":
 							{
-								"_vintageous_glue_until_normal_mode": false,
 								"action": null,
 								"action_count": "",
 								"mode": "mode_normal",
 								"motion": null,
 								"motion_count": "",
 								"must_capture_register_name": false,
-								"normal_insert_count": "1",
 								"partial_sequence": "",
 								"register": "\"",
 								"sequence": "",
-								"xpos": 8
+								"xpos": 0
 							}
 						},
 						"translation.x": 0.0,
-						"translation.y": 3876.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "gridiron-styles.sublime-project",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1912,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								23,
+								1905
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Babel/JSON.tmLanguage",
+							"tab_size": 2,
+							"tabs_extra_last_activated": 1468248888.06,
+							"tabs_extra_last_activated_sheet_index": 1,
+							"tabs_extra_spawned": true,
+							"translate_tabs_to_spaces": true,
+							"vintage":
+							{
+								"action": null,
+								"action_count": "",
+								"mode": "mode_visual",
+								"motion": null,
+								"motion_count": "",
+								"must_capture_register_name": false,
+								"partial_sequence": "",
+								"register": "\"",
+								"sequence": "",
+								"xpos": 0
+							}
+						},
+						"translation.x": 41.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
 					"type": "text"
 				}
+			]
+		},
+		{
+			"sheets":
+			[
 			]
 		}
 	],
@@ -827,11 +893,18 @@
 				0,
 				1,
 				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
 			]
 		],
 		"cols":
 		[
 			0.0,
+			0.484934086629,
 			1.0
 		],
 		"rows":
@@ -1408,7 +1481,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 201.0,
+	"side_bar_width": 265.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

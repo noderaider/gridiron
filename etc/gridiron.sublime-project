@@ -1,95 +1,141 @@
 {
-  "folders":
-  [
-    {
-      "name": "packages/gridiron",
-      "follow_symlinks": true,
-      "path": "../packages/gridiron"
-    },
-    {
-      "name": "packages/gridiron-core",
-      "follow_symlinks": true,
-      "path": "../packages/gridiron-core"
-    },
-    {
-      "name": "packages/gridiron-cli",
-      "follow_symlinks": true,
-      "path": "../packages/gridiron-cli"
-    },
-    {
-      "name": "packages/gridiron-test",
-      "follow_symlinks": true,
-      "path": "../packages/gridiron-test"
-    },
-    {
-      "name": "packages/gridiron-react",
-      "follow_symlinks": true,
-      "path": "../packages/gridiron-react"
-    },
-    {
-      "name": "packages/gridiron-redux",
-      "follow_symlinks": true,
-      "path": "../packages/gridiron-redux"
-    },
-    {
-      "name": "packages/gridiron-example",
-      "follow_symlinks": true,
-      "path": "../packages/gridiron-example"
-    },
-    {
-      "name": "packages/gridiron-pager",
-      "follow_symlinks": true,
-      "path": "../packages/gridiron-pager"
-    },
-    {
-      "name": "packages/react-bar",
-      "follow_symlinks": true,
-      "path": "../packages/react-bar"
-    },
-    {
-      "name": "packages/redux-pager",
-      "follow_symlinks": true,
-      "path": "../packages/redux-pager"
-    },
-    {
-      "name": "packages/redux-devtools-grid-monitor",
-      "follow_symlinks": true,
-      "path": "../packages/redux-devtools-grid-monitor/src"
-    },
-    {
-      "name": "packages/react-ai",
-      "follow_symlinks": true,
-      "path": "../packages/react-ai/src"
-    },
-    {
-      "name": "packages/react-pub-sub",
-      "follow_symlinks": true,
-      "path": "../packages/react-pub-sub"
-    },
-    {
-      "name": "packages/react-pre",
-      "follow_symlinks": true,
-      "path": "../packages/react-pre/src"
-    },
-    {
-      "name": "packages/react-maximize",
-      "follow_symlinks": true,
-      "path": "../packages/react-maximize/src"
-    },
-    {
-      "name": "packages/react-minimize",
-      "follow_symlinks": true,
-      "path": "../packages/react-minimize/src"
-    },
-    {
-      "name": "packages/solvent",
-      "follow_symlinks": true,
-      "path": "../packages/solvent/src"
-    },
-    {
-      "name": "gridiron",
-      "follow_symlinks": true,
-      "path": "../"
-    }
-  ]
+	"folders":
+	[
+		{
+			"name": "packages/gridiron",
+			"path": "C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\gridiron"
+		},
+		{
+			"name": "packages/gridiron-core",
+			"path": "C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\gridiron-core"
+		},
+		{
+			"name": "packages/gridiron-cli",
+			"path": "C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\gridiron-cli"
+		},
+		{
+			"name": "packages/gridiron-test",
+			"path": "C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\gridiron-test"
+		},
+		{
+			"name": "packages/gridiron-react",
+			"path": "C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\gridiron-react"
+		},
+		{
+			"name": "packages/gridiron-redux",
+			"path": "C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\gridiron-redux"
+		},
+		{
+			"name": "packages/gridiron-pager",
+			"path": "C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\gridiron-pager"
+		},
+		{
+			"name": "packages/gridiron-example",
+			"path": "C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\gridiron-example"
+		},
+		{
+			"name": "packages/react-bar",
+			"path": "C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\react-bar"
+		},
+		{
+			"name": "packages/redux-pager",
+			"path": "C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\redux-pager"
+		},
+		{
+			"name": "packages/redux-devtools-grid-monitor",
+			"path": "C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\redux-devtools-grid-monitor\\src"
+		},
+		{
+			"name": "packages/react-ai",
+			"path": "C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\react-ai\\src"
+		},
+		{
+			"name": "packages/react-pub-sub",
+			"path": "C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\react-pub-sub"
+		},
+		{
+			"name": "packages/react-pre",
+			"path": "C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\react-pre\\src"
+		},
+		{
+			"name": "packages/react-maximize",
+			"path": "C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\react-maximize\\src"
+		},
+		{
+			"name": "packages/react-minimize",
+			"path": "C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\react-minimize\\src"
+		},
+		{
+			"name": "packages/solvent",
+			"path": "C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\solvent\\src"
+		},
+		{
+			"name": "packages/fire-hydrant",
+			"path": "C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\fire-hydrant"
+		},
+		{
+			"name": "packages/try-defer",
+			"path": "C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\try-defer"
+		},
+		{
+			"name": "packages/universal-styles",
+			"path": "C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\universal-styles"
+		},
+		{
+			"name": "packages/universal-style-loader",
+			"path": "C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\universal-style-loader"
+		},
+		{
+			"name": "packages/universal-themes",
+			"path": "C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\universal-themes"
+		},
+		{
+			"name": "packages/react-themes",
+			"path": "C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\react-themes"
+		},
+		{
+			"name": "packages/gridiron-styles",
+			"path": "C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\gridiron-styles"
+		},
+		{
+			"name": "packages/gridiron-themes",
+			"path": "C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\gridiron-themes"
+		},
+		{
+			"name": "packages/react-bar-styles",
+			"path": "C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\react-bar-styles"
+		},
+		{
+			"name": "packages/react-bar-themes",
+			"path": "C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\react-bar-themes"
+		},
+		{
+			"name": "packages/react-pre-styles",
+			"path": "C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\react-pre-styles"
+		},
+		{
+			"name": "packages/react-pre-themes",
+			"path": "C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\react-pre-themes"
+		},
+		{
+			"name": "packages/react-maximize-styles",
+			"path": "C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\react-maximize-styles"
+		},
+		{
+			"name": "packages/react-maximize-themes",
+			"path": "C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\react-maximize-themes"
+		},
+		{
+			"name": "packages/react-minimize-styles",
+			"path": "C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\react-minimize-styles"
+		},
+		{
+			"name": "packages/react-minimize-themes",
+			"path": "C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\react-minimize-themes"
+		},
+		{
+			"name": "gridiron",
+			"path": "C:\\Users\\ColeChamberlain\\noderaider\\gridiron"
+		}
+	]
 }

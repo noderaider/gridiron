@@ -2,7 +2,7 @@ import path from 'path'
 import { createLogger } from 'bunyan'
 
 export const packageName = 'gridiron-example'
-export const packageKey = 'gridiron-example'
+export const packageKey = 'gridiron'
 export const title = 'gridiron'
 export const subtitle = 'example'
 export const defaultThemeName = 'solarized-light'

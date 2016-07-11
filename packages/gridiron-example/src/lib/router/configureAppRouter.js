@@ -12,8 +12,7 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import cookieParser from 'cookie-parser'
 import cookie from 'react-cookie'
 
-import { serialize } from 'fire-hydrant'
-import createInitialState from 'fire-hydrant/lib/react/createInitialState'
+import { serialize, createInitialState } from 'fire-hydrant'
 
 import { getThemeForUrl } from '../context/theme'
 import { defaultTheme, getTheme } from '../context'
