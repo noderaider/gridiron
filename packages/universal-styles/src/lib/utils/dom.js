@@ -3,9 +3,6 @@ export function createDOM(req, res) {
   const navigator = { userAgent }
 
   const elements = []
-  function createTextNode() {
-
-  }
   function createElement(tagName) {
     let attributes = new Map()
     let nodes = { parent: null, children: [] }
@@ -58,6 +55,9 @@ export function createDOM(req, res) {
     elements.push(element)
     return element
   }
+  function createTextNode(data) {
+    return { data }
+  }
   function getElementsByTagName(tagName) {
     return elements.filter(x => x.tagName === tagName)
   }
@@ -72,6 +72,7 @@ export function createDOM(req, res) {
   const document =  { head
                     , body
                     , createElement
+                    , createTextNode
                     , getElementsByTagName
                     , getElementById
                     }

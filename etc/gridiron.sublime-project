@@ -34,6 +34,10 @@
       "path": "../packages/gridiron-example"
     },
     {
+      "name": "packages/react-pub-sub",
+      "path": "../packages/react-pub-sub"
+    },
+    {
       "name": "packages/react-bar",
       "path": "../packages/react-bar"
     },

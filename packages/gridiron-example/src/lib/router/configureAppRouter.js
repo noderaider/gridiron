@@ -5,6 +5,8 @@ import serveFile from 'serve-file'
 import serveStatic from 'serve-static'
 import path from 'path'
 import React from 'react'
+import reactStamp from 'react-stamp'
+import HtmlHead from '../components/HtmlHead'
 import { renderToString } from 'react-dom/server'
 import { createMemoryHistory, match, RouterContext } from 'react-router'
 import { Provider } from 'react-redux'
@@ -24,7 +26,7 @@ import { removeLegacyCookies } from '../services/persistence'
 import configureStore from '../redux/store/configureStore.js'
 import routes from '../app/routes'
 import util from 'util'
-import { serializeStyles } from 'universal-styles'
+import { reactStyles, serializeStyles } from 'universal-styles'
 
 const BodyInit = ({ theme }) => {
   const { style } = theme
@@ -45,27 +47,12 @@ const BodyInit = ({ theme }) => {
 const InitialState = createInitialState({ React, Immutable })
 
 
-const HTML = ({ content, state, theme, styles }) => {
-  const title = `gridiron-example${IS_HOT ? ' is so hot right now...' : (IS_DEV ? ' is so dev right now...' : '')}`
+
+
+const HTML = ({ content, state, theme, head }) => {
   return (
     <html lang="en">
-    <head>
-      <meta charSet="utf-8" />
-      <meta httpEquiv="X-UA-Compatible" content="IE=Edge" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>{title}</title>
-      <link rel="icon" href={faviconUrl} type="image/x-icon" />
-      {styles}
-      <link rel="stylesheet" href="/assets/app.css" type="text/css" />
-      <script dangerouslySetInnerHTML={{ __html: `(function(d) {
-        var config = { kitId: 'xsj1dhs', scriptTimeout: 3000, async: true },
-        h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
-        })(document)
-        ` }} />
-      <script src="/assets/polyfill.js" />
-      <script src="/assets/vendor.js" />
-      <script src="/assets/commons.js" />
-    </head>
+    {head}
     <body>
       <BodyInit theme={theme} />
       {server.flags.render ? <InitialState globalKey={packageKey} state={state} serialize={serialize} /> : null}
@@ -106,14 +93,53 @@ export default function configureAppRouter({ cors, paths }) {
         else if (renderProps) {
           const state = store.getState()
           const theme = getThemeForUrl(state.visual.theme, req.url)
+          const title = `gridiron-example${IS_HOT ? ' is so hot right now...' : (IS_DEV ? ' is so dev right now...' : '')}`
           if(server.flags.render) {
             const content = renderToString(<Provider store={store}><RouterContext {...renderProps} /></Provider>)
-            //const Styles = reactStyles(React)
-            const styles = serializeStyles(req, res)
-            const html = renderHTML({ content, state, theme, styles })
+            const mapStyles = reactStyles(React)
+            const styles = mapStyles(req, res)
+            //const styles = serializeStyles(req, res)
+            const headItems = (
+              [ <meta charSet="utf-8" />
+              , <meta httpEquiv="X-UA-Compatible" content="IE=Edge" />
+              , <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+              , <title>{title}</title>
+              , <link rel="icon" href={faviconUrl} type="image/x-icon" />
+              , <link rel="stylesheet" href="/assets/app.css" type="text/css" />
+              , ...styles
+              , <script dangerouslySetInnerHTML={{ __html: `(function(d) {
+                  var config = { kitId: 'xsj1dhs', scriptTimeout: 3000, async: true },
+                  h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+                  })(document)
+                  ` }} />
+              , <script src="/assets/polyfill.js" />
+              , <script src="/assets/vendor.js" />
+              , <script src="/assets/commons.js" />
+              ]
+            )
+            const head = <head>{headItems.map((x, i) => React.cloneElement(x, { key: i }))}</head>
+            const html = renderHTML({ content, state, theme, head })
             return res.send(html)
           } else {
-            const html = renderHTML({ theme })
+            const head = (
+              <head>
+                <meta charSet="utf-8" />
+                <meta httpEquiv="X-UA-Compatible" content="IE=Edge" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <title>{title}</title>
+                <link rel="icon" href={faviconUrl} type="image/x-icon" />
+                <link rel="stylesheet" href="/assets/app.css" type="text/css" />
+                <script dangerouslySetInnerHTML={{ __html: `(function(d) {
+                  var config = { kitId: 'xsj1dhs', scriptTimeout: 3000, async: true },
+                  h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+                  })(document)
+                  ` }} />
+                <script src="/assets/polyfill.js" />
+                <script src="/assets/vendor.js" />
+                <script src="/assets/commons.js" />
+              </head>
+            )
+            const html = renderHTML({ theme, head })
             return res.send(html)
           }
         } else {

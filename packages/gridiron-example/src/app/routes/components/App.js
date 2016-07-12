@@ -1,4 +1,5 @@
 import React, { Component, PropTypes, cloneElement } from 'react'
+
 import shallowCompare from 'react/lib/shallowCompare'
 import CSSPropertyOperations from 'react/lib/shallowCompare'
 import ReactDOM from 'react-dom'
@@ -7,6 +8,7 @@ import createIdleMonitor from 'react-redux-idle-monitor'
 //import { deserialize } from 'try-defer'
 
 import { client, log, IS_BROWSER } from 'config'
+import HtmlHead from 'lib/components/HtmlHead'
 import TopBar from 'app/elements/nav/TopBar'
 import FooterBar from 'app/elements/nav/FooterBar'
 import DevTools from 'lib/redux/DevTools'
@@ -61,6 +63,9 @@ class App extends Component {
 
 
     return (
+      <div>
+        <HtmlHead>
+        </HtmlHead>
       <Maximize>
       {container => (
         <div style={{ marginBottom: 70 }}>
@@ -74,6 +79,7 @@ class App extends Component {
         </div>
       )}
       </Maximize>
+      </div>
     )
   }
 }
