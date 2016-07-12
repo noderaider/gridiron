@@ -3,15 +3,15 @@ import ReactTooltip from 'react-tooltip'
 import { connect } from 'react-redux'
 import { toggleVisibility } from 'lib/redux/actions/visual'
 import Label from 'app/elements/forms/controls/Label'
-import Clipboard from 'clipboard'
 
 const getLabelID = componentID => `label_${componentID}`
 const getTooltipID = componentID => `tooltip_${componentID}`
 
 class Micro extends Component {
-  componentWillMount() {
+  componentDidMount() {
     const { componentID, actionType, tooltip } = this.props
 
+    const Clipboard = require('clipboard')
     if(actionType === 'clipboard' && typeof tooltip !== 'undefined') {
       this.clipboard = new Clipboard(`#${getLabelID(componentID)}`)
       const caption = 'Click to copy'

@@ -36,32 +36,22 @@ function tryDefer(condition) {
   var _errors = hydrate ? hydrate._errors : [];
   var _attempts = hydrate ? hydrate._attempts : 0;
 
-  /*
-    let _tracer = { trace: function trace (...args) {
-                    console.trace('try-defer', ...args)
-                  }
-                  , error: function error (...args) {
-                      console.error('try-defer', ...args)
-                    }
-                  }
-                  */
-
   function _execute(_ref2) {
     var fn = _ref2.fn;
     var args = _ref2.args;
+    var hard = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
 
-    //if(tracing) _tracer.trace('_execute({ fn, args })', fn, args)
     _attempts += 1;
     try {
-      if (!condition || condition()) return fn.apply(undefined, _toConsumableArray(args));
+      if (hard || !condition || condition()) return fn.apply(undefined, _toConsumableArray(args));
       return _enqueue(fn, args);
     } catch (err) {
+      if (hard) throw err;
       return _enqueue(fn, args, err);
     }
   }
 
   function _enqueue(fn, args, err) {
-    //if(tracing) _tracer.trace('_enqueue(fn, args, err)', fn, args, err)
     var attempt = _attempts;
     _queue.push({ fn: fn, args: args, attempt: attempt, err: err });
     if (err) _errors.push(err);
@@ -73,34 +63,27 @@ function tryDefer(condition) {
 
   function status() {
     var _status = { queue: _queue, errors: _errors, attempts: _attempts };
-    //if(tracing) _tracer.trace('status()', _status)
     return _status;
   }
 
   function replay() {
-    //if(tracing) _tracer.trace('replay()', _queue)
+    var hard = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
+
     var queue = _queue;
     _queue = [];
     var output = [];
     while (queue.length > 0) {
-      output.push(_execute(queue.shift()));
+      output.push(_execute(queue.shift(), hard));
     }
     return output;
   }
 
   function serialize() {
     var serialized = '(function (undefined) {\n      var queue = ' + (0, _serializeJavascript2.default)(_queue) + ';\n      var results = [];\n      while(queue.length > 0) {\n        var item = queue.shift();\n        var fn = item.fn;\n        var args = item.args;\n        results.push(fn.apply(undefined, args));\n      }\n      return results;\n    })();';
-    /*
-      var deferArgs = ${serializeJS([ condition, { tracing }, { _queue, _errors, _attempts } ])};
-      return tryDefer(deferArgs[0], deferArgs[1], deferArgs[2])[1].replay();
-      */
-    //const serialized = `window.__defer = window.__defer ? window.__defer.push(${unwind}) : [ ${unwind} ];`
-    //if(tracing) _tracer.trace('serialize()', serialized)
     return serialized;
   }
 
   function reactReplay(React) {
-    //if(tracing) _tracer.trace('reactReplay(React)', `React? ${typeof React}`)
     var serialized = serialize();
     return function (props) {
       return React.createElement('script', { dangerouslySetInnerHTML: { __html: serialized } });

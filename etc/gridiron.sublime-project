@@ -78,6 +78,14 @@
       "path": "../packages/universal-style-loader"
     },
     {
+      "name": "packages/universal-loader",
+      "path": "../packages/universal-loader"
+    },
+    {
+      "name": "packages/window-loader",
+      "path": "../packages/window-loader"
+    },
+    {
       "name": "packages/universal-themes",
       "path": "../packages/universal-themes"
     },

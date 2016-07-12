@@ -24,7 +24,7 @@ import { removeLegacyCookies } from '../services/persistence'
 import configureStore from '../redux/store/configureStore.js'
 import routes from '../app/routes'
 import util from 'util'
-import { reactStyles } from 'universal-styles'
+import { serializeStyles } from 'universal-styles'
 
 const BodyInit = ({ theme }) => {
   const { style } = theme
@@ -108,8 +108,9 @@ export default function configureAppRouter({ cors, paths }) {
           const theme = getThemeForUrl(state.visual.theme, req.url)
           if(server.flags.render) {
             const content = renderToString(<Provider store={store}><RouterContext {...renderProps} /></Provider>)
-            const Styles = reactStyles(React)
-            const html = renderHTML({ content, state, theme, styles: Styles ? <Styles /> : null })
+            //const Styles = reactStyles(React)
+            const styles = serializeStyles(req, res)
+            const html = renderHTML({ content, state, theme, styles })
             return res.send(html)
           } else {
             const html = renderHTML({ theme })
@@ -120,9 +121,8 @@ export default function configureAppRouter({ cors, paths }) {
         }
       })
     } catch(middlewareError) {
-      throw new Error()
       log.error(middlewareError, 'error occurred in App middleware, continuing...')
-      return res.status(500).send(`${middlewareError.message || middlewareError} => ${util.inspect(global.__universal__)}`)
+      return res.status(500).send(`${util.inspect(middlewareError)} => ${util.inspect(global.__universal__)}`)
     }
   })
   return router
