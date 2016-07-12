@@ -18,7 +18,7 @@ const getDefinePlugin = name => new DefinePlugin( { __CLIENT__: true
                                                   , 'process.env.NODE_ENV': `"${name === 'server' ? 'hot' : (NODE_ENV || 'development')}"`
                                                   } )
 
-export const extractText = (loaders, options) => ExtractTextPlugin.extract('style', loaders, options)
+export const extractText = (loaders, options) => ExtractTextPlugin.extract('universal-style', loaders, options)
 
 export default name => {
   let plugins = []

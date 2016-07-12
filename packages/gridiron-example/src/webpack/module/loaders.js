@@ -17,7 +17,7 @@ const getJsLoader = name => {
 
 const getJsonLoader = name => ({ test: /\.json$/, loader: 'json' })
 
-const inlineStyleLoader = preLoaders => `style!${preLoaders}`
+const inlineStyleLoader = preLoaders => `universal-style!${preLoaders}`
 const getStyleLoaders = name => {
   const useExtract = true //process.env.NODE_ENV !== 'hot' || name === 'server'
   const cssModulesLoader = 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss'

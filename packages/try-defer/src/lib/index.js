@@ -67,12 +67,22 @@ export default function tryDefer (condition, { tracing = false } = {}, hydrate) 
 
 
   function serialize() {
-    const unwind = `(function (tryDefer) {
+    const serialized = `(function (undefined) {
+      var queue = ${serializeJS(_queue)};
+      var results = [];
+      while(queue.length > 0) {
+        var item = queue.shift();
+        var fn = item.fn;
+        var args = item.args;
+        results.push(fn.apply(undefined, args));
+      }
+      return results;
+    })();`
+    /*
       var deferArgs = ${serializeJS([ condition, { tracing }, { _queue, _errors, _attempts } ])};
-      debugger;
       return tryDefer(deferArgs[0], deferArgs[1], deferArgs[2])[1].replay();
-    })`
-    const serialized = `window.__defer = window.__defer ? window.__defer.push(${unwind}) : [ ${unwind} ];`
+      */
+    //const serialized = `window.__defer = window.__defer ? window.__defer.push(${unwind}) : [ ${unwind} ];`
     //if(tracing) _tracer.trace('serialize()', serialized)
     return serialized
   }

@@ -4,13 +4,12 @@ import CSSPropertyOperations from 'react/lib/shallowCompare'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import createIdleMonitor from 'react-redux-idle-monitor'
-import { deserialize } from 'try-defer'
+//import { deserialize } from 'try-defer'
 
 import { client, log, IS_BROWSER } from 'config'
 import TopBar from 'app/elements/nav/TopBar'
 import FooterBar from 'app/elements/nav/FooterBar'
 import DevTools from 'lib/redux/DevTools'
-
 
 import contextTypes, { schemeNames, getTheme } from 'lib/context'
 
@@ -18,7 +17,6 @@ import { Maximize } from 'lib/components/modules/react-maximize'
 
 import gridironReact from 'gridiron-react'
 import gridironStyles from 'gridiron-styles'
-console.warn('CONTEXT TYPES', contextTypes)
 
 const { Logo } = gridironReact({ React, shallowCompare }, { styles: gridironStyles })
 
@@ -48,7 +46,6 @@ class App extends Component {
   static propTypes = { dispatch: PropTypes.func.isRequired };
   static childContextTypes = contextTypes;
   componentDidMount() {
-    deserialize()
     require('app/fonts/fout')
     require('app/fonts/Lato-Regular.ttf')
     require('app/fonts/Lato-Bold.ttf')

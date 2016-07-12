@@ -2,10 +2,12 @@ import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 import contextTypes from 'lib/context'
 
-export const faSizeOptions = ['lg', 'xl', '2x', '3x', '4x', '5x']
+import 'styles/font-awesome/less/font-awesome.less'
+
+export const faSizeOptions = [ 'lg', 'xl', '2x', '3x', '4x', '5x' ]
 const faPropTypes = { name: PropTypes.string.isRequired
-                    , loadingName: PropTypes.oneOf(['same', 'spinner', 'circle-o-notch', 'refresh', 'cog', 'spinner'])
-                    , spinnerName: PropTypes.oneOf(['spin', 'pulse'])
+                    , loadingName: PropTypes.oneOf([ 'same', 'spinner', 'circle-o-notch', 'refresh', 'cog', 'spinner' ])
+                    , spinnerName: PropTypes.oneOf([ 'spin', 'pulse' ])
                     , size: PropTypes.oneOf(faSizeOptions)
                     , isLoading: PropTypes.bool
                     /** BASE 16 NAME (CONTEXT) OR RESOLVES TO NORMAL COLOR STYLE */
@@ -38,7 +40,6 @@ class FA extends Component {
   static propTypes = faPropTypes;
   static defaultProps = faDefaultProps;
   componentDidMount() {
-    require('styles/font-awesome/less/font-awesome.less')
   }
   render() {
     const { name

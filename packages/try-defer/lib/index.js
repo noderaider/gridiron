@@ -89,8 +89,12 @@ function tryDefer(condition) {
   }
 
   function serialize() {
-    var unwind = '(function (tryDefer) {\n      var deferArgs = ' + (0, _serializeJavascript2.default)([condition, { tracing: tracing }, { _queue: _queue, _errors: _errors, _attempts: _attempts }]) + ';\n      debugger;\n      return tryDefer(deferArgs[0], deferArgs[1], deferArgs[2])[1].replay();\n    })';
-    var serialized = 'window.__defer = window.__defer ? window.__defer.push(' + unwind + ') : [ ' + unwind + ' ];';
+    var serialized = '(function (undefined) {\n      var queue = ' + (0, _serializeJavascript2.default)(_queue) + ';\n      var results = [];\n      while(queue.length > 0) {\n        var item = queue.shift();\n        var fn = item.fn;\n        var args = item.args;\n        results.push(fn.apply(undefined, args));\n      }\n      return results;\n    })();';
+    /*
+      var deferArgs = ${serializeJS([ condition, { tracing }, { _queue, _errors, _attempts } ])};
+      return tryDefer(deferArgs[0], deferArgs[1], deferArgs[2])[1].replay();
+      */
+    //const serialized = `window.__defer = window.__defer ? window.__defer.push(${unwind}) : [ ${unwind} ];`
     //if(tracing) _tracer.trace('serialize()', serialized)
     return serialized;
   }
