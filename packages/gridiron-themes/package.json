@@ -1,6 +1,6 @@
 {
   "name": "gridiron-themes",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "description": "React Component Styles for CSS Modules",
   "main": "lib/index.js",
   "scripts": {
@@ -19,12 +19,12 @@
   "dependencies": {
     "chai": "latest",
     "classnames": "latest",
-    "gridiron-core": "^0.9.1",
+    "gridiron-core": "^0.9.2",
     "ncp": "latest",
     "npm-run-all": "latest",
-    "solvent": "^0.9.1",
+    "solvent": "^0.9.2",
     "react-stamp": "latest",
-    "react-themes": "^0.9.1"
+    "react-themes": "^0.9.2"
   },
   "devDependencies": {
     "babel-cli": "latest",

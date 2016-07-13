@@ -1,6 +1,6 @@
 {
   "name": "redux-devtools-grid-monitor",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "description": "redux-devtools visualizer utilizing gridiron.",
   "main": "lib/index.js",
   "files": [
@@ -45,8 +45,8 @@
     "react-json-tree": "^0.7.0",
     "react-pure-render": "^1.0.2",
     "redux-devtools-themes": "^1.0.0",
-    "gridiron": "^0.9.1",
-    "solvent": "^0.9.1"
+    "gridiron": "^0.9.2",
+    "solvent": "^0.9.2"
   },
   "devDependencies": {
     "babel-cli": "latest",
