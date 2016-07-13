@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "chai": "latest",
+    "router": "^1.1.4",
     "serialize-javascript": "latest",
     "try-defer": "^0.9.1"
   },

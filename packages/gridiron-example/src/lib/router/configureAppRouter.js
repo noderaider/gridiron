@@ -7,7 +7,7 @@ import path from 'path'
 import React from 'react'
 import reactStamp from 'react-stamp'
 import HtmlHead from '../components/HtmlHead'
-import { renderToString } from 'react-dom/server'
+import { renderToString, renderToStaticMarkup } from 'react-dom/server'
 import { createMemoryHistory, match, RouterContext } from 'react-router'
 import { Provider } from 'react-redux'
 import { syncHistoryWithStore } from 'react-router-redux'
@@ -46,9 +46,6 @@ const BodyInit = ({ theme }) => {
 
 const InitialState = createInitialState({ React, Immutable })
 
-
-
-
 const HTML = ({ content, state, theme, head }) => {
   return (
     <html lang="en">
@@ -72,11 +69,73 @@ const MiddlewareError = ({ error }) => {
   )
 }
 
+
 const renderHTML = props => `<!doctype html>
-${renderToString(<HTML {...props} />)}`
+${renderToStaticMarkup(<HTML {...props} />)}`
 
 export default function configureAppRouter({ cors, paths }) {
   const { SRC_ROOT, APP_ROOT, LIB_ROOT, STATIC_ROOT, ASSETS_ROOT } = paths
+  const universalMiddleware = reactStyles(React)
+
+  return universalMiddleware((req, res) => {
+    const memoryHistory = createMemoryHistory(req.path)
+    let store = configureStore(memoryHistory)
+    const history = syncHistoryWithStore(memoryHistory, store)
+    match({ history
+          , routes
+          , location: req.url
+          }, (error, redirectLocation, renderProps) => {
+    const renderBody = () => {
+      if (error)
+        return res.status(500).send(error.message)
+      else if (redirectLocation)
+        return res.redirect(302, redirectLocation.pathname + redirectLocation.search)
+      else if (renderProps) {
+        const state = store.getState()
+        const theme = getThemeForUrl(state.visual.theme, req.url)
+        const appMarkup = server.flags.render ? renderToString(<Provider store={store}><RouterContext {...renderProps} /></Provider>)
+                                              : null
+        return (
+          <body>
+            {server.flags.render ? <InitialState globalKey={packageKey} state={state} serialize={serialize} /> : null}
+            {server.flags.render ? <div id="root" dangerouslySetInnerHTML={{ __html: appMarkup }}/> : <div id="root" />}
+            <script src="/assets/app.js" />
+          </body>
+        )
+      } else {
+        return false
+      }
+    }
+
+    const renderHead = styles => {
+      const title = `gridiron-example${IS_HOT ? ' is so hot right now...' : (IS_DEV ? ' is so dev right now...' : '')}`
+      const items = [ <meta charSet="utf-8" />
+                    , <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                    , <title>{title}</title>
+                    , <link rel="icon" href={faviconUrl} type="image/x-icon" />
+                    , ...styles
+                    , <link rel="stylesheet" href="/assets/app.css" type="text/css" />
+                    , <script dangerouslySetInnerHTML={{ __html: `(function(d) {
+                        var config = { kitId: 'xsj1dhs', scriptTimeout: 3000, async: true },
+                        h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+                        })(document)
+                        ` }} />
+                    , <script src="/assets/polyfill.js" />
+                    , <script src="/assets/vendor.js" />
+                    , <script src="/assets/commons.js" />
+                    ]
+      return <head>{items.map((x, i) => React.cloneElement(x, { key: i }))}</head>
+    }
+
+    const renderPage = ({ head, body }) => `<!doctype html>\n${renderToStaticMarkup(<html>{head}{body}</html>)}`
+    return { renderBody, renderHead, renderPage }
+  })
+    })
+
+
+
+/*
+  return universalMiddleware({ })
   let router = Router()
   router.use((req, res, next) => {
     try {
@@ -84,7 +143,6 @@ export default function configureAppRouter({ cors, paths }) {
       let store = configureStore(memoryHistory)
       const history = syncHistoryWithStore(memoryHistory, store)
 
-      /* react router match history */
       match({ history, routes, location: req.url }, (error, redirectLocation, renderProps) => {
         if (error)
           return res.status(500).send(error.message)
@@ -96,17 +154,13 @@ export default function configureAppRouter({ cors, paths }) {
           const title = `gridiron-example${IS_HOT ? ' is so hot right now...' : (IS_DEV ? ' is so dev right now...' : '')}`
           if(server.flags.render) {
             const content = renderToString(<Provider store={store}><RouterContext {...renderProps} /></Provider>)
-            const mapStyles = reactStyles(React)
-            const styles = mapStyles(req, res)
-            //const styles = serializeStyles(req, res)
             const headItems = (
               [ <meta charSet="utf-8" />
-              , <meta httpEquiv="X-UA-Compatible" content="IE=Edge" />
               , <meta name="viewport" content="width=device-width, initial-scale=1.0" />
               , <title>{title}</title>
               , <link rel="icon" href={faviconUrl} type="image/x-icon" />
+              , ...routeStyles(req, res)
               , <link rel="stylesheet" href="/assets/app.css" type="text/css" />
-              , ...styles
               , <script dangerouslySetInnerHTML={{ __html: `(function(d) {
                   var config = { kitId: 'xsj1dhs', scriptTimeout: 3000, async: true },
                   h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
@@ -124,7 +178,6 @@ export default function configureAppRouter({ cors, paths }) {
             const head = (
               <head>
                 <meta charSet="utf-8" />
-                <meta httpEquiv="X-UA-Compatible" content="IE=Edge" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>{title}</title>
                 <link rel="icon" href={faviconUrl} type="image/x-icon" />
@@ -152,4 +205,5 @@ export default function configureAppRouter({ cors, paths }) {
     }
   })
   return router
+  */
 }
