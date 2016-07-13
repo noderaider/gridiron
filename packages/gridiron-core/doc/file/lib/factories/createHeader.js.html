@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">lib/factories/createHeader.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/noderaider/gridiron" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Connect">Connect</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-DefaultProps">DefaultProps</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-MapDispatchToProps">MapDispatchToProps</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-MapStateToProps">MapStateToProps</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-PropTypes">PropTypes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Connect">Connect</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-DefaultProps">DefaultProps</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-PropTypes">PropTypes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-DefaultProps">DefaultProps</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-PropTypes">PropTypes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-DefaultProps">DefaultProps</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-PropTypes">PropTypes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-DefaultProps">DefaultProps</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-PropTypes">PropTypes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-DefaultProps">DefaultProps</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-PropTypes">PropTypes</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">factories</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createHeader">createHeader</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-factories">factories</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">lib/factories/createHeader.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import * as Core from &apos;../Header&apos;
+import reactPubSub from &apos;react-pub-sub&apos;
+const should = require(&apos;chai&apos;).should()
+
+function nextSort(sort) {
+  switch(sort.direction) {
+    case &apos;asc&apos;:
+      return { ...sort, direction: &apos;desc&apos; }
+    case &apos;desc&apos;:
+      return { ...sort, direction: &apos;none&apos; }
+    default:
+      return { ...sort, direction: &apos;asc&apos; }
+  }
+}
+
+export default function createHeader ({ React }) {
+  const { Component, PropTypes } = React
+  const wrapStyle = { display: &apos;flex&apos;
+                    , flexDirection: &apos;row&apos;
+                    , flexWrap: &apos;nowrap&apos;
+                    , flexGrow: 1
+                    , alignItems: &apos;center&apos;
+                    , justifyContent: &apos;space-between&apos;
+                    }
+
+  const leftStyle = { display: &apos;flex&apos;
+                    , flexDirection: &apos;row&apos;
+                    , flexWrap: &apos;nowrap&apos;
+                    , flex: 1
+                    , alignItems: &apos;center&apos;
+                    }
+  const leftControlStyle =  { display: &apos;flex&apos;
+                            , marginRight: 5
+                            }
+  const childrenStyle = { display: &apos;flex&apos;
+                        }
+
+  const pubSub = reactPubSub({ React })
+
+  const SortIcon = ({ direction }) =&gt; {
+    let sortClass = &apos;fa fa-sort&apos;
+    if(direction === &apos;asc&apos; || direction === &apos;desc&apos;)
+      sortClass += `-${direction}`
+
+    return &lt;i className={sortClass} /&gt;
+  }
+
+
+  const desc =  { init() {
+                    const { checked, sort } = this.props
+                    this.state = { checked, sort }
+                  }
+                , _handleSort (e) {
+                    this.setState({ sort: nextSort(this.state.sort) })
+                  }
+                , _handleChecked (e) {
+                    this.setState({ checked: e.target.checked })
+                  }
+                , reset({ props, state }, cb) {
+                    if(state &amp;&amp; state.checked === false) {
+                      this.setState({ checked: false }, cb)
+                    } else
+                      cb()
+                  }
+                , propTypes: Core.PropTypes(React)
+                , defaultProps: Core.DefaultProps(React)
+                , render() {
+                    const { children
+                          , styles
+                          , theme
+                          , filter
+                          , checkbox
+                          , radio
+                          } = this.props
+
+                    const { checked
+                          , sort
+                          } = this.state
+                    return (
+                      &lt;span style={wrapStyle} className={theme.header}&gt;
+                        &lt;span style={leftStyle}&gt;
+                          &lt;span style={leftControlStyle}&gt;
+                            {checkbox ? checkbox.label ? (
+                                &lt;label&gt;&lt;input type=&quot;checkbox&quot; id={checkbox.id} onChange={::this._handleChecked} value={checkbox.value} checked={checked} /&gt; {checkbox.label}&lt;/label&gt;
+                              ) : (
+                                &lt;input type=&quot;checkbox&quot; id={checkbox.id} onChange={::this._handleChecked} value={checkbox.value} checked={checked} /&gt;
+                              ) : null}
+                          &lt;/span&gt;
+                          &lt;span style={childrenStyle}&gt;{children}&lt;/span&gt;
+                        &lt;/span&gt;
+                        &lt;span&gt;
+                          {sort ? (
+                            &lt;button onClick={::this._handleSort}&gt;
+                              &lt;SortIcon {...sort} /&gt;
+                            &lt;/button&gt;
+                          ) : null}
+                          {filter ? (
+                            &lt;button onClick={filter.handle}&gt;
+                              &lt;i className={`fa fa-filter${&apos;&apos;}`} /&gt;
+                            &lt;/button&gt;
+                          ) : null}
+                          {radio ? (
+                            &lt;span&gt;
+                              {radio.values.map(({ value, checked = false }, i) =&gt; (
+                                &lt;input key={i} type=&quot;radio&quot; name={radio.name} value={value} checked={checked} /&gt;
+                              ))}
+                            &lt;/span&gt;
+                          ) : null}
+                        &lt;/span&gt;
+                      &lt;/span&gt;
+                    )
+                  }
+                }
+  return function header () {
+    const { createPub, createSub } = pubSub({ stateNames: [ &apos;checked&apos; ] })
+    const Header = createPub(desc)
+    return { Header, createSub }
+  }
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

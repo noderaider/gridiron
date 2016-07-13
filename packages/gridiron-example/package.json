@@ -1,6 +1,6 @@
 {
   "name": "gridiron-example",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "description": "Example webpack project for gridiron and related components. Showcases what can be done with gridiron.",
   "main": "lib/index.js",
   "files": [

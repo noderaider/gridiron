@@ -1,0 +1,397 @@
+{
+  "type": "Program",
+  "start": 0,
+  "end": 251,
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 11,
+      "column": 0
+    }
+  },
+  "sourceType": "module",
+  "body": [
+    {
+      "type": "ExportNamedDeclaration",
+      "start": 61,
+      "end": 139,
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 39
+        }
+      },
+      "declaration": {
+        "type": "VariableDeclaration",
+        "start": 68,
+        "end": 139,
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 7
+          },
+          "end": {
+            "line": 5,
+            "column": 39
+          }
+        },
+        "declarations": [
+          {
+            "type": "VariableDeclarator",
+            "start": 74,
+            "end": 139,
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 13
+              },
+              "end": {
+                "line": 5,
+                "column": 39
+              }
+            },
+            "id": {
+              "type": "Identifier",
+              "start": 74,
+              "end": 83,
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 13
+                },
+                "end": {
+                  "line": 4,
+                  "column": 22
+                }
+              },
+              "name": "PropTypes",
+              "leadingComments": null
+            },
+            "init": {
+              "type": "ArrowFunctionExpression",
+              "start": 86,
+              "end": 139,
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 25
+                },
+                "end": {
+                  "line": 5,
+                  "column": 39
+                }
+              },
+              "id": null,
+              "generator": false,
+              "expression": true,
+              "async": false,
+              "params": [
+                {
+                  "type": "Identifier",
+                  "start": 86,
+                  "end": 91,
+                  "loc": {
+                    "start": {
+                      "line": 4,
+                      "column": 25
+                    },
+                    "end": {
+                      "line": 4,
+                      "column": 30
+                    }
+                  },
+                  "name": "React"
+                }
+              ],
+              "body": {
+                "type": "ObjectExpression",
+                "start": 97,
+                "end": 137,
+                "loc": {
+                  "start": {
+                    "line": 4,
+                    "column": 36
+                  },
+                  "end": {
+                    "line": 5,
+                    "column": 37
+                  }
+                },
+                "properties": [],
+                "parenthesizedExpression": true
+              },
+              "trailingComments": null
+            },
+            "leadingComments": null,
+            "trailingComments": null
+          }
+        ],
+        "kind": "const",
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\r\n * PropTypes factory for <Settings /> components.\r\n ",
+            "start": 0,
+            "end": 59,
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 0
+              },
+              "end": {
+                "line": 3,
+                "column": 3
+              }
+            },
+            "range": [
+              0,
+              59
+            ]
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Block",
+            "value": "*\r\n * DefaultProps factory for <Settings /> components.\r\n ",
+            "start": 143,
+            "end": 205,
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 0
+              },
+              "end": {
+                "line": 9,
+                "column": 3
+              }
+            },
+            "range": [
+              143,
+              205
+            ]
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\r\n * PropTypes factory for <Settings /> components.\r\n ",
+          "start": 0,
+          "end": 59,
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 0
+            },
+            "end": {
+              "line": 3,
+              "column": 3
+            }
+          },
+          "range": [
+            0,
+            59
+          ]
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\r\n * DefaultProps factory for <Settings /> components.\r\n ",
+          "start": 143,
+          "end": 205,
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 0
+            },
+            "end": {
+              "line": 9,
+              "column": 3
+            }
+          },
+          "range": [
+            143,
+            205
+          ]
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "start": 207,
+      "end": 249,
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 0
+        },
+        "end": {
+          "line": 10,
+          "column": 42
+        }
+      },
+      "declaration": {
+        "type": "VariableDeclaration",
+        "start": 214,
+        "end": 249,
+        "loc": {
+          "start": {
+            "line": 10,
+            "column": 7
+          },
+          "end": {
+            "line": 10,
+            "column": 42
+          }
+        },
+        "declarations": [
+          {
+            "type": "VariableDeclarator",
+            "start": 220,
+            "end": 249,
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 13
+              },
+              "end": {
+                "line": 10,
+                "column": 42
+              }
+            },
+            "id": {
+              "type": "Identifier",
+              "start": 220,
+              "end": 232,
+              "loc": {
+                "start": {
+                  "line": 10,
+                  "column": 13
+                },
+                "end": {
+                  "line": 10,
+                  "column": 25
+                }
+              },
+              "name": "DefaultProps",
+              "leadingComments": null
+            },
+            "init": {
+              "type": "ArrowFunctionExpression",
+              "start": 235,
+              "end": 249,
+              "loc": {
+                "start": {
+                  "line": 10,
+                  "column": 28
+                },
+                "end": {
+                  "line": 10,
+                  "column": 42
+                }
+              },
+              "id": null,
+              "generator": false,
+              "expression": true,
+              "async": false,
+              "params": [
+                {
+                  "type": "Identifier",
+                  "start": 235,
+                  "end": 240,
+                  "loc": {
+                    "start": {
+                      "line": 10,
+                      "column": 28
+                    },
+                    "end": {
+                      "line": 10,
+                      "column": 33
+                    }
+                  },
+                  "name": "React"
+                }
+              ],
+              "body": {
+                "type": "ObjectExpression",
+                "start": 245,
+                "end": 248,
+                "loc": {
+                  "start": {
+                    "line": 10,
+                    "column": 38
+                  },
+                  "end": {
+                    "line": 10,
+                    "column": 41
+                  }
+                },
+                "properties": [],
+                "parenthesizedExpression": true
+              }
+            },
+            "leadingComments": null
+          }
+        ],
+        "kind": "const",
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\r\n * DefaultProps factory for <Settings /> components.\r\n ",
+            "start": 143,
+            "end": 205,
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 0
+              },
+              "end": {
+                "line": 9,
+                "column": 3
+              }
+            },
+            "range": [
+              143,
+              205
+            ]
+          }
+        ],
+        "trailingComments": []
+      },
+      "specifiers": [],
+      "source": null,
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\r\n * DefaultProps factory for <Settings /> components.\r\n ",
+          "start": 143,
+          "end": 205,
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 0
+            },
+            "end": {
+              "line": 9,
+              "column": 3
+            }
+          },
+          "range": [
+            143,
+            205
+          ]
+        }
+      ]
+    }
+  ]
+}

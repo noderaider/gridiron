@@ -1,0 +1,1080 @@
+[
+  {
+    "__docId__": 0,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "lib/components/coreGrid.js",
+    "memberof": null,
+    "longname": "lib/components/coreGrid.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import { CoreGrid as Core } from 'gridiron-core'\r\nimport solvent from 'solvent'\r\nimport expander from './expander'\r\nimport classNames from 'classnames'\r\nimport util from 'util'\r\nconst should = require('chai').should()\r\nconst IS_BROWSER = typeof window === 'object'\r\n\r\nconst resolver = solvent( { React: 'object'\r\n                          , connect: 'function'\r\n                          , AutoSizer: 'function'\r\n                          , Grid: 'function'\r\n                          , Immutable: 'object'\r\n                          } )\r\nexport default function coreGrid (deps, defaults = {}) {\r\n  const { React, connect, AutoSizer, Grid, Immutable } = resolver(deps)\r\n  const { Component, PropTypes, cloneElement } = React\r\n  const { getState } = defaults\r\n  should.exist(React)\r\n  should.exist(connect)\r\n  const Expander = expander({ React })\r\n\r\n  const wideStyle = { display: 'flex'\r\n                    , flexDirection: 'row'\r\n                    , flex: '1 0 auto'\r\n                    , justifyContent: 'space-between'\r\n                    , alignItems: 'center'\r\n                    , margin: 'auto'\r\n                    , padding: 5\r\n                    }\r\n\r\n  class CoreGrid extends Component {\r\n    static propTypes = Core.PropTypes(React);\r\n    static defaultProps = Core.DefaultProps(React);\r\n\r\n    constructor(props) {\r\n      super(props)\r\n      this.state =  {}\r\n    }\r\n    render() {\r\n      const { cols, rows, maxHeight, style, styles, theme, gridStyle, maxWidth, header, footer, pager } = this.props\r\n      const spannedRows = rows.reduce((spanned, x, i) => {\r\n        if(x.span === true)\r\n          return [ ...spanned, i ]\r\n        return spanned\r\n      }, [])\r\n      should.exist(cols)\r\n      should.exist(rows)\r\n      cols.should.be.instanceof(Array)\r\n      rows.should.be.instanceof(Array)\r\n      const colCount = cols.length\r\n      const getRowCount = ({ rows = rows /*= mapRows(state)*/ } = {}) => (rows.size || rows.length) // 2 more than index for header and footer\r\n\r\n      const resolveColWidth = (calculated, { minWidth, maxWidth } = {}) => {\r\n        //console.debug('RESOLVE COL WIDTH', calculated, minWidth, maxWidth)\r\n        if(minWidth && calculated < minWidth) {\r\n          //console.debug('OVERRIDING CALCULATED WIDTH FOR MIN', calculated, minWidth)\r\n          return minWidth\r\n        }\r\n        if(maxWidth && calculated > maxWidth) {\r\n          //console.debug('OVERRIDING CALCULATED WIDTH FOR MAX', calculated, maxWidth)\r\n          return maxWidth\r\n        }\r\n        return calculated\r\n      }\r\n\r\n\r\n      const containerClass = classNames(styles.container, theme.container)\r\n      const innerContainerClass = classNames(styles.innerContainer, theme.innerContainer)\r\n      const gridClass = classNames(styles.BodyGrid, theme.BodyGrid)\r\n\r\n      const renderGrid = ({ preHeader, postHeader } = {}) => (\r\n        <div className={containerClass} style={style}>\r\n          <div className={innerContainerClass}>\r\n            <AutoSizer onResize={({ height, width }) => {\r\n              this.setState({ height, width })\r\n            }}>\r\n\r\n              {dimensions => {\r\n                const width = this.state.width || dimensions.width\r\n                const height = this.state.height || dimensions.height || 100\r\n                let fixedWidthIndices = []\r\n                const fixedCols = cols.filter((x, i) => {\r\n                  const isFixed = x.width && typeof x.width === 'number'\r\n                  if(isFixed) fixedWidthIndices.push(i)\r\n                  return isFixed\r\n                })\r\n\r\n                const fixedWidth = fixedCols.reduce((sum, x) => sum += x.width, 0)\r\n                const variableWidth = width - fixedWidth\r\n                const variableColCount = cols.length - fixedCols.length\r\n                const colWidths = cols.reduce((widthMap, x) => ({ ...widthMap, [x.id]: resolveColWidth(x.width ? x.width : variableWidth / variableColCount, x) }), {})\r\n                const rowCount = getRowCount({ rows })\r\n                return (\r\n                  <Grid\r\n                    ref={x => this.grid = x}\r\n                    className={gridClass}\r\n                    style={gridStyle}\r\n                    width={this.props.maxWidth || this.state.width || dimensions.width}\r\n                    height={this.state.height || dimensions.height || 100}\r\n                    columnCount={colCount}\r\n                    rowCount={rowCount}\r\n                    columnWidth={\r\n\r\n                      ({ index }) => {\r\n                        const col = cols[index]\r\n                        return colWidths[col.id]\r\n                      }\r\n                    }\r\n                    rowHeight={1}\r\n\r\n                    cellRangeRenderer={\r\n                      ({ cellCache, cellRenderer, columnSizeAndPositionManager, columnStartIndex, columnStopIndex, horizontalOffsetAdjustment, isScrolling, rowSizeAndPositionManager, rowStartIndex, rowStopIndex, scrollLeft, scrollTop, verticalOffsetAdjustment } = {}) => {\r\n                        const renderedRows = []\r\n                        const width = this.state.width || dimensions.width\r\n\r\n                        /** GRID ROW HEADER */\r\n                        if(header)\r\n                          renderedRows.push(\r\n                            <div key=\"grid-header\" className={classNames(styles.headerGrid, theme.headerGrid)}>\r\n                              {preHeader ? preHeader : null}\r\n                              {typeof header === 'function' ? header() : header}\r\n                              {postHeader ? postHeader : null}\r\n                            </div>\r\n                          )\r\n\r\n                        const gridRow = (rowKey, cells, { rowClass = 'Grid__row', rowStyle = {}, cellClass = 'Grid__cell', cellStyle = {} }) => {\r\n                          should.exist(rowKey, 'rowKey is required')\r\n                          return (\r\n                            <div key={rowKey} id={`${rowKey}-row`} className={styles.rowStyle} style={rowStyle}>\r\n                              {cells.map((x, i) => {\r\n                                let computedStyle = typeof cellStyle === 'function' ? cellStyle(i) : cellStyle\r\n                                if(fixedWidthIndices.includes(i)) {\r\n                                  const datum = columnSizeAndPositionManager.getSizeAndPositionOfCell(i)\r\n                                  computedStyle = { ...computedStyle, flex: `0 1 ${datum.size}px` }\r\n                                }\r\n                                return (\r\n                                  <div\r\n                                    key={`${rowKey}-${i}`}\r\n                                    className={typeof cellClass === 'function' ? cellClass(i) : cellClass}\r\n                                    style={computedStyle}\r\n                                  >\r\n                                    <span className={classNames(styles.innerCell, theme.innerCell)}>{x}</span>\r\n                                  </div>\r\n                              )\r\n                              })\r\n                            }\r\n                            </div>\r\n                          )\r\n                        }\r\n\r\n                        /** COLUMN HEADERS */\r\n                        renderedRows.push(gridRow('col-headers', cols.map(x => x.header({ rows, theme })), { rowClass: styles.rowStyle, cellClass: i => classNames(styles.headerCell, theme.headerCell, cols[i].className) }))\r\n\r\n                        for (let rowIndex = rowStartIndex; rowIndex <= rowStopIndex; rowIndex++) {\r\n                          const renderedCells = []\r\n\r\n                          if(spannedRows.includes(rowIndex)) {\r\n                            const key = `${rowIndex}-span`\r\n                            const child = (\r\n                              <div\r\n                                key={key}\r\n                                //style={wideStyle}\r\n                                className={classNames(styles.Grid__span, theme.expanded, 'drill')}\r\n                              >\r\n                                {rows[rowIndex].render()}\r\n                              </div>\r\n                            )\r\n                            renderedRows.push(child)\r\n                          } else {\r\n                            for (let columnIndex = columnStartIndex; columnIndex <= columnStopIndex; columnIndex++) {\r\n                              let columnDatum = columnSizeAndPositionManager.getSizeAndPositionOfCell(columnIndex)\r\n\r\n                              let key = `${rowIndex}-${columnIndex}`\r\n                              let renderedCell\r\n\r\n                              // Avoid re-creating cells while scrolling.\r\n                              // This can lead to the same cell being created many times and can cause performance issues for \"heavy\" cells.\r\n                              // If a scroll is in progress- cache and reuse cells.\r\n                              // This cache will be thrown away once scrolling completes.\r\n                              if (false) { //isScrolling) {\r\n                                if (!cellCache[key]) {\r\n                                  cellCache[key] = cellRenderer({ columnIndex\r\n                                                                , isScrolling\r\n                                                                , rowIndex\r\n                                                                })\r\n                                }\r\n                                renderedCell = cellCache[key]\r\n                              // If the user is no longer scrolling, don't cache cells.\r\n                              // This makes dynamic cell content difficult for users and would also lead to a heavier memory footprint.\r\n                              } else {\r\n                                renderedCell = cellRenderer({ columnIndex\r\n                                                            , isScrolling\r\n                                                            , rowIndex\r\n                                                            })\r\n                              }\r\n\r\n                              if (renderedCell === null || renderedCell === false)\r\n                                continue\r\n                              renderedCells.push(renderedCell)\r\n                            }\r\n                          }\r\n                          const cellClass = i => classNames(styles.cell, theme.cell, cols[i].className, rowIndex % 2 === 0 ? theme.evenRow : theme.oddRow)\r\n                          renderedRows.push(gridRow(rowIndex, renderedCells, { rowClass: styles.rowStyle, cellClass }))\r\n                        }\r\n\r\n                        renderedRows.push(gridRow('col-footers', cols.map(x => x.footer ? x.footer({ rows, theme }) : null), { rowClass: styles.rowStyle, cellClass: i => classNames(styles.footerCell, theme.footerCell, cols[i].className) }))\r\n\r\n                        if(footer) {\r\n                          renderedRows.push(\r\n                            <div key=\"grid-footer\" style={wideStyle} className={classNames(styles.footerGrid, theme.footerGrid)}>\r\n                              {typeof footer === 'function' ? footer() : footer}\r\n                            </div>)\r\n                        }\r\n                        return renderedRows\r\n                      }\r\n                    }\r\n\r\n                    cellRenderer={\r\n                      ({ columnIndex, rowIndex, isScrolling }) => {\r\n                        const col = cols[columnIndex]\r\n                        return rows[rowIndex].render()[columnIndex]\r\n                      }\r\n                    }\r\n                  />\r\n                )\r\n              }}\r\n            </AutoSizer>\r\n          </div>\r\n        </div>\r\n      )\r\n\r\n      return renderGrid()\r\n    }\r\n    componentDidUpdate(prevProps, prevState) {\r\n      if(prevState.width !== this.state.width || prevState.height !== this.state.height) {\r\n        this.grid.recomputeGridSize()\r\n      }\r\n    }\r\n  }\r\n  return Core.Connect({ connect }, { getState })(CoreGrid)\r\n}\r\n"
+  },
+  {
+    "__docId__": 1,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "should",
+    "memberof": "lib/components/coreGrid.js",
+    "longname": "lib/components/coreGrid.js~should",
+    "access": null,
+    "export": false,
+    "importPath": "gridiron/lib/components/coreGrid.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 6,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 2,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "IS_BROWSER",
+    "memberof": "lib/components/coreGrid.js",
+    "longname": "lib/components/coreGrid.js~IS_BROWSER",
+    "access": null,
+    "export": false,
+    "importPath": "gridiron/lib/components/coreGrid.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 7,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 3,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "resolver",
+    "memberof": "lib/components/coreGrid.js",
+    "longname": "lib/components/coreGrid.js~resolver",
+    "access": null,
+    "export": false,
+    "importPath": "gridiron/lib/components/coreGrid.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 9,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 4,
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "coreGrid",
+    "memberof": "lib/components/coreGrid.js",
+    "longname": "lib/components/coreGrid.js~coreGrid",
+    "access": null,
+    "export": true,
+    "importPath": "gridiron/lib/components/coreGrid.js",
+    "importStyle": "coreGrid",
+    "description": null,
+    "lineNumber": 15,
+    "undocument": true,
+    "params": [
+      {
+        "name": "deps",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "defaults",
+        "optional": true,
+        "types": [
+          "{}"
+        ],
+        "defaultRaw": {},
+        "defaultValue": "{}"
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 5,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "lib/components/drillGrid.js",
+    "memberof": null,
+    "longname": "lib/components/drillGrid.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import { DrillGrid as Core, factories } from 'gridiron-core'\r\nimport coreGrid from './coreGrid'\r\nimport expander from './expander'\r\nconst should = require('chai').should()\r\n\r\nexport default function drillGrid (deps) {\r\n  const { React, Immutable, connect } = deps\r\n  const { Component, PropTypes } = React\r\n\r\n  const CoreGrid = coreGrid(deps)\r\n  const { header } = factories(deps)\r\n  const Expander = expander(deps)\r\n\r\n\r\n  return class DrillGrid extends Component {\r\n    static propTypes = Core.PropTypes(React);\r\n    static defaultProps = Core.DefaultProps(React);\r\n    constructor(props) {\r\n      super(props)\r\n      this.state = { drilledRows: [] }\r\n    }\r\n    render() {\r\n      const { styles, theme, mapCols, mapRows, mapDrill, ...rest } = this.props\r\n      const { drilledRows } = this.state\r\n      const onToggleExpand = index => {\r\n        let newDrilledRows = drilledRows.includes(index) ? drilledRows.filter(x => x !== index) : [ ...drilledRows, index ]\r\n        newDrilledRows.sort()\r\n        this.setState({ drilledRows: newDrilledRows })\r\n      }\r\n\r\n\r\n      let spannedRows = []\r\n      const _mapCols = state => {\r\n        const { Header, createSub } = header()\r\n        return  [ { id: 'expander'\r\n                  , header: () => <Header theme={theme}><Expander visible={false} /></Header>\r\n                  , footer: () => <Expander visible={false} />\r\n                  , width: 35\r\n                  , className: styles.minimal\r\n                  }\r\n                , ...mapCols(state)\r\n                ]\r\n      }\r\n      const _mapRows = state => {\r\n        const coreRows = mapRows(state)\r\n        return coreRows.reduce((rows, x, i) => {\r\n          if(this.state.drilledRows.includes(i)) {\r\n            return  [ ...rows\r\n                    , { id: x.id\r\n                      , render: () => [ <Expander expanded={true} handleExpand={() => onToggleExpand(i)} theme={theme} />\r\n                                      , ...x.render()\r\n                                      ]\r\n                      }\r\n                    , { id: `${x.id}_span`\r\n                      , span: true\r\n                      , render: () => mapDrill(state, x.id)\r\n                      }\r\n                    ]\r\n          }\r\n          return  [ ...rows\r\n                  , { id: x.id\r\n                    , render: () => [ <Expander expanded={false} handleExpand={() => onToggleExpand(i)} theme={theme} />\r\n                                    , ...x.render()\r\n                                    ]\r\n                    }\r\n                  ]\r\n        }, [])\r\n      }\r\n\r\n\r\n      return (\r\n          <CoreGrid\r\n            {...rest}\r\n            styles={styles}\r\n            theme={theme}\r\n            mapCols={_mapCols}\r\n            mapRows={_mapRows}\r\n          />\r\n      )\r\n    }\r\n  }\r\n}\r\n"
+  },
+  {
+    "__docId__": 6,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "should",
+    "memberof": "lib/components/drillGrid.js",
+    "longname": "lib/components/drillGrid.js~should",
+    "access": null,
+    "export": false,
+    "importPath": "gridiron/lib/components/drillGrid.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 4,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 7,
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "drillGrid",
+    "memberof": "lib/components/drillGrid.js",
+    "longname": "lib/components/drillGrid.js~drillGrid",
+    "access": null,
+    "export": true,
+    "importPath": "gridiron/lib/components/drillGrid.js",
+    "importStyle": "drillGrid",
+    "description": null,
+    "lineNumber": 6,
+    "undocument": true,
+    "params": [
+      {
+        "name": "deps",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 8,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "lib/components/expander.js",
+    "memberof": null,
+    "longname": "lib/components/expander.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import classNames from 'classnames'\r\nimport { Expander as Core } from 'gridiron-core'\r\nconst should = require('chai').should()\r\n\r\nexport default ({ React }) => {\r\n  const wrapStyle = { display: 'flex'\r\n                    , flexDirection: 'row'\r\n                    , flexWrap: 'nowrap'\r\n                    , flexGrow: 1\r\n                    , alignItems: 'center'\r\n                    , justifyContent: 'space-around'\r\n                    }\r\n  const expanderButtonStyle = { border: 0\r\n                              , backgroundColor: 'transparent'\r\n                              , cursor: 'pointer'\r\n                              }\r\n\r\n  const Expander = props => (\r\n    <span style={wrapStyle}>\r\n      {props.visible ? (\r\n        <span>\r\n          <button style={expanderButtonStyle} onClick={props.handleExpand}>\r\n            <i className={classNames(`fa fa-${(props.expanded ? 'minus' : 'plus')}-square`, props.theme.expander)} />\r\n          </button>\r\n        </span>\r\n      ) : null}\r\n    </span>\r\n  )\r\n  Expander.propTypes = Core.PropTypes(React)\r\n  Expander.defaultProps = Core.DefaultProps(React)\r\n  return Expander\r\n}\r\n"
+  },
+  {
+    "__docId__": 9,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "should",
+    "memberof": "lib/components/expander.js",
+    "longname": "lib/components/expander.js~should",
+    "access": null,
+    "export": false,
+    "importPath": "gridiron/lib/components/expander.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 3,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 10,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "lib/components/footer.js",
+    "memberof": null,
+    "longname": "lib/components/footer.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import { Footer as Core } from 'gridiron-core'\r\nconst should = require('chai').should()\r\n\r\nexport default ({ React }) => {\r\n  const wrapStyle = { display: 'flex'\r\n                    , flexDirection: 'row'\r\n                    , flexWrap: 'nowrap'\r\n                    , flexGrow: 1\r\n                    , alignItems: 'center'\r\n                    , justifyContent: 'space-between'\r\n                    }\r\n  const footerButtonStyle = { border: 0\r\n                            , backgroundColor: 'transparent'\r\n                            }\r\n\r\n  const Footer = props => (\r\n    <span style={wrapStyle} className={props.theme.footer}>\r\n      {props.children}\r\n    </span>\r\n  )\r\n  Footer.propTypes = Core.PropTypes(React)\r\n  Footer.defaultProps = Core.DefaultProps(React)\r\n  return Footer\r\n}\r\n"
+  },
+  {
+    "__docId__": 11,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "should",
+    "memberof": "lib/components/footer.js",
+    "longname": "lib/components/footer.js~should",
+    "access": null,
+    "export": false,
+    "importPath": "gridiron/lib/components/footer.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 2,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 12,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "lib/components/index.js",
+    "memberof": null,
+    "longname": "lib/components/index.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "export { default as coreGrid } from './coreGrid'\r\nexport { default as drillGrid } from './drillGrid'\r\nexport { default as footer } from './footer'\r\nexport { default as expander } from './expander'\r\nexport { default as settings } from './settings'\r\n"
+  },
+  {
+    "__docId__": 13,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "lib/components/settings.js",
+    "memberof": null,
+    "longname": "lib/components/settings.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import { Settings as Core } from 'gridiron-core'\r\nimport classNames from 'classnames'\r\nconst should = require('chai').should()\r\n\r\n\r\nexport default ({ React, Select }) => {\r\n  const { Component } = React\r\n\r\n  return class Settings extends Component {\r\n    static propTypes = Core.PropTypes(React);\r\n    static defaultProps = Core.DefaultProps(React);\r\n    render() {\r\n      return (\r\n        <div>\r\n        </div>\r\n      )\r\n    }\r\n  }\r\n}\r\n"
+  },
+  {
+    "__docId__": 14,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "should",
+    "memberof": "lib/components/settings.js",
+    "longname": "lib/components/settings.js~should",
+    "access": null,
+    "export": false,
+    "importPath": "gridiron/lib/components/settings.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 3,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 15,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "lib/index.js",
+    "memberof": null,
+    "longname": "lib/index.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import * as components from './components'\r\n\r\nconst applyCapitalization = str => str.length <= 2 ? str.toUpperCase() : `${str[0].toUpperCase()}${str.slice(1)}`\r\n\r\n/**\r\n * gridiron\r\n * Requires dependencies { React } and returns a decorated component.\r\n */\r\nexport default function gridiron(deps, defaults) {\r\n  return Object.keys(components).reduce((libs, x) => ({ ...libs, [applyCapitalization(x)]: components[x](deps, defaults) }), {})\r\n}\r\n"
+  },
+  {
+    "__docId__": 16,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "applyCapitalization",
+    "memberof": "lib/index.js",
+    "longname": "lib/index.js~applyCapitalization",
+    "access": null,
+    "export": false,
+    "importPath": "gridiron",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 3,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 17,
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "gridiron",
+    "memberof": "lib/index.js",
+    "longname": "lib/index.js~gridiron",
+    "access": null,
+    "export": true,
+    "importPath": "gridiron",
+    "importStyle": "gridiron",
+    "description": "gridiron\nRequires dependencies { React } and returns a decorated component.",
+    "lineNumber": 9,
+    "params": [
+      {
+        "name": "deps",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "defaults",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 19,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Infinity",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Infinity",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 20,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "NaN",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~NaN",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 21,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "undefined",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~undefined",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 22,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "null",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~null",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 23,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Object",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Object",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 24,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "object",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~object",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 25,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Function",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Function",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 26,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "function",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~function",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 27,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Boolean",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Boolean",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 28,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "boolean",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~boolean",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 29,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Symbol",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Symbol",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 30,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Error",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Error",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 31,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "EvalError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/EvalError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~EvalError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 32,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "InternalError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/InternalError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~InternalError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 33,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "RangeError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RangeError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~RangeError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 34,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "ReferenceError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~ReferenceError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 35,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "SyntaxError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~SyntaxError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 36,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "TypeError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~TypeError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 37,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "URIError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/URIError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~URIError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 38,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Number",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Number",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 39,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "number",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~number",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 40,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Date",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Date",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 41,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "String",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~String",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 42,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "string",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~string",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 43,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "RegExp",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~RegExp",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 44,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 45,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Int8Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int8Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Int8Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 46,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Uint8Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint8Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 47,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Uint8ClampedArray",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8ClampedArray",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint8ClampedArray",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 48,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Int16Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int16Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Int16Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 49,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Uint16Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint16Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint16Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 50,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Int32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int32Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Int32Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 51,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Uint32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint32Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 52,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Float32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Float32Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 53,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Float64Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float64Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Float64Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 54,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Map",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Map",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 55,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Set",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Set",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 56,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "WeakMap",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~WeakMap",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 57,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "WeakSet",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~WeakSet",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 58,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "ArrayBuffer",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~ArrayBuffer",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 59,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "DataView",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~DataView",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 60,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "JSON",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~JSON",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 61,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Promise",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Promise",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 62,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Generator",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Generator",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 63,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "GeneratorFunction",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~GeneratorFunction",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 64,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Reflect",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Reflect",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 65,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Proxy",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Proxy",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 67,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "CanvasRenderingContext2D",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~CanvasRenderingContext2D",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 68,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "DocumentFragment",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~DocumentFragment",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 69,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Element",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Element",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~Element",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 70,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Event",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Event",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~Event",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 71,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Node",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Node",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~Node",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 72,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "NodeList",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/NodeList",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~NodeList",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 73,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "XMLHttpRequest",
+    "externalLink": "https://developer.mozilla.org/en/docs/Web/API/XMLHttpRequest",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~XMLHttpRequest",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 74,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "AudioContext",
+    "externalLink": "https://developer.mozilla.org/en/docs/Web/API/AudioContext",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~AudioContext",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  }
+]
