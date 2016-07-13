@@ -3,7 +3,6 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.deserialize = deserialize;
 exports.default = tryDefer;
 exports.browserDefer = browserDefer;
 exports.dateDefer = dateDefer;
@@ -16,25 +15,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-function deserialize() {
-  if (!window) throw new Error('DESERIALIZE MUST BE RUN ON CLIENT');
-  if (window.__defer) {
-    return window.__defer.map(function (x) {
-      return x(tryDefer);
-    });
-  }
-}
-
 function tryDefer(condition) {
   var _ref = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
   var _ref$tracing = _ref.tracing;
   var tracing = _ref$tracing === undefined ? false : _ref$tracing;
-  var hydrate = arguments[2];
 
-  var _queue = hydrate ? hydrate._queue : [];
-  var _errors = hydrate ? hydrate._errors : [];
-  var _attempts = hydrate ? hydrate._attempts : 0;
+  var _queue = [];
+  var _errors = [];
+  var _attempts = 0;
 
   function _execute(_ref2) {
     var fn = _ref2.fn;
@@ -68,13 +57,36 @@ function tryDefer(condition) {
 
   function replay() {
     var hard = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
+    var drain = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
 
     var queue = _queue;
-    _queue = [];
+    if (drain) _queue = [];
     var output = [];
-    while (queue.length > 0) {
-      output.push(_execute(queue.shift(), hard));
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+      for (var _iterator = queue[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        var queued = _step.value;
+
+        output.push(_execute(queued, hard));
+      }
+    } catch (err) {
+      _didIteratorError = true;
+      _iteratorError = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion && _iterator.return) {
+          _iterator.return();
+        }
+      } finally {
+        if (_didIteratorError) {
+          throw _iteratorError;
+        }
+      }
     }
+
     return output;
   }
 
@@ -99,7 +111,7 @@ function tryDefer(condition) {
 
       return _execute({ fn: fn, args: args });
     };
-  }, { status: status, replay: replay, serialize: serialize, deserialize: deserialize, reactReplay: reactReplay }];
+  }, { status: status, replay: replay, serialize: serialize, reactReplay: reactReplay }];
 }
 
 /** Only execute on browser. */
@@ -127,14 +139,10 @@ function dateDefer(_ref4) {
   return tryDefer(function dateCondition() {
     var now = Date.now();
     if (after) {
-      if (now <= (typeof after === 'function' ? after() : after)) {
-        return false;
-      }
+      if (now <= (typeof after === 'function' ? after() : after)) return false;
     }
     if (before) {
-      if (now >= (typeof before === 'function' ? before() : before)) {
-        return false;
-      }
+      if (now >= (typeof before === 'function' ? before() : before)) return false;
     }
     return true;
   }, { tracing: tracing });

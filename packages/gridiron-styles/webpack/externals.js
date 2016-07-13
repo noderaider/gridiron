@@ -7,6 +7,7 @@ Object.defineProperty(exports, "__esModule", {
 var _config = require('../config');
 
 exports.default = function (name) {
+
   /*
   switch(name) {
     case 'server':

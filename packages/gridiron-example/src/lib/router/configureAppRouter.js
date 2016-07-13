@@ -1,4 +1,4 @@
-import { assert } from 'chai'
+import Promise from 'promise'
 import Immutable from 'immutable'
 import Router from 'router'
 import serveFile from 'serve-file'
@@ -23,10 +23,25 @@ import { deauthorized, hydrateIdentity } from '../redux/actions/identity'
 import minify from '../services/minify'
 import logging from '../services/logging'
 import { removeLegacyCookies } from '../services/persistence'
-import configureStore from '../redux/store/configureStore.js'
+import configureStore from '../redux/store/configureStore'
 import routes from '../app/routes'
 import util from 'util'
-import { reactStyles, serializeStyles } from 'universal-styles'
+import { reactStyles, serializeStyles, RoutingError } from 'universal-styles'
+
+import postcss from 'postcss'
+import postcssUrl from 'postcss-url'
+import postcssCssnext from 'postcss-cssnext'
+import cssnano from 'cssnano'
+
+const cssProcessor = postcss([ postcssUrl({ url: 'inline'
+                                          , assetsPath: '../images'
+                                          })
+                            , postcssCssnext()
+                            , cssnano()
+                            ])
+function processCSS(css) {
+  return cssProcessor.process(css).then(x => x.css)
+}
 
 const BodyInit = ({ theme }) => {
   const { style } = theme
@@ -46,20 +61,6 @@ const BodyInit = ({ theme }) => {
 
 const InitialState = createInitialState({ React, Immutable })
 
-const HTML = ({ content, state, theme, head }) => {
-  return (
-    <html lang="en">
-    {head}
-    <body>
-      <BodyInit theme={theme} />
-      {server.flags.render ? <InitialState globalKey={packageKey} state={state} serialize={serialize} /> : null}
-      {server.flags.render ? <div id="root" dangerouslySetInnerHTML={{ __html: content }}/> : <div id="root" />}
-      <script src="/assets/app.js" />
-    </body>
-    </html>
-  )
-}
-
 const MiddlewareError = ({ error }) => {
   return (
     <div>
@@ -70,14 +71,11 @@ const MiddlewareError = ({ error }) => {
 }
 
 
-const renderHTML = props => `<!doctype html>
-${renderToStaticMarkup(<HTML {...props} />)}`
-
 export default function configureAppRouter({ cors, paths }) {
   const { SRC_ROOT, APP_ROOT, LIB_ROOT, STATIC_ROOT, ASSETS_ROOT } = paths
-  const universalMiddleware = reactStyles(React)
+  const universalMiddleware = reactStyles(React, { processCSS })
 
-  return universalMiddleware((req, res) => {
+  return universalMiddleware(req => new Promise((resolve, reject) => {
     const memoryHistory = createMemoryHistory(req.path)
     let store = configureStore(memoryHistory)
     const history = syncHistoryWithStore(memoryHistory, store)
@@ -85,125 +83,73 @@ export default function configureAppRouter({ cors, paths }) {
           , routes
           , location: req.url
           }, (error, redirectLocation, renderProps) => {
-    const renderBody = () => {
-      if (error)
-        return res.status(500).send(error.message)
-      else if (redirectLocation)
-        return res.redirect(302, redirectLocation.pathname + redirectLocation.search)
-      else if (renderProps) {
-        const state = store.getState()
-        const theme = getThemeForUrl(state.visual.theme, req.url)
-        const appMarkup = server.flags.render ? renderToString(<Provider store={store}><RouterContext {...renderProps} /></Provider>)
-                                              : null
-        return (
-          <body>
-            {server.flags.render ? <InitialState globalKey={packageKey} state={state} serialize={serialize} /> : null}
-            {server.flags.render ? <div id="root" dangerouslySetInnerHTML={{ __html: appMarkup }}/> : <div id="root" />}
-            <script src="/assets/app.js" />
-          </body>
-        )
-      } else {
-        return false
-      }
-    }
-
-    const renderHead = styles => {
-      const title = `gridiron-example${IS_HOT ? ' is so hot right now...' : (IS_DEV ? ' is so dev right now...' : '')}`
-      const items = [ <meta charSet="utf-8" />
-                    , <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                    , <title>{title}</title>
-                    , <link rel="icon" href={faviconUrl} type="image/x-icon" />
-                    , ...styles
-                    , <link rel="stylesheet" href="/assets/app.css" type="text/css" />
-                    , <script dangerouslySetInnerHTML={{ __html: `(function(d) {
-                        var config = { kitId: 'xsj1dhs', scriptTimeout: 3000, async: true },
-                        h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
-                        })(document)
-                        ` }} />
-                    , <script src="/assets/polyfill.js" />
-                    , <script src="/assets/vendor.js" />
-                    , <script src="/assets/commons.js" />
-                    ]
-      return <head>{items.map((x, i) => React.cloneElement(x, { key: i }))}</head>
-    }
-
-    const renderPage = ({ head, body }) => `<!doctype html>\n${renderToStaticMarkup(<html>{head}{body}</html>)}`
-    return { renderBody, renderHead, renderPage }
-  })
-    })
-
-
-
-/*
-  return universalMiddleware({ })
-  let router = Router()
-  router.use((req, res, next) => {
-    try {
-      const memoryHistory = createMemoryHistory(req.path)
-      let store = configureStore(memoryHistory)
-      const history = syncHistoryWithStore(memoryHistory, store)
-
-      match({ history, routes, location: req.url }, (error, redirectLocation, renderProps) => {
-        if (error)
-          return res.status(500).send(error.message)
-        else if (redirectLocation)
-          return res.redirect(302, redirectLocation.pathname + redirectLocation.search)
-        else if (renderProps) {
+      const renderBody = () => {
+        if (error) {
+          return reject(new RoutingError( { status: 500
+                                          , statusMessage: 'Body rendering error occurred.'
+                                          , error
+                                          } ))
+        } else if (redirectLocation) {
+          return reject(new RoutingError( { status: 302
+                                          , redirect: redirectLocation.pathname + redirectLocation.search
+                                          } ))
+        } else if (renderProps) {
           const state = store.getState()
           const theme = getThemeForUrl(state.visual.theme, req.url)
-          const title = `gridiron-example${IS_HOT ? ' is so hot right now...' : (IS_DEV ? ' is so dev right now...' : '')}`
-          if(server.flags.render) {
-            const content = renderToString(<Provider store={store}><RouterContext {...renderProps} /></Provider>)
-            const headItems = (
-              [ <meta charSet="utf-8" />
-              , <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-              , <title>{title}</title>
-              , <link rel="icon" href={faviconUrl} type="image/x-icon" />
-              , ...routeStyles(req, res)
-              , <link rel="stylesheet" href="/assets/app.css" type="text/css" />
-              , <script dangerouslySetInnerHTML={{ __html: `(function(d) {
-                  var config = { kitId: 'xsj1dhs', scriptTimeout: 3000, async: true },
-                  h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
-                  })(document)
-                  ` }} />
-              , <script src="/assets/polyfill.js" />
-              , <script src="/assets/vendor.js" />
-              , <script src="/assets/commons.js" />
-              ]
-            )
-            const head = <head>{headItems.map((x, i) => React.cloneElement(x, { key: i }))}</head>
-            const html = renderHTML({ content, state, theme, head })
-            return res.send(html)
-          } else {
-            const head = (
-              <head>
-                <meta charSet="utf-8" />
-                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                <title>{title}</title>
-                <link rel="icon" href={faviconUrl} type="image/x-icon" />
-                <link rel="stylesheet" href="/assets/app.css" type="text/css" />
-                <script dangerouslySetInnerHTML={{ __html: `(function(d) {
-                  var config = { kitId: 'xsj1dhs', scriptTimeout: 3000, async: true },
-                  h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
-                  })(document)
-                  ` }} />
-                <script src="/assets/polyfill.js" />
-                <script src="/assets/vendor.js" />
-                <script src="/assets/commons.js" />
-              </head>
-            )
-            const html = renderHTML({ theme, head })
-            return res.send(html)
-          }
+          const appMarkup = server.flags.render ? renderToString(<Provider store={store}><RouterContext {...renderProps} /></Provider>)
+                                                : null
+          return (
+            <body>
+              {server.flags.render ? <InitialState globalKey={packageKey} state={state} serialize={serialize} /> : null}
+              {server.flags.render ? <div id="root" dangerouslySetInnerHTML={{ __html: appMarkup }}/> : <div id="root" />}
+              <script src="/assets/app.js" />
+            </body>
+          )
         } else {
-          next()
+          reject(false)
         }
-      })
-    } catch(middlewareError) {
-      log.error(middlewareError, 'error occurred in App middleware, continuing...')
-      return res.status(500).send(`${util.inspect(middlewareError)} => ${util.inspect(global.__universal__)}`)
-    }
+      }
+
+      const renderHead = styles => {
+        const title = `gridiron-example${IS_HOT ? ' is so hot right now...' : (IS_DEV ? ' is so dev right now...' : '')}`
+        const items = [ <meta charSet="utf-8" />
+                      , <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                      , <title>{title}</title>
+                      , <link rel="icon" href={faviconUrl} type="image/x-icon" />
+                      , ...styles
+                      , <link rel="stylesheet" href="/assets/app.css" type="text/css" />
+                      , <script dangerouslySetInnerHTML={{ __html: `(function(d) {
+                          var config = { kitId: 'xsj1dhs', scriptTimeout: 3000, async: true },
+                          h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+                          })(document)
+                          ` }} />
+                      , <script src="/assets/polyfill.js" />
+                      , <script src="/assets/vendor.js" />
+                      , <script src="/assets/commons.js" />
+                      ]
+        return <head>{items.map((x, key) => React.cloneElement(x, { key }))}</head>
+      }
+
+      const renderPage = ({ head, body }) => `<!doctype html>\n${renderToStaticMarkup(<html>{head}{body}</html>)}`
+      return resolve({ renderBody, renderHead, renderPage })
+    })
+  }), (promise, res, next) => {
+        return promise
+          .then(page => res.send(page))
+          .catch(err => {
+            if(err === false) {
+              console.warn('appRouter: next triggered via false')
+              return next()
+            }
+            if(err instanceof RoutingError) {
+              console.warn('appRouter: RoutingError getting handled')
+              const { status, statusMessage, redirect, innerError } = err
+              if(status === 302)
+                return res.redirect(302, redirect)
+              return res.status(status).send(statusMessage)
+            } else {
+              return res.status(500).send(`An unknown error occurred: ${err.message || err}`)
+            }
+          })
   })
-  return router
-  */
 }

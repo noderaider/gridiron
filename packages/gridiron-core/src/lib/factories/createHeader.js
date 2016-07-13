@@ -2,14 +2,14 @@ import * as Core from '../Header'
 import reactPubSub from 'react-pub-sub'
 const should = require('chai').should()
 
-const sortDirection = value => {
-  switch(value) {
+function nextSort(sort) {
+  switch(sort.direction) {
     case 'asc':
-      return '-asc'
+      return { ...sort, direction: 'desc' }
     case 'desc':
-      return '-desc'
+      return { ...sort, direction: 'none' }
     default:
-      return ''
+      return { ...sort, direction: 'asc' }
   }
 }
 
@@ -35,11 +35,24 @@ export default function createHeader ({ React }) {
   const childrenStyle = { display: 'flex'
                         }
 
-
-
   const pubSub = reactPubSub({ React })
 
-  const desc =  { state: { checked: false }
+  const SortIcon = ({ direction }) => {
+    let sortClass = 'fa fa-sort'
+    if(direction === 'asc' || direction === 'desc')
+      sortClass += `-${direction}`
+
+    return <i className={sortClass} />
+  }
+
+
+  const desc =  { init() {
+                    const { checked, sort } = this.props
+                    this.state = { checked, sort }
+                  }
+                , _handleSort (e) {
+                    this.setState({ sort: nextSort(this.state.sort) })
+                  }
                 , _handleChecked (e) {
                     this.setState({ checked: e.target.checked })
                   }
@@ -55,12 +68,14 @@ export default function createHeader ({ React }) {
                     const { children
                           , styles
                           , theme
-                          , sort
                           , filter
                           , checkbox
                           , radio
                           } = this.props
-                    const { checked } = this.state
+
+                    const { checked
+                          , sort
+                          } = this.state
                     return (
                       <span style={wrapStyle} className={theme.header}>
                         <span style={leftStyle}>
@@ -75,8 +90,8 @@ export default function createHeader ({ React }) {
                         </span>
                         <span>
                           {sort ? (
-                            <button onClick={sort.handle}>
-                              <i className={`fa fa-sort${sortDirection(sort.direction)}`} />
+                            <button onClick={::this._handleSort}>
+                              <SortIcon {...sort} />
                             </button>
                           ) : null}
                           {filter ? (

@@ -1,19 +1,9 @@
 import serializeJS from 'serialize-javascript'
 
-export function deserialize() {
-  if(!window)
-    throw new Error('DESERIALIZE MUST BE RUN ON CLIENT')
-  if(window.__defer) {
-    return window.__defer.map(x => x(tryDefer))
-  }
-}
-
-
-export default function tryDefer (condition, { tracing = false } = {}, hydrate) {
-  let _queue = hydrate ? hydrate._queue : []
-  let _errors = hydrate ? hydrate._errors : []
-  let _attempts = hydrate ? hydrate._attempts : 0
-
+export default function tryDefer (condition, { tracing = false } = {}) {
+  let _queue = []
+  let _errors = []
+  let _attempts = 0
 
   function _execute ({ fn, args }, hard = false) {
     _attempts += 1
@@ -44,12 +34,13 @@ export default function tryDefer (condition, { tracing = false } = {}, hydrate) 
     return _status
   }
 
-  function replay (hard = false) {
+  function replay (hard = false, drain = true) {
     let queue = _queue
-    _queue = []
+    if(drain)
+      _queue = []
     let output = []
-    while(queue.length > 0) {
-      output.push(_execute(queue.shift(), hard))
+    for(let queued of queue) {
+      output.push(_execute(queued, hard))
     }
     return output
   }
@@ -79,7 +70,7 @@ export default function tryDefer (condition, { tracing = false } = {}, hydrate) 
 
   /** Returns a 2 item array of [ thunk, defer ] that wraps a function and functions for replaying in various scenarios. */
   return ([ fn => (...args) => _execute({ fn, args })
-          , { status, replay, serialize, deserialize, reactReplay }
+          , { status, replay, serialize, reactReplay }
           ])
 }
 
@@ -100,14 +91,12 @@ export function dateDefer({ after, before }, { tracing } = {}) {
   return tryDefer(function dateCondition () {
     const now = Date.now()
     if(after) {
-      if(now <= (typeof after === 'function' ? after() : after)) {
+      if(now <= (typeof after === 'function' ? after() : after))
         return false
-      }
     }
     if(before) {
-      if(now >= (typeof before === 'function' ? before() : before)) {
+      if(now >= (typeof before === 'function' ? before() : before))
         return false
-      }
     }
     return true
   }, { tracing })

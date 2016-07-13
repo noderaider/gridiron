@@ -3,6 +3,9 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 exports.default = createHeader;
 
 var _Header = require('../Header');
@@ -19,16 +22,16 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 var should = require('chai').should();
 
-var sortDirection = function sortDirection(value) {
-  switch (value) {
+function nextSort(sort) {
+  switch (sort.direction) {
     case 'asc':
-      return '-asc';
+      return _extends({}, sort, { direction: 'desc' });
     case 'desc':
-      return '-desc';
+      return _extends({}, sort, { direction: 'none' });
     default:
-      return '';
+      return _extends({}, sort, { direction: 'asc' });
   }
-};
+}
 
 function createHeader(_ref) {
   var React = _ref.React;
@@ -57,13 +60,32 @@ function createHeader(_ref) {
 
   var pubSub = (0, _reactPubSub2.default)({ React: React });
 
-  var desc = { state: { checked: false },
+  var SortIcon = function SortIcon(_ref2) {
+    var direction = _ref2.direction;
+
+    var sortClass = 'fa fa-sort';
+    if (direction === 'asc' || direction === 'desc') sortClass += '-' + direction;
+
+    return React.createElement('i', { className: sortClass });
+  };
+
+  var desc = {
+    init: function init() {
+      var _props = this.props;
+      var checked = _props.checked;
+      var sort = _props.sort;
+
+      this.state = { checked: checked, sort: sort };
+    },
+    _handleSort: function _handleSort(e) {
+      this.setState({ sort: nextSort(this.state.sort) });
+    },
     _handleChecked: function _handleChecked(e) {
       this.setState({ checked: e.target.checked });
     },
-    reset: function reset(_ref2, cb) {
-      var props = _ref2.props;
-      var state = _ref2.state;
+    reset: function reset(_ref3, cb) {
+      var props = _ref3.props;
+      var state = _ref3.state;
 
       if (state && state.checked === false) {
         this.setState({ checked: false }, cb);
@@ -72,15 +94,16 @@ function createHeader(_ref) {
     propTypes: Core.PropTypes(React),
     defaultProps: Core.DefaultProps(React),
     render: function render() {
-      var _props = this.props;
-      var children = _props.children;
-      var styles = _props.styles;
-      var theme = _props.theme;
-      var sort = _props.sort;
-      var filter = _props.filter;
-      var checkbox = _props.checkbox;
-      var radio = _props.radio;
-      var checked = this.state.checked;
+      var _props2 = this.props;
+      var children = _props2.children;
+      var styles = _props2.styles;
+      var theme = _props2.theme;
+      var filter = _props2.filter;
+      var checkbox = _props2.checkbox;
+      var radio = _props2.radio;
+      var _state = this.state;
+      var checked = _state.checked;
+      var sort = _state.sort;
 
       return React.createElement(
         'span',
@@ -110,8 +133,8 @@ function createHeader(_ref) {
           null,
           sort ? React.createElement(
             'button',
-            { onClick: sort.handle },
-            React.createElement('i', { className: 'fa fa-sort' + sortDirection(sort.direction) })
+            { onClick: this._handleSort.bind(this) },
+            React.createElement(SortIcon, sort)
           ) : null,
           filter ? React.createElement(
             'button',
@@ -121,10 +144,10 @@ function createHeader(_ref) {
           radio ? React.createElement(
             'span',
             null,
-            radio.values.map(function (_ref3, i) {
-              var value = _ref3.value;
-              var _ref3$checked = _ref3.checked;
-              var checked = _ref3$checked === undefined ? false : _ref3$checked;
+            radio.values.map(function (_ref4, i) {
+              var value = _ref4.value;
+              var _ref4$checked = _ref4.checked;
+              var checked = _ref4$checked === undefined ? false : _ref4$checked;
               return React.createElement('input', { key: i, type: 'radio', name: radio.name, value: value, checked: checked });
             })
           ) : null

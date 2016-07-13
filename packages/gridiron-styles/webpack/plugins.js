@@ -43,22 +43,23 @@ exports.default = function (name) {
       plugins.push(new CommonsChunkPlugin('commons', 'commons.js'))
     */
 
-  if (name === 'app' && IS_HOT) {}
-  //plugins.push(new HotModuleReplacementPlugin())
-  //plugins.push(new NoErrorsPlugin())
-  //plugins.push(new SourceMapDevToolPlugin('[file].map', null, '[absolute-resource-path]'))
+  if (name === 'app' && IS_HOT) {
+    //plugins.push(new HotModuleReplacementPlugin())
+    //plugins.push(new NoErrorsPlugin())
+    //plugins.push(new SourceMapDevToolPlugin('[file].map', null, '[absolute-resource-path]'))
+  }
 
-
-  //if(server.flags.minify) { //|| name === 'server') {
-  //plugins.push(new UglifyJsPlugin({ compress: { warnings: false } }))
-  //  plugins.push(new CompressionPlugin( { asset: 'gz/{file}'
-  //, algorithm: 'gzip'
-  //, regExp: /\.(js|css|html|json|ico|eot|otf|ttf)$/
-  //, threshold: 10240
-  //, minRatio: 0.8
-  //, minRatio: 100
-  //} ))
-  //}
+  if (false) {
+    //server.flags.minify) {
+    plugins.push(new UglifyJsPlugin({ compress: { warnings: false } }));
+    //  plugins.push(new CompressionPlugin( { asset: 'gz/{file}'
+    //, algorithm: 'gzip'
+    //, regExp: /\.(js|css|html|json|ico|eot|otf|ttf)$/
+    //, threshold: 10240
+    //, minRatio: 0.8
+    //, minRatio: 100
+    //} ))
+  }
   /*
   if(name === 'server') // Write out stats.json file to build directory.
     plugins.push(new StatsWriterPlugin({ transform: ({ assetsByChunkName }) => ({ main: assetsByChunkName.main[0], css: assetsByChunkName.main[1] }) }))

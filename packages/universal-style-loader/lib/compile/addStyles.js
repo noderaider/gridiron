@@ -140,9 +140,7 @@ exports.default = universalContext(function () {
   function removeStyleElement(styleElement) {
     styleElement.parentNode.removeChild(styleElement);
     var idx = styleElementsInsertedAtTop.indexOf(styleElement);
-    if (idx >= 0) {
-      styleElementsInsertedAtTop.splice(idx, 1);
-    }
+    if (idx >= 0) styleElementsInsertedAtTop.splice(idx, 1);
   }
 
   function createStyleElement(options) {
@@ -212,11 +210,7 @@ exports.default = universalContext(function () {
       var cssNode = document.createTextNode(css);
       var childNodes = styleElement.childNodes;
       if (childNodes[index]) styleElement.removeChild(childNodes[index]);
-      if (childNodes.length) {
-        styleElement.insertBefore(cssNode, childNodes[index]);
-      } else {
-        styleElement.appendChild(cssNode);
-      }
+      if (childNodes.length) styleElement.insertBefore(cssNode, childNodes[index]);else styleElement.appendChild(cssNode);
     }
   }
 
@@ -224,13 +218,9 @@ exports.default = universalContext(function () {
     var css = obj.css;
     var media = obj.media;
 
-    if (media) {
-      styleElement.setAttribute('media', media);
-    }
+    if (media) styleElement.setAttribute('media', media);
 
-    if (styleElement.styleSheet) {
-      styleElement.styleSheet.cssText = css;
-    } else {
+    if (styleElement.styleSheet) styleElement.styleSheet.cssText = css;else {
       while (styleElement.firstChild) {
         styleElement.removeChild(styleElement.firstChild);
       }
@@ -248,11 +238,8 @@ exports.default = universalContext(function () {
     }
 
     var blob = new Blob([css], { type: 'text/css' });
-
     var oldSrc = linkElement.href;
-
     linkElement.href = URL.createObjectURL(blob);
-
     if (oldSrc) URL.revokeObjectURL(oldSrc);
   }
 

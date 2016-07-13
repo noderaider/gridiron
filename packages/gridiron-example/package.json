@@ -86,6 +86,7 @@
     "compression-webpack-plugin": "0.2.0",
     "contextual": "*",
     "cookie-parser": "^1.4.3",
+    "cssnano": "^3.7.3",
     "domready": "^1.0.8",
     "es5-shim": "^4.5.8",
     "eventemitter3": "^1.2.0",

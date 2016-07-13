@@ -8,7 +8,6 @@
 
 const universalContext = universalStyles()
 export default universalContext(function (...args) {
-
   function memoize (fn) {
     let cache = {}
     return (...args) => {
@@ -18,14 +17,12 @@ export default universalContext(function (...args) {
     }
   }
 
-
   const isOldIE = memoize(() => /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase()))
   const getHeadElement = memoize(() => document.head || document.getElementsByTagName('head')[0])
   let stylesInDOM = {}
   let singletonElement = null
   let singletonCounter = 0
   let styleElementsInsertedAtTop = []
-
 
   function addStyles (list, options) {
     options = options || {}
@@ -124,9 +121,8 @@ export default universalContext(function (...args) {
   function removeStyleElement(styleElement) {
     styleElement.parentNode.removeChild(styleElement)
     var idx = styleElementsInsertedAtTop.indexOf(styleElement)
-    if(idx >= 0) {
+    if(idx >= 0)
       styleElementsInsertedAtTop.splice(idx, 1)
-    }
   }
 
   function createStyleElement(options) {
@@ -203,11 +199,10 @@ export default universalContext(function (...args) {
       var cssNode = document.createTextNode(css)
       var childNodes = styleElement.childNodes
       if (childNodes[index]) styleElement.removeChild(childNodes[index])
-      if (childNodes.length) {
+      if (childNodes.length)
         styleElement.insertBefore(cssNode, childNodes[index])
-      } else {
+      else
         styleElement.appendChild(cssNode)
-      }
     }
   }
 
@@ -215,13 +210,12 @@ export default universalContext(function (...args) {
     var css = obj.css
     var media = obj.media
 
-    if(media) {
+    if(media)
       styleElement.setAttribute('media', media)
-    }
 
-    if(styleElement.styleSheet) {
+    if(styleElement.styleSheet)
       styleElement.styleSheet.cssText = css
-    } else {
+    else {
       while(styleElement.firstChild) {
         styleElement.removeChild(styleElement.firstChild)
       }
@@ -239,11 +233,8 @@ export default universalContext(function (...args) {
     }
 
     var blob = new Blob([ css ], { type: 'text/css' })
-
     var oldSrc = linkElement.href
-
     linkElement.href = URL.createObjectURL(blob)
-
     if(oldSrc)
       URL.revokeObjectURL(oldSrc)
   }

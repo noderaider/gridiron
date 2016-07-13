@@ -11,15 +11,12 @@ import { factories } from 'gridiron-core'
 import reactPre from 'react-pre'
 import util from 'util'
 
-
 import reduxPager from 'redux-pager'
 import reduxPagerStyles from './css/redux-pager.css' // 'redux-pager/lib/styles.css'
-
 
 import styles from 'gridiron-styles'
 import sandy from './css/theme/sandy.css'
 import black from './css/theme/black.css'
-
 
 const should = require('chai').should()
 
@@ -29,19 +26,17 @@ const { Grid, AutoSizer } = gridironReact({ React, shallowCompare })
 const { CoreGrid, DrillGrid, Footer, Expander } = gridiron({ React, ReactDOM, Grid, AutoSizer, connect, Immutable })
 const { Pre, Arrows } = reactPre({ React })
 
-
-
 function createContext() {
   const headers = [ header(), header() ]
 
-  const mapCols = state => {
+  const createColMapper = sort => state => {
     return  [ { id: 'id'
               , header: ({ theme }) => {
                   const { Header } = headers[0]
                   return (
                     <Header
                       checkbox={{ value: 'header_checkbox' }}
-                      sort={{}}
+                      sort={sort.filter(x.id === 'id')}
                       filter={{}}
                       styles={styles}
                     >
@@ -57,7 +52,7 @@ function createContext() {
               , header: ({ theme }) => {
                   const { Header } = headers[1]
                   return (
-                    <Header sort={{}} filter={{}} theme={theme} styles={styles}>
+                    <Header sort={sort.filter(x.id === 'key')} filter={{}} theme={theme} styles={styles}>
                       State
                     </Header>
                   )
@@ -92,7 +87,6 @@ function createContext() {
 
   const Cell = headers[0].createSub(cell)
 
-
   const createRowMapper = ({ ids = [] } = {}) => (state, { rows } = {}) => {
     const selectedState = ids.reduce((s, x) => s[x], state)
 
@@ -101,23 +95,20 @@ function createContext() {
       return  [ ...rows
               , { id
                 , render: () => [ (
-
                     <Cell><Arrows>{id}</Arrows></Cell>
                   ), <Pre>{selectedState[x]}</Pre> ]
                 }
               ]
     }, [])
   }
-
-  return { mapCols, createRowMapper }
+  return { createColMapper, createRowMapper }
 }
-
 
 export default class Gridiron extends Component {
   render() {
     const { container } = this.props
     const ReduxGridDetail = detailProps => {
-      const { mapCols, createRowMapper } = createContext()
+      const { createColMapper, createRowMapper } = createContext()
       return container(({ Controls, Box, isMaximized, id, actions }) => (
           <Pager maxRecords={5} mapRows={createRowMapper({ ids: detailProps.ids })} theme={black}>
           {pager => (
@@ -125,7 +116,7 @@ export default class Gridiron extends Component {
               <DrillGrid
                 styles={styles}
                 theme={black}
-                mapCols={mapCols}
+                mapCols={createColMapper(pager.status.sort)}
                 mapRows={() => pager.rows}
                 mapDrill={(state, parentId) => <ReduxGridDetail ids={parentId} />}
                 header={
@@ -162,7 +153,7 @@ export default class Gridiron extends Component {
             <DrillGrid
                 styles={styles}
                 theme={sandy}
-                mapCols={mapCols}
+                mapCols={createColMapper(pager.status.sort)}
                 mapRows={() => pager.rows}
                 mapDrill={(state, parentId) => <ReduxGridDetail ids={parentId} />}
                 header={

@@ -1,25 +1,28 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-/**
- * PropTypes factory for <Header /> components.
- */
+
+
+/** PropTypes factory for <Header /> components. */
 var PropTypes = exports.PropTypes = function PropTypes(React) {
-  return { theme: React.PropTypes.object.isRequired,
-    styles: React.PropTypes.object.isRequired,
-    sort: React.PropTypes.object,
-    filter: React.PropTypes.object,
-    checkbox: React.PropTypes.object,
-    radio: React.PropTypes.object
+  var Types = React.PropTypes;
+
+  var sortShape = { direction: Types.oneOf(['asc', 'desc'])
+  };
+
+  return { theme: Types.object.isRequired,
+    styles: Types.object.isRequired,
+    sort: Types.shape(sortShape),
+    filter: Types.object,
+    checkbox: Types.object,
+    radio: Types.object
   };
 };
 
-/**
- * DefaultProps factory for <Header/> components.
- */
-var DefaultProps = exports.DefaultProps = function DefaultProps(React) {
+/** DefaultProps factory for <Header/> components. */
+var DefaultProps = exports.DefaultProps = function DefaultProps() {
   return { theme: {},
     styles: {}
   };

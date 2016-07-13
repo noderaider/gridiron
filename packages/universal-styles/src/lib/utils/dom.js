@@ -1,4 +1,4 @@
-export function createDOM(req, res) {
+export function createDOM(req) {
   const userAgent = req.headers['user-agent']
   const navigator = { userAgent }
 
@@ -90,9 +90,10 @@ export function removeDOM () {
 }
 
 export function createDOMContext (fn) {
-  return function execute (req, res) {
-    createDOM(req, res)
+  return function execute (req) {
+    createDOM(req)
     let result = fn()
-    return { result, dom: removeDOM() }
+    const dom = removeDOM()
+    return { result, dom }
   }
 }

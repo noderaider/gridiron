@@ -20,10 +20,11 @@ var wrap = (0, _wrapper2.default)('universal-style-loader/lib/url.js'); /**
 
 module.exports = function () {};
 module.exports.pitch = function pitchUrl(remainingRequest) {
+  console.info('universal-style-loader: pitchUrl()');
   this.cacheable && this.cacheable();
 
   var addStyleUrlsPath = _path2.default.join(__dirname, 'compile', 'addStyleUrls.js');
   var addStyleUrls = 'require(' + JSON.stringify('!' + addStyleUrlsPath) + ').default';
 
-  return wrap('\n/** Adds a <link> tag to the DOM with a reference to a css file. */\nvar update = ' + addStyleUrls + '( require(' + (0, _loaderUtils.stringifyRequest)(this, '!!' + remainingRequest) + ') );\n\n/** Hot Module Replacement */\nif(module.hot) {\n  module.hot.accept(' + (0, _loaderUtils.stringifyRequest)(this, '!!' + remainingRequest) + ', function() {\n    update(require(' + (0, _loaderUtils.stringifyRequest)(this, '!!' + remainingRequest) + '));\n  });\n  module.hot.dispose(function() { update(); });\n}', 'pitchUrl');
+  return wrap('\nconsole.info(\'universal-style-loader: pitchUrl() (COMPILED)\')\n/** Adds a <link> tag to the DOM with a reference to a css file. */\nvar update = ' + addStyleUrls + '( require(' + (0, _loaderUtils.stringifyRequest)(this, '!!' + remainingRequest) + ') );\n\n/** Hot Module Replacement */\nif(module.hot) {\n  module.hot.accept(' + (0, _loaderUtils.stringifyRequest)(this, '!!' + remainingRequest) + ', function() {\n    console.info(\'universal-style-loader: pitchUrl() (COMPILED) (HOT)\')\n    update(require(' + (0, _loaderUtils.stringifyRequest)(this, '!!' + remainingRequest) + '));\n  });\n  module.hot.dispose(function() { update(); });\n}', 'pitchUrl');
 };

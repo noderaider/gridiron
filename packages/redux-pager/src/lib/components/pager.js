@@ -2,12 +2,23 @@ import classNames from 'classnames'
 import solvent from 'solvent'
 const should = require('chai').should()
 
+function nextSort(sort) {
+  switch(sort.direction) {
+    case 'asc':
+      return { ...sort, direction: 'desc' }
+    case 'desc':
+      return { ...sort, direction: null }
+    default:
+      return { ...sort, direction: 'asc' }
+  }
+}
+
 export default function pager (deps = {}, defaults = {}) {
   const { React, connect, shallowCompare } = solvent({ React: 'object', connect: 'function', shallowCompare: 'function' })(deps)
   const { Component, PropTypes } = React
 
   const PagerComponents = pagerProps => {
-    const { children, status, actions, content, styles, theme } = pagerProps
+    const { children, status, sort, actions, content, styles, theme } = pagerProps
     should.exist(status.page, 'page should exist')
     status.page.should.be.a('number', 'page must be a number')
 
@@ -87,6 +98,7 @@ export default function pager (deps = {}, defaults = {}) {
   const propTypes = { children: PropTypes.func.isRequired
                     , styles: PropTypes.object.isRequired
                     , theme: PropTypes.object.isRequired
+                    , sort: PropTypes.array.isRequired
                     , page: PropTypes.number.isRequired
                     , rowsPerPage: PropTypes.any.isRequired
                     , rowsPerPageOptions: PropTypes.arrayOf(PropTypes.any).isRequired
@@ -102,6 +114,8 @@ export default function pager (deps = {}, defaults = {}) {
                                   , select: 'pagerSelect'
                                   }
                         , theme:  { select: 'pagerSelect' }
+                        /** TODO: MAKE THIS DEFAULT AN ARRAY (COLUMN SORTS) */
+                        , sort: [ { id: '0', direction: 'asc' } ]
                         , page: 0
                         , rowsPerPage: 5
                         , rowsPerPageOptions: [ 1, 2, 3, 4, 5, 10, 25, 50, 100, 500, 1000, 'All' ]
@@ -127,9 +141,8 @@ export default function pager (deps = {}, defaults = {}) {
       super(props)
       this.state =  { page: props.page
                     , rowsPerPage: props.rowsPerPage
+                    , sort: props.sort
                     }
-
-      console.warn('NEW PAGER', this.state)
     }
     shouldComponentUpdate(nextProps, nextState) {
       return shallowCompare(this, nextProps, nextState)
@@ -140,7 +153,7 @@ export default function pager (deps = {}, defaults = {}) {
     }
     render() {
       const { mapRows, rowsPerPageOptions } = this.props
-      const { page, rowsPerPage } = this.state
+      const { page, rowsPerPage, sort } = this.state
 
       const mapStatus = state => {
         const rows = mapRows(state)
@@ -171,6 +184,7 @@ export default function pager (deps = {}, defaults = {}) {
                 , rowsPerPage
                 , rowsPerPageOptions
                 , totalRows: rows.size || rows.length
+                , sort
                 }
       }
 
@@ -184,7 +198,20 @@ export default function pager (deps = {}, defaults = {}) {
                         , fastForward: () => this.setState({ page: status.pages - 1 })
                         , select: x => this.setState({ page: x })
                         , rowsPerPage: x => this.setState({ rowsPerPage: x, page: typeof x === 'number' ? Math.floor(status.startIndex / x) : 0 })
+                        , sort: id => {
+                            let current = sort.filter(x => x.id === id)
+                            if(current.length > 0) {
+                              let remaining = sort.filter(x => x.id !== id)
+                              let newItem = nextSort(current)
+                              let newSort = newItem.direction ? [ newItem, ...remaining ] : remaining
+                              this.setState({ sort: newSort })
+                            } else {
+                              this.setState({ sort: [ nextSort({ id }), ...sort ] })
+                            }
+                          }
                         }
+
+        const sort = this.state.sort
 
         return  { actions
                 , status

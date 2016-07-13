@@ -4,7 +4,7 @@
   "flags": {
     "dev": true,
     "prod": false,
-    "minify": false,
+    "minify": true,
     "render": true
   },
   "cors": {

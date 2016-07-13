@@ -1,6 +1,7 @@
 import { dependencyNames } from '../config'
 
 export default name => {
+
   /*
   switch(name) {
     case 'server':
