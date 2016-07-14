@@ -1,6 +1,6 @@
 {
   "name": "redux-pager",
-  "version": "0.10.0",
+  "version": "0.10.1",
   "description": "Lightweight composable Redux pagination component.",
   "main": "lib/index.js",
   "files": [
@@ -45,7 +45,7 @@
     "chai": "^3.5.0",
     "classnames": "^2.2.5",
     "ncp": "^2.0.0",
-    "solvent": "^0.10.0"
+    "solvent": "^0.10.1"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0",
