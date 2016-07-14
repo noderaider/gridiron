@@ -86,6 +86,10 @@
       "path": "../packages/universal-loader"
     },
     {
+      "name": "packages/postjs",
+      "path": "../packages/postjs"
+    },
+    {
       "name": "packages/window-loader",
       "path": "../packages/window-loader"
     },
