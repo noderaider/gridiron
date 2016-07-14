@@ -357,7 +357,7 @@ function pager() {
 
 
         var mapStatus = function mapStatus(state) {
-          var rows = mapRows(state);
+          var rows = mapRows(state, { sort: _sort });
 
           if (typeof rowsPerPage !== 'number') {
             return { rows: rows,
