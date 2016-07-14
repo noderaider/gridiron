@@ -5,10 +5,8 @@ import CSSPropertyOperations from 'react/lib/shallowCompare'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import createIdleMonitor from 'react-redux-idle-monitor'
-//import { deserialize } from 'try-defer'
 
 import { client, log, IS_BROWSER } from 'config'
-import HtmlHead from 'lib/components/HtmlHead'
 import TopBar from 'app/elements/nav/TopBar'
 import FooterBar from 'app/elements/nav/FooterBar'
 import DevTools from 'lib/redux/DevTools'
@@ -61,25 +59,20 @@ class App extends Component {
     const { dispatch, theme, title, subtitle, username, organization, email, full, packageName, errors, children } = this.props
     const { style } = theme
 
-
     return (
-      <div>
-        <HtmlHead>
-        </HtmlHead>
       <Maximize>
-      {container => (
-        <div style={{ marginBottom: 70 }}>
-          <div style={style.app}>
-            <TopBar logo={<Logo />} username={username} email={email} packageName={packageName} />
-            {cloneElement(children, { container })}
-            <FooterBar />
+        {container => (
+          <div style={{ marginBottom: 70 }}>
+            <div style={style.app}>
+              <TopBar logo={<Logo />} username={username} email={email} packageName={packageName} />
+              {cloneElement(children, { container })}
+              <FooterBar />
+            </div>
+            <DevTools />
+            <IdleMonitor showStatus={true} />
           </div>
-          <DevTools />
-          <IdleMonitor showStatus={true} />
-        </div>
-      )}
+        )}
       </Maximize>
-      </div>
     )
   }
 }

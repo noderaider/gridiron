@@ -40,9 +40,6 @@ export default function createHeader ({ React }) {
                     const { checked, sort } = this.props
                     this.state = { checked }
                   }
-                , _handleSort (e) {
-                    this.props.actions.sort(this.props.id)
-                  }
                 , _handleChecked (e) {
                     this.setState({ checked: e.target.checked })
                   }
@@ -85,7 +82,7 @@ export default function createHeader ({ React }) {
                         </span>
                         <span>
                           {id && sort && sort.cols && sort.cols.includes(id) ? (
-                            <button onClick={::this._handleSort}>
+                            <button onClick={() => actions.sort(id)}>
                               <SortIcon direction={sort.direction && sort.direction[id]} />
                             </button>
                           ) : null}

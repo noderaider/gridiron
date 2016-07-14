@@ -3,8 +3,8 @@ import * as CoreGrid from './CoreGrid'
 /**
  * Interface factory for <DrillGrid /> components.
  */
-export const PropTypes = React => ( { mapCols: React.PropTypes.func.isRequired
-                                    , mapRows: React.PropTypes.func.isRequired
+export const PropTypes = React => ( { cols: React.PropTypes.array.isRequired
+                                    , rows: React.PropTypes.array.isRequired
                                     , mapDrill: React.PropTypes.func.isRequired
                                     , styles: React.PropTypes.object.isRequired
                                     , maxHeight: React.PropTypes.number

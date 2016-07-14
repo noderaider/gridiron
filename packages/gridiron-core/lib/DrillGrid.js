@@ -15,8 +15,8 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
  * Interface factory for <DrillGrid /> components.
  */
 var PropTypes = exports.PropTypes = function PropTypes(React) {
-  return { mapCols: React.PropTypes.func.isRequired,
-    mapRows: React.PropTypes.func.isRequired,
+  return { cols: React.PropTypes.array.isRequired,
+    rows: React.PropTypes.array.isRequired,
     mapDrill: React.PropTypes.func.isRequired,
     styles: React.PropTypes.object.isRequired,
     maxHeight: React.PropTypes.number

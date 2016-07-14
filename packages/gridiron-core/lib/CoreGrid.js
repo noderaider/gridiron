@@ -12,9 +12,7 @@ var should = require('chai').should();
  * PropTypes factory for <CoreGrid /> components.
  */
 var PropTypes = exports.PropTypes = function PropTypes(React) {
-  return { mapCols: React.PropTypes.func.isRequired,
-    mapRows: React.PropTypes.func.isRequired,
-    cols: React.PropTypes.array.isRequired,
+  return { cols: React.PropTypes.array.isRequired,
     rows: React.PropTypes.array.isRequired,
     styles: React.PropTypes.object.isRequired,
     theme: React.PropTypes.object.isRequired,

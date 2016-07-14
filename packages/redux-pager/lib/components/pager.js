@@ -10,6 +10,10 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 exports.default = pager;
 
+var _reactStamp = require('react-stamp');
+
+var _reactStamp2 = _interopRequireDefault(_reactStamp);
+
 var _classnames = require('classnames');
 
 var _classnames2 = _interopRequireDefault(_classnames);
@@ -20,9 +24,9 @@ var _solvent3 = _interopRequireDefault(_solvent2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -63,6 +67,7 @@ function pager() {
   var PagerComponents = function PagerComponents(pagerProps) {
     var children = pagerProps.children;
     var status = pagerProps.status;
+    var cols = pagerProps.cols;
     var actions = pagerProps.actions;
     var content = pagerProps.content;
     var styles = pagerProps.styles;
@@ -73,6 +78,7 @@ function pager() {
 
     return children({ status: status,
       rows: status.rows,
+      cols: cols,
       actions: actions,
       Controls: function Controls(props) {
         return React.createElement(
@@ -206,6 +212,7 @@ function pager() {
     rowsPerPage: PropTypes.any.isRequired,
     rowsPerPageOptions: PropTypes.arrayOf(PropTypes.any).isRequired,
     mapRows: PropTypes.func.isRequired,
+    mapCellData: PropTypes.func.isRequired,
     typeSingular: PropTypes.string.isRequired,
     typePlural: PropTypes.string.isRequired,
     content: PropTypes.shape(contentShape).isRequired
@@ -218,9 +225,15 @@ function pager() {
     },
     theme: { select: 'pagerSelect' }
     /** TODO: MAKE THIS DEFAULT AN ARRAY (COLUMN SORTS) */
-    , sort: { cols: ['id', 'key'], direction: { id: 'asc', key: 'desc' }, compare: { id: function id(a, b) {
-          return a > b;
-        } } },
+    , sort: { cols: ['id', 'key'],
+      keys: { id: function id(data) {
+          return data;
+        } },
+      direction: { id: 'asc', key: 'desc' }
+    },
+    mapCellData: function mapCellData(rowID, rowData) {
+      return rowData;
+    },
     page: 0,
     rowsPerPage: 5,
     rowsPerPageOptions: [1, 2, 3, 4, 5, 10, 25, 50, 100, 500, 1000, 'All'],
@@ -348,8 +361,11 @@ function pager() {
         var _this2 = this;
 
         var _props = this.props;
+        var map = _props.map;
+        var mapCols = _props.mapCols;
         var mapRows = _props.mapRows;
         var rowsPerPageOptions = _props.rowsPerPageOptions;
+        var mapCellData = _props.mapCellData;
         var _state = this.state;
         var page = _state.page;
         var rowsPerPage = _state.rowsPerPage;
@@ -357,7 +373,8 @@ function pager() {
 
 
         var mapStatus = function mapStatus(state) {
-          var rows = mapRows(state, { sort: _sort });
+          var data = map.data(state);
+          var rows = mapRows(data, { sort: _sort, map: map });
 
           if (typeof rowsPerPage !== 'number') {
             return { rows: rows,
@@ -410,17 +427,22 @@ function pager() {
               return _this2.setState({ rowsPerPage: x, page: typeof x === 'number' ? Math.floor(status.startIndex / x) : 0 });
             },
             sort: function sort(id) {
-              var index = _sort.cols.includes(id);
-              if (!index) throw new Error('id ' + id + ' is not a sortable column.');
-              var direction = nextDirection(_sort.direction && _sort.direction[id]);
-              var remaining = _sort.cols.splice(index, 1);
-              var cols = direction ? [id].concat(_toConsumableArray(remaining)) : [].concat(_toConsumableArray(remaining), [id]);
-              _this2.setState({ sort: { cols: cols, direction: _extends({}, _sort.cols.direction, _defineProperty({}, id, direction)) } });
+              var index = _sort.cols.indexOf(id);
+              if (!index === -1) throw new Error('id ' + id + ' is not a sortable column.');
+              var lastDirection = _sort.direction && _sort.direction[id] ? _sort.direction[id] : null;
+              var newDirection = nextDirection(lastDirection);
+              var direction = _extends({}, _sort.direction, _defineProperty({}, id, newDirection));
+              var remaining = [].concat(_toConsumableArray(_sort.cols.slice(0, index)), _toConsumableArray(_sort.cols.slice(index + 1)));
+              if (remaining.includes(id)) throw new Error('internal sort error: id \'' + id + '\' should not exist in ' + JSON.stringify(remaining) + '!');
+              var cols = newDirection ? [id].concat(_toConsumableArray(remaining)) : [].concat(_toConsumableArray(remaining), [id]);
+              _this2.setState({ sort: _extends({}, _sort, { cols: cols, direction: direction }) });
             }
           };
 
+          var cols = mapCols({ status: status, actions: actions });
           return { actions: actions,
-            status: status
+            status: status,
+            cols: cols
           };
         };
         var ConnectedPager = connect(mapStateToProps)(PagerComponents);

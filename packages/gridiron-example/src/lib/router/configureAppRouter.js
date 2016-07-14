@@ -6,7 +6,6 @@ import serveStatic from 'serve-static'
 import path from 'path'
 import React from 'react'
 import reactStamp from 'react-stamp'
-import HtmlHead from '../components/HtmlHead'
 import { renderToString, renderToStaticMarkup } from 'react-dom/server'
 import { createMemoryHistory, match, RouterContext } from 'react-router'
 import { Provider } from 'react-redux'
@@ -28,6 +27,8 @@ import routes from '../app/routes'
 import util from 'util'
 import { reactStyles, serializeStyles, RoutingError } from 'universal-styles'
 
+import ErrorPage from '../components/ErrorPage'
+
 import postcss from 'postcss'
 import postcssUrl from 'postcss-url'
 import postcssCssnext from 'postcss-cssnext'
@@ -39,6 +40,7 @@ const cssProcessor = postcss([ postcssUrl({ url: 'inline'
                             , postcssCssnext()
                             , cssnano()
                             ])
+
 function processCSS(css) {
   return cssProcessor.process(css).then(x => x.css)
 }
@@ -61,14 +63,6 @@ const BodyInit = ({ theme }) => {
 
 const InitialState = createInitialState({ React, Immutable })
 
-const MiddlewareError = ({ error }) => {
-  return (
-    <div>
-      <h2>An Error Occurred Rendering the Application</h2>
-      {IS_DEV ? <pre><code>{error.message || error}{error.stack ? `\n${error.stack}` : null}</code></pre> : null}
-    </div>
-  )
-}
 
 
 export default function configureAppRouter({ cors, paths }) {
@@ -138,17 +132,15 @@ export default function configureAppRouter({ cors, paths }) {
           .then(page => res.send(page))
           .catch(err => {
             if(err === false) {
-              console.warn('appRouter: next triggered via false')
               return next()
             }
             if(err instanceof RoutingError) {
-              console.warn('appRouter: RoutingError getting handled')
               const { status, statusMessage, redirect, innerError } = err
               if(status === 302)
                 return res.redirect(302, redirect)
-              return res.status(status).send(statusMessage)
+              return res.status(status).send(renderToStaticMarkup(<ErrorPage status={status} statusMessage={statusMessage}>{innerError}</ErrorPage>))
             } else {
-              return res.status(500).send(`An unknown error occurred: ${err.message || err}`)
+              return res.status(500).send(renderToStaticMarkup(<ErrorPage>{error}</ErrorPage>))
             }
           })
   })

@@ -8,9 +8,9 @@ import { connect } from 'react-redux'
 import gridiron from 'gridiron'
 import gridironReact from 'gridiron-react'
 import { factories } from 'gridiron-core'
-import reactPre from 'react-pre'
 import util from 'util'
 
+import reactPre from 'react-pre'
 import reduxPager from 'redux-pager'
 import reduxPagerStyles from './css/redux-pager.css' // 'redux-pager/lib/styles.css'
 
@@ -29,7 +29,7 @@ const { Pre, Arrows } = reactPre({ React })
 function createContext() {
   const headers = [ header(), header() ]
 
-  const createColMapper = ({ status, actions }) => state => {
+  const mapCols = ({ status, actions }) => {
     return  [ { id: 'id'
               , header: ({ theme }) => {
                   const { Header } = headers[0]
@@ -50,11 +50,11 @@ function createContext() {
               //, footer: ({ rows }) => <Footer theme={sandy}>{rows.length} rows</Footer>
               , width: 300
               }
-            , { id: 'key'
+            , { id: 'state'
               , header: ({ theme }) => {
                   const { Header } = headers[1]
                   return (
-                    <Header id="key" status={status} actions={actions} filter={{}} theme={theme} styles={styles}>
+                    <Header id="state" status={status} actions={actions} filter={{}} theme={theme} styles={styles}>
                       State
                     </Header>
                   )
@@ -89,44 +89,87 @@ function createContext() {
 
   const Cell = headers[0].createSub(cell)
 
-  const createRowMapper = ({ ids = [] } = {}) => (state, { sort } = {}) => {
-    const selectedState = ids.reduce((s, x) => s[x], state)
 
-    return Object.keys(selectedState).reduce((rows, x, i) => {
-      const id = [ ...ids, x ]
-      let newRows = [ ...rows
-                    , { id
-                      , render: () => [ <Cell><Arrows>{id}</Arrows></Cell>
-                                      , <Pre>{selectedState[x]}</Pre>
-                                      ]
-                      }
-                    ]
+  const mapRows = (data, { sort, map } = {}) => {
+    const rowData = map.rowData(data)
+    const multipliers = sort.direction ? sort.cols.map(colID => sort.direction[colID] === 'desc' ? -1 : 1) : []
 
-      function comparator(a, b) {
 
-      }
-      newRows.sort()
-      return newRows
-    }, [])
+    function createSortKeys (cellData) {
+      return sort.cols
+        .filter(colID => sort.direction && typeof sort.direction[colID] === 'string')
+        .map(colID => {
+          const sortKey = sort.keys ? sort.keys[colID] : null
+          const cellDatum = cellData[colID]
+          const currentKey = sortKey ? sortKey(cellDatum) : cellDatum
+          return typeof currentKey === 'string' ? currentKey : currentKey.toString()
+        })
+    }
+
+    let rows = rowData.map(([ rowID, rowDatum ]) => {
+      const cellData = map.cellData(rowID, rowDatum)
+      const sortKeys = createSortKeys(cellData)
+      return ({ rowID
+              , rowDatum
+              , cellData
+              , sortKeys
+              , cells:  [ ({ datum }) => <Cell><Arrows>{datum}</Arrows></Cell>
+                        , ({ datum }) => <Pre>{datum}</Pre>
+                        ]
+              })
+    })
+
+    if(rows.some(x => x.sortKeys.length > 0)) {
+      rows.sort(function comparator(a, b) {
+        for(let colIndex = 0; colIndex < a.sortKeys.length; colIndex++) {
+          let result = a.sortKeys[colIndex].localeCompare(b.sortKeys[colIndex]) * multipliers[colIndex]
+          if(result !== 0)
+            return result
+        }
+        return 0
+      })
+    }
+
+    return rows
   }
-  return { createColMapper, createRowMapper }
+  return { mapCols, mapRows }
 }
 
 export default class Gridiron extends Component {
   render() {
     const { container } = this.props
     const ReduxGridDetail = detailProps => {
-      const { createColMapper, createRowMapper } = createContext()
+      const { mapCols, mapRows } = createContext()
+      console.warn('DETAIL', detailProps)
       return container(({ Controls, Box, isMaximized, id, actions }) => (
-          <Pager maxRecords={5} mapRows={createRowMapper({ ids: detailProps.ids })} theme={black}>
+
+        <Pager
+          maxRecords={5}
+          mapCols={mapCols}
+          mapRows={mapRows}
+
+          map={ { data: state => detailProps.ids.reduce((subState, id) => subState[id], state)
+                , rowData: data => {
+                    return Object.keys(data).map(x => [ [ ...detailProps.ids, x ], data[x] ]) //Object.keys(data).map(x => [ [ detailProps.ids, data ] ])
+                  }
+                , cellData: (rowID, rowDatum) => ({ id: rowID, state: rowDatum })
+                }
+              }
+
+          sort={{ cols: [ 'id', 'state' ]
+                , keys: { id: data => data.join('_')
+                        , state: data => Object.keys(data).join('_')
+                        }
+                }}
+          theme={black}>
           {pager => (
             <Box>
               <DrillGrid
                 styles={styles}
                 theme={black}
-                mapCols={createColMapper(pager)}
-                mapRows={() => pager.rows}
-                mapDrill={(state, parentId) => <ReduxGridDetail ids={parentId} />}
+                cols={pager.cols}
+                rows={pager.rows}
+                mapDrill={parentId => <ReduxGridDetail ids={parentId} />}
                 header={
                   [ <span key="title" style={{ fontFamily: 'monospace', fontWeight: 'bold', letterSpacing: 6, fontSize: '1em' }}>
                       <Arrows>{detailProps.ids}</Arrows> details ({id})
@@ -145,43 +188,57 @@ export default class Gridiron extends Component {
               />
             </Box>
           )}
-          </Pager>
-        )
-      )
+        </Pager>
+      ))
     }
 
-    const { createColMapper, createRowMapper } = createContext()
+    const { mapCols, mapRows } = createContext()
 
     return (
-      container(
-        ({ Controls, Box, isMaximized, id, actions }) => (
-        <Pager rowsPerPage={5} mapRows={createRowMapper()} sort={{ cols: [ 'id', 'key' ] }} theme={sandy}>
-        {pager => (
-          <Box>
-            <DrillGrid
-                styles={styles}
-                theme={sandy}
-                mapCols={createColMapper(pager)}
-                mapRows={() => pager.rows}
-                mapDrill={(state, parentId) => <ReduxGridDetail ids={parentId} />}
-                header={
-                  [ <h3 key="title" style={{ margin: 0, letterSpacing: 6 }}>gridiron - {id}</h3>
-                  , <Controls key="maximize" />
-                  ]
+      container(({ Controls, Box, isMaximized, id, actions }) => (
+        <Pager
+          rowsPerPage={5}
+
+          mapCols={mapCols}
+          mapRows={mapRows}
+
+          map={ { data: state => state
+                , rowData: data => Object.keys(data).map(x => [ [ x ], data[x] ])
+                , cellData: (rowID, rowDatum) => ({ id: rowID, state: rowDatum })
                 }
-                footer={[ <pager.Controls key="pager-buttons"><pager.Select /></pager.Controls>
-                        , <pager.RowStatus key="pager-row-status" />
-                        , <pager.PageStatus key="pager-page-status" />
-                        , <pager.RowsPerPage label="Rows Per Page" key="rows-per-page" />
-                        ]}
-                {...this.props}
-              />
-          </Box>
-        )}
+              }
+
+
+          sort={{ cols: [ 'id', 'state' ]
+                , keys: { id: data => data.join('_')
+                        , state: data => Object.keys(data).join('_')
+                        }
+                }}
+          theme={sandy}>
+          {pager => (
+            <Box>
+              <DrillGrid
+                  styles={styles}
+                  theme={sandy}
+                  cols={pager.cols}
+                  rows={pager.rows}
+                  mapDrill={parentId => <ReduxGridDetail ids={parentId} />}
+                  header={
+                    [ <h3 key="title" style={{ margin: 0, letterSpacing: 6 }}>gridiron - {id}</h3>
+                    , <Controls key="maximize" />
+                    ]
+                  }
+                  footer={[ <pager.Controls key="pager-buttons"><pager.Select /></pager.Controls>
+                          , <pager.RowStatus key="pager-row-status" />
+                          , <pager.PageStatus key="pager-page-status" />
+                          , <pager.RowsPerPage label="Rows Per Page" key="rows-per-page" />
+                          ]}
+                  {...this.props}
+                />
+            </Box>
+          )}
         </Pager>
-      )
-      )
-      //</Container>
+      ))
     )
   }
 }

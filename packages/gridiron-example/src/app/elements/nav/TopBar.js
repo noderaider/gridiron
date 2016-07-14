@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import FA from 'app/elements/visual/FA'
 import { appName } from 'config'
 
-import './TopBar.css'
+import styles from './TopBar.css'
 
 import contextTypes from 'lib/context'
 
@@ -20,11 +20,13 @@ export default class TopBar extends Component {
 
     return (
       <header style={header.wrapper} id="topbar">
+      {/*
         <button style={header.hamburger} className="hamburger">
           <FA name="bars" size="lg" style={{ color: 'rgb(50, 100, 150)' }} />
         </button>
-        <span style={header.title}>
-          <a href="/" style={header.anchor}>{logo ? logo : null}{title}{subtitle ? <span style={header.subtitle}>{subtitle}</span> : null}</a>
+      */}
+        <span className={styles.title}>
+          <a href="/" className={styles.anchor} style={header.anchor}>{logo ? logo : null}{title}{subtitle ? <span style={header.subtitle}>{subtitle}</span> : null}</a>
         </span>
         {/*
         {packageName ? <span style={header.banner}>

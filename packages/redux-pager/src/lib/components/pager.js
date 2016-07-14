@@ -1,3 +1,4 @@
+import reactStamp from 'react-stamp'
 import classNames from 'classnames'
 import solvent from 'solvent'
 const should = require('chai').should()
@@ -18,12 +19,13 @@ export default function pager (deps = {}, defaults = {}) {
   const { Component, PropTypes } = React
 
   const PagerComponents = pagerProps => {
-    const { children, status, actions, content, styles, theme } = pagerProps
+    const { children, status, cols, actions, content, styles, theme } = pagerProps
     should.exist(status.page, 'page should exist')
     status.page.should.be.a('number', 'page must be a number')
 
     return children({ status
                     , rows: status.rows
+                    , cols
                     , actions
                     , Controls: props => (
                         <span className={classNames(styles.controls)}>
@@ -103,6 +105,7 @@ export default function pager (deps = {}, defaults = {}) {
                     , rowsPerPage: PropTypes.any.isRequired
                     , rowsPerPageOptions: PropTypes.arrayOf(PropTypes.any).isRequired
                     , mapRows: PropTypes.func.isRequired
+                    , mapCellData: PropTypes.func.isRequired
                     , typeSingular: PropTypes.string.isRequired
                     , typePlural: PropTypes.string.isRequired
                     , content: PropTypes.shape(contentShape).isRequired
@@ -115,7 +118,11 @@ export default function pager (deps = {}, defaults = {}) {
                                   }
                         , theme:  { select: 'pagerSelect' }
                         /** TODO: MAKE THIS DEFAULT AN ARRAY (COLUMN SORTS) */
-                        , sort: { cols: [ 'id', 'key' ], direction: { id: 'asc', key: 'desc' }, compare: { id: (a, b) => a > b } }
+                        , sort: { cols: [ 'id', 'key' ]
+                                , keys: { id: data => data }
+                                , direction: { id: 'asc', key: 'desc' }
+                                }
+                        , mapCellData: (rowID, rowData) => rowData
                         , page: 0
                         , rowsPerPage: 5
                         , rowsPerPageOptions: [ 1, 2, 3, 4, 5, 10, 25, 50, 100, 500, 1000, 'All' ]
@@ -152,11 +159,12 @@ export default function pager (deps = {}, defaults = {}) {
         this.props.onChange(this.state)
     }
     render() {
-      const { mapRows, rowsPerPageOptions } = this.props
+      const { map, mapCols, mapRows, rowsPerPageOptions, mapCellData } = this.props
       const { page, rowsPerPage, sort } = this.state
 
       const mapStatus = state => {
-        const rows = mapRows(state, { sort })
+        const data = map.data(state)
+        const rows = mapRows(data, { sort, map })
 
         if(typeof rowsPerPage !== 'number') {
           return  { rows
@@ -197,18 +205,24 @@ export default function pager (deps = {}, defaults = {}) {
                         , select: x => this.setState({ page: x })
                         , rowsPerPage: x => this.setState({ rowsPerPage: x, page: typeof x === 'number' ? Math.floor(status.startIndex / x) : 0 })
                         , sort: id => {
-                            let index = sort.cols.includes(id)
-                            if(!index)
+                            let index = sort.cols.indexOf(id)
+                            if(!index === -1)
                               throw new Error(`id ${id} is not a sortable column.`)
-                            let direction = nextDirection(sort.direction && sort.direction[id])
-                            let remaining = sort.cols.splice(index, 1)
-                            let cols = direction ? [ id, ...remaining ] : [ ...remaining, id ]
-                            this.setState({ sort: { cols, direction: { ...sort.cols.direction, [id]: direction } } })
+                            let lastDirection = sort.direction && sort.direction[id] ? sort.direction[id] : null
+                            let newDirection = nextDirection(lastDirection)
+                            let direction = { ...sort.direction, [id]: newDirection }
+                            let remaining = [ ...sort.cols.slice(0, index), ...sort.cols.slice(index + 1) ]
+                            if(remaining.includes(id))
+                              throw new Error(`internal sort error: id '${id}' should not exist in ${JSON.stringify(remaining)}!`)
+                            let cols = newDirection ? [ id, ...remaining ] : [ ...remaining, id ]
+                            this.setState({ sort: { ...sort, cols, direction } })
                           }
                         }
 
+        const cols = mapCols({ status, actions })
         return  { actions
                 , status
+                , cols
                 }
       }
       const ConnectedPager = connect(mapStateToProps)(PagerComponents)

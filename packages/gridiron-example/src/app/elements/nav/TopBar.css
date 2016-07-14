@@ -1,24 +1,8 @@
-:root {
-  --yellow:  #f2c73d;
-  --base0: #888;
+.title {
+  margin-left:0;
+  font-size: 1.3em;
 }
 
-#topbar a {
-  text-shadow:
-   -1px -1px 0 #000,
-    1px -1px 0 #000,
-    -1px 1px 0 #000,
-     1px 1px 0 #000;
-}
-
-#topbar a:hover {
-  text-shadow:
-    -1px -1px 0 rgba(255, 255, 255, 0.5),
-    1px -1px 0 rgba(255, 255, 255, 0.5),
-    -1px 1px 0 rgba(255, 255, 255, 0.5),
-    1px 1px 0 rgba(255, 255, 255, 0.5);
-}
-
-#topbar button:hover {
-  background-color: '#fff' !important;
+.anchor {
+  margin-left: 0;
 }

@@ -63,9 +63,6 @@ function createHeader(_ref) {
 
       this.state = { checked: checked };
     },
-    _handleSort: function _handleSort(e) {
-      this.props.actions.sort(this.props.id);
-    },
     _handleChecked: function _handleChecked(e) {
       this.setState({ checked: e.target.checked });
     },
@@ -124,7 +121,9 @@ function createHeader(_ref) {
           null,
           id && sort && sort.cols && sort.cols.includes(id) ? React.createElement(
             'button',
-            { onClick: this._handleSort.bind(this) },
+            { onClick: function onClick() {
+                return actions.sort(id);
+              } },
             React.createElement(SortIcon, { direction: sort.direction && sort.direction[id] })
           ) : null,
           filter ? React.createElement(

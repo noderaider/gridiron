@@ -1,6 +1,3 @@
-
-
-
 /** PropTypes factory for <Header /> components. */
 export const PropTypes = React => {
   const Types = React.PropTypes

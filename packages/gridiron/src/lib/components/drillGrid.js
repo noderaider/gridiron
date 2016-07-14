@@ -20,7 +20,7 @@ export default function drillGrid (deps) {
       this.state = { drilledRows: [] }
     }
     render() {
-      const { styles, theme, mapCols, mapRows, mapDrill, ...rest } = this.props
+      const { styles, theme, cols, rows, mapDrill, ...rest } = this.props
       const { drilledRows } = this.state
       const onToggleExpand = index => {
         let newDrilledRows = drilledRows.includes(index) ? drilledRows.filter(x => x !== index) : [ ...drilledRows, index ]
@@ -28,53 +28,48 @@ export default function drillGrid (deps) {
         this.setState({ drilledRows: newDrilledRows })
       }
 
-
       let spannedRows = []
-      const _mapCols = state => {
-        const { Header, createSub } = header()
-        return  [ { id: 'expander'
-                  , header: () => <Header theme={theme}><Expander visible={false} /></Header>
-                  , footer: () => <Expander visible={false} />
-                  , width: 35
-                  , className: styles.minimal
-                  }
-                , ...mapCols(state)
-                ]
-      }
-      const _mapRows = state => {
-        const coreRows = mapRows(state)
-        return coreRows.reduce((rows, x, i) => {
-          if(this.state.drilledRows.includes(i)) {
-            return  [ ...rows
-                    , { id: x.id
-                      , render: () => [ <Expander expanded={true} handleExpand={() => onToggleExpand(i)} theme={theme} />
-                                      , ...x.render()
-                                      ]
-                      }
-                    , { id: `${x.id}_span`
-                      , span: true
-                      , render: () => mapDrill(state, x.id)
-                      }
-                    ]
-          }
-          return  [ ...rows
-                  , { id: x.id
-                    , render: () => [ <Expander expanded={false} handleExpand={() => onToggleExpand(i)} theme={theme} />
-                                    , ...x.render()
-                                    ]
-                    }
-                  ]
-        }, [])
-      }
 
+      const { Header, createSub } = header()
 
       return (
           <CoreGrid
             {...rest}
             styles={styles}
             theme={theme}
-            mapCols={_mapCols}
-            mapRows={_mapRows}
+            cols={(
+              [ { id: 'expander'
+                , header: () => <Header theme={theme}><Expander visible={false} /></Header>
+                , footer: () => <Expander visible={false} />
+                , width: 35
+                , className: styles.minimal
+                }
+              , ...cols
+              ]
+            )}
+            rows={rows.reduce((rows, x, i) => {
+                if(this.state.drilledRows.includes(i)) {
+                  return  [ ...rows
+                          , { ...x
+                            , cells:  [ () => <Expander expanded={true} handleExpand={() => onToggleExpand(i)} theme={theme} />
+                                      , ...x.cells
+                                      ]
+                            }
+                          , { rowID: `${x.rowId}_span`
+                            , span: true
+                            , render: () => mapDrill(x.rowID)
+                            }
+                          ]
+                }
+                return  [ ...rows
+                        , { ...x
+                          , cells:  [ () => <Expander expanded={false} handleExpand={() => onToggleExpand(i)} theme={theme} />
+                                    , ...x.cells
+                                    ]
+                          }
+                        ]
+              }, [])
+            }
           />
       )
     }

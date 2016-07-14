@@ -50,7 +50,7 @@ function arrows(deps) {
         return React.createElement(
           'span',
           null,
-          children.map(function (x, i) {
+          Array.isArray(children) ? children.map(function (x, i) {
             return React.createElement(
               'span',
               { key: i },
@@ -59,7 +59,12 @@ function arrows(deps) {
               i < children.length - 1 ? React.createElement('i', { style: { fontSize: '0.7em', color: 'rgba(50, 50, 50, 1)' }, className: 'fa fa-caret-right fa-xs' }) : null,
               ' '
             );
-          })
+          }) : React.createElement(
+            'span',
+            null,
+            'Not an array => ',
+            children
+          )
         );
       }
     }]);
