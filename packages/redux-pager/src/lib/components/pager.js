@@ -156,7 +156,7 @@ export default function pager (deps = {}, defaults = {}) {
       const { page, rowsPerPage, sort } = this.state
 
       const mapStatus = state => {
-        const rows = mapRows(state)
+        const rows = mapRows(state, { sort })
 
         if(typeof rowsPerPage !== 'number') {
           return  { rows

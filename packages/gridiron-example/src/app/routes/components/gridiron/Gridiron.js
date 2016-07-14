@@ -89,18 +89,22 @@ function createContext() {
 
   const Cell = headers[0].createSub(cell)
 
-  const createRowMapper = ({ ids = [] } = {}) => (state, { status, rows } = {}) => {
+  const createRowMapper = ({ ids = [] } = {}) => (state, { sort } = {}) => {
     const selectedState = ids.reduce((s, x) => s[x], state)
 
     return Object.keys(selectedState).reduce((rows, x, i) => {
       const id = [ ...ids, x ]
       let newRows = [ ...rows
                     , { id
-                      , render: () => [ (
-                          <Cell><Arrows>{id}</Arrows></Cell>
-                        ), <Pre>{selectedState[x]}</Pre> ]
+                      , render: () => [ <Cell><Arrows>{id}</Arrows></Cell>
+                                      , <Pre>{selectedState[x]}</Pre>
+                                      ]
                       }
                     ]
+
+      function comparator(a, b) {
+
+      }
       newRows.sort()
       return newRows
     }, [])
