@@ -14,7 +14,7 @@ var PropTypes = exports.PropTypes = function PropTypes(React) {
 
   return { theme: Types.object.isRequired,
     styles: Types.object.isRequired,
-    sort: Types.shape(sortShape),
+    status: Types.object.isRequired,
     filter: Types.object,
     checkbox: Types.object,
     radio: Types.object
@@ -24,6 +24,7 @@ var PropTypes = exports.PropTypes = function PropTypes(React) {
 /** DefaultProps factory for <Header/> components. */
 var DefaultProps = exports.DefaultProps = function DefaultProps() {
   return { theme: {},
-    styles: {}
+    styles: {},
+    status: {}
   };
 };

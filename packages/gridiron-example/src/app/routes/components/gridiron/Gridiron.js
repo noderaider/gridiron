@@ -29,14 +29,16 @@ const { Pre, Arrows } = reactPre({ React })
 function createContext() {
   const headers = [ header(), header() ]
 
-  const createColMapper = sort => state => {
+  const createColMapper = ({ status, actions }) => state => {
     return  [ { id: 'id'
               , header: ({ theme }) => {
                   const { Header } = headers[0]
                   return (
                     <Header
+                      id="id"
                       checkbox={{ value: 'header_checkbox' }}
-                      sort={sort.filter(x.id === 'id')}
+                      status={status}
+                      actions={actions}
                       filter={{}}
                       styles={styles}
                     >
@@ -52,7 +54,7 @@ function createContext() {
               , header: ({ theme }) => {
                   const { Header } = headers[1]
                   return (
-                    <Header sort={sort.filter(x.id === 'key')} filter={{}} theme={theme} styles={styles}>
+                    <Header id="key" status={status} actions={actions} filter={{}} theme={theme} styles={styles}>
                       State
                     </Header>
                   )
@@ -87,18 +89,20 @@ function createContext() {
 
   const Cell = headers[0].createSub(cell)
 
-  const createRowMapper = ({ ids = [] } = {}) => (state, { rows } = {}) => {
+  const createRowMapper = ({ ids = [] } = {}) => (state, { status, rows } = {}) => {
     const selectedState = ids.reduce((s, x) => s[x], state)
 
     return Object.keys(selectedState).reduce((rows, x, i) => {
       const id = [ ...ids, x ]
-      return  [ ...rows
-              , { id
-                , render: () => [ (
-                    <Cell><Arrows>{id}</Arrows></Cell>
-                  ), <Pre>{selectedState[x]}</Pre> ]
-                }
-              ]
+      let newRows = [ ...rows
+                    , { id
+                      , render: () => [ (
+                          <Cell><Arrows>{id}</Arrows></Cell>
+                        ), <Pre>{selectedState[x]}</Pre> ]
+                      }
+                    ]
+      newRows.sort()
+      return newRows
     }, [])
   }
   return { createColMapper, createRowMapper }
@@ -116,7 +120,7 @@ export default class Gridiron extends Component {
               <DrillGrid
                 styles={styles}
                 theme={black}
-                mapCols={createColMapper(pager.status.sort)}
+                mapCols={createColMapper(pager)}
                 mapRows={() => pager.rows}
                 mapDrill={(state, parentId) => <ReduxGridDetail ids={parentId} />}
                 header={
@@ -142,18 +146,18 @@ export default class Gridiron extends Component {
       )
     }
 
-    const { mapCols, createRowMapper } = createContext()
+    const { createColMapper, createRowMapper } = createContext()
 
     return (
       container(
         ({ Controls, Box, isMaximized, id, actions }) => (
-        <Pager rowsPerPage={5} mapRows={createRowMapper()} theme={sandy}>
+        <Pager rowsPerPage={5} mapRows={createRowMapper()} sort={{ cols: [ 'id', 'key' ] }} theme={sandy}>
         {pager => (
           <Box>
             <DrillGrid
                 styles={styles}
                 theme={sandy}
-                mapCols={createColMapper(pager.status.sort)}
+                mapCols={createColMapper(pager)}
                 mapRows={() => pager.rows}
                 mapDrill={(state, parentId) => <ReduxGridDetail ids={parentId} />}
                 header={
@@ -161,9 +165,9 @@ export default class Gridiron extends Component {
                   , <Controls key="maximize" />
                   ]
                 }
-                footer={[ <pager.Controls key="pager-buttons"><pager.RowStatus key="pager-row-status" /></pager.Controls>
+                footer={[ <pager.Controls key="pager-buttons"><pager.Select /></pager.Controls>
+                        , <pager.RowStatus key="pager-row-status" />
                         , <pager.PageStatus key="pager-page-status" />
-                        , <pager.Select key="pager-select" />
                         , <pager.RowsPerPage label="Rows Per Page" key="rows-per-page" />
                         ]}
                 {...this.props}

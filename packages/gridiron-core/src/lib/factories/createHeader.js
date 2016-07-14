@@ -2,16 +2,6 @@ import * as Core from '../Header'
 import reactPubSub from 'react-pub-sub'
 const should = require('chai').should()
 
-function nextSort(sort) {
-  switch(sort.direction) {
-    case 'asc':
-      return { ...sort, direction: 'desc' }
-    case 'desc':
-      return { ...sort, direction: 'none' }
-    default:
-      return { ...sort, direction: 'asc' }
-  }
-}
 
 export default function createHeader ({ React }) {
   const { Component, PropTypes } = React
@@ -48,10 +38,10 @@ export default function createHeader ({ React }) {
 
   const desc =  { init() {
                     const { checked, sort } = this.props
-                    this.state = { checked, sort }
+                    this.state = { checked }
                   }
                 , _handleSort (e) {
-                    this.setState({ sort: nextSort(this.state.sort) })
+                    this.props.actions.sort(this.props.id)
                   }
                 , _handleChecked (e) {
                     this.setState({ checked: e.target.checked })
@@ -65,16 +55,21 @@ export default function createHeader ({ React }) {
                 , propTypes: Core.PropTypes(React)
                 , defaultProps: Core.DefaultProps(React)
                 , render() {
-                    const { children
+                    const { id
+                          , children
                           , styles
                           , theme
                           , filter
                           , checkbox
                           , radio
+                          , status
+                          , actions
                           } = this.props
 
+                    const sort = status && status.sort ? status.sort : null
+
+
                     const { checked
-                          , sort
                           } = this.state
                     return (
                       <span style={wrapStyle} className={theme.header}>
@@ -89,9 +84,9 @@ export default function createHeader ({ React }) {
                           <span style={childrenStyle}>{children}</span>
                         </span>
                         <span>
-                          {sort ? (
+                          {id && sort && sort.cols && sort.cols.includes(id) ? (
                             <button onClick={::this._handleSort}>
-                              <SortIcon {...sort} />
+                              <SortIcon direction={sort.direction && sort.direction[id]} />
                             </button>
                           ) : null}
                           {filter ? (

@@ -3,9 +3,6 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 exports.default = createHeader;
 
 var _Header = require('../Header');
@@ -21,17 +18,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 var should = require('chai').should();
-
-function nextSort(sort) {
-  switch (sort.direction) {
-    case 'asc':
-      return _extends({}, sort, { direction: 'desc' });
-    case 'desc':
-      return _extends({}, sort, { direction: 'none' });
-    default:
-      return _extends({}, sort, { direction: 'asc' });
-  }
-}
 
 function createHeader(_ref) {
   var React = _ref.React;
@@ -75,10 +61,10 @@ function createHeader(_ref) {
       var checked = _props.checked;
       var sort = _props.sort;
 
-      this.state = { checked: checked, sort: sort };
+      this.state = { checked: checked };
     },
     _handleSort: function _handleSort(e) {
-      this.setState({ sort: nextSort(this.state.sort) });
+      this.props.actions.sort(this.props.id);
     },
     _handleChecked: function _handleChecked(e) {
       this.setState({ checked: e.target.checked });
@@ -95,15 +81,20 @@ function createHeader(_ref) {
     defaultProps: Core.DefaultProps(React),
     render: function render() {
       var _props2 = this.props;
+      var id = _props2.id;
       var children = _props2.children;
       var styles = _props2.styles;
       var theme = _props2.theme;
       var filter = _props2.filter;
       var checkbox = _props2.checkbox;
       var radio = _props2.radio;
-      var _state = this.state;
-      var checked = _state.checked;
-      var sort = _state.sort;
+      var status = _props2.status;
+      var actions = _props2.actions;
+
+
+      var sort = status && status.sort ? status.sort : null;
+
+      var checked = this.state.checked;
 
       return React.createElement(
         'span',
@@ -131,10 +122,10 @@ function createHeader(_ref) {
         React.createElement(
           'span',
           null,
-          sort ? React.createElement(
+          id && sort && sort.cols && sort.cols.includes(id) ? React.createElement(
             'button',
             { onClick: this._handleSort.bind(this) },
-            React.createElement(SortIcon, sort)
+            React.createElement(SortIcon, { direction: sort.direction && sort.direction[id] })
           ) : null,
           filter ? React.createElement(
             'button',

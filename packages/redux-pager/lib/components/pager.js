@@ -20,6 +20,10 @@ var _solvent3 = _interopRequireDefault(_solvent2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -29,6 +33,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
 var should = require('chai').should();
+
+function nextDirection(direction) {
+  switch (direction) {
+    case 'asc':
+      return 'desc';
+    case 'desc':
+      return null;
+    default:
+      return 'asc';
+  }
+}
 
 function pager() {
   var _class, _temp;
@@ -186,6 +201,7 @@ function pager() {
   var propTypes = { children: PropTypes.func.isRequired,
     styles: PropTypes.object.isRequired,
     theme: PropTypes.object.isRequired,
+    sort: PropTypes.object.isRequired,
     page: PropTypes.number.isRequired,
     rowsPerPage: PropTypes.any.isRequired,
     rowsPerPageOptions: PropTypes.arrayOf(PropTypes.any).isRequired,
@@ -200,7 +216,11 @@ function pager() {
       control: 'pagerControl',
       select: 'pagerSelect'
     },
-    theme: { select: 'pagerSelect' },
+    theme: { select: 'pagerSelect' }
+    /** TODO: MAKE THIS DEFAULT AN ARRAY (COLUMN SORTS) */
+    , sort: { cols: ['id', 'key'], direction: { id: 'asc', key: 'desc' }, compare: { id: function id(a, b) {
+          return a > b;
+        } } },
     page: 0,
     rowsPerPage: 5,
     rowsPerPageOptions: [1, 2, 3, 4, 5, 10, 25, 50, 100, 500, 1000, 'All'],
@@ -306,10 +326,9 @@ function pager() {
       var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Pager).call(this, props));
 
       _this.state = { page: props.page,
-        rowsPerPage: props.rowsPerPage
+        rowsPerPage: props.rowsPerPage,
+        sort: props.sort
       };
-
-      console.warn('NEW PAGER', _this.state);
       return _this;
     }
 
@@ -334,6 +353,7 @@ function pager() {
         var _state = this.state;
         var page = _state.page;
         var rowsPerPage = _state.rowsPerPage;
+        var _sort = _state.sort;
 
 
         var mapStatus = function mapStatus(state) {
@@ -364,13 +384,13 @@ function pager() {
             lastIndex: lastIndex,
             rowsPerPage: rowsPerPage,
             rowsPerPageOptions: rowsPerPageOptions,
-            totalRows: rows.size || rows.length
+            totalRows: rows.size || rows.length,
+            sort: _sort
           };
         };
 
         var mapStateToProps = function mapStateToProps(state) {
           var status = mapStatus(state);
-
           var actions = { fastBackward: function fastBackward() {
               return _this2.setState({ page: 0 });
             },
@@ -388,6 +408,14 @@ function pager() {
             },
             rowsPerPage: function rowsPerPage(x) {
               return _this2.setState({ rowsPerPage: x, page: typeof x === 'number' ? Math.floor(status.startIndex / x) : 0 });
+            },
+            sort: function sort(id) {
+              var index = _sort.cols.includes(id);
+              if (!index) throw new Error('id ' + id + ' is not a sortable column.');
+              var direction = nextDirection(_sort.direction && _sort.direction[id]);
+              var remaining = _sort.cols.splice(index, 1);
+              var cols = direction ? [id].concat(_toConsumableArray(remaining)) : [].concat(_toConsumableArray(remaining), [id]);
+              _this2.setState({ sort: { cols: cols, direction: _extends({}, _sort.cols.direction, _defineProperty({}, id, direction)) } });
             }
           };
 
