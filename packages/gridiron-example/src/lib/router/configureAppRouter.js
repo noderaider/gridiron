@@ -17,7 +17,7 @@ import { serialize, createInitialState } from 'fire-hydrant'
 
 import { getThemeForUrl } from '../context/theme'
 import { defaultTheme, getTheme } from '../context'
-import { server, packageName, packageKey, faviconUrl, log, IS_HOT, IS_DEV, noop, resolveRoot, initialState, resolveRoot } from '../../config'
+import { server, packageName, packageKey, faviconUrl, log, IS_HOT, IS_DEV, noop, resolveRoot, initialState } from '../../config'
 import { deauthorized, hydrateIdentity } from '../redux/actions/identity'
 import minify from '../services/minify'
 import logging from '../services/logging'
