@@ -10,13 +10,19 @@ var _wrapper = require('./utils/wrapper');
 
 var _wrapper2 = _interopRequireDefault(_wrapper);
 
+var _util = require('util');
+
+var _util2 = _interopRequireDefault(_util);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var wrap = (0, _wrapper2.default)('universal-style-loader/lib/index.js'); /**
-                                                                           * MIT License http://www.opensource.org/licenses/mit-license.php
-                                                                           * Author Tobias Koppers @sokra (style-loader)
-                                                                           * Refactored by Cole Chamberlain <cole.chamberlain@gmail.com> @noderaider (ES2016 / universal-style-loader)
-                                                                           */
+/**
+ * MIT License http://www.opensource.org/licenses/mit-license.php
+ * Author Tobias Koppers @sokra (style-loader)
+ * Refactored by Cole Chamberlain <cole.chamberlain@gmail.com> @noderaider (ES2016 / universal-style-loader)
+ */
+
+var wrap = (0, _wrapper2.default)('universal-style-loader/lib/index.js');
 
 module.exports = function () {};
 module.exports.pitch = function pitch(remainingRequest) {
@@ -26,5 +32,9 @@ module.exports.pitch = function pitch(remainingRequest) {
   var addStylesPath = _path2.default.join(__dirname, 'compile', 'addStyles.js');
   var addStyles = 'require(' + (0, _loaderUtils.stringifyRequest)(this, '!' + addStylesPath) + ').default';
 
-  return wrap('\n/** Adds some css to the DOM by adding a <style> tag */\n\n/** load the styles */\nvar content = require(' + (0, _loaderUtils.stringifyRequest)(this, '!!' + remainingRequest) + ');\nif(typeof content === \'string\')\n  content = [[module.id, content, \'\']];\n\n/** add the styles to the DOM */\nvar update = ' + addStyles + '(content, ' + JSON.stringify(query) + ');\nif(content.locals) module.exports = content.locals;\n\n/** Hot Module Replacement */\nif(module.hot) {\n  // When the styles change, update the <style> tags\n  if(!content.locals) {\n    module.hot.accept(' + (0, _loaderUtils.stringifyRequest)(this, '!!' + remainingRequest) + ', function() {\n      var newContent = require(' + (0, _loaderUtils.stringifyRequest)(this, '!!' + remainingRequest) + ');\n      if(typeof newContent === \'string\')\n        newContent = [[module.id, newContent, \'\']];\n      update(newContent);\n    });\n  }\n  /** When the module is disposed, remove the <style> tags */\n  module.hot.dispose(function() { update(); });\n}', 'pitch');
+  var resourcePath = remainingRequest.split('!').splice(-1)[0];
+  //const inspected = util.inspect({ filePath, remainingRequest, query, self: this })
+  //const trace = `console.trace('pitch COMPILED', __dirname, __filename, ${JSON.stringify(inspected)});`
+
+  return wrap('\n/** Adds some css to the DOM by adding a <style> tag */\n\n/** load the styles */\nvar content = require(' + (0, _loaderUtils.stringifyRequest)(this, '!!' + remainingRequest) + ');\nif(typeof content === \'string\')\n  content = [[module.id, content, \'\']];\n\n/** add the styles to the DOM */\nvar update = ' + addStyles + '(content, ' + JSON.stringify(query) + ', ' + JSON.stringify({ resourcePath: resourcePath }) + ');\nif(content.locals) module.exports = content.locals;\n\n/** Hot Module Replacement */\nif(module.hot) {\n  // When the styles change, update the <style> tags\n  if(!content.locals) {\n    module.hot.accept(' + (0, _loaderUtils.stringifyRequest)(this, '!!' + remainingRequest) + ', function() {\n      var newContent = require(' + (0, _loaderUtils.stringifyRequest)(this, '!!' + remainingRequest) + ');\n      if(typeof newContent === \'string\')\n        newContent = [[module.id, newContent, \'\']];\n      update(newContent);\n    });\n  }\n  /** When the module is disposed, remove the <style> tags */\n  module.hot.dispose(function() { update(); });\n}', 'pitch');
 };

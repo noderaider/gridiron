@@ -5,6 +5,7 @@
  */
 
  import universalStyles from 'universal-styles'
+ import util from 'util'
 
 const universalContext = universalStyles()
 export default universalContext(function (...args) {
@@ -24,7 +25,8 @@ export default universalContext(function (...args) {
   let singletonCounter = 0
   let styleElementsInsertedAtTop = []
 
-  function addStyles (list, options) {
+  function addStyles (list, options, { resourcePath } = {}) {
+    console.trace('RECEIVED RESOURCE PATH', resourcePath)
     options = options || {}
     // Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
     // tags it will allow on a page
@@ -126,6 +128,7 @@ export default universalContext(function (...args) {
   }
 
   function createStyleElement(options) {
+    console.trace('createStyleElement => ', util.inspect(options))
     var styleElement = document.createElement('style')
     styleElement.type = 'text/css'
     insertStyleElement(options, styleElement)
@@ -133,6 +136,7 @@ export default universalContext(function (...args) {
   }
 
   function createLinkElement(options) {
+    console.trace('createLinkElement => ', util.inspect(options))
     var linkElement = document.createElement('link')
     linkElement.rel = 'stylesheet'
     insertStyleElement(options, linkElement)
@@ -140,6 +144,7 @@ export default universalContext(function (...args) {
   }
 
   function addStyle(obj, options) {
+    console.trace('addStyle => ', util.inspect({ obj, options }))
     var styleElement, update, remove
 
     if (options.singleton) {

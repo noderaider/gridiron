@@ -15,7 +15,7 @@ import reduxPager from 'redux-pager'
 import reduxPagerStyles from './css/redux-pager.css' // 'redux-pager/lib/styles.css'
 
 import styles from 'gridiron-styles'
-import { sandy, black /*, carbon */ } from 'gridiron-themes'
+import { sandy, black, carbon  } from 'gridiron-themes'
 
 const should = require('chai').should()
 
@@ -213,12 +213,12 @@ export default class Gridiron extends Component {
                         , state: data => Object.keys(data).join('_')
                         }
                 }}
-          theme={black}>
+          theme={carbon}>
           {pager => (
             <Box>
               <DrillGrid
                   styles={styles}
-                  theme={black}
+                  theme={carbon}
                   cols={pager.cols}
                   rows={pager.rows}
                   mapDrill={parentId => <ReduxGridDetail ids={parentId} />}

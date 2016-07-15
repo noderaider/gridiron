@@ -10,18 +10,25 @@ var _wrapper = require('./utils/wrapper');
 
 var _wrapper2 = _interopRequireDefault(_wrapper);
 
+var _util = require('util');
+
+var _util2 = _interopRequireDefault(_util);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var wrap = (0, _wrapper2.default)('universal-style-loader/lib/useable.js'); /**
-                                                                             * MIT License http://www.opensource.org/licenses/mit-license.php
-                                                                             * Author Tobias Koppers @sokra (style-loader)
-                                                                             * Refactored by Cole Chamberlain <cole.chamberlain@gmail.com> @noderaider (ES2016 / universal-style-loader)
-                                                                             */
+/**
+ * MIT License http://www.opensource.org/licenses/mit-license.php
+ * Author Tobias Koppers @sokra (style-loader)
+ * Refactored by Cole Chamberlain <cole.chamberlain@gmail.com> @noderaider (ES2016 / universal-style-loader)
+ */
+
+var wrap = (0, _wrapper2.default)('universal-style-loader/lib/useable.js');
 
 module.exports = function () {};
 module.exports.pitch = function pitchUseable(remainingRequest) {
   if (this.cacheable) this.cacheable();
   var query = (0, _loaderUtils.parseQuery)(this.query);
+  console.trace('useable =>', _util2.default.inspect({ remainingRequest: remainingRequest, query: query, self: this }));
 
   var addStylesPath = _path2.default.join(__dirname, 'compile', 'addStyles.js');
   var addStyles = 'require(' + (0, _loaderUtils.stringifyRequest)(this, '!' + addStylesPath) + ').default';

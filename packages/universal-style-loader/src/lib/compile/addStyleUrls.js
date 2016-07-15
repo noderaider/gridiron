@@ -5,11 +5,13 @@
  */
 
  import universalStyles from 'universal-styles'
+ import util from 'util'
 
 const universalContext = universalStyles()
 export default universalContext(addStyleUrls)
 
 export default function addStyleUrls (cssUrl) {
+  console.trace('addStyleUrls => ', util.inspect(cssUrl))
   var styleElement = document.createElement('link')
   styleElement.rel = 'stylesheet'
   styleElement.type = 'text/css'

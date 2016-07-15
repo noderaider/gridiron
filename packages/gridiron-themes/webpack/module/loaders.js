@@ -43,9 +43,11 @@ var getStyleLoaders = function getStyleLoaders(name) {
 
 var getFontLoader = function getFontLoader(name) {
   return { test: /\.(otf|eot|woff|woff2|ttf|svg)(\?\S*)?$/i,
-    loader: 'url?limit=100000&name=[name].[ext]'
+    loader: 'url-loader?limit=100000&name=[name].[ext]'
   };
 };
+
+//const cssRoot =
 
 exports.default = function (name) {
   var jsLoader = getJsLoader(name);
@@ -56,7 +58,7 @@ exports.default = function (name) {
       return [jsLoader];
     default:
       return [jsLoader, getJsonLoader(name)].concat(_toConsumableArray(getStyleLoaders(name)), [{ test: /\.png$/,
-        loader: 'url?mimetype=image/png&limit=100000&name=[name].[ext]'
+        loader: 'url-loader?mimetype=image/png&limit=100000&name=[name].[ext]'
       }, getImageLoader(name), getFontLoader(name)]);
   }
 };

@@ -8,14 +8,19 @@ var _universalStyles = require('universal-styles');
 
 var _universalStyles2 = _interopRequireDefault(_universalStyles);
 
+var _util = require('util');
+
+var _util2 = _interopRequireDefault(_util);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var universalContext = (0, _universalStyles2.default)(); /**
-                                                          * MIT License http://www.opensource.org/licenses/mit-license.php
-                                                          * Author Tobias Koppers @sokra (style-loader)
-                                                          * Refactored by Cole Chamberlain <cole.chamberlain@gmail.com> @noderaider (ES2016 / universal-style-loader)
-                                                          */
+/**
+ * MIT License http://www.opensource.org/licenses/mit-license.php
+ * Author Tobias Koppers @sokra (style-loader)
+ * Refactored by Cole Chamberlain <cole.chamberlain@gmail.com> @noderaider (ES2016 / universal-style-loader)
+ */
 
+var universalContext = (0, _universalStyles2.default)();
 exports.default = universalContext(function () {
   for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
     args[_key] = arguments[_key];
@@ -47,6 +52,11 @@ exports.default = universalContext(function () {
   var styleElementsInsertedAtTop = [];
 
   function addStyles(list, options) {
+    var _ref = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
+    var resourcePath = _ref.resourcePath;
+
+    console.trace('RECEIVED RESOURCE PATH', resourcePath);
     options = options || {};
     // Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
     // tags it will allow on a page
@@ -144,6 +154,7 @@ exports.default = universalContext(function () {
   }
 
   function createStyleElement(options) {
+    console.trace('createStyleElement => ', _util2.default.inspect(options));
     var styleElement = document.createElement('style');
     styleElement.type = 'text/css';
     insertStyleElement(options, styleElement);
@@ -151,6 +162,7 @@ exports.default = universalContext(function () {
   }
 
   function createLinkElement(options) {
+    console.trace('createLinkElement => ', _util2.default.inspect(options));
     var linkElement = document.createElement('link');
     linkElement.rel = 'stylesheet';
     insertStyleElement(options, linkElement);
@@ -158,6 +170,7 @@ exports.default = universalContext(function () {
   }
 
   function addStyle(obj, options) {
+    console.trace('addStyle => ', _util2.default.inspect({ obj: obj, options: options }));
     var styleElement, update, remove;
 
     if (options.singleton) {

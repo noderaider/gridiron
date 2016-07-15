@@ -7,6 +7,7 @@
 import { parseQuery, stringifyRequest } from 'loader-utils'
 import path from 'path'
 import wrapper from './utils/wrapper'
+import util from 'util'
 const wrap = wrapper('universal-style-loader/lib/index.js')
 
 module.exports = function() {}
@@ -17,6 +18,10 @@ module.exports.pitch = function pitch (remainingRequest) {
   const addStylesPath = path.join(__dirname, 'compile', 'addStyles.js')
   const addStyles = `require(${stringifyRequest(this, `!${addStylesPath}`)}).default`
 
+  const resourcePath = remainingRequest.split('!').splice(-1)[0]
+  //const inspected = util.inspect({ filePath, remainingRequest, query, self: this })
+  //const trace = `console.trace('pitch COMPILED', __dirname, __filename, ${JSON.stringify(inspected)});`
+
   return wrap(`
 /** Adds some css to the DOM by adding a <style> tag */
 
@@ -26,7 +31,7 @@ if(typeof content === 'string')
   content = [[module.id, content, '']];
 
 /** add the styles to the DOM */
-var update = ${addStyles}(content, ${JSON.stringify(query)});
+var update = ${addStyles}(content, ${JSON.stringify(query)}, ${JSON.stringify({ resourcePath })});
 if(content.locals) module.exports = content.locals;
 
 /** Hot Module Replacement */
