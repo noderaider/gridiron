@@ -66,12 +66,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cchamberlain/gridiron-styles.git"
+    "url": "git+https://github.com/noderaider/gridiron.git"
   },
   "author": "Cole Chamberlain <cole.chamberlain@gmail.com> (https://github.com/cchamberlain)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/cchamberlain/gridiron-styles/issues"
+    "url": "https://github.com/noderaider/gridiron/issues"
   },
-  "homepage": "https://cchamberlain.github.io/gridiron-styles"
+  "homepage": "https://gridiron.js.org"
 }

@@ -1,3 +1,4 @@
+import util from 'util'
 import solvent from 'solvent'
 const should = require('chai').should()
 
@@ -25,6 +26,29 @@ export default function pre (deps) {
                       , padding: '1px 2px'
                       , fontSize: '0.9em'
                       }
+
+  const errorStyle =  { backgroundColor: 'rgba(255, 220, 220, 0.5)'
+                      , color: 'rgb(0, 0, 0)'
+                      , border: '2px dashed rgba(255, 100, 100, 0.6)'
+                      , position: 'relative'
+                      , minHeight: 40
+                      , fontWeight: 'bold'
+                      , fontSize: '1.1em'
+                      , padding: 10
+                      }
+  const errorDetailsStyle = { position: 'absolute'
+                            , right: 5
+                            , bottom: 5
+                            , fontSize: '0.9em'
+                            }
+  const errorWatermark =      { transform: 'rotate(0.25turn)'
+                              , position: 'absolute'
+                              , color: 'rgba(255, 0, 0, 0.7)'
+                              , fontWeight: 'bold'
+                              , top: 40
+                              , right: 0
+                              , pointerEvents: 'none'
+                              }
   const numberStyle = { ...labelStyle
                       , color: 'rgb(0, 148, 177)'
                       , border: '1px dotted rgba(0, 148, 177, 1)'
@@ -82,6 +106,8 @@ export default function pre (deps) {
                               , right: 0
                               , pointerEvents: 'none'
                               }
+
+
   const floats = { float: 'left', clear: 'left' }
   const inlineTable = { display: 'table'
                       , width: '80%'
@@ -161,7 +187,22 @@ export default function pre (deps) {
             )
           }
 
-          return objKeys.length === 0 ? <span className="js-object" style={inlineObjStyle}>{'{}'}</span> : (
+          if(obj instanceof Error) {
+            return (
+              <span className="js-object js-error" style={{ ...objStyle, ...errorStyle }}>
+                <span className="js-error-watermark" style={errorWatermark}>{obj.name || 'Error'}</span>
+                <span>{util.inspect(obj)}</span>
+                <span className="js-error-details" style={errorDetailsStyle}>
+                  {obj.fileName ? <span className="js-error-file-name">{obj.fileName}</span> : null}
+                  {obj.lineNumber ? <span className="js-error-line-number">line: {obj.lineNumber}</span> : null}
+                  {obj.columnNumber ? <span className="js-error-column-number">column: {obj.columnNumber}</span> : null}
+                  {obj.number ? <span className="js-error-number">number: {obj.number}</span> : null}
+                </span>
+              </span>
+            )
+          }
+
+          return objKeys.length === 0 ? <span className="js-object no-keys" style={inlineObjStyle}>{util.inspect(obj)}</span> : (
             <div className="js-object" style={objStyle}>{objKeys.map((x, i) => {
               return (
                 <div key={i} style={inlineTable}>

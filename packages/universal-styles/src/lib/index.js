@@ -87,6 +87,7 @@ export function serializeStyles (req, { processCSS } = {}) {
 
 function extractElements (req, processCSS) {
   const { result, dom } = createDOMContext(replay)(req)
+  console.trace(util.inspect(dom.document))
   const { head, body } = dom.document
   return Promise.all(head.childNodes.map(({ tagName, type, media, styleSheet, href, childNodes }) => {
     switch(tagName) {

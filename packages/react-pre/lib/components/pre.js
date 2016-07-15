@@ -12,6 +12,10 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 exports.default = pre;
 
+var _util = require('util');
+
+var _util2 = _interopRequireDefault(_util);
+
 var _solvent2 = require('solvent');
 
 var _solvent3 = _interopRequireDefault(_solvent2);
@@ -53,6 +57,29 @@ function pre(deps) {
     color: 'rgb(255, 255, 255)',
     padding: '1px 2px',
     fontSize: '0.9em'
+  };
+
+  var errorStyle = { backgroundColor: 'rgba(255, 220, 220, 0.5)',
+    color: 'rgb(0, 0, 0)',
+    border: '2px dashed rgba(255, 100, 100, 0.6)',
+    position: 'relative',
+    minHeight: 40,
+    fontWeight: 'bold',
+    fontSize: '1.1em',
+    padding: 10
+  };
+  var errorDetailsStyle = { position: 'absolute',
+    right: 5,
+    bottom: 5,
+    fontSize: '0.9em'
+  };
+  var errorWatermark = { transform: 'rotate(0.25turn)',
+    position: 'absolute',
+    color: 'rgba(255, 0, 0, 0.7)',
+    fontWeight: 'bold',
+    top: 40,
+    right: 0,
+    pointerEvents: 'none'
   };
   var numberStyle = _extends({}, labelStyle, { color: 'rgb(0, 148, 177)',
     border: '1px dotted rgba(0, 148, 177, 1)',
@@ -101,6 +128,7 @@ function pre(deps) {
     right: 0,
     pointerEvents: 'none'
   };
+
   var floats = { float: 'left', clear: 'left' };
   var inlineTable = { display: 'table',
     width: '80%'
@@ -268,11 +296,57 @@ function pre(deps) {
                 if ((typeof _ret4 === 'undefined' ? 'undefined' : _typeof(_ret4)) === "object") return _ret4.v;
               }
 
+              if (obj instanceof Error) {
+                return {
+                  v: React.createElement(
+                    'span',
+                    { className: 'js-object js-error', style: _extends({}, objStyle, errorStyle) },
+                    React.createElement(
+                      'span',
+                      { className: 'js-error-watermark', style: errorWatermark },
+                      obj.name || 'Error'
+                    ),
+                    React.createElement(
+                      'span',
+                      null,
+                      _util2.default.inspect(obj)
+                    ),
+                    React.createElement(
+                      'span',
+                      { className: 'js-error-details', style: errorDetailsStyle },
+                      obj.fileName ? React.createElement(
+                        'span',
+                        { className: 'js-error-file-name' },
+                        obj.fileName
+                      ) : null,
+                      obj.lineNumber ? React.createElement(
+                        'span',
+                        { className: 'js-error-line-number' },
+                        'line: ',
+                        obj.lineNumber
+                      ) : null,
+                      obj.columnNumber ? React.createElement(
+                        'span',
+                        { className: 'js-error-column-number' },
+                        'column: ',
+                        obj.columnNumber
+                      ) : null,
+                      obj.number ? React.createElement(
+                        'span',
+                        { className: 'js-error-number' },
+                        'number: ',
+                        obj.number
+                      ) : null
+                    )
+                  )
+                };
+              }
+
               return {
                 v: objKeys.length === 0 ? React.createElement(
                   'span',
-                  { className: 'js-object', style: inlineObjStyle },
-                  '{}'
+                  { className: 'js-object no-keys', style: inlineObjStyle },
+                  _util2.default.inspect(obj)
                 ) : React.createElement(
                   'div',
                   { className: 'js-object', style: objStyle },

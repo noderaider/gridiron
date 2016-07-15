@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import reactPre from 'react-pre'
 
-const Pre = reactPre({ React })
+const { Pre } = reactPre({ React })
 
 const ErrorPage = ({ status, statusMessage, children, styles={} }) => {
   const title = `${status} ERROR | ${statusMessage}`

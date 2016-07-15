@@ -17,7 +17,7 @@ import { serialize, createInitialState } from 'fire-hydrant'
 
 import { getThemeForUrl } from '../context/theme'
 import { defaultTheme, getTheme } from '../context'
-import { server, packageName, packageKey, faviconUrl, log, IS_HOT, IS_DEV, noop, resolveRoot, initialState } from '../../config'
+import { server, packageName, packageKey, faviconUrl, log, IS_HOT, IS_DEV, noop, resolveRoot, initialState, resolveRoot } from '../../config'
 import { deauthorized, hydrateIdentity } from '../redux/actions/identity'
 import minify from '../services/minify'
 import logging from '../services/logging'
@@ -30,19 +30,21 @@ import { reactStyles, serializeStyles, RoutingError } from 'universal-styles'
 import ErrorPage from '../components/ErrorPage'
 
 import postcss from 'postcss'
+import postcssImport from 'postcss-import'
 import postcssUrl from 'postcss-url'
 import postcssCssnext from 'postcss-cssnext'
 import cssnano from 'cssnano'
 
-const cssProcessor = postcss([ postcssUrl({ url: 'inline'
-                                          , assetsPath: '../images'
-                                          })
-                            , postcssCssnext()
-                            , cssnano()
-                            ])
+const cssProcessor = postcss( [ postcssImport({ path: [ resolveRoot('../packages/gridiron-themes/lib') ] })
+                              , postcssUrl( { url: 'inline'
+                                            , assetsPath: '../images'
+                                            } )
+                              , postcssCssnext()
+                              , cssnano()
+                              ])
 
 function processCSS(css) {
-  return cssProcessor.process(css).then(x => x.css)
+  return cssProcessor.process(css, {}).then(x => x.css)
 }
 
 const BodyInit = ({ theme }) => {
@@ -63,6 +65,7 @@ const BodyInit = ({ theme }) => {
 
 const InitialState = createInitialState({ React, Immutable })
 
+const renderMarkup = html => `<!doctype html>\n${renderToStaticMarkup(html)}`
 
 
 export default function configureAppRouter({ cors, paths }) {
@@ -124,7 +127,7 @@ export default function configureAppRouter({ cors, paths }) {
         return <head>{items.map((x, key) => React.cloneElement(x, { key }))}</head>
       }
 
-      const renderPage = ({ head, body }) => `<!doctype html>\n${renderToStaticMarkup(<html>{head}{body}</html>)}`
+      const renderPage = ({ head, body }) => renderMarkup(<html>{head}{body}</html>)
       return resolve({ renderBody, renderHead, renderPage })
     })
   }), (promise, res, next) => {
@@ -134,14 +137,20 @@ export default function configureAppRouter({ cors, paths }) {
             if(err === false) {
               return next()
             }
-            if(err instanceof RoutingError) {
-              const { status, statusMessage, redirect, innerError } = err
-              if(status === 302)
-                return res.redirect(302, redirect)
-              return res.status(status).send(renderToStaticMarkup(<ErrorPage status={status} statusMessage={statusMessage}>{innerError}</ErrorPage>))
-            } else {
-              return res.status(500).send(renderToStaticMarkup(<ErrorPage>{error}</ErrorPage>))
+            console.error(err, 'AN ERROR OCCURRED')
+            try {
+              if(err instanceof RoutingError) {
+                const { status, statusMessage, redirect, innerError } = err
+                if(status === 302)
+                  return res.redirect(302, redirect)
+                return res.status(status).send(renderMarkup(<ErrorPage status={status} statusMessage={statusMessage}>{innerError}</ErrorPage>))
+              } else {
+                return res.status(500).send(renderMarkup(<ErrorPage statusMessage={err.message || error}>{err}</ErrorPage>))
+              }
+            } catch(internalError) {
+              console.error(internalError, 'REALLY BAD ERROR OCCURRED')
             }
           })
+
   })
 }

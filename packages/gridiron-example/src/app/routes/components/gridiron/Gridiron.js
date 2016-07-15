@@ -15,15 +15,14 @@ import reduxPager from 'redux-pager'
 import reduxPagerStyles from './css/redux-pager.css' // 'redux-pager/lib/styles.css'
 
 import styles from 'gridiron-styles'
-import sandy from './css/theme/sandy.css'
-import black from './css/theme/black.css'
+import { sandy, black /*, carbon */ } from 'gridiron-themes'
 
 const should = require('chai').should()
 
 const { Pager } = reduxPager({ React, connect, shallowCompare }, { styles: reduxPagerStyles })
 const { header } = factories({ React })
 const { Grid, AutoSizer } = gridironReact({ React, shallowCompare })
-const { CoreGrid, DrillGrid, Footer, Expander } = gridiron({ React, ReactDOM, Grid, AutoSizer, connect, Immutable })
+const { CoreGrid, DrillGrid, Footer } = gridiron({ React, ReactDOM, Grid, AutoSizer, connect, Immutable })
 const { Pre, Arrows } = reactPre({ React })
 
 function createContext() {
@@ -214,12 +213,12 @@ export default class Gridiron extends Component {
                         , state: data => Object.keys(data).join('_')
                         }
                 }}
-          theme={sandy}>
+          theme={black}>
           {pager => (
             <Box>
               <DrillGrid
                   styles={styles}
-                  theme={sandy}
+                  theme={black}
                   cols={pager.cols}
                   rows={pager.rows}
                   mapDrill={parentId => <ReduxGridDetail ids={parentId} />}
