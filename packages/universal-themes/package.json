@@ -1,6 +1,6 @@
 {
   "name": "universal-themes",
-  "version": "0.11.0",
+  "version": "0.11.1",
   "description": "Universal Themes for CSS Modules",
   "main": "lib/index.js",
   "scripts": {
@@ -21,7 +21,7 @@
     "classnames": "latest",
     "ncp": "latest",
     "npm-run-all": "latest",
-    "solvent": "^0.11.0"
+    "solvent": "^0.11.1"
   },
   "devDependencies": {
     "babel-cli": "latest",

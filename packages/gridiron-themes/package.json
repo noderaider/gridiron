@@ -1,9 +1,9 @@
 {
   "name": "gridiron-themes",
-  "version": "0.11.0",
+  "version": "0.11.1",
   "description": "React Component Styles for CSS Modules",
   "main": "lib/index.js",
-    "scripts": {
+  "scripts": {
     "start": "npm run copy && npm run webpack -- --watch",
     "copy": "rimraf lib assets && ncp src/lib lib && ncp src/assets assets && rimraf lib/index.js",
     "prewebpack": "rimraf webpack webpack.config.js config.js && babel src/webpack -d webpack && babel src/webpack.config.js -o webpack.config.js && babel src/config.js -o config.js",
@@ -21,15 +21,15 @@
   "dependencies": {
     "chai": "latest",
     "classnames": "latest",
-    "gridiron-core": "^0.11.0",
+    "gridiron-core": "^0.11.1",
     "isomorphic-style-loader": "^1.0.0",
     "json-loader": "^0.5.4",
     "ncp": "latest",
     "npm-run-all": "latest",
     "react-stamp": "latest",
-    "solvent": "^0.11.0",
-    "universal-style-loader": "^0.11.0",
-    "universal-styles": "^0.11.0"
+    "solvent": "^0.11.1",
+    "universal-style-loader": "^0.11.1",
+    "universal-styles": "^0.11.1"
   },
   "devDependencies": {
     "babel-cli": "latest",
