@@ -1,3 +1,5 @@
+import applyCapitalization from './applyCapitalization'
+
 export function createDOM(req) {
   const userAgent = req.headers['user-agent']
   const navigator = { userAgent }
@@ -6,7 +8,12 @@ export function createDOM(req) {
   function createElement(tagName) {
     let attributes = new Map()
     let nodes = { parent: null, children: [] }
+    let meta = {}
     function setAttribute (name, value) {
+      if(name.startsWith('data-')) {
+        let attrName = name.split('-').slice(1).map((x, i) => i > 0 ? applyCapitalization(x) : x).join('')
+        meta[attrName] = value
+      }
       attributes.set(name, value)
     }
     function getAttribute (name) {
@@ -24,6 +31,9 @@ export function createDOM(req) {
                   , getAttribute
                   , hasAttribute
                   , removeAttribute
+                  , get meta() {
+                      return meta
+                    }
                   , get childNodes() {
                       return nodes.children
                     }

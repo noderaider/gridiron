@@ -35,7 +35,7 @@ import postcssUrl from 'postcss-url'
 import postcssCssnext from 'postcss-cssnext'
 import cssnano from 'cssnano'
 
-const cssProcessor = postcss( [ postcssImport({ path: [ resolveRoot('../packages/gridiron-themes/lib') ] })
+const cssProcessor = postcss( [ postcssImport()
                               , postcssUrl( { url: 'inline'
                                             , assetsPath: '../images'
                                             } )
@@ -43,8 +43,9 @@ const cssProcessor = postcss( [ postcssImport({ path: [ resolveRoot('../packages
                               , cssnano()
                               ])
 
-function processCSS(css) {
-  return cssProcessor.process(css, {}).then(x => x.css)
+function processCSS(css, { meta = {} } = {}) {
+  console.info('META =>', meta)
+  return cssProcessor.process(css, { from: meta.resourcePath }).then(x => x.css)
 }
 
 const BodyInit = ({ theme }) => {

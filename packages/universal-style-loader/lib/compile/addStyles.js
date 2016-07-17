@@ -51,12 +51,7 @@ exports.default = universalContext(function () {
   var singletonCounter = 0;
   var styleElementsInsertedAtTop = [];
 
-  function addStyles(list, options) {
-    var _ref = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-
-    var resourcePath = _ref.resourcePath;
-
-    console.trace('RECEIVED RESOURCE PATH', resourcePath);
+  function addStyles(list, options, meta) {
     options = options || {};
     // Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
     // tags it will allow on a page
@@ -66,7 +61,7 @@ exports.default = universalContext(function () {
     if (typeof options.insertAt === 'undefined') options.insertAt = 'bottom';
 
     var styles = listToStyles(list);
-    addStylesToDOM(styles, options);
+    addStylesToDOM(styles, options, meta);
 
     return function update(newList) {
       var mayRemove = [];
@@ -78,7 +73,7 @@ exports.default = universalContext(function () {
       }
       if (newList) {
         var newStyles = listToStyles(newList);
-        addStylesToDOM(newStyles, options);
+        addStylesToDOM(newStyles, options, meta);
       }
       for (var i = 0; i < mayRemove.length; i++) {
         var domStyle = mayRemove[i];
@@ -91,7 +86,7 @@ exports.default = universalContext(function () {
     };
   }
 
-  function addStylesToDOM(styles, options) {
+  function addStylesToDOM(styles, options, meta) {
     for (var i = 0; i < styles.length; i++) {
       var item = styles[i];
       var domStyle = stylesInDOM[item.id];
@@ -101,12 +96,12 @@ exports.default = universalContext(function () {
           domStyle.parts[j](item.parts[j]);
         }
         for (; j < item.parts.length; j++) {
-          domStyle.parts.push(addStyle(item.parts[j], options));
+          domStyle.parts.push(addStyle(item.parts[j], options, meta));
         }
       } else {
         var parts = [];
         for (var j = 0; j < item.parts.length; j++) {
-          parts.push(addStyle(item.parts[j], options));
+          parts.push(addStyle(item.parts[j], options, meta));
         }
         stylesInDOM[item.id] = { id: item.id, refs: 1, parts: parts };
       }
@@ -153,40 +148,46 @@ exports.default = universalContext(function () {
     if (idx >= 0) styleElementsInsertedAtTop.splice(idx, 1);
   }
 
-  function createStyleElement(options) {
+  function createStyleElement(options, meta) {
     console.trace('createStyleElement => ', _util2.default.inspect(options));
     var styleElement = document.createElement('style');
     styleElement.type = 'text/css';
+    setMetaAttributes(styleElement, meta);
     insertStyleElement(options, styleElement);
     return styleElement;
   }
 
-  function createLinkElement(options) {
+  function createLinkElement(options, meta) {
     console.trace('createLinkElement => ', _util2.default.inspect(options));
     var linkElement = document.createElement('link');
     linkElement.rel = 'stylesheet';
+    setMetaAttributes(linkElement, meta);
     insertStyleElement(options, linkElement);
     return linkElement;
   }
 
-  function addStyle(obj, options) {
+  function setMetaAttributes(element, meta) {
+    if (meta.resourcePath) element.setAttribute('data-resource-path', meta.resourcePath);
+  }
+
+  function addStyle(obj, options, meta) {
     console.trace('addStyle => ', _util2.default.inspect({ obj: obj, options: options }));
     var styleElement, update, remove;
 
     if (options.singleton) {
       var styleIndex = singletonCounter++;
-      styleElement = singletonElement || (singletonElement = createStyleElement(options));
+      styleElement = singletonElement || (singletonElement = createStyleElement(options, meta));
       update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
       remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
     } else if (obj.sourceMap && typeof URL === 'function' && typeof URL.createObjectURL === 'function' && typeof URL.revokeObjectURL === 'function' && typeof Blob === 'function' && typeof btoa === 'function') {
-      styleElement = createLinkElement(options);
+      styleElement = createLinkElement(options, meta);
       update = updateLink.bind(null, styleElement);
       remove = function remove() {
         removeStyleElement(styleElement);
         if (styleElement.href) URL.revokeObjectURL(styleElement.href);
       };
     } else {
-      styleElement = createStyleElement(options);
+      styleElement = createStyleElement(options, meta);
       update = applyToTag.bind(null, styleElement);
       remove = function remove() {
         removeStyleElement(styleElement);

@@ -32,7 +32,7 @@ module.exports.pitch = function pitch(remainingRequest) {
   var addStylesPath = _path2.default.join(__dirname, 'compile', 'addStyles.js');
   var addStyles = 'require(' + (0, _loaderUtils.stringifyRequest)(this, '!' + addStylesPath) + ').default';
 
-  var resourcePath = remainingRequest.split('!').splice(-1)[0];
+  var resourcePath = remainingRequest.split('!').slice(-1)[0];
   //const inspected = util.inspect({ filePath, remainingRequest, query, self: this })
   //const trace = `console.trace('pitch COMPILED', __dirname, __filename, ${JSON.stringify(inspected)});`
 

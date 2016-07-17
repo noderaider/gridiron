@@ -7,10 +7,6 @@
   background-color:#222;
 }
 
-.rowStyle {
-  /*border-bottom: 1px solid #e0e0e0;*/
-}
-
 .evenRow {
   background-color: rgb(210, 210, 210);
   color: #046D8D;

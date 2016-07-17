@@ -25,8 +25,7 @@ export default universalContext(function (...args) {
   let singletonCounter = 0
   let styleElementsInsertedAtTop = []
 
-  function addStyles (list, options, { resourcePath } = {}) {
-    console.trace('RECEIVED RESOURCE PATH', resourcePath)
+  function addStyles (list, options, meta) {
     options = options || {}
     // Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
     // tags it will allow on a page
@@ -36,7 +35,7 @@ export default universalContext(function (...args) {
     if (typeof options.insertAt === 'undefined') options.insertAt = 'bottom'
 
     var styles = listToStyles(list)
-    addStylesToDOM(styles, options)
+    addStylesToDOM(styles, options, meta)
 
     return function update(newList) {
       var mayRemove = []
@@ -48,7 +47,7 @@ export default universalContext(function (...args) {
       }
       if(newList) {
         var newStyles = listToStyles(newList)
-        addStylesToDOM(newStyles, options)
+        addStylesToDOM(newStyles, options, meta)
       }
       for(var i = 0; i < mayRemove.length; i++) {
         var domStyle = mayRemove[i]
@@ -61,7 +60,7 @@ export default universalContext(function (...args) {
     }
   }
 
-  function addStylesToDOM(styles, options) {
+  function addStylesToDOM(styles, options, meta) {
     for(var i = 0; i < styles.length; i++) {
       var item = styles[i]
       var domStyle = stylesInDOM[item.id]
@@ -71,12 +70,12 @@ export default universalContext(function (...args) {
           domStyle.parts[j](item.parts[j])
         }
         for(; j < item.parts.length; j++) {
-          domStyle.parts.push(addStyle(item.parts[j], options))
+          domStyle.parts.push(addStyle(item.parts[j], options, meta))
         }
       } else {
         var parts = []
         for(var j = 0; j < item.parts.length; j++) {
-          parts.push(addStyle(item.parts[j], options))
+          parts.push(addStyle(item.parts[j], options, meta))
         }
         stylesInDOM[item.id] = { id: item.id, refs: 1, parts: parts }
       }
@@ -127,29 +126,36 @@ export default universalContext(function (...args) {
       styleElementsInsertedAtTop.splice(idx, 1)
   }
 
-  function createStyleElement(options) {
+  function createStyleElement(options, meta) {
     console.trace('createStyleElement => ', util.inspect(options))
     var styleElement = document.createElement('style')
     styleElement.type = 'text/css'
+    setMetaAttributes(styleElement, meta)
     insertStyleElement(options, styleElement)
     return styleElement
   }
 
-  function createLinkElement(options) {
+  function createLinkElement(options, meta) {
     console.trace('createLinkElement => ', util.inspect(options))
     var linkElement = document.createElement('link')
     linkElement.rel = 'stylesheet'
+    setMetaAttributes(linkElement, meta)
     insertStyleElement(options, linkElement)
     return linkElement
   }
 
-  function addStyle(obj, options) {
+  function setMetaAttributes(element, meta) {
+    if(meta.resourcePath)
+      element.setAttribute('data-resource-path', meta.resourcePath)
+  }
+
+  function addStyle(obj, options, meta) {
     console.trace('addStyle => ', util.inspect({ obj, options }))
     var styleElement, update, remove
 
     if (options.singleton) {
       var styleIndex = singletonCounter++
-      styleElement = singletonElement || (singletonElement = createStyleElement(options))
+      styleElement = singletonElement || (singletonElement = createStyleElement(options, meta))
       update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
       remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
     } else if(obj.sourceMap &&
@@ -158,7 +164,7 @@ export default universalContext(function (...args) {
       typeof URL.revokeObjectURL === 'function' &&
       typeof Blob === 'function' &&
       typeof btoa === 'function') {
-      styleElement = createLinkElement(options)
+      styleElement = createLinkElement(options, meta)
       update = updateLink.bind(null, styleElement)
       remove = function() {
         removeStyleElement(styleElement)
@@ -166,7 +172,7 @@ export default universalContext(function (...args) {
           URL.revokeObjectURL(styleElement.href)
       }
     } else {
-      styleElement = createStyleElement(options)
+      styleElement = createStyleElement(options, meta)
       update = applyToTag.bind(null, styleElement)
       remove = function() {
         removeStyleElement(styleElement)

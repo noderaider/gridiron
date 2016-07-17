@@ -89,12 +89,12 @@ function extractElements (req, processCSS) {
   const { result, dom } = createDOMContext(replay)(req)
   console.trace(util.inspect(dom.document))
   const { head, body } = dom.document
-  return Promise.all(head.childNodes.map(({ tagName, type, media, styleSheet, href, childNodes }) => {
+  return Promise.all(head.childNodes.map(({ tagName, type, media, styleSheet, href, meta, childNodes }) => {
     switch(tagName) {
       case 'style':
-        const result = { tagName, attributes: { type, media } }
+        const result = { tagName, attributes: { type, media }, meta }
         const rawCSS = styleSheet ? styleSheet.cssText : childNodes[0].data
-        return processCSS ? processCSS(rawCSS).then(children => ({ ...result, children }))
+        return processCSS ? processCSS(rawCSS, result).then(children => ({ ...result, children }))
                           : Promise.resolve({ ...result, children: rawCSS })
       case 'link':
         const attributes = { type: type, href: href }

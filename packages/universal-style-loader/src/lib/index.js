@@ -18,7 +18,7 @@ module.exports.pitch = function pitch (remainingRequest) {
   const addStylesPath = path.join(__dirname, 'compile', 'addStyles.js')
   const addStyles = `require(${stringifyRequest(this, `!${addStylesPath}`)}).default`
 
-  const resourcePath = remainingRequest.split('!').splice(-1)[0]
+  const resourcePath = remainingRequest.split('!').slice(-1)[0]
   //const inspected = util.inspect({ filePath, remainingRequest, query, self: this })
   //const trace = `console.trace('pitch COMPILED', __dirname, __filename, ${JSON.stringify(inspected)});`
 

@@ -1,47 +1,40 @@
 .BodyGrid {
   margin:0;
-  padding: 0 0 0 20px;
-  border: none;
-  font-size: 0.85em;
+  padding: 0px;
+  border: 2px solid rgb(100, 100, 100);
+  border-radius:4px;
+  font-size: 0.95em;
   font-family: monospace;
-  /*
-  background-color:#222;
-  */
-  background: url('../assets/carbon_1.png');
-}
-
-.rowStyle {
-  /*border-bottom: 1px solid #e0e0e0;*/
+  background: url(http://dribbble.s3.amazonaws.com/users/1672/screenshots/197056/carbonfiber_iphone4.png) !important;
+  box-shadow: 2px 2px 3px rgba(50, 50, 50, 0.5);
 }
 
 .evenRow {
-  background-color: rgb(210, 210, 210);
-  color: #046D8D;
+  background-color: rgba(40, 40, 40, 0.9);
+  color: rgb(220, 220, 220);
 }
 
 .oddRow {
-  background-color: rgb(220, 220, 220);
-  color: #046D8D;
+  background-color: rgba(50, 50, 50, 0.9);
+  color: rgb(220, 220, 220);
 }
 
 .expander {
-  font-size:2em;
-  color: rgba(200, 100, 100, 0.7);
+  color: rgba(200, 200, 200, 0.7);
 }
 
 .headerGrid,
 .footerGrid {
   color: #fff !important;
-  background-color: #000;
+  background-color: rgba(0, 0, 0, 0.5);
   padding: 5px;
   margin: 0;
-  border-top-left-radius:5px;
 }
 
 .headerCell,
 .footerCell {
   color: #fff !important;
-  background-color: #000;
+  background-color: rgba(0, 0, 0, 0.5);
   border-right: 1px solid #fff;
 }
 
