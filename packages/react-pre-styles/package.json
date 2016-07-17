@@ -1,6 +1,6 @@
 {
   "name": "react-pre-styles",
-  "version": "0.11.1",
+  "version": "0.11.2",
   "description": "React Component Styles for CSS Modules",
   "main": "lib/index.js",
   "scripts": {
@@ -22,8 +22,8 @@
     "ncp": "latest",
     "npm-run-all": "latest",
     "react-stamp": "latest",
-    "solvent": "^0.11.1",
-    "universal-styles": "^0.11.1"
+    "solvent": "^0.11.2",
+    "universal-styles": "^0.11.2"
   },
   "devDependencies": {
     "babel-cli": "latest",
