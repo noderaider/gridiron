@@ -52,10 +52,10 @@ const BodyInit = ({ theme }) => {
   const { style } = theme
   const { backgroundColor, margin, padding } = style.body
   const __html = minify(`
-  /*
   document.body.style.backgroundColor = '${backgroundColor}'
   document.body.style.margin = '${margin}'
   document.body.style.padding = '${padding}'
+  /*
   console.groupCollapsed('${packageName} => init')
   if(!window.google_tag_manager) console.info("GTM BLOCKED => consider disabling ad block so we can see how much usage we're getting")
   console.groupEnd()
@@ -98,6 +98,7 @@ export default function configureAppRouter({ cors, paths }) {
                                                 : null
           return (
             <body>
+              <BodyInit theme={theme} />
               {server.flags.render ? <InitialState globalKey={packageKey} state={state} serialize={serialize} /> : null}
               {server.flags.render ? <div id="root" dangerouslySetInnerHTML={{ __html: appMarkup }}/> : <div id="root" />}
               <script src="/assets/app.js" />

@@ -1,3 +1,8 @@
 export { default as grid } from './grid'
+export { default as coreGrid } from './coreGrid'
+export { default as drillGrid } from './drillGrid'
 export { default as autoSizer } from './autoSizer'
+export { default as expander } from './expander'
+export { default as footer } from './footer'
+export { default as settings } from './settings'
 export { default as logo } from './logo'

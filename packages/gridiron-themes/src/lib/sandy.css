@@ -1,5 +1,3 @@
-
-
 .BodyGrid {
   background-color: #fff;
   border-radius: 3px;
@@ -30,7 +28,6 @@
 .expanded {
   background-color: rgba(50, 50, 50, 0.3);
 }
-
 
 .headerGrid,
 .footerGrid {
@@ -65,4 +62,10 @@
 .select {
   color: rgb(0, 0, 0);
   background-color: rgb(255, 255, 255);
+  border-radius: 4px;
+  font-size: 0.85em;
+}
+
+.control[disabled] {
+  color: rgba(100, 100, 100, 0.5);
 }

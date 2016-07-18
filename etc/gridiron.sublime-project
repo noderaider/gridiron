@@ -3,47 +3,51 @@
   [
     {
       "name": "packages/gridiron",
-      "path": "../packages/gridiron"
+      "path": "../packages/gridiron/src"
     },
     {
       "name": "packages/gridiron-core",
-      "path": "../packages/gridiron-core"
+      "path": "../packages/gridiron-core/src"
     },
     {
       "name": "packages/gridiron-cli",
-      "path": "../packages/gridiron-cli"
+      "path": "../packages/gridiron-cli/src"
     },
     {
       "name": "packages/gridiron-test",
-      "path": "../packages/gridiron-test"
+      "path": "../packages/gridiron-test/test"
     },
     {
       "name": "packages/gridiron-react",
-      "path": "../packages/gridiron-react"
+      "path": "../packages/gridiron-react/src"
     },
     {
       "name": "packages/gridiron-redux",
-      "path": "../packages/gridiron-redux"
-    },
-    {
-      "name": "packages/gridiron-pager",
-      "path": "../packages/gridiron-pager"
+      "path": "../packages/gridiron-redux/src"
     },
     {
       "name": "packages/gridiron-example",
-      "path": "../packages/gridiron-example"
+      "path": "../packages/gridiron-example/src"
+    },
+    {
+      "name": "packages/gridiron-styles",
+      "path": "../packages/gridiron-styles/src"
+    },
+    {
+      "name": "packages/gridiron-themes",
+      "path": "../packages/gridiron-themes/src"
     },
     {
       "name": "packages/react-pub-sub",
-      "path": "../packages/react-pub-sub"
+      "path": "../packages/react-pub-sub/src"
     },
     {
       "name": "packages/react-bar",
-      "path": "../packages/react-bar"
+      "path": "../packages/react-bar/src"
     },
     {
       "name": "packages/redux-pager",
-      "path": "../packages/redux-pager"
+      "path": "../packages/redux-pager/src"
     },
     {
       "name": "packages/redux-devtools-grid-monitor",
@@ -67,79 +71,67 @@
     },
     {
       "name": "packages/fire-hydrant",
-      "path": "../packages/fire-hydrant"
+      "path": "../packages/fire-hydrant/src"
     },
     {
       "name": "packages/try-defer",
-      "path": "../packages/try-defer"
+      "path": "../packages/try-defer/src"
     },
     {
       "name": "packages/universal-styles",
-      "path": "../packages/universal-styles"
+      "path": "../packages/universal-styles/src"
     },
     {
       "name": "packages/universal-style-loader",
-      "path": "../packages/universal-style-loader"
+      "path": "../packages/universal-style-loader/src"
     },
     {
       "name": "packages/universal-loader",
-      "path": "../packages/universal-loader"
+      "path": "../packages/universal-loader/src"
     },
     {
       "name": "packages/postjs",
-      "path": "../packages/postjs"
-    },
-    {
-      "name": "packages/window-loader",
-      "path": "../packages/window-loader"
+      "path": "../packages/postjs/src"
     },
     {
       "name": "packages/universal-themes",
-      "path": "../packages/universal-themes"
+      "path": "../packages/universal-themes/src"
     },
     {
       "name": "packages/react-themes",
-      "path": "../packages/react-themes"
-    },
-    {
-      "name": "packages/gridiron-styles",
-      "path": "../packages/gridiron-styles"
-    },
-    {
-      "name": "packages/gridiron-themes",
-      "path": "../packages/gridiron-themes"
+      "path": "../packages/react-themes/src"
     },
     {
       "name": "packages/react-bar-styles",
-      "path": "../packages/react-bar-styles"
+      "path": "../packages/react-bar-styles/src"
     },
     {
       "name": "packages/react-bar-themes",
-      "path": "../packages/react-bar-themes"
+      "path": "../packages/react-bar-themes/src"
     },
     {
       "name": "packages/react-pre-styles",
-      "path": "../packages/react-pre-styles"
+      "path": "../packages/react-pre-styles/src"
     },
     {
       "name": "packages/react-pre-themes",
-      "path": "../packages/react-pre-themes"
+      "path": "../packages/react-pre-themes/src"
     },
     {
       "name": "packages/react-maximize-styles",
-      "path": "../packages/react-maximize-styles"
+      "path": "../packages/react-maximize-styles/src"
     },
     {
       "name": "packages/react-maximize-themes",
-      "path": "../packages/react-maximize-themes"
+      "path": "../packages/react-maximize-themes/src"
     },
     {
       "name": "packages/react-minimize-styles",
-      "path": "../packages/react-minimize-styles"
+      "path": "../packages/react-minimize-styles/src"
     },
     {
       "name": "packages/react-minimize-themes",
-      "path": "../packages/react-minimize-themes"
+      "path": "../packages/react-minimize-themes/src"
     },
     {
       "name": "gridiron",

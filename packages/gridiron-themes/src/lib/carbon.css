@@ -62,4 +62,10 @@
 .select {
   color: rgb(255, 255, 255);
   background-color: rgb(0, 0, 0);
+  border-radius: 4px;
+  font-size: 0.85em;
+}
+
+.control[disabled] {
+  color: rgba(100, 100, 100, 0.5);
 }

@@ -1,8 +1,5 @@
 import React, { Component, PropTypes, cloneElement } from 'react'
 
-import shallowCompare from 'react/lib/shallowCompare'
-import CSSPropertyOperations from 'react/lib/shallowCompare'
-import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import createIdleMonitor from 'react-redux-idle-monitor'
 
@@ -14,11 +11,7 @@ import DevTools from 'lib/redux/DevTools'
 import contextTypes, { schemeNames, getTheme } from 'lib/context'
 
 import { Maximize } from 'lib/components/modules/react-maximize'
-
-import gridironReact from 'gridiron-react'
-import gridironStyles from 'gridiron-styles'
-
-const { Logo } = gridironReact({ React, shallowCompare }, { styles: gridironStyles })
+import { Logo } from 'lib/components/modules/gridiron'
 
 const IdleMonitor = createIdleMonitor({ React, connect })
 
@@ -35,11 +28,13 @@ const gridProps = { xs: 12
 const browserInit = ({ theme }) => {
   const { style } = theme
   const { backgroundColor, margin, padding } = style.body
-  document.body.style.backgroundColor = backgroundColor
+  document.body.style.backgroundColor = 'rgb(150, 150, 150)' //backgroundColor
   document.body.style.margin = margin
   document.body.style.padding = padding
+  /*
   if(!window.google_tag_manager)
     console.info('GTM BLOCKED => consider disabling ad block so we can see how much usage we\'re getting')
+  */
 }
 
 class App extends Component {

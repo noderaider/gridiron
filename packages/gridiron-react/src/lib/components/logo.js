@@ -15,7 +15,10 @@ export default function logo (deps, defaults = { styles: { logo: 'logo' } }) {
                 , render() {
                     const { styles } = this.props
                     return (
-                      <span className={styles.logo}>gridiron</span>
+                      <span className={styles.logo}>
+                        <span className={styles.text}>gridiron</span>
+                        <span className={styles.bar}></span>
+                      </span>
                     )
                   }
                 }

@@ -9,3 +9,5 @@ const applyCapitalization = str => str.length <= 2 ? str.toUpperCase() : `${str[
 export default function gridironReact (deps, defaults) {
   return Object.keys(components).reduce((libs, x) => ({ ...libs, [applyCapitalization(x)]: components[x](deps, defaults) }), {})
 }
+
+export { default as factories } from './components/factories'

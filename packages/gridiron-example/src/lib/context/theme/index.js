@@ -88,7 +88,8 @@ const buildTheme = (name, palette, inverted=false) => {
                               , color: color.secondary
                               , marginLeft: '10%'
                               }
-                      , body: { backgroundColor: p['base3']
+                      , body: { /*backgroundColor: p['base3']
+                              ,*/ backgroundColor: 'rgb(100, 100, 100)'
                               , padding: 0
                               , margin: 0
                               }

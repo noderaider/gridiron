@@ -1,5 +1,3 @@
-/* Grid default theme */
-
 :global .Grid {
   position: relative;
   overflow: auto;
@@ -27,7 +25,6 @@
   width: inherit !important;
 }
 
-/** GRID */
 .BodyGrid {
   box-sizing:border-box;
   border: 1px solid #e0e0e0;
@@ -45,18 +42,18 @@
   max-width: inherit !important;
 }
 
-
 .rowStyle {
   position: relative;
   display: flex;
-  /*border-bottom: 1px solid #e0e0e0;*/
 }
 
 .rowStyle:last-child {
   border-bottom: none;
 }
 
-
+.header {
+  height: 100%;
+}
 
 .headerCell, .cell, .footerCell {
   border-right: 1px solid #e0e0e0;
@@ -65,7 +62,6 @@
 .headerCell:last-child, .cell:last-child, .footerCell:last-child {
   border-right: none;
 }
-
 
 :global .drill {
   animation-duration: 1000ms;
@@ -96,14 +92,12 @@
   padding-right: 6px;
 }
 
-
 .cell,
 .headerCell,
 .footerCell {
   height: initial !important;
   display: flex;
 }
-
 .headerCell,
 .footerCell {
   display: flex;
@@ -129,7 +123,6 @@
   background-color: transparent;
 }
 
-
 .minimal {
   border: 0;
 }
@@ -140,8 +133,7 @@
 
 .headerCell .innerCell,
 .footerCell .innerCell {
-  margin: 4px;
-  border-radius: 4px;
+  margin: 0;
 }
 
 .cell {
@@ -165,65 +157,147 @@
   font-size: 0.8em;
 }
 
+.headerContainer {
+  position: relative;
+}
 
-
-
-.logo {
-  /*
-  font-family: "coquette",fantasy;
-  font-family: "industry-inc-bevel",sans-serif;
-  font-family: "acier-bat-noir",sans-serif;
-  font-family: "modesto-open-shadow",sans-serif;
-  font-family: "modesto-initials-inline",sans-serif;
-
-  font-family: "citizen",sans-serif;
-  */
-  font-family: "boucherie-block",sans-serif;
+.panel {
+  position: absolute;
+  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  height: 0;
   display: flex;
-  font-size:1.4em;
-  flex-direction: row;
-  align-items: center;
+  z-index: 1000;
+  background-color: rgb(140, 140, 140);
+  top:100%;
+  margin:0;
+  padding:0;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.panelEnabled,
+.panelTransition.panelDisabled {
+  height: 200px;
+}
+
+.panelDisabled {
 
 }
 
-:global .hamburger:hover {
-  animation-duration: 1000ms;
-  animation-name: hovery;
+.panelTransition {
+  animation-duration: 500ms;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in;
+}
+
+.panelTransition.panelEnabled {
+  animation-name: panel-slide-in;
+}
+
+.panelTransition.panelDisabled {
+  animation-name: panel-slide-out;
+}
+
+@keyframes panel-slide-in {
+  from {
+    clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%);
+    /*
+    transform: translateY(-1);
+    */
+  }
+  to {
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+    /*
+    height: translateY(0);
+    */
+  }
+}
+
+@keyframes panel-slide-out {
+  from {
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+    /*
+    transform: translateY(-1);
+    */
+  }
+  to {
+    clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%);
+    /*
+    height: translateY(0);
+    */
+  }
+}
+
+:root {
+  --nav: {
+    font-size:1.4em;
+    font-family: "boucherie-block",sans-serif;
+    /*
+    font-family: "coquette",fantasy;
+    font-family: "industry-inc-bevel",sans-serif;
+    font-family: "acier-bat-noir",sans-serif;
+    font-family: "modesto-open-shadow",sans-serif;
+    font-family: "modesto-initials-inline",sans-serif;
+    font-family: "citizen",sans-serif;
+    */
+  }
+}
+
+.logo {
+  @apply --nav;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.logo .bar {
+  position: absolute;
+  height: 0;
+  border:1px dashed rgba(0, 0, 0, 0.2);
+  width:100%;
+  animation-duration: 3s;
+  animation-name: line;
   animation-iteration-count: infinite;
-  animation-timing-function: ease-out;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
 }
 
 a:hover .logo {
-  animation-duration: 1000ms;
+  animation-duration: 2s;
   animation-name: hovery;
   animation-iteration-count: infinite;
-  animation-timing-function: ease-out;
+  animation-timing-function: linear;
 }
-
 
 @keyframes hovery {
   from {
-    transform: scaleX(1);
+    transform: rotate3d(0, 1, 0, 0deg);
     text-shadow: none;
   }
   50% {
-    transform: scaleX(1.1);
+    transform: rotate3d(0.2, 1, 0, 180deg);
     text-shadow: 2px 2px rgba(255, 255, 255, 0.3);
   }
   to {
-    transform: scaleX(1);
+    transform: rotate3d(0, 1, 0, 360deg);
   }
 }
 
 
-:global #topbar * {
-  //color: rgb(50, 100, 150);
+@keyframes line {
+  0%{
+    transform: rotate(0deg) scaleX(1);
+  }
+  50%{
+    transform: rotate(90deg) scaleX(0.1);
+  }
+  100%{
+    transform: rotate(180deg) scaleX(1);
+  }
 }
 
-:global .logo {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
 
 
-}
