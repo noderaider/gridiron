@@ -23,6 +23,7 @@ export default ({ React }, defaults = {}) => {
 
       }
     , render() {
+        const sample = Array.from(Array(5).fill(1))
         const { styles, theme, enabled } = this.props
         const { transition } = this.state
         const className = cn( styles.panel
@@ -32,9 +33,27 @@ export default ({ React }, defaults = {}) => {
                             , transition ? styles.panelTransition : null
                             , transition ? theme.panelTransition : null
                             )
+
         return (
           <div className={className}>
-            THIS IS THE PANEL
+            <div className={cn(styles.panelContent, theme.panelContent)}>
+              <div className={cn(styles.panelRow, theme.panelRow)}>
+                {sample.map((x, i) => (
+                    <div key={i} className={cn(styles.panelItem, theme.panelItem)}>
+                      <input type="checkbox" /> Left Item {i}
+                    </div>
+                  )
+                )}
+              </div>
+              <div className={cn(styles.panelRow, theme.panelRow)}>
+                {sample.map((x, i) => (
+                    <div key={i} className={cn(styles.panelItem, theme.panelItem)}>
+                      <input type="checkbox" /> Right Item {i}
+                    </div>
+                  )
+                )}
+              </div>
+            </div>
           </div>
         )
       }

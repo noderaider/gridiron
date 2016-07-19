@@ -18,16 +18,16 @@
       "path": "../packages/gridiron-test/test"
     },
     {
-      "name": "packages/gridiron-react",
-      "path": "../packages/gridiron-react/src"
-    },
-    {
       "name": "packages/gridiron-redux",
       "path": "../packages/gridiron-redux/src"
     },
     {
       "name": "packages/gridiron-example",
       "path": "../packages/gridiron-example/src"
+    },
+    {
+      "name": "packages/gridiron-react",
+      "path": "../packages/gridiron-react/src"
     },
     {
       "name": "packages/gridiron-styles",

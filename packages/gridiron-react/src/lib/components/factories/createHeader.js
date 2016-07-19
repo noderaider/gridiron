@@ -70,10 +70,17 @@ export default function createHeader ({ React }, defaults) {
       const sort = status && status.sort ? status.sort : null
 
       const { checked
+            , panelEnabled
             } = this.state
+
+
+      let enabledClasses = panelEnabled ? [ styles.headerEnabled, theme.headerEnabled ] : []
+
+      console.warn('PANEL ENABLED', panelEnabled, enabledClasses)
+
       return (
         <div className={cn(styles.headerContainer, theme.headerContainer)}>
-          <span style={wrapStyle} className={cn(styles.header, theme.header)}>
+          <span style={wrapStyle} className={cn(styles.header, theme.header, ...enabledClasses)}>
             <span style={leftStyle}>
               <span style={leftControlStyle}>
                 {checkbox ? checkbox.label ? (
@@ -91,7 +98,10 @@ export default function createHeader ({ React }, defaults) {
                 </button>
               ) : null}
               {filter ? (
-                <button onClick={() => this.setState({ panelEnabled: !this.state.panelEnabled })}>
+                <button
+
+                  onClick={() => this.setState({ panelEnabled: !this.state.panelEnabled })}
+                >
                   <i className={`fa fa-filter${''}`} />
                 </button>
               ) : null}
