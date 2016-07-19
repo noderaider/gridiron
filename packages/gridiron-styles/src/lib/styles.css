@@ -56,8 +56,9 @@
 }
 
 .headerCell, .cell, .footerCell {
-  border-right: 1px solid #e0e0e0;
+  border-right: 1px solid #666;
 }
+
 
 .headerCell:last-child, .cell:last-child, .footerCell:last-child {
   border-right: none;
@@ -163,10 +164,9 @@
   flex-direction: column;
 }
 
-.panel {
+.pane {
   position: absolute;
   overflow: auto;
-  background-color: transparent;
   /*
   min-height: 300px;
   height: 300px;
@@ -186,31 +186,31 @@
   animation-timing-function: ease-in;
 }
 
-.panel,
-.panelDisabled {
+.pane,
+.paneDisabled {
   clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%);
   transform: translateY(-100%);
 }
 
-.panelEnabled,
-.panelTransition.panelDisabled {
+.paneEnabled,
+.paneTransition.paneDisabled {
   clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
   transform: translateY(0%);
 }
 
 
-.panelTransition {
+.paneTransition {
 }
 
-.panelTransition.panelEnabled {
-  animation-name: panel-slide-in;
+.paneTransition.paneEnabled {
+  animation-name: pane-slide-in;
 }
 
-.panelTransition.panelDisabled {
-  animation-name: panel-slide-out;
+.paneTransition.paneDisabled {
+  animation-name: pane-slide-out;
 }
 
-@keyframes panel-slide-in {
+@keyframes pane-slide-in {
   from {
     clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%);
     transform: translateY(-100%);
@@ -221,7 +221,7 @@
   }
 }
 
-@keyframes panel-slide-out {
+@keyframes pane-slide-out {
   from {
     clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
     transform: translateY(0%);

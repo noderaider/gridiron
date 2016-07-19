@@ -5,7 +5,7 @@
     "dev": true,
     "prod": false,
     "minify": true,
-    "render": true
+    "render": false
   },
   "cors": {
     "origins": [ "https?://.*{{HOSTNAME}}" ]

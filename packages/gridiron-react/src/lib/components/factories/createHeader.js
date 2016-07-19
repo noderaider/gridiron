@@ -1,7 +1,7 @@
 import { Header as Core } from 'gridiron-core'
 import cn from 'classnames'
 import reactPubSub from 'react-pub-sub'
-import panel from '../panel'
+import pane from '../pane'
 
 const should = require('chai').should()
 
@@ -28,7 +28,7 @@ export default function createHeader ({ React }, defaults) {
                         }
 
   const pubSub = reactPubSub({ React })
-  const Panel = panel({ React }, defaults)
+  const Pane = pane({ React }, defaults)
 
   const SortIcon = ({ direction }) => {
     let sortClass = 'fa fa-sort'
@@ -38,10 +38,20 @@ export default function createHeader ({ React }, defaults) {
   }
 
   const desc =
-  { init() {
+  { propTypes:  { theme: PropTypes.object.isRequired
+                , styles: PropTypes.object.isRequired
+                , status: PropTypes.object.isRequired
+                , filter: PropTypes.object
+                , checkbox: PropTypes.object
+                , radio: PropTypes.object
+                }
+  , defaultProps: { ...defaults
+                  , status: {}
+                  }
+  , init() {
       const { checked, sort } = this.props
       this.state =  { checked
-                    , panelEnabled: false
+                    , headerEnabled: false
                     }
     }
   , _handleChecked (e) {
@@ -53,8 +63,6 @@ export default function createHeader ({ React }, defaults) {
       } else
         cb()
     }
-  , propTypes: Core.PropTypes(React)
-  , defaultProps: Core.DefaultProps(React)
   , render() {
       const { id
             , children
@@ -70,17 +78,18 @@ export default function createHeader ({ React }, defaults) {
       const sort = status && status.sort ? status.sort : null
 
       const { checked
-            , panelEnabled
+            , headerEnabled
             } = this.state
 
-
-      let enabledClasses = panelEnabled ? [ styles.headerEnabled, theme.headerEnabled ] : []
-
-      console.warn('PANEL ENABLED', panelEnabled, enabledClasses)
+      const className = cn( styles.headerContainer
+                          , theme.headerContainer
+                          , headerEnabled ? styles.headerEnabled : styles.headerDisabled
+                          , headerEnabled ? theme.headerEnabled : theme.headerDisabled
+                          )
 
       return (
-        <div className={cn(styles.headerContainer, theme.headerContainer)}>
-          <span style={wrapStyle} className={cn(styles.header, theme.header, ...enabledClasses)}>
+        <div className={className}>
+          <span style={wrapStyle} className={cn(styles.header, theme.header)}>
             <span style={leftStyle}>
               <span style={leftControlStyle}>
                 {checkbox ? checkbox.label ? (
@@ -99,8 +108,8 @@ export default function createHeader ({ React }, defaults) {
               ) : null}
               {filter ? (
                 <button
-
-                  onClick={() => this.setState({ panelEnabled: !this.state.panelEnabled })}
+                  className={cn(styles.filterButton, theme.filterButton)}
+                  onClick={() => this.setState({ headerEnabled: !headerEnabled })}
                 >
                   <i className={`fa fa-filter${''}`} />
                 </button>
@@ -114,7 +123,10 @@ export default function createHeader ({ React }, defaults) {
               ) : null}
             </span>
           </span>
-          {filter ? <Panel enabled={this.state.panelEnabled} /> : null}
+          {filter ? (
+            <Pane enabled={headerEnabled}>
+            </Pane>
+          ) : null}
         </div>
       )
     }

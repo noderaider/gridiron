@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Settings = exports.Expander = exports.Footer = exports.Header = exports.DrillGrid = exports.CoreGrid = undefined;
+exports.Settings = exports.Expander = exports.Footer = exports.DrillGrid = exports.CoreGrid = undefined;
 
 var _CoreGrid = require('./CoreGrid');
 
@@ -14,8 +14,6 @@ var _DrillGrid = require('./DrillGrid');
 var DrillGrid = _interopRequireWildcard(_DrillGrid);
 
 var _Header = require('./Header');
-
-var Header = _interopRequireWildcard(_Header);
 
 var Footer = _interopRequireWildcard(_Header);
 
@@ -31,7 +29,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 exports.CoreGrid = CoreGrid;
 exports.DrillGrid = DrillGrid;
-exports.Header = Header;
 exports.Footer = Footer;
 exports.Expander = Expander;
 exports.Settings = Settings;
