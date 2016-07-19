@@ -1,6 +1,6 @@
 {
   "name": "fire-hydrant",
-  "version": "0.11.4",
+  "version": "0.11.5",
   "description": "hydration and serialization of state, targeted at Redux SSR.",
   "main": "lib/index.js",
   "files": [
