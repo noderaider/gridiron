@@ -149,6 +149,7 @@ export default function pager (deps = {}, defaults = {}) {
       this.state =  { page: props.page
                     , rowsPerPage: props.rowsPerPage
                     , sort: props.sort
+                    , filter: {}
                     }
     }
     shouldComponentUpdate(nextProps, nextState) {
@@ -159,12 +160,13 @@ export default function pager (deps = {}, defaults = {}) {
         this.props.onChange(this.state)
     }
     render() {
-      const { map, mapCols, mapRows, rowsPerPageOptions, mapCellData } = this.props
+      const { map, mapCols, mapRows, rowsPerPageOptions, mapCellData, filter } = this.props
       const { page, rowsPerPage, sort } = this.state
 
       const mapStatus = state => {
         const data = map.data(state)
-        const rows = mapRows(data, { sort, map })
+        const filtered = filter({ data, filterState: this.state.filter })
+        const rows = mapRows(data, { sort, map, filter: filtered.status })
 
         if(typeof rowsPerPage !== 'number') {
           return  { rows
@@ -175,6 +177,8 @@ export default function pager (deps = {}, defaults = {}) {
                   , rowsPerPage
                   , rowsPerPageOptions
                   , totalRows: rows.size || rows.length
+                  , sort
+                  , filter: filtered.status
                   }
         }
 
@@ -193,6 +197,7 @@ export default function pager (deps = {}, defaults = {}) {
                 , rowsPerPageOptions
                 , totalRows: rows.size || rows.length
                 , sort
+                , filter: filtered.status
                 }
       }
 
@@ -217,7 +222,9 @@ export default function pager (deps = {}, defaults = {}) {
                             let cols = newDirection ? [ id, ...remaining ] : [ ...remaining, id ]
                             this.setState({ sort: { ...sort, cols, direction } })
                           }
+                        , filter: x => this.setState({ filter: x })
                         }
+
 
         const cols = mapCols({ status, actions })
         return  { actions

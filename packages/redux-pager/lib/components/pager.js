@@ -340,7 +340,8 @@ function pager() {
 
       _this.state = { page: props.page,
         rowsPerPage: props.rowsPerPage,
-        sort: props.sort
+        sort: props.sort,
+        filter: {}
       };
       return _this;
     }
@@ -366,6 +367,7 @@ function pager() {
         var mapRows = _props.mapRows;
         var rowsPerPageOptions = _props.rowsPerPageOptions;
         var mapCellData = _props.mapCellData;
+        var filter = _props.filter;
         var _state = this.state;
         var page = _state.page;
         var rowsPerPage = _state.rowsPerPage;
@@ -374,7 +376,8 @@ function pager() {
 
         var mapStatus = function mapStatus(state) {
           var data = map.data(state);
-          var rows = mapRows(data, { sort: _sort, map: map });
+          var filtered = filter({ data: data, filterState: _this2.state.filter });
+          var rows = mapRows(data, { sort: _sort, map: map, filter: filtered.status });
 
           if (typeof rowsPerPage !== 'number') {
             return { rows: rows,
@@ -384,7 +387,9 @@ function pager() {
               pages: 1,
               rowsPerPage: rowsPerPage,
               rowsPerPageOptions: rowsPerPageOptions,
-              totalRows: rows.size || rows.length
+              totalRows: rows.size || rows.length,
+              sort: _sort,
+              filter: filtered.status
             };
           }
 
@@ -402,7 +407,8 @@ function pager() {
             rowsPerPage: rowsPerPage,
             rowsPerPageOptions: rowsPerPageOptions,
             totalRows: rows.size || rows.length,
-            sort: _sort
+            sort: _sort,
+            filter: filtered.status
           };
         };
 
@@ -436,6 +442,9 @@ function pager() {
               if (remaining.includes(id)) throw new Error('internal sort error: id \'' + id + '\' should not exist in ' + JSON.stringify(remaining) + '!');
               var cols = newDirection ? [id].concat(_toConsumableArray(remaining)) : [].concat(_toConsumableArray(remaining), [id]);
               _this2.setState({ sort: _extends({}, _sort, { cols: cols, direction: direction }) });
+            },
+            filter: function filter(x) {
+              return _this2.setState({ filter: x });
             }
           };
 

@@ -39,23 +39,15 @@
     },
     {
       "name": "packages/react-formula",
-      "path": "../packages/react-formula"
+      "path": "../packages/react-formula/src"
     },
     {
       "name": "packages/react-formula-styles",
-      "path": "../packages/react-formula-styles"
+      "path": "../packages/react-formula-styles/src"
     },
     {
       "name": "packages/react-formula-themes",
-      "path": "../packages/react-formula-themes"
-    },
-    {
-      "name": "packages/react-formula-test",
-      "path": "../packages/react-formula-test"
-    },
-    {
-      "name": "packages/react-formula-cli",
-      "path": "../packages/react-formula-cli"
+      "path": "../packages/react-formula-themes/src"
     },
     {
       "name": "packages/react-pub-sub",
@@ -152,10 +144,6 @@
     {
       "name": "packages/react-minimize-themes",
       "path": "../packages/react-minimize-themes/src"
-    },
-    {
-      "name": "gridiron",
-      "path": "../"
     }
   ]
 }

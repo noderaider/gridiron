@@ -3,32 +3,10 @@ import reactStamp from 'react-stamp'
 const should = require('chai').should()
 
 
-
-
 export default function pane ({ React }, defaults = {}) {
   const { PropTypes } = React
   const { compose } = reactStamp(React)
 
-  const Input = compose(
-    { displayName: 'check'
-    , propTypes:  { styles: PropTypes.object.isRequired
-                  , theme: PropTypes.object.isRequired
-                  , type: PropTypes.string.isRequired
-                  , preLabel: PropTypes.any
-                  , postLabel: PropTypes.any
-                  }
-    , defaultProps: { ...defaults
-                    }
-    , render() {
-        const { styles, theme, type } = this.props
-        return (
-          <label className={cn(styles.input, theme.input)}>
-            <input type={type} />
-          </label>
-        )
-      }
-    }
-  )
 
   return compose(
     { displayName: 'pane'
@@ -47,7 +25,7 @@ export default function pane ({ React }, defaults = {}) {
       }
     , render() {
         const sample = Array.from(Array(20).fill(1))
-        const { styles, theme, enabled } = this.props
+        const { styles, theme, enabled, children } = this.props
         const { transition } = this.state
         const className = cn( styles.pane
                             , theme.pane
@@ -57,9 +35,26 @@ export default function pane ({ React }, defaults = {}) {
                             , transition ? theme.paneTransition : null
                             )
 
+        const PaneColumn = ({ children }) => (
+          <div className={cn(styles.paneColumn, theme.paneColumn)}>
+            {children}
+            {/*sample.map((x, i) => (
+                <div key={i} className={cn(styles.paneItem, theme.paneItem)}>
+                  <input type="checkbox" className={cn(styles.checkbox, theme.checkbox)} /> Left Item {i}
+                </div>
+              )
+            )*/}
+          </div>
+        )
+
         return (
           <div className={className}>
             <div className={cn(styles.paneContent, theme.paneContent)}>
+              <PaneColumn>{children}</PaneColumn>
+              {/*Array.isArray(children)
+                ? children.map((x, key) => <PaneColumn>{cloneElement(x, { key })}</PaneColumn>)
+                : <PaneColumn>{children}</PaneColumn>*/}
+              {/*
               <div className={cn(styles.paneColumn, theme.paneColumn)}>
                 {sample.map((x, i) => (
                     <div key={i} className={cn(styles.paneItem, theme.paneItem)}>
@@ -76,6 +71,7 @@ export default function pane ({ React }, defaults = {}) {
                   )
                 )}
               </div>
+            */}
             </div>
           </div>
         )

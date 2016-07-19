@@ -11,7 +11,7 @@ import DevTools from 'lib/redux/DevTools'
 import contextTypes, { schemeNames, getTheme } from 'lib/context'
 
 import { Maximize } from 'lib/components/modules/react-maximize'
-import { Logo } from 'lib/components/modules/gridiron'
+import { Logo } from 'lib/components/modules/gridiron-react'
 
 const IdleMonitor = createIdleMonitor({ React, connect })
 

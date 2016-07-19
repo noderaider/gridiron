@@ -5,7 +5,7 @@ import pane from '../pane'
 
 const should = require('chai').should()
 
-export default function createHeader ({ React }, defaults) {
+export default function createHeader ({ React, formula }, defaults) {
   const { Component, PropTypes } = React
   const wrapStyle = { display: 'flex'
                     , flexDirection: 'row'
@@ -36,6 +36,7 @@ export default function createHeader ({ React }, defaults) {
       sortClass += `-${direction}`
     return <i className={sortClass} />
   }
+
 
   const desc =
   { propTypes:  { theme: PropTypes.object.isRequired
@@ -68,7 +69,6 @@ export default function createHeader ({ React }, defaults) {
             , children
             , styles
             , theme
-            , filter
             , checkbox
             , radio
             , status
@@ -76,6 +76,7 @@ export default function createHeader ({ React }, defaults) {
             } = this.props
 
       const sort = status && status.sort ? status.sort : null
+      const filter = status && status.filter ? status.filter[id] : null
 
       const { checked
             , headerEnabled
@@ -86,6 +87,7 @@ export default function createHeader ({ React }, defaults) {
                           , headerEnabled ? styles.headerEnabled : styles.headerDisabled
                           , headerEnabled ? theme.headerEnabled : theme.headerDisabled
                           )
+
 
       return (
         <div className={className}>
@@ -123,10 +125,9 @@ export default function createHeader ({ React }, defaults) {
               ) : null}
             </span>
           </span>
-          {filter ? (
-            <Pane enabled={headerEnabled}>
-            </Pane>
-          ) : null}
+          <Pane enabled={headerEnabled}>
+            {filter ? filter.content : null}
+          </Pane>
         </div>
       )
     }

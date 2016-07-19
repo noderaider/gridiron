@@ -13,9 +13,9 @@ var _DrillGrid = require('./DrillGrid');
 
 var DrillGrid = _interopRequireWildcard(_DrillGrid);
 
-var _Header = require('./Header');
+var _Footer = require('./Footer');
 
-var Footer = _interopRequireWildcard(_Header);
+var Footer = _interopRequireWildcard(_Footer);
 
 var _Expander = require('./Expander');
 
