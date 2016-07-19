@@ -1,6 +1,6 @@
 {
   "name": "window-loader",
-  "version": "0.11.5",
+  "version": "0.11.6",
   "description": "window loader module for webpack (WIP)",
   "main": "lib/index.js",
   "files": [
@@ -34,7 +34,7 @@
     "chai": "latest",
     "loader-utils": "^0.2.7",
     "serialize-javascript": "^1.3.0",
-    "universal-styles": "^0.11.5"
+    "universal-styles": "^0.11.6"
   },
   "devDependencies": {
     "babel-cli": "latest",

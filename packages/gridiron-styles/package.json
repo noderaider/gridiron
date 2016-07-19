@@ -1,6 +1,6 @@
 {
   "name": "gridiron-styles",
-  "version": "0.11.5",
+  "version": "0.11.6",
   "description": "React Component Styles for CSS Modules",
   "main": "lib/index.js",
   "scripts": {
@@ -21,15 +21,15 @@
   "dependencies": {
     "chai": "latest",
     "classnames": "latest",
-    "gridiron-core": "^0.11.5",
+    "gridiron-core": "^0.11.6",
     "isomorphic-style-loader": "^1.0.0",
     "json-loader": "^0.5.4",
     "ncp": "latest",
     "npm-run-all": "latest",
     "react-stamp": "latest",
-    "solvent": "^0.11.5",
-    "universal-style-loader": "^0.11.5",
-    "universal-styles": "^0.11.5"
+    "solvent": "^0.11.6",
+    "universal-style-loader": "^0.11.6",
+    "universal-styles": "^0.11.6"
   },
   "devDependencies": {
     "babel-cli": "latest",
