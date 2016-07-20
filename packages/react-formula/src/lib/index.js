@@ -15,135 +15,123 @@ export default function reactFormula (deps, defaults) {
   const { React, Immutable } = deps
   const { Component, PropTypes } = React
   const { compose } = reactStamp(React)
+  const pubSub = reactPubSub({ React })
 
-  return function formula(config) {
-    const pubSub = reactPubSub({ React })
+  let forms = []
 
+  const FormsContext = compose(
+    { displayName: 'FormsContext'
+    , render() {
+        <div>
+          {forms.map((Form, key) => <Form key={key} />)}
+        </div>
+      }
+    }
+  )
 
+  function formula(formulaName) {
 
-    const Input = input({})
+    return function createForm ({ id = `${formulaName}_${forms.length}` } = {}) {
+      const { createPub, createSub } = pubSub({ stateNames: [ 'fields', 'values' ] })
 
-    return compose(
-      { displayName: 'formula'
-      , propTypes:  { theme: PropTypes.object.isRequired
-                    , styles: PropTypes.object.isRequired
-                    , onSubmit: PropTypes.func
-                    , onChange: PropTypes.func
-                    }
-      , defaultProps: { ...defaults
+      const Form = createPub(
+        { displayName: 'formula'
+        , propTypes:  { theme: PropTypes.object.isRequired
+                      , styles: PropTypes.object.isRequired
+                      , values: PropTypes.object.isRequired
+                      , onSubmit: PropTypes.func
+                      , onChange: PropTypes.func
                       }
-      , state: { values: {} }
-      , init() {
-          const { values } = this.state
-          this.onChange = ({ name, value }) => {
-            this.setState({ values: { ...values, [name]: value } })
+        , defaultProps: { ...defaults
+                        }
+        , state: { values: {} }
+        , init() {
+            this.inputs = []
+            this.onChange = ({ name, value }) => {
+              const { values } = this.state
+              this.setState({ values: { ...values, [name]: value } })
+            }
+            this.onSubmit = e => {
+              if(this.props.onSubmit)
+                this.props.onSubmit(e)
+              e.preventDefault()
+            }
+          }
+        , render() {
+            const { id
+                  , children
+                  , styles
+                  , theme
+                  , actions
+                  , enabled
+                  , onSubmit
+                  , onChange
+                  } = this.props
+
+            const values = { ...this.props.values, ...this.state.values }
+            const { fields, values } = this.state.sub
+
+            return (
+              <form
+                id={id}
+                ref={x => this.form = x}
+                onSubmit={this.onSubmit}
+              >
+                {fields.map((field, key) => (
+                  <input
+                    key={key}
+                    ref={x => this.inputs[field] = x}
+                    name={field}
+                    value={values[field]}
+                    type="hidden"
+                  />
+                ))}
+              </form>
+            )
           }
         }
-      , componentWillMount() {
-          const PublicInput = props => (
-            <Input
-              {...props}
-              onChange={x => {
-                console.info('CHANGED', x, props)
-                if(props.onChange)
-                  props.onChange(x)
-                this.onChange(x)
-              }}
-              value={this.state.values[props.name] || false}
-            />
-          )
-          const Label = label({})
+      )
 
-          this.setState({ Content: config({ Input: PublicInput, Label: Label }) })
-        }
-      , render() {
-          const { id
-                , children
-                , styles
-                , theme
-                , actions
-                , enabled
-                , onSubmit
-                , onChange
-                } = this.props
+      function createInput ({ field, type = 'text', value } = {}) {
 
-          const formClass = cn( styles.formContainer
-                              , theme.formContainer
-                              , enabled ? styles.formEnabled : styles.formDisabled
-                              , enabled ? theme.formEnabled : theme.formDisabled
-                              )
-
-
-
-
-          return (
-            <div className={formClass}>
-              <form onSubmit={e => {
-                if(onSubmit)
-                  onSubmit(e)
-                e.preventDefault()
-              }}>
-                {this.state.Content}
-              </form>
-            </div>
-          )
-        }
+        return createSub(
+          { displayName: 'input'
+          , propTypes:  { styles: PropTypes.object.isRequired
+                        , theme: PropTypes.object.isRequired
+                        , name: PropTypes.string.isRequired
+                        , type: PropTypes.string.isRequired
+                        , onChange: PropTypes.func.isRequired
+                        }
+          , defaultProps: { ...defaults
+                          }
+          , render() {
+              const { styles, theme, name, type, onChange, ...inputProps } = this.props
+              const { pub } = this.state
+              const { type } = field
+              const value = this.props.value || field.value
+              return (
+                <label className={cn(styles.inputLabel, theme.inputLabel)}>
+                  <pre>{util.inspect(pub)}</pre>
+                  <input
+                    {...inputProps}
+                    type={type}
+                    onChange={e => {
+                      const { value, checked } = e.target
+                      if(onChange)
+                        onChange({ name, type, value: type === 'checkbox' ? checked : value, e })
+                    }}
+                  />
+                  <div className={cn(styles.inputUI, theme.inputUI)} />
+                </label>
+              )
+            }
+          }
+        )
       }
-    )
-  }
 
-  function label (config) {
-    return compose(
-      { displayName: 'label'
-      , propTypes:  { styles: PropTypes.object.isRequired
-                    , theme: PropTypes.object.isRequired
-                    , children: PropTypes.any.isRequired
-                    }
-      , defaultProps: { ...defaults
-                      }
-      , render() {
-          const { styles, theme, children } = this.props
-          return (
-            <label className={cn(styles.input, theme.input)}>
-              {children}
-            </label>
-          )
-        }
-      }
-    )
-  }
-
-  function input ({} = {}) {
-    return compose(
-      { displayName: 'input'
-      , propTypes:  { styles: PropTypes.object.isRequired
-                    , theme: PropTypes.object.isRequired
-                    , name: PropTypes.string.isRequired
-                    , type: PropTypes.string.isRequired
-                    , onChange: PropTypes.func.isRequired
-                    }
-      , defaultProps: { ...defaults
-                      }
-      , render() {
-          const { styles, theme, name, type, onChange, ...inputProps } = this.props
-          console.warn('INPUTPROPS', inputProps)
-          return (
-            <span className={cn(styles.inputContainer, theme.inputContainer)}>
-              <input
-                {...inputProps}
-                type={type}
-                onChange={e => {
-                  const { value, checked } = e.target
-                  if(onChange)
-                    onChange({ name, type, value: type === 'checkbox' ? checked : value, e })
-                }}
-
-              />
-              <div className={cn(styles.inputUI, theme.inputUI)} />
-            </span>
-          )
-        }
-      }
-    )
+      forms.push(Form)
+      return createInput
+    }
+    return { FormsContext, formula }
   }
 }

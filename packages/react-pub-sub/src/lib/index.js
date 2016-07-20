@@ -8,7 +8,7 @@ export default function reactPubSub(deps, defaults) {
   const { Component, cloneElement } = React
   const { compose } = reactStamp(React)
   const pubEvent = 'pub'
-  const subEvent = 'pub'
+  const subEvent = 'sub'
 
   /** Creates a connected pub / sub component template */
   return function pubSub ({ propNames = [], stateNames = [] } = {}) {
@@ -59,6 +59,20 @@ export default function reactPubSub(deps, defaults) {
                             } else
                               _reset = false
                           }
+
+                          this._handleUpdate = (nextProps, nextState) => {
+                            const { props, state } = this
+                            const updated = { propNames: propNames.filter(x => nextProps[x] !== props[x])
+                                            , stateNames: stateNames.filter(x => nextState[x] !== state[x])
+                                            }
+                            if(updated.propNames.length > 0 || updated.stateNames.length > 0) {
+                              const pub = { props: updated.propNames.reduce((updatedProps, x) => ({ ...updatedProps, [x]: nextProps[x] }), {})
+                                          , state: updated.stateNames.reduce((updatedState, x) => ({ ...updatedState, [x]: nextState[x] }), {})
+                                          , time: Date.now()
+                                          }
+                              EE.emit(pubEvent, pub)
+                            }
+                          }
                         }
                       , componentDidMount() {
                           EE.on(subEvent, this._handleSub)
@@ -69,19 +83,6 @@ export default function reactPubSub(deps, defaults) {
                       , componentWillUpdate(...args) {
                           if(!_reset)
                             this._handleUpdate(...args)
-                        }
-                      , _handleUpdate(nextProps, nextState) {
-                          const { props, state } = this
-                          const updated = { propNames: propNames.filter(x => nextProps[x] !== props[x])
-                                          , stateNames: stateNames.filter(x => nextState[x] !== state[x])
-                                          }
-                          if(updated.propNames.length > 0 || updated.stateNames.length > 0) {
-                            const pub = { props: updated.propNames.reduce((updatedProps, x) => ({ ...updatedProps, [x]: nextProps[x] }), {})
-                                        , state: updated.stateNames.reduce((updatedState, x) => ({ ...updatedState, [x]: nextState[x] }), {})
-                                        , time: Date.now()
-                                        }
-                            EE.emit(pubEvent, pub)
-                          }
                         }
                       }
                     )

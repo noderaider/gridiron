@@ -14,7 +14,7 @@ import reduxPager from 'redux-pager'
 import styles from 'gridiron-styles'
 import { sandy, black, carbon  } from 'gridiron-themes'
 
-import formula from '../react-formula'
+import { formula } from '../react-formula'
 
 const should = require('chai').should()
 
@@ -26,6 +26,15 @@ const { Pager } = reduxPager({ React, connect, shallowCompare }, defaults)
 const { header } = factories({ React, formula }, defaults)
 const { CoreGrid, DrillGrid, Footer, Logo } = gridironReact({ React, shallowCompare, connect, Immutable, formula }, defaults)
 const { Pre, Arrows } = reactPre({ React })
+
+const filterForm = filterFormula('filter')
+
+const createFilter1 = filterForm()
+const createFilter2 = filterForm()
+
+
+/*
+
 
 const FilterForm = formula(({ Label, Input }) => (
   <div>
@@ -47,6 +56,7 @@ const filterForm = (
     onChange={e => console.warn('FILTER FORM CHANGED', e)}
   />
 )
+*/
 
 
 
@@ -115,7 +125,7 @@ function createContext() {
                   }
                 }
 
-  const Cell = headers[0].createSub(cell)
+  const Cell = headers[0].createCell(cell)
 
 
   const mapRows = (data, { sort, map } = {}) => {
@@ -247,6 +257,7 @@ const Gridiron = compose(
                       }
               }
             }
+            /*
             filter={data => {
               const status =  { id: { content: filterForm }
                               , state: { content: filterForm }
@@ -256,6 +267,7 @@ const Gridiron = compose(
                       , status
                       })
             }}
+            */
             theme={carbon}>
             {pager => (
               <Box>

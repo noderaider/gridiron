@@ -135,6 +135,6 @@ export default function createHeader ({ React, formula }, defaults) {
   return function header () {
     const { createPub, createSub } = pubSub({ stateNames: [ 'checked' ] })
     const Header = createPub(desc)
-    return { Header, createSub }
+    return { Header, createCell: createSub }
   }
 }

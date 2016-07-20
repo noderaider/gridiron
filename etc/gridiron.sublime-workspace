@@ -892,14 +892,14 @@
 						"selection":
 						[
 							[
-								1428,
-								1428
+								4218,
+								4218
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
-							"tabs_extra_last_activated": 1468896595.42,
+							"tabs_extra_last_activated": 1468935206.18,
 							"tabs_extra_last_activated_sheet_index": 2,
 							"tabs_extra_spawned": true,
 							"vintage":
@@ -915,14 +915,14 @@
 								"partial_sequence": "",
 								"register": "\"",
 								"sequence": "",
-								"xpos": 13
+								"xpos": 4
 							}
 						},
 						"translation.x": 0.0,
-						"translation.y": 642.0,
+						"translation.y": 2057.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 0,
 					"type": "text"
 				}
 			]
@@ -974,7 +974,7 @@
 						"translation.y": 1337.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 1,
 					"type": "text"
 				}
 			]
