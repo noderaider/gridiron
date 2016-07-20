@@ -8,57 +8,43 @@ import { connect } from 'react-redux'
 import gridironReact, { factories } from 'gridiron-react'
 import util from 'util'
 
-import reactPre from 'react-pre'
+import { Pre, Arrows } from 'lib/components/modules/react-pre'
+
 import reduxPager from 'redux-pager'
 
 import styles from 'gridiron-styles'
 import { sandy, black, carbon  } from 'gridiron-themes'
 
-import { formula } from '../react-formula'
-
+import { createForm } from '../react-formula'
 const should = require('chai').should()
+
 
 const { compose } = reactStamp(React)
 
 let defaults = { styles, theme: carbon }
 
 const { Pager } = reduxPager({ React, connect, shallowCompare }, defaults)
-const { header } = factories({ React, formula }, defaults)
-const { CoreGrid, DrillGrid, Footer, Logo } = gridironReact({ React, shallowCompare, connect, Immutable, formula }, defaults)
-const { Pre, Arrows } = reactPre({ React })
-
-const filterForm = filterFormula('filter')
-
-const createFilter1 = filterForm()
-const createFilter2 = filterForm()
+const { header } = factories({ React }, defaults)
+const { CoreGrid, DrillGrid, Footer, Logo } = gridironReact({ React, shallowCompare, connect, Immutable, createForm }, defaults)
 
 
-/*
 
-
-const FilterForm = formula(({ Label, Input }) => (
-  <div>
-    <Label>
-      First
-      <Input type="checkbox" name="checkbox_1" />
-    </Label>
-    <Label>
-      Second
-      <Input type="checkbox" name="checkbox_2" />
-    </Label>
-    <Input type="submit" name="submit" />
-  </div>
-))
-
-const filterForm = (
-  <FilterForm
-    onSubmit={e => console.warn('FILTER FORM SUBMITTED', e)}
-    onChange={e => console.warn('FILTER FORM CHANGED', e)}
-  />
-)
-*/
-
-
+const filterForms = [ createForm('filter-form-1'), createForm('filter-form-2') ]
+const FilterForm = ({ id }) => {
+  const Input = filterForms[id]
+  /*
+  const CheckboxOne = input('checkbox_1', { type: 'checkbox' })
+  const CheckboxTwo = input('checkbox_2', { type: 'checkbox' })
+  const Submit = input('submit', { type: 'submit' })
+  */
+  return (
+    <div>
+      <Input name="checkbox_1" type="checkbox" />
+      <Input name="checkbox_2" type="checkbox" />
+      <Input name="submit" type="submit" />
+    </div>
+  )
+}
 
 function createContext() {
   const headers = [ header(), header() ]
@@ -117,7 +103,15 @@ function createContext() {
                     const checkboxValue = this.latest([ 'state', 'checked' ], false)
                     return (
                       <div style={cellStyle}>
-                        <input type="checkbox" checked={checkboxValue} onChange={({ target }) => this.sub({ state: { checked: target.checked } })} />
+                        <input
+                          type="checkbox"
+                          checked={checkboxValue}
+                          onChange={({ target }) => {
+                            const newState = { checked: target.checked }
+                            this.sendPub({ state: newState })
+                            this.setSubState(newState)
+                          }}
+                        />
                         {children}
                         <span><Pre>{this.state}</Pre></span>
                       </div>
@@ -250,6 +244,16 @@ const Gridiron = compose(
                 }
 
 
+            filter={data => {
+              const status =  { id: { content: <FilterForm id={0} /> }
+                              , state: { content: <FilterForm id={1} /> }
+                              }
+                              console.warn('DATA', data)
+              return ({ data
+                      , status
+                      })
+            }}
+
             sort={
               { cols: [ 'id', 'state' ]
               , keys: { id: data => data.join('_')
@@ -257,17 +261,7 @@ const Gridiron = compose(
                       }
               }
             }
-            /*
-            filter={data => {
-              const status =  { id: { content: filterForm }
-                              , state: { content: filterForm }
-                              }
-                              console.warn('DATA', data)
-              return ({ data
-                      , status
-                      })
-            }}
-            */
+
             theme={carbon}>
             {pager => (
               <Box>

@@ -5,7 +5,7 @@ import pane from '../pane'
 
 const should = require('chai').should()
 
-export default function createHeader ({ React, formula }, defaults) {
+export default function createHeader ({ React }, defaults) {
   const { Component, PropTypes } = React
   const wrapStyle = { display: 'flex'
                     , flexDirection: 'row'
@@ -54,15 +54,15 @@ export default function createHeader ({ React, formula }, defaults) {
       this.state =  { checked
                     , headerEnabled: false
                     }
+
+      this.onReceiveSub = ({ state } = {}) => {
+        console.warn('received from sub', state)
+        if(state && state.checked === false)
+          this.setLocalState({ checked: false })
+      }
     }
   , _handleChecked (e) {
       this.setState({ checked: e.target.checked })
-    }
-  , reset({ props, state }, cb) {
-      if(state && state.checked === false) {
-        this.setState({ checked: false }, cb)
-      } else
-        cb()
     }
   , render() {
       const { id
@@ -77,6 +77,7 @@ export default function createHeader ({ React, formula }, defaults) {
 
       const sort = status && status.sort ? status.sort : null
       const filter = status && status.filter ? status.filter[id] : null
+      console.warn('HEADER FILTER', filter)
 
       const { checked
             , headerEnabled
@@ -87,7 +88,6 @@ export default function createHeader ({ React, formula }, defaults) {
                           , headerEnabled ? styles.headerEnabled : styles.headerDisabled
                           , headerEnabled ? theme.headerEnabled : theme.headerDisabled
                           )
-
 
       return (
         <div className={className}>

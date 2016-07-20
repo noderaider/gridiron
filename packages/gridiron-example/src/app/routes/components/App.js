@@ -12,6 +12,7 @@ import contextTypes, { schemeNames, getTheme } from 'lib/context'
 
 import { Maximize } from 'lib/components/modules/react-maximize'
 import { Logo } from 'lib/components/modules/gridiron-react'
+import { FormsContext } from 'lib/components/modules/react-formula'
 
 const IdleMonitor = createIdleMonitor({ React, connect })
 
@@ -58,6 +59,7 @@ class App extends Component {
       <Maximize>
         {container => (
           <div style={{ marginBottom: 70 }}>
+            <FormsContext visible={true} />
             <div style={style.app}>
               <TopBar logo={<Logo />} username={username} email={email} packageName={packageName} />
               {cloneElement(children, { container })}

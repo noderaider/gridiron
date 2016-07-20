@@ -37,10 +37,8 @@ function reactPubSub(deps, defaults) {
 
   var compose = _reactStamp.compose;
 
-  var pubEvent = 'pub';
-  var subEvent = 'pub';
-
   /** Creates a connected pub / sub component template */
+
   return function pubSub() {
     var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
@@ -48,7 +46,16 @@ function reactPubSub(deps, defaults) {
     var propNames = _ref$propNames === undefined ? [] : _ref$propNames;
     var _ref$stateNames = _ref.stateNames;
     var stateNames = _ref$stateNames === undefined ? [] : _ref$stateNames;
+    var _ref$pubKey = _ref.pubKey;
+    var pubKey = _ref$pubKey === undefined ? 'pub' : _ref$pubKey;
+    var _ref$subKey = _ref.subKey;
+    var subKey = _ref$subKey === undefined ? 'sub' : _ref$subKey;
 
+    var events = { pub: 'pub',
+      sub: 'sub',
+      sub_register: 'sub_register',
+      sub_deregister: 'sub_deregister'
+    };
     var EE = new _eventemitter2.default();
 
     var getContext = function getContext() {
@@ -95,118 +102,236 @@ function reactPubSub(deps, defaults) {
 
     var _reset = false;
 
-    function createPub() {
-      for (var _len = arguments.length, desc = Array(_len), _key = 0; _key < _len; _key++) {
-        desc[_key] = arguments[_key];
+    function registerListeners(eventKey) {
+      var listeners = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
+
+      var resolved = listeners.filter(function (x) {
+        return typeof x === 'function';
+      });
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = resolved[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var listener = _step.value;
+
+          EE.on(eventKey, listener);
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
       }
 
-      return compose.apply(undefined, desc.concat([{ displayName: 'pub',
+      return function deregisterListeners() {
+        var _iteratorNormalCompletion2 = true;
+        var _didIteratorError2 = false;
+        var _iteratorError2 = undefined;
+
+        try {
+          for (var _iterator2 = resolved[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+            var listener = _step2.value;
+
+            EE.removeListener(eventKey, listener);
+          }
+        } catch (err) {
+          _didIteratorError2 = true;
+          _iteratorError2 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion2 && _iterator2.return) {
+              _iterator2.return();
+            }
+          } finally {
+            if (_didIteratorError2) {
+              throw _iteratorError2;
+            }
+          }
+        }
+      };
+    }
+
+    function createPub(desc) {
+      var _ref3 = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+      var onRegisterSub = _ref3.onRegisterSub;
+      var onDeregisterSub = _ref3.onDeregisterSub;
+      var onReceiveSub = _ref3.onReceiveSub;
+
+      return compose(desc, { displayName: 'pub' + (desc.displayName ? '_' + desc.displayName : ''),
+        state: _defineProperty({}, subKey, {}),
         init: function init() {
           var _this = this;
 
-          this._handleSub = function (_ref3) {
-            var props = _ref3.props;
-            var state = _ref3.state;
+          this.__registers = [];
+          this.__ignoreUpdates = false;
+          /*
+            this._receiveSub = ({ props, state }) => {
+              if(this.reset) {
+                this.reset({ props, state }, () => {
+                  _reset = false
+                })
+              } else
+                _reset = false
+            }
+            */
 
-            if (_this.reset) {
-              _this.reset({ props: props, state: state }, function () {
-                _reset = false;
-              });
-            } else _reset = false;
+          this.__handleUpdate = function (nextProps, nextState) {
+            var props = _this.props;
+            var state = _this.state;
+
+            var updated = { propNames: propNames.filter(function (x) {
+                return nextProps[x] !== props[x];
+              }),
+              stateNames: stateNames.filter(function (x) {
+                return nextState[x] !== state[x];
+              })
+            };
+            if (updated.propNames.length > 0 || updated.stateNames.length > 0) {
+              var pub = { props: updated.propNames.reduce(function (updatedProps, x) {
+                  return _extends({}, updatedProps, _defineProperty({}, x, nextProps[x]));
+                }, {}),
+                state: updated.stateNames.reduce(function (updatedState, x) {
+                  return _extends({}, updatedState, _defineProperty({}, x, nextState[x]));
+                }, {}),
+                time: Date.now()
+              };
+              EE.emit(events.pub, pub);
+            }
+          };
+
+          this.setLocalState = function (newState, cb) {
+            _this.__ignoreUpdates = true;
+            _this.setState(newState, function () {
+              _this.__ignoreUpdates = false;
+              if (cb) cb();
+            });
           };
         },
         componentDidMount: function componentDidMount() {
-          EE.on(subEvent, this._handleSub);
+          this.__registers.push(registerListeners(events.register_sub, [onRegisterSub, this.onRegisterSub, this.props.onRegisterSub]));
+          this.__registers.push(registerListeners(events.deregister_sub, [onDeregisterSub, this.onDeregisterSub, this.props.onDeregisterSub]));
+          this.__registers.push(registerListeners(events.sub, [onReceiveSub, this.onReceiveSub, this.props.onReceiveSub]));
         },
         componentWillUnmount: function componentWillUnmount() {
-          EE.removeListener(subEvent, this._handleSub);
+          var _iteratorNormalCompletion3 = true;
+          var _didIteratorError3 = false;
+          var _iteratorError3 = undefined;
+
+          try {
+            for (var _iterator3 = this.__registers[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+              var deregister = _step3.value;
+
+              deregister();
+            }
+          } catch (err) {
+            _didIteratorError3 = true;
+            _iteratorError3 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion3 && _iterator3.return) {
+                _iterator3.return();
+              }
+            } finally {
+              if (_didIteratorError3) {
+                throw _iteratorError3;
+              }
+            }
+          }
         },
         componentWillUpdate: function componentWillUpdate() {
-          if (!_reset) this._handleUpdate.apply(this, arguments);
-        },
-        _handleUpdate: function _handleUpdate(nextProps, nextState) {
-          var props = this.props;
-          var state = this.state;
-
-          var updated = { propNames: propNames.filter(function (x) {
-              return nextProps[x] !== props[x];
-            }),
-            stateNames: stateNames.filter(function (x) {
-              return nextState[x] !== state[x];
-            })
-          };
-          if (updated.propNames.length > 0 || updated.stateNames.length > 0) {
-            var pub = { props: updated.propNames.reduce(function (updatedProps, x) {
-                return _extends({}, updatedProps, _defineProperty({}, x, nextProps[x]));
-              }, {}),
-              state: updated.stateNames.reduce(function (updatedState, x) {
-                return _extends({}, updatedState, _defineProperty({}, x, nextState[x]));
-              }, {}),
-              time: Date.now()
-            };
-            EE.emit(pubEvent, pub);
-          }
+          if (!this.__ignoreUpdates) this.__handleUpdate.apply(this, arguments);
         }
-      }]));
+      });
     }
 
-    function createSub() {
-      for (var _len2 = arguments.length, desc = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-        desc[_key2] = arguments[_key2];
-      }
+    function createSub(desc) {
+      var _state2;
 
-      return compose.apply(undefined, desc.concat([{ displayName: 'sub',
+      var _ref4 = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+      var onReceivePub = _ref4.onReceivePub;
+
+      return compose(desc, { displayName: 'sub' + (desc.displayName ? '_' + desc.displayName : ''),
+        state: (_state2 = {}, _defineProperty(_state2, pubKey, { props: null, state: null, time: 0 }), _defineProperty(_state2, subKey, { props: null, state: null, time: 0 }), _state2),
         init: function init() {
           var _this2 = this;
 
-          this._handlePub = function (pub) {
-            if (!pub.time) {
-              console.warn('HANDLE PUB CALLED ON SUB (BUG, SKIPPING)', pub);
-              return;
-            }
-            _this2.setState({ pub: pub });
+          this.__registers = [];
+          this.__onReceivePub = function (pub) {
+            var pubState = _defineProperty({}, pubKey, pub);
+            _this2.setState(pubState);
           };
           this.latest = function () {
-            for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-              args[_key3] = arguments[_key3];
+            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+              args[_key] = arguments[_key];
             }
 
-            var _state = _this2.state;
-            var pub = _state.pub;
-            var sub = _state.sub;
-
-            return latest.apply(undefined, [pub, sub].concat(args));
+            return latest.apply(undefined, [_this2.state[pubKey], _this2.state[subKey]].concat(args));
           };
-          this.sub = function (_ref4) {
-            var _ref4$props = _ref4.props;
-            var props = _ref4$props === undefined ? {} : _ref4$props;
-            var _ref4$state = _ref4.state;
-            var state = _ref4$state === undefined ? {} : _ref4$state;
-
-            _reset = true;
-            EE.emit(subEvent, { props: props, state: state });
-            _this2.setState({ sub: { props: props, state: state, time: Date.now() } }, function () {});
+          this.sendPub = function (obj) {
+            //_reset = true
+            EE.emit(events.sub, obj);
+            //this.setState({ [subKey]: { props, state, time: Date.now() } }, () => {})
           };
-        },
-        state: { pub: { props: null, state: null, time: 0 },
-          sub: { props: null, state: null, time: 0 }
+          this.setSubState = function (newState, cb) {
+            _this2.setState(_defineProperty({}, subKey, { state: newState, time: Date.now() }), function () {
+              if (cb) cb();
+            });
+          };
         },
         componentDidMount: function componentDidMount() {
-          EE.on(pubEvent, this._handlePub);
+          this.__registers.push(registerListeners(events.pub, [this.__onReceivePub, onReceivePub, this.onReceivePub, this.props.onReceivePub]));
+          EE.emit(events.register_sub, { props: this.props, state: this.state });
         },
         componentWillUnmount: function componentWillUnmount() {
-          EE.removeListener(pubEvent, this._handlePub);
+          var _iteratorNormalCompletion4 = true;
+          var _didIteratorError4 = false;
+          var _iteratorError4 = undefined;
+
+          try {
+            for (var _iterator4 = this.__registers[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+              var deregister = _step4.value;
+
+              deregister();
+            }
+          } catch (err) {
+            _didIteratorError4 = true;
+            _iteratorError4 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion4 && _iterator4.return) {
+                _iterator4.return();
+              }
+            } finally {
+              if (_didIteratorError4) {
+                throw _iteratorError4;
+              }
+            }
+          }
+
+          EE.emit(events.deregister_sub, { props: this.props, state: this.state });
         }
-      }]));
+      });
     }
 
     return { createPub: createPub,
       createSub: createSub,
       pub: function pub(x) {
-        return EE.emit(pubEvent, x);
+        return EE.emit(events.pub, x);
       },
       sub: function sub(x) {
-        return EE.on(pubEvent, x);
+        return EE.on(events.pub, x);
       }
     };
   };

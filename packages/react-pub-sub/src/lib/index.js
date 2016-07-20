@@ -7,13 +7,19 @@ export default function reactPubSub(deps, defaults) {
   const { React } = solvent({ React: 'object' })(deps)
   const { Component, cloneElement } = React
   const { compose } = reactStamp(React)
-  const pubEvent = 'pub'
-  const subEvent = 'sub'
 
   /** Creates a connected pub / sub component template */
-  return function pubSub ({ propNames = [], stateNames = [] } = {}) {
+  return function pubSub ({ propNames = []
+                          , stateNames = []
+                          , pubKey = 'pub'
+                          , subKey = 'sub'
+                          } = {}) {
+    const events =  { pub: 'pub'
+                    , sub: 'sub'
+                    , sub_register: 'sub_register'
+                    , sub_deregister: 'sub_deregister'
+                    }
     const EE = new EventEmitter()
-
 
     const getContext = ({ props = {}
                         , state = {}
@@ -47,11 +53,33 @@ export default function reactPubSub(deps, defaults) {
 
     let _reset = false
 
-    function createPub (...desc) {
-      return compose( ...desc
-                    , { displayName: 'pub'
+    function registerListeners(eventKey, listeners = []) {
+      const resolved = listeners.filter(x => typeof x === 'function')
+      for(let listener of resolved) {
+        EE.on(eventKey, listener)
+      }
+      return function deregisterListeners() {
+        for(let listener of resolved) {
+          EE.removeListener(eventKey, listener)
+        }
+      }
+    }
+
+
+    function createPub( desc
+                      , { onRegisterSub
+                        , onDeregisterSub
+                        , onReceiveSub
+                        } = {}) {
+      return compose( desc
+                    , { displayName: `pub${desc.displayName ? `_${desc.displayName}` : ''}`
+                      , state:  { [subKey]: {}
+                                }
                       , init() {
-                          this._handleSub = ({ props, state }) => {
+                          this.__registers = []
+                          this.__ignoreUpdates = false
+                        /*
+                          this._receiveSub = ({ props, state }) => {
                             if(this.reset) {
                               this.reset({ props, state }, () => {
                                 _reset = false
@@ -59,8 +87,9 @@ export default function reactPubSub(deps, defaults) {
                             } else
                               _reset = false
                           }
+                          */
 
-                          this._handleUpdate = (nextProps, nextState) => {
+                          this.__handleUpdate = (nextProps, nextState) => {
                             const { props, state } = this
                             const updated = { propNames: propNames.filter(x => nextProps[x] !== props[x])
                                             , stateNames: stateNames.filter(x => nextState[x] !== state[x])
@@ -70,19 +99,32 @@ export default function reactPubSub(deps, defaults) {
                                           , state: updated.stateNames.reduce((updatedState, x) => ({ ...updatedState, [x]: nextState[x] }), {})
                                           , time: Date.now()
                                           }
-                              EE.emit(pubEvent, pub)
+                              EE.emit(events.pub, pub)
                             }
+                          }
+
+                          this.setLocalState = (newState, cb) => {
+                            this.__ignoreUpdates = true
+                            this.setState(newState, () => {
+                              this.__ignoreUpdates = false
+                              if(cb)
+                                cb()
+                            })
                           }
                         }
                       , componentDidMount() {
-                          EE.on(subEvent, this._handleSub)
+                          this.__registers.push(registerListeners(events.register_sub, [ onRegisterSub, this.onRegisterSub, this.props.onRegisterSub ]))
+                          this.__registers.push(registerListeners(events.deregister_sub, [ onDeregisterSub, this.onDeregisterSub, this.props.onDeregisterSub ]))
+                          this.__registers.push(registerListeners(events.sub, [ onReceiveSub, this.onReceiveSub, this.props.onReceiveSub ]))
                         }
                       , componentWillUnmount() {
-                          EE.removeListener(subEvent, this._handleSub)
+                          for(let deregister of this.__registers) {
+                            deregister()
+                          }
                         }
                       , componentWillUpdate(...args) {
-                          if(!_reset)
-                            this._handleUpdate(...args)
+                          if(!this.__ignoreUpdates)
+                            this.__handleUpdate(...args)
                         }
                       }
                     )
@@ -90,36 +132,43 @@ export default function reactPubSub(deps, defaults) {
 
 
 
-    function createSub (...desc) {
-      return compose( ...desc
-                    , { displayName: 'sub'
+    function createSub( desc
+                      , { onReceivePub
+                        } = {}) {
+      return compose( desc
+                    , { displayName: `sub${desc.displayName ? `_${desc.displayName}` : ''}`
+                      , state:  { [pubKey]: { props: null, state: null, time: 0 }
+                                , [subKey]: { props: null, state: null, time: 0 }
+                                }
                       , init() {
-                          this._handlePub = pub => {
-                            if(!pub.time) {
-                              console.warn('HANDLE PUB CALLED ON SUB (BUG, SKIPPING)', pub)
-                              return
-                            }
-                            this.setState({ pub })
+                          this.__registers = []
+                          this.__onReceivePub = pub => {
+                            const pubState = { [pubKey]: pub }
+                            this.setState(pubState)
                           }
                           this.latest = (...args) => {
-                            const { pub, sub } = this.state
-                            return latest(pub, sub, ...args)
+                            return latest(this.state[pubKey], this.state[subKey], ...args)
                           }
-                          this.sub = ({ props = {}, state = {} }) => {
-                            _reset = true
-                            EE.emit(subEvent, { props, state })
-                            this.setState({ sub: { props, state, time: Date.now() } }, () => {
+                          this.sendPub = obj => {
+                            //_reset = true
+                            EE.emit(events.sub, obj)
+                            //this.setState({ [subKey]: { props, state, time: Date.now() } }, () => {})
+                          }
+                          this.setSubState = (newState, cb) => {
+                            this.setState({ [subKey]: { state: newState, time: Date.now() } }, () => {
+                              if(cb) cb()
                             })
                           }
                         }
-                      , state:  { pub: { props: null, state: null, time: 0 }
-                                , sub: { props: null, state: null, time: 0 }
-                                }
                       , componentDidMount() {
-                          EE.on(pubEvent, this._handlePub)
+                          this.__registers.push(registerListeners(events.pub, [ this.__onReceivePub, onReceivePub, this.onReceivePub, this.props.onReceivePub ]))
+                          EE.emit(events.register_sub, { props: this.props, state: this.state })
                         }
                       , componentWillUnmount() {
-                          EE.removeListener(pubEvent, this._handlePub)
+                          for(let deregister of this.__registers) {
+                            deregister()
+                          }
+                          EE.emit(events.deregister_sub, { props: this.props, state: this.state })
                         }
                       }
                     )
@@ -128,8 +177,8 @@ export default function reactPubSub(deps, defaults) {
 
     return  { createPub
             , createSub
-            , pub: x => EE.emit(pubEvent, x)
-            , sub: x => EE.on(pubEvent, x)
+            , pub: x => EE.emit(events.pub, x)
+            , sub: x => EE.on(events.pub, x)
             }
   }
 }
