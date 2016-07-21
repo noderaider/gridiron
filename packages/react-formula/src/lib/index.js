@@ -3,6 +3,7 @@ import cn from 'classnames'
 import reactStamp from 'react-stamp'
 import reactPubSub from 'react-pub-sub'
 import EventEmitter from 'eventemitter3'
+import util from 'util'
 
 const should = require('chai').should()
 
@@ -13,17 +14,29 @@ const applyCapitalization = str => str.length <= 2 ? str.toUpperCase() : `${str[
  * Requires dependencies { React, Immutable } and component defaults and returns form component factory.
  */
 export default function reactFormula (deps, defaults) {
-  const { React, Immutable, reactPre } = deps
-  const { Component, PropTypes } = React
+  const { React, ReactDOM, Immutable, reactPre } = deps
+  const { Component, PropTypes, cloneElement } = React
   const { Pre } = reactPre
   const { compose } = reactStamp(React)
 
   should.not.exist(global.__formula__, 'reactFormula should only be called once per application.')
-  let __formula__ = global.__formula__ = Immutable.Map()
 
 
   function formula(formulaID) {
-    __formula__ = __formula__.set(formulaID, Immutable.Map())
+    should.exist(formulaID, 'must specify formulaID')
+    if(typeof window !== 'object')
+      return
+
+    let rootNode
+    function render(component) {
+      if(!rootNode) {
+        rootNode = document.createElement('div')
+        rootNode.id = `__formula__${formulaID}_root`
+        document.body.appendChild(rootNode)
+      }
+      ReactDOM.render(component, rootNode)
+    }
+
 
     const EE = new EventEmitter()
     function registerListeners(eventKey, listeners = []) {
@@ -50,8 +63,7 @@ export default function reactFormula (deps, defaults) {
       { displayName: 'form'
       , propTypes:  { theme: PropTypes.object.isRequired
                     , styles: PropTypes.object.isRequired
-                    , fields: PropTypes.array.isRequired
-                    , values: PropTypes.object.isRequired
+                    , fields: PropTypes.object.isRequired
                     , onSubmit: PropTypes.func
                     , onChange: PropTypes.func
                     }
@@ -87,10 +99,9 @@ export default function reactFormula (deps, defaults) {
                 , onChange
 
                 , fields
-                , values
                 } = this.props
 
-          //const { fields, values } = this.state
+          console.warn('FORM RENDER', formID, util.inspect(fields.toJS()))
 
           return (
             <form
@@ -98,12 +109,12 @@ export default function reactFormula (deps, defaults) {
               ref={x => this.form = x}
               onSubmit={onSubmit}
             >
-              {fields.map((field, key) => (
+              {fields.entrySeq().map(([ field, value ], key) => (
                 <input
                   key={key}
                   ref={x => this.inputs[field] = x}
                   name={field}
-                  value={values[field]}
+                  value={value}
                   type="hidden"
                 />
               ))}
@@ -113,71 +124,54 @@ export default function reactFormula (deps, defaults) {
       }
     )
 
-    // form: { fields: [ 'field_one', 'field_two' ], values: { field_one: true } }
 
-    const contextID = `__formula_${formulaID}`
+    const contextID = `__formula__${formulaID}`
+    function setContext(context) {
+      global[contextID] = context
+    }
+    function getContext() {
+      return global[contextID]
+    }
+
 
     const FormsContext = compose (
       { displayName: 'FormsContext'
-      //, state: { forms: Immutable.Map({ [formulaID]: Immutable.Map() }) }
+      , state: { forms: Immutable.Map() }
+      , propTypes:  { theme: PropTypes.object.isRequired
+                    , styles: PropTypes.object.isRequired
+                    }
+      , defaultProps: { ...defaults
+                      }
       , init() {
           this.__registers = []
-          /*
-          this.onCreateForm = ({ formID }) => {
-            console.warn('FORM CREATTTTTED !!!!', forms)
-            const { forms } = this.state
-            this.setState({ forms: { ...forms, [formID]: { fields: [] } } })
-          }
-          */
+
           this.onCreateInput = ({ formID, field }) => {
-            //const { forms } = this.state
-            console.warn('input created', __formula__)
-            __formula__ = __formula__.updateIn([ formulaID, formID, field ], Immutable.Map(), x => x)
-            this.forceUpdate()
-            /*
-            const form = forms[formID]
-            this.setState({ forms:  { ...forms
-                                    , [formID]: { ...form
-                                                , fields: [ ...form.fields, field ]
-                                                }
-                                    }
-                          })
-                          */
+            const fieldsPath = [ formID, field ]
+            if(typeof this.state.forms.getIn(fieldsPath) === 'undefined') {
+              const forms = this.state.forms.setIn(fieldsPath, '')
+              this.setState({ forms })
+            }
           }
           this.onUpdateInput = ({ formID, field, value }) => {
-            //const { forms } = this.state
-            console.warn('input updated', formID, field, value)
-            __formula__ = __formula__.setIn([ formulaID, formID, field, 'value' ], value )
-            this.forceUpdate()
-            /*
-            const form = forms[formID]
-            this.setState({ forms:  { ...forms
-                                    , [formID]: { ...form
-                                            , fields: [ ...fields, field ]
-                                            , values: { ...form.values, [field]: value }
-                                            }
-                                    }
-                          })
-                          */
+            const fieldsPath = [ formID, field ]
+            const forms = this.state.forms.setIn(fieldsPath, value)
+            console.warn('input updated', util.inspect(forms.toJS()), formID, field, value)
+            this.setState({ forms })
           }
         }
       , render() {
-          const { visible } = this.props
-          const forms = __formula__.get(formulaID)
-          if(!forms) {
-            console.warn('NO FORMS FOUND AT FORMULA ID')
-            return <span>NO FORMS</span>
-          }
-          //const { forms } = this.state
+          const { visible, styles, theme } = this.props
+          const { forms } = this.state
+          console.warn('RENDER FORMS', util.inspect(forms.toJS()))
           return (
-            <div id={contextID}>
-              {forms.entrySeq().map(([ formID, value ], key) => {
-                //const form = __formula__.getIn([ formulaID, formID ]).toJS()
-                const form = value.toJS()
+            <div id={contextID} ref={setContext} className={cn(styles.FormsContext, theme.FormsContext)}>
+              {forms.entrySeq().map(([ formID, fields ], key) => {
+                const fieldsJS = fields.toJS()
+                console.warn('RENDERING FORM', { formID, fieldsJS })
                 return (
                   <div key={key}>
-                    <Pre>{{ [formID]: form }}</Pre>
-                    <Form formID={formID} {...form} />
+                    <Pre>{{ [formID]: fields }}</Pre>
+                    <Form formID={formID} fields={fields} />
                   </div>
                 )
               })}
@@ -189,7 +183,6 @@ export default function reactFormula (deps, defaults) {
               */
         }
       , componentDidMount() {
-          //this.__registers.push(registerListeners(events.createForm, [ this.onCreateForm ]))
           this.__registers.push(registerListeners(events.createInput, [ this.onCreateInput ]))
           this.__registers.push(registerListeners(events.updateInput, [ this.onUpdateInput ]))
         }
@@ -205,67 +198,73 @@ export default function reactFormula (deps, defaults) {
     function createForm (formID) {
       should.exist(formID, 'formID is required')
       console.warn('CREATE_FORM', formID)
-      /*
-      EE.emit(events.createForm, { formID })
-      */
 
-/*
-      function createInput (field, { type = 'text', initialValue } = {}) {
-        should.exist(field, 'field is required')
-        EE.emit(events.createInput, { formID, field })
-        */
-
-        const Input = compose(
-          { displayName: 'input'
-          , propTypes:  { styles: PropTypes.object.isRequired
-                        , theme: PropTypes.object.isRequired
-                        , name: PropTypes.string.isRequired
-                        , type: PropTypes.string.isRequired
-                        , initialValue: PropTypes.any
-                        //, onChange: PropTypes.func.isRequired
+      const Input = compose(
+        { displayName: 'input'
+        , propTypes:  { styles: PropTypes.object.isRequired
+                      , theme: PropTypes.object.isRequired
+                      , name: PropTypes.string.isRequired
+                      , type: PropTypes.string.isRequired
+                      , initialValue: PropTypes.any
+                      //, onChange: PropTypes.func.isRequired
+                      }
+        , defaultProps: { ...defaults
                         }
-          , defaultProps: { ...defaults
-                          }
-          , componentDidMount() {
-              const field = this.props.name
-              EE.emit(events.createInput, { formID, field })
-              const value = document.querySelector(`#${formID} input[name="${field}"]`).getAttribute('value')
-              console.warn('setting value', value)
-              this.input.value = value
-            }
-          , render() {
-              const field = this.props.name
-              const { styles, theme, name, type, initialValue, onChange, ...inputProps } = this.props
-              const value = this.props.value || initialValue
-              return (
-                <label className={cn(styles.inputLabel, theme.inputLabel)}>
-                  <Pre>{this.state}</Pre>
-                  <input
-                    {...inputProps}
-                    ref={x => this.input = x}
-                    type={type}
-                    onChange={e => {
-                      const { value, checked } = e.target
-                      EE.emit(events.updateInput, { formID, field, value: type === 'checkbox' ? checked : value })
-                      /*
-                      if(onChange)
-                        onChange({ name, type, value: type === 'checkbox' ? checked : value, e })
-                      */
-                    }}
-                  />
-                  <div className={cn(styles.inputUI, theme.inputUI)} />
-                </label>
-              )
+        , componentDidMount() {
+            const field = this.props.name
+            EE.emit(events.createInput, { formID, field })
+
+            const selectString = `#${formID} input[name="${field}"]`
+            console.warn('input mount', selectString)
+            const input = document.querySelector(selectString)
+            if(typeof input !== 'undefined' && input !== null) {
+              if(this.input.type == 'checkbox') {
+                if(input.value == 'true') {
+                  console.warn('setting "CHECKED" checkbox value =>', input.value, `|typeof ${typeof input.value}|`, this.input.value, this.input.checked, this.input.type, this.input)
+                  //this.input.setAttribute('checked', 'checked')
+                  this.input.checked = true
+                } else //if(input.value === false) {
+                  console.warn('removing "CHECKED" checkbox value =>', input.value, `|typeof ${typeof input.value}|`, this.input.value, this.input.checked, this.input.type, this.input)
+                  this.input.removeAttribute('checked')
+                  /*
+                } else {
+                  //throw new Error('Checkbox must have boolean value')
+                }
+                */
+              } else {
+                console.warn('setting value', input.value, this.input.value, this.input.type, this.input)
+                this.input.value = input.value
+              }
+            } else {
+              console.warn('skipping value', input)
             }
           }
-        )
-        /*
-        return Input
-      }
-      */
-
+        , render() {
+            const field = this.props.name
+            const { styles, theme, name, type, initialValue, ...inputProps } = this.props
+            const value = this.props.value || initialValue
+            return (
+              <label className={cn(styles.inputLabel, theme.inputLabel)}>
+                <Pre>{this.props}</Pre>
+                <input
+                  {...inputProps}
+                  ref={x => this.input = x}
+                  type={type}
+                  onChange={e => {
+                    const { value, checked } = e.target
+                    EE.emit(events.updateInput, { formID, field, value: type === 'checkbox' ? checked : value })
+                  }}
+                />
+                <div className={cn(styles.inputUI, theme.inputUI)} />
+              </label>
+            )
+          }
+        }
+      )
       return Input
     }
+
+    render(<FormsContext visible={true} />)
     return { FormsContext, createForm }
   }
   return formula

@@ -59,7 +59,6 @@ class App extends Component {
       <Maximize>
         {container => (
           <div style={{ marginBottom: 70 }}>
-            <FormsContext visible={true} />
             <div style={style.app}>
               <TopBar logo={<Logo />} username={username} email={email} packageName={packageName} />
               {cloneElement(children, { container })}
