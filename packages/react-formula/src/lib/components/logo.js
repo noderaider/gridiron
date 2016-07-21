@@ -1,4 +1,5 @@
 import solvent, { TYPES } from 'solvent'
+import cn from 'classnames'
 import reactStamp from 'react-stamp'
 
 export default function logo (deps, defaults = { styles: { logo: 'logo' } }) {
@@ -13,11 +14,10 @@ export default function logo (deps, defaults = { styles: { logo: 'logo' } }) {
                 , propTypes: { styles: PropTypes.shape({ logo: PropTypes.string.isRequired }).isRequired }
                 , defaultProps: defaults
                 , render() {
-                    const { styles } = this.props
+                    const { styles, theme } = this.props
                     return (
-                      <span className={styles.logo}>
-                        <span className={styles.text}>react-formula</span>
-                        <span className={styles.bar}></span>
+                      <span className={cn(styles.logo, theme.logo)}>
+                        react-formula
                       </span>
                     )
                   }

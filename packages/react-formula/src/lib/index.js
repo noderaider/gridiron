@@ -1,7 +1,8 @@
 export { logo } from './components'
 import cn from 'classnames'
 import reactStamp from 'react-stamp'
-import reactPubSub from 'react-pub-sub'
+import dock from './components/dock'
+import logo from './components/logo'
 import EventEmitter from 'eventemitter3'
 import util from 'util'
 
@@ -14,6 +15,8 @@ const applyCapitalization = str => str.length <= 2 ? str.toUpperCase() : `${str[
  * Requires dependencies { React, Immutable } and component defaults and returns form component factory.
  */
 export default function reactFormula (deps, defaults) {
+  const Dock = dock(deps, defaults)
+  const Logo = logo(deps, defaults)
   const { React, ReactDOM, Immutable, reactPre } = deps
   const { Component, PropTypes, cloneElement } = React
   const { Pre } = reactPre
@@ -21,20 +24,28 @@ export default function reactFormula (deps, defaults) {
 
   should.not.exist(global.__formula__, 'reactFormula should only be called once per application.')
 
-
   function formula(formulaID) {
     should.exist(formulaID, 'must specify formulaID')
     if(typeof window !== 'object')
-      return
+      return { createForm: () => { Input: props => {} } }
 
+    const contextID = `__formula__${formulaID}`
+    const rootNodeID = `${contextID}_root`
     let rootNode
     function render(component) {
       if(!rootNode) {
         rootNode = document.createElement('div')
-        rootNode.id = `__formula__${formulaID}_root`
+        rootNode.id = rootNodeID
         document.body.appendChild(rootNode)
       }
       ReactDOM.render(component, rootNode)
+    }
+
+    function setContext(context) {
+      global[contextID] = context
+    }
+    function getContext() {
+      return global[contextID]
     }
 
 
@@ -55,88 +66,11 @@ export default function reactFormula (deps, defaults) {
                     , updateInput: 'updateInput'
                     }
 
-
-    //const pubSub = reactPubSub({ React })
-    //const { createPub, createSub, pub, sub } = pubSub({ stateNames: [ 'forms' ] })
-
-    const Form = compose(
-      { displayName: 'form'
-      , propTypes:  { theme: PropTypes.object.isRequired
-                    , styles: PropTypes.object.isRequired
-                    , fields: PropTypes.object.isRequired
-                    , onSubmit: PropTypes.func
-                    , onChange: PropTypes.func
-                    }
-      , defaultProps: { ...defaults
-                      }
-                      /*
-      , state:  { fields: []
-                , values: {}
-                }
-                */
-      , init() {
-          this.inputs = []
-          /*
-          this.onChange = ({ name, value }) => {
-            const { values } = this.state
-            this.setState({ values: { ...values, [name]: value } })
-          }
-          */
-          this.onSubmit = e => {
-            if(this.props.onSubmit)
-              this.props.onSubmit(e)
-            e.preventDefault()
-          }
-        }
-      , render() {
-          const { formID
-                , children
-                , styles
-                , theme
-                , actions
-                , enabled
-                , onSubmit
-                , onChange
-
-                , fields
-                } = this.props
-
-          console.warn('FORM RENDER', formID, util.inspect(fields.toJS()))
-
-          return (
-            <form
-              id={formID}
-              ref={x => this.form = x}
-              onSubmit={onSubmit}
-            >
-              {fields.entrySeq().map(([ field, value ], key) => (
-                <input
-                  key={key}
-                  ref={x => this.inputs[field] = x}
-                  name={field}
-                  value={value}
-                  type="hidden"
-                />
-              ))}
-            </form>
-          )
-        }
-      }
-    )
-
-
-    const contextID = `__formula__${formulaID}`
-    function setContext(context) {
-      global[contextID] = context
-    }
-    function getContext() {
-      return global[contextID]
-    }
-
-
     const FormsContext = compose (
       { displayName: 'FormsContext'
-      , state: { forms: Immutable.Map() }
+      , state:  { forms: Immutable.Map()
+                , enabled: false
+                }
       , propTypes:  { theme: PropTypes.object.isRequired
                     , styles: PropTypes.object.isRequired
                     }
@@ -161,26 +95,30 @@ export default function reactFormula (deps, defaults) {
         }
       , render() {
           const { visible, styles, theme } = this.props
-          const { forms } = this.state
-          console.warn('RENDER FORMS', util.inspect(forms.toJS()))
+          const { enabled } = this.state
           return (
             <div id={contextID} ref={setContext} className={cn(styles.FormsContext, theme.FormsContext)}>
-              {forms.entrySeq().map(([ formID, fields ], key) => {
-                const fieldsJS = fields.toJS()
-                console.warn('RENDERING FORM', { formID, fieldsJS })
-                return (
-                  <div key={key}>
-                    <Pre>{{ [formID]: fields }}</Pre>
-                    <Form formID={formID} fields={fields} />
-                  </div>
-                )
-              })}
+              {visible ? (
+                <Dock enabled={enabled}>
+                  <Logo />
+                  <span className={cn(styles.dockWrap, theme.dockWrap)}>
+                    <Pre>{this.state}</Pre>
+                  </span>
+                  <button
+                    className={cn(styles.dockButton, theme.dockButton)}
+                    onClick={() => this.setState({ enabled: !enabled })}
+                  >
+                    forms
+                  </button>
+                </Dock>
+              ) : null}
+              <span className={cn(styles.Forms, theme.Forms)}>
+                {this.state.forms.entrySeq().map(([ formID, fields ], key) => (
+                  <Form key={key} formID={formID} fields={fields} />
+                ))}
+              </span>
             </div>
           )
-          /*
-              {visible ? <Pre>{this.state}</Pre> : null}
-              {forms ? Object.keys(forms).map((formID, key) => <Form key={key} {...forms[formID]} />) : <span>NO FORMS</span>}
-              */
         }
       , componentDidMount() {
           this.__registers.push(registerListeners(events.createInput, [ this.onCreateInput ]))
@@ -193,6 +131,62 @@ export default function reactFormula (deps, defaults) {
         }
       }
     )
+
+
+
+    const Form = compose(
+      { displayName: 'form'
+      , propTypes:  { theme: PropTypes.object.isRequired
+                    , styles: PropTypes.object.isRequired
+                    , fields: PropTypes.object.isRequired
+                    , onSubmit: PropTypes.func
+                    , onChange: PropTypes.func
+                    }
+      , defaultProps: { ...defaults
+                      }
+      , init() {
+          this.inputs = []
+          this.onSubmit = e => {
+            if(this.props.onSubmit)
+              this.props.onSubmit(e)
+            e.preventDefault()
+          }
+        }
+      , render() {
+          const { formID
+                , children
+                , styles
+                , theme
+                , actions
+                , enabled
+                , onSubmit
+                , onChange
+
+                , fields
+                } = this.props
+
+          return (
+            <form
+              id={formID}
+              ref={x => this.form = x}
+              onSubmit={onSubmit}
+            >
+              {fields.entrySeq().map(([ field, value ], key) => (
+                <input
+                  key={key}
+                  ref={x => this.inputs[field] = x}
+                  name={field}
+                  value={value}
+                  type="hidden"
+                />
+              ))}
+            </form>
+          )
+        }
+      }
+    )
+
+
 
 
     function createForm (formID) {
@@ -261,11 +255,11 @@ export default function reactFormula (deps, defaults) {
           }
         }
       )
-      return Input
+      return { Input }
     }
 
     render(<FormsContext visible={true} />)
-    return { FormsContext, createForm }
+    return { createForm }
   }
   return formula
 }

@@ -166,7 +166,6 @@
 
 .pane {
   position: absolute;
-  overflow: auto;
   /*
   min-height: 300px;
   height: 300px;
@@ -208,6 +207,14 @@
 
 .paneTransition.paneDisabled {
   animation-name: pane-slide-out;
+}
+
+.paneEnabled:not(.paneTransition) {
+  overflow: auto;
+}
+
+.paneDisabled {
+  overflow: hidden;
 }
 
 @keyframes pane-slide-in {

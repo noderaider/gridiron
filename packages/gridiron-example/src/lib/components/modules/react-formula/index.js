@@ -13,6 +13,6 @@ const formula = reactFormula( { React, ReactDOM, shallowCompare, Immutable, reac
                             , { styles, theme: carbon }
                             )
 
-const { FormsContext, createForm } = formula('context')
+const { createForm } = formula('context')
 
-export { FormsContext, createForm }
+export { createForm }

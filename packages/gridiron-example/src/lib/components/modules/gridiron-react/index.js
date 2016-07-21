@@ -27,16 +27,9 @@ const { Pager } = reduxPager({ React, connect, shallowCompare }, defaults)
 const { header } = factories({ React }, defaults)
 const { CoreGrid, DrillGrid, Footer, Logo } = gridironReact({ React, shallowCompare, connect, Immutable, createForm }, defaults)
 
-
-
 const filterForms = [ createForm('filter-form-1'), createForm('filter-form-2') ]
 const FilterForm = ({ id }) => {
-  const Input = filterForms[id]
-  /*
-  const CheckboxOne = input('checkbox_1', { type: 'checkbox' })
-  const CheckboxTwo = input('checkbox_2', { type: 'checkbox' })
-  const Submit = input('submit', { type: 'submit' })
-  */
+  const { Input } = filterForms[id]
   return (
     <div>
       <Input name="checkbox_1" type="checkbox" />
@@ -166,8 +159,6 @@ function createContext() {
   }
   return { mapCols, mapRows }
 }
-
-
 
 const Gridiron = compose(
   { displayName: 'gridiron'

@@ -38,12 +38,6 @@ export default function pane ({ React }, defaults = {}) {
         const PaneColumn = ({ children }) => (
           <div className={cn(styles.paneColumn, theme.paneColumn)}>
             {children}
-            {/*sample.map((x, i) => (
-                <div key={i} className={cn(styles.paneItem, theme.paneItem)}>
-                  <input type="checkbox" className={cn(styles.checkbox, theme.checkbox)} /> Left Item {i}
-                </div>
-              )
-            )*/}
           </div>
         )
 
@@ -51,27 +45,6 @@ export default function pane ({ React }, defaults = {}) {
           <div className={className}>
             <div className={cn(styles.paneContent, theme.paneContent)}>
               <PaneColumn>{children}</PaneColumn>
-              {/*Array.isArray(children)
-                ? children.map((x, key) => <PaneColumn>{cloneElement(x, { key })}</PaneColumn>)
-                : <PaneColumn>{children}</PaneColumn>*/}
-              {/*
-              <div className={cn(styles.paneColumn, theme.paneColumn)}>
-                {sample.map((x, i) => (
-                    <div key={i} className={cn(styles.paneItem, theme.paneItem)}>
-                      <input type="checkbox" className={cn(styles.checkbox, theme.checkbox)} /> Left Item {i}
-                    </div>
-                  )
-                )}
-              </div>
-              <div className={cn(styles.paneColumn, theme.paneColumn)}>
-                {sample.map((x, i) => (
-                    <div key={i} className={cn(styles.paneItem, theme.paneItem)}>
-                      <input type="checkbox" className={cn(styles.checkbox, theme.checkbox)} /> Right Item {i}
-                    </div>
-                  )
-                )}
-              </div>
-            */}
             </div>
           </div>
         )

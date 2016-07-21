@@ -12,7 +12,6 @@ import contextTypes, { schemeNames, getTheme } from 'lib/context'
 
 import { Maximize } from 'lib/components/modules/react-maximize'
 import { Logo } from 'lib/components/modules/gridiron-react'
-import { FormsContext } from 'lib/components/modules/react-formula'
 
 const IdleMonitor = createIdleMonitor({ React, connect })
 
