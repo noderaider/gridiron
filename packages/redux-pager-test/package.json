@@ -1,6 +1,6 @@
 {
   "name": "redux-pager-test",
-  "version": "0.11.6",
+  "version": "0.12.0",
   "description": "Test framework for redux-pager and related components. Enables redux-pager to not carry heavyweight dependencies.",
   "main": "lib/index.js",
   "keywords": [
@@ -75,7 +75,7 @@
     "react-tools": "latest",
     "react-virtualized": "latest",
     "redux": "latest",
-    "redux-pager": "^0.11.6",
+    "redux-pager": "^0.12.0",
     "rimraf": "latest",
     "sinon": "latest"
   },

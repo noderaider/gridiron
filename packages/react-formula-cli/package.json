@@ -1,6 +1,6 @@
 {
   "name": "react-formula-cli",
-  "version": "0.11.6",
+  "version": "0.12.0",
   "description": "CLI commands for scaffolding and setting up react-formula projects.",
   "main": "lib/index.js",
   "bin": {
@@ -19,9 +19,9 @@
   ],
   "dependencies": {
     "chai": "^3.0.0",
-    "react-formula": "^0.11.6",
-    "react-formula-styles": "^0.11.6",
-    "react-formula-themes": "^0.11.6"
+    "react-formula": "^0.12.0",
+    "react-formula-styles": "^0.12.0",
+    "react-formula-themes": "^0.12.0"
   },
   "devDependencies": {
     "babel-cli": "latest",
