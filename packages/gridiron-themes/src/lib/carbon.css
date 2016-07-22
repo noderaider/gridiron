@@ -3,7 +3,7 @@
   padding: 0px;
   border: 2px solid rgb(100, 100, 100);
   border-radius:4px;
-  font-size: 0.95em;
+  font-size: 0.95rem;
   font-family: monospace;
   background: url(http://dribbble.s3.amazonaws.com/users/1672/screenshots/197056/carbonfiber_iphone4.png) !important;
   box-shadow: 2px 2px 3px rgba(50, 50, 50, 0.5);
@@ -28,7 +28,7 @@
   color: rgb(255, 255, 255);
   background-color: rgb(0, 0, 0);
   border-radius: 4px;
-  font-size: 0.85em;
+  font-size: 0.85rem;
 }
 
 .control[disabled] {
@@ -120,7 +120,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  font-size: 0.8em;
+  font-size: 0.8rem;
   padding: 5px;
   font-family: "citizen",sans-serif;
   font-weight: 100;

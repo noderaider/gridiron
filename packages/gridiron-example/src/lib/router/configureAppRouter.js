@@ -33,6 +33,7 @@ import postcss from 'postcss'
 import postcssImport from 'postcss-import'
 import postcssUrl from 'postcss-url'
 import postcssCssnext from 'postcss-cssnext'
+import postcssFontMagician from 'postcss-font-magician'
 import cssnano from 'cssnano'
 
 const cssProcessor = postcss( [ postcssImport()
@@ -40,13 +41,15 @@ const cssProcessor = postcss( [ postcssImport()
                                             , assetsPath: '../images'
                                             } )
                               , postcssCssnext()
+                              , postcssFontMagician()
                               , cssnano()
                               ])
 
 function processCSS(css, { meta = {} } = {}) {
-  console.info('META =>', meta)
   return cssProcessor.process(css, { from: meta.resourcePath }).then(x => x.css)
 }
+
+const WarnGTM = ({}) => <script dangerouslySetInnerHTML={{ __html: 'if(!window.google_tag_manager) console.info("GTM BLOCKED => consider disabling ad block so we can see how much usage we\'re getting")' }} />
 
 const BodyInit = ({ theme }) => {
   const { style } = theme
@@ -55,11 +58,6 @@ const BodyInit = ({ theme }) => {
   document.body.style.backgroundColor = '${backgroundColor}'
   document.body.style.margin = '${margin}'
   document.body.style.padding = '${padding}'
-  /*
-  console.groupCollapsed('${packageName} => init')
-  if(!window.google_tag_manager) console.info("GTM BLOCKED => consider disabling ad block so we can see how much usage we're getting")
-  console.groupEnd()
-  */
 `)
   return <script dangerouslySetInnerHTML={{ __html }}/>
 }
@@ -67,7 +65,6 @@ const BodyInit = ({ theme }) => {
 const InitialState = createInitialState({ React, Immutable })
 
 const renderMarkup = html => `<!doctype html>\n${renderToStaticMarkup(html)}`
-
 
 export default function configureAppRouter({ cors, paths }) {
   const { SRC_ROOT, APP_ROOT, LIB_ROOT, STATIC_ROOT, ASSETS_ROOT } = paths
@@ -94,6 +91,8 @@ export default function configureAppRouter({ cors, paths }) {
         } else if (renderProps) {
           const state = store.getState()
           const theme = getThemeForUrl(state.visual.theme, req.url)
+
+
           const appMarkup = server.flags.render ? renderToString(<Provider store={store}><RouterContext {...renderProps} /></Provider>)
                                                 : null
           return (
@@ -115,7 +114,7 @@ export default function configureAppRouter({ cors, paths }) {
                       , <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                       , <title>{title}</title>
                       , <link rel="icon" href={faviconUrl} type="image/x-icon" />
-                      , ...styles
+                      , ...(server.flags.render ? styles : [])
                       , <link rel="stylesheet" href="/assets/app.css" type="text/css" />
                       , <script dangerouslySetInnerHTML={{ __html: `(function(d) {
                           var config = { kitId: 'xsj1dhs', scriptTimeout: 3000, async: true },

@@ -1,0 +1,8 @@
+.wf-active [class^="icon-"], .wf-active [class*=" icon-"], .wf-active h1, .wf-active h2, .wf-active h3, .wf-active h4, .wf-active p, .wf-active span, .wf-active a, .wf-active ul, .wf-active li .wf-active i {
+    visibility: visible;
+    opacity: 1;
+}
+
+body {
+  font-family: Lato;
+}

@@ -1,7 +1,7 @@
 { "appName": "gridiron",
-  "environment": "prod",
-  "hostname": "gridiron.js.org",
-  "port": 443,
+  "environment": "dev",
+  "hostname": "localhost",
+  "port": 1337,
   "path": "",
   "state": {
     "meta": {

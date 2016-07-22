@@ -1,5 +1,9 @@
 import React, { Component, PropTypes } from 'react'
-import { Well, Grid, Row, Col, Label, Panel, Button, ButtonGroup } from 'react-bootstrap'
+
+const Row = ({ children }) => <div>{children}</div>
+const Col = ({ children }) => <div>{children}</div>
+const Panel = ({ children }) => <div>{children}</div>
+
 
 export default class DebugPanel extends Component {
   static propTypes =  { godMode: PropTypes.bool

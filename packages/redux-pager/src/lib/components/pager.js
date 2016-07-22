@@ -165,7 +165,7 @@ export default function pager (deps = {}, defaults = {}) {
 
       const mapStatus = state => {
         const data = map.data(state)
-        const filtered = filter({ data, filterState: this.state.filter })
+        const filtered = filter ? filter({ data, filterState: this.state.filter }) : { data, state: {} }
         const rows = mapRows(data, { sort, map, filter: filtered.status })
 
         if(typeof rowsPerPage !== 'number') {

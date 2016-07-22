@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react'
-import { Row, Col } from 'react-bootstrap'
 import contextTypes from 'lib/context'
 import FA, { faSizeOptions } from 'app/elements/visual/FA'
-//import 'styles/bootstrap-core'
+
+const Row = ({ children }) => <div>{children}</div>
+const Col = ({ children }) => <div>{children}</div>
 
 export const panelPropTypes = { children: PropTypes.any.isRequired
                               , title: PropTypes.string.isRequired
@@ -10,8 +11,8 @@ export const panelPropTypes = { children: PropTypes.any.isRequired
                               /** BASE 16 NAME (CONTEXT) OR RESOLVES TO NORMAL COLOR STYLE */
                               , accent: PropTypes.string
                               , iconName: PropTypes.string.isRequired
-                              , iconLoadingName: PropTypes.oneOf(['same', 'spinner', 'circle-o-notch', 'refresh', 'cog', 'spinner'])
-                              , iconSpinnerName: PropTypes.oneOf(['spin', 'pulse'])
+                              , iconLoadingName: PropTypes.oneOf([ 'same', 'spinner', 'circle-o-notch', 'refresh', 'cog', 'spinner' ])
+                              , iconSpinnerName: PropTypes.oneOf([ 'spin', 'pulse' ])
                               , iconSize: PropTypes.oneOf(faSizeOptions)
                               , isLoading: PropTypes.bool.isRequired
                               , isTransparent: PropTypes.bool.isRequired
@@ -22,7 +23,6 @@ export const panelPropTypes = { children: PropTypes.any.isRequired
                               , errorStyle: PropTypes.object.isRequired
                               , errors: PropTypes.object
                               , maxErrors: PropTypes.number.isRequired
-                              , gridProps: PropTypes.object
                               }
 
 export const panelDefaultProps =  { iconName: 'circle-o-notch'
@@ -68,12 +68,11 @@ export default class CorePanel extends Component {
           } = this.props
 
     const { theme: { palette, color, style } } = this.context
-    const gridProps = this.props.gridProps || this.context.gridProps
 
     const accentColor = accent ? palette[accent] : color.accent
 
-    const titleStyle = { paddingTop:0, paddingBottom:0, marginTop:10, ...style.bold }
-    const iconStyle = { marginTop:10 }
+    const titleStyle = { paddingTop: 0, paddingBottom: 0, marginTop: 10, ...style.bold }
+    const iconStyle = { marginTop: 10 }
 
     let mainStyle = style.panel
     if(isTransparent) {
@@ -81,9 +80,11 @@ export default class CorePanel extends Component {
       mainStyle.borderColor = 'transparent'
     }
 
+
+
     return (
       <Row style={{ width: '100%' }}>
-        <Col {...gridProps}>
+        <Col>
           <Row style={mainStyle}>
             <Col className="panel-container" style={containerStyle}>
               <div style={headerStyle}>

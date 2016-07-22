@@ -1,20 +1,27 @@
+/* ===== == = === 20em (320px) === = == ===== */
+@custom-media --xs-screen only screen and (width >= 20em);
+
+/* ===== == = === 30em (480px) === = == ===== */
+@custom-media --sm-screen only screen and (width >= 30em);
+
+/* ===== == = === 37.5em (600px) === = == ===== */
+@custom-media --md-screen only screen and (width >= 37.5em);
+
+/* ===== == = === 48em (768px) === = == ===== */
+@custom-media --lg-screen only screen and (width >= 48em);
+
+/* ===== == = === 56.25em (900px) === = == ===== */
+@custom-media --xl-screen only screen and (width >= 56.25em);
+
+/* ===== == = === 68.75em (1100px) === = == ===== */
+@custom-media --2x-screen only screen and (width >= 68.75em);
+
+/* ===== == = === 81.25em (1300px) === = == ===== */
+@custom-media --3x-screen only screen and (width >= 81.25em);
+
+
 .logo {
-  color: rgb(0, 0, 0);
-
-  /*
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-  background: linear-gradient(180deg
-    , rgb(0, 0, 0) 45%
-    , rgb(10, 160, 217) 50%
-    , rgb(0, 0, 0) 51%
-    );
-  -webkit-background-clip: text;
-  */
-
-  //margin: 0.2em;
-  font-size:0.9em;
-  font-family: "base-mono-wide",monospace;
+  font-family: monospace;
   /*
   font-family: "modesto-initials-inline",sans-serif;
   font-family: "boucherie-block",sans-serif;
@@ -26,33 +33,32 @@
   */
 }
 
-.dockFormName {
-  font-weight: bold;
-  font-size:1.1em;
-  letter-spacing:0.3em;
-  margin: 5px;
-}
 
 .dockButton {
-  display: flex;
-  font-size: 0.9em;
-  margin-bottom: 0;
-  min-width: 30px;
   margin-left: auto;
   margin-right: auto;
   border-radius: 0 0 4px 4px;
   border-width: 0 1px 1px;
-  background-color: rgb(10, 160, 217);
   border-color: rgb(45, 48, 51);
+  background-color: rgb(45, 48, 51);
+  color: rgb(10, 160, 217);
   border-style: double;
-  font-family: "base-mono-wide",monospace;
   text-decoration: none;
   cursor: pointer;
+
+  will-change: background-color, border-color, color;
+
+  &.active {
+    background-color: rgb(10, 160, 217);
+    border-color: rgb(10, 160, 217);
+    color: rgb(45, 48, 51);
+  }
+
+  &:hover {
+    border-color: rgb(10, 160, 217);
+  }
 }
 
-.dockButton:hover {
-  border-color: rgb(10, 160, 217);
-}
 
 .dockWrap {
   font-family: monospace;
@@ -61,32 +67,35 @@
   background-color: rgba(45, 48, 51, 0.95);
   color: rgb(10, 160, 217);
   padding:4px;
-  margin: 0 0 0 15px;
-  border-radius: 0 0 0 4px;
-  border-width: 0 0 2px 2px;
+  border-width: 0 0 1px 1px;
   border-style: solid;
   border-color: rgb(10, 160, 217);
-  max-height: 50vh;
+  max-height: 60vh;
   overflow: auto;
 
   will-change: overflow;
-}
 
-.dockWrap::-webkit-scrollbar-track {
-  /*
-  box-shadow: inset 0px 0px 0px 6px rgba(0,0,0,0.3);
-  */
-  background-color: rgb(40, 40, 40);
-  border: 1px solid rgb(10, 160, 217);
-}
+  @media (--lg-screen) {
+    margin: 0 0 0 15px;
+    border-radius: 0 0 0 4px;
+    border-width: 0 0 2px 2px;
+    max-height: 50vh;
+  }
 
-.dockWrap::-webkit-scrollbar {
-  width: 6px;
-  background-color: rgb(255, 255, 255);
-}
+  &::-webkit-scrollbar-track {
+    background-color: rgb(40, 40, 40);
+    border: 1px solid rgb(10, 160, 217);
+  }
 
-.dockWrap::-webkit-scrollbar-thumb {
-  background-color: rgb(10, 160, 217);
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    border: 1px solid rgb(10, 160, 217);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgb(10, 160, 217);
+  }
 }
 
 
@@ -101,13 +110,8 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  font-size: 1em;
+  font-size: 1rem;
   font-weight: 100;
-}
-
-.dockContent input[type="checkbox"] {
-  background-color:#000;
-  border: 2px solid #ddd;
 }
 
 .dockColumn {

@@ -1,6 +1,28 @@
+/* ===== == = === 20em (320px) === = == ===== */
+@custom-media --xs-screen only screen and (width >= 20em);
+
+/* ===== == = === 30em (480px) === = == ===== */
+@custom-media --sm-screen only screen and (width >= 30em);
+
+/* ===== == = === 37.5em (600px) === = == ===== */
+@custom-media --md-screen only screen and (width >= 37.5em);
+
+/* ===== == = === 48em (768px) === = == ===== */
+@custom-media --lg-screen only screen and (width >= 48em);
+
+/* ===== == = === 56.25em (900px) === = == ===== */
+@custom-media --xl-screen only screen and (width >= 56.25em);
+
+/* ===== == = === 68.75em (1100px) === = == ===== */
+@custom-media --2x-screen only screen and (width >= 68.75em);
+
+/* ===== == = === 81.25em (1300px) === = == ===== */
+@custom-media --3x-screen only screen and (width >= 81.25em);
+
+
 
 .dock {
-  position: absolute;
+  position: fixed;
   flex: 1 1 auto;
   display: flex;
   z-index: 1000;
@@ -21,7 +43,7 @@
 
 .dock,
 .dockDisabled {
-  transform: translateY(calc(-100% + 15px));
+  transform: translateY(calc(-100% + 2rem));
 }
 
 .dockEnabled,
@@ -44,7 +66,7 @@
 
 @keyframes dock-slide-in {
   from {
-    transform: translateY(calc(-100% + 15px));
+    transform: translateY(calc(-100% + 2rem));
   }
   to {
     transform: translateY(0%);
@@ -56,8 +78,66 @@
     transform: translateY(0%);
   }
   to {
-    transform: translateY(calc(-100% + 15px));
+    transform: translateY(calc(-100% + 2rem));
   }
 }
 
 
+.dockTitle {
+  font-size:1rem;
+  letter-spacing:0.2rem;
+  display:flex;
+  align-self: center;
+  font-weight:bold;
+}
+
+.dockFormName {
+  font-weight: bold;
+  font-size:0.9rem;
+  letter-spacing:0.2rem;
+  margin-top: 0.8rem;
+}
+
+.dockEntries {
+  padding: 0.5rem;
+}
+
+.dockFormFields {
+  margin-left: 1rem;
+  font-size: 0.7rem;
+}
+
+.dockFormFields pre {
+  display: inline-flex !important;
+}
+
+
+.dockButton {
+  font-size: 1.9rem;
+  height:2rem;
+  width:2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  position: relative;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  font-size:1em;
+}
+
+.logoIcon {
+  position: absolute;
+  align-items: center;
+  align-self: center;
+  justify-content: center;
+  font-size: 0.95em;
+}
+
+.logoText {
+  display:flex;
+  font-size: 0.6em;
+}

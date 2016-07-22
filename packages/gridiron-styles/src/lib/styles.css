@@ -1,3 +1,26 @@
+/* ===== == = === 20em (320px) === = == ===== */
+@custom-media --xs-viewport only screen and (width >= 20em);
+
+/* ===== == = === 30em (480px) === = == ===== */
+@custom-media --sm-viewport only screen and (width >= 30em);
+
+/* ===== == = === 37.5em (600px) === = == ===== */
+@custom-media --md-viewport only screen and (width >= 37.5em);
+
+/* ===== == = === 48em (768px) === = == ===== */
+@custom-media --lg-viewport only screen and (width >= 48em);
+
+/* ===== == = === 56.25em (900px) === = == ===== */
+@custom-media --xl-viewport only screen and (width >= 56.25em);
+
+/* ===== == = === 68.75em (1100px) === = == ===== */
+@custom-media --2x-viewport only screen and (width >= 68.75em);
+
+/* ===== == = === 81.25em (1300px) === = == ===== */
+@custom-media --3x-viewport only screen and (width >= 81.25em);
+
+
+
 :global .Grid {
   position: relative;
   overflow: auto;
@@ -68,6 +91,8 @@
   animation-duration: 1000ms;
   animation-name: slidein;
   overflow: hidden;
+
+  will-change: max-height;
 }
 
 :global @keyframes slidein {
@@ -107,7 +132,7 @@
   flex-wrap:nowrap;
   margin: 0;
   padding: 0;
-  font-size:1.1em;
+  font-size:0.9rem;
   font-weight:bold;
 }
 
@@ -155,7 +180,7 @@
   margin: 0;
   padding: 0;
   font-family: monospace;
-  font-size: 0.8em;
+  font-size: 0.8rem;
 }
 
 .headerContainer {
@@ -167,9 +192,6 @@
 .pane {
   position: absolute;
   flex: 1 1 auto;
- /*
-  display: none;
-  */
   display: flex;
   z-index: 1000;
   top:100%;
@@ -183,22 +205,22 @@
   overflow: auto;
   visibility: hidden;
 
-  will-change: overflow, transform, visibility;
-}
+  will-change: overflow, transform, clip-path, visibility;
 
 
-.pane::-webkit-scrollbar-track {
-  box-shadow: inset 0px 0px 0px 6px rgba(0,0,0,0.3);
-  background-color: rgb(40, 40, 40);
-}
+  &::-webkit-scrollbar-track {
+    background-color: rgb(40, 40, 40);
+  }
 
-.pane::-webkit-scrollbar {
-  width: 10px;
-  background-color: rgb(255, 255, 255);
-}
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    background-color: rgb(10, 160, 217);
+  }
 
-.pane::-webkit-scrollbar-thumb {
-  background-color: rgb(10, 160, 217);
+  &::-webkit-scrollbar-thumb {
+    background-color: rgb(10, 160, 217);
+  }
 }
 
 .pane,
@@ -228,15 +250,6 @@
   animation-name: pane-slide-out;
 }
 
-/*
-.paneEnabled:not(.paneTransition) {
-  overflow: auto;
-}
-
-.paneDisabled {
-  overflow: hidden;
-}
-*/
 
 @keyframes pane-slide-in {
   from {
@@ -262,7 +275,6 @@
 
 :root {
   --nav: {
-    font-size:1.4em;
     font-family: "boucherie-block",sans-serif;
     /*
     font-family: "coquette",fantasy;
@@ -277,22 +289,11 @@
 
 .logo {
   @apply --nav;
+  font-size:1.8rem;
   position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
-}
-
-.logo .bar {
-  position: absolute;
-  height: 0;
-  border:1px dashed rgba(0, 0, 0, 0.2);
-  width:100%;
-  animation-duration: 3s;
-  animation-name: line;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
 }
 
 a:hover .logo {
@@ -315,19 +316,3 @@ a:hover .logo {
     transform: rotate3d(0, 1, 0, 360deg);
   }
 }
-
-
-@keyframes line {
-  0%{
-    transform: rotate(0deg) scaleX(1);
-  }
-  50%{
-    transform: rotate(90deg) scaleX(0.1);
-  }
-  100%{
-    transform: rotate(180deg) scaleX(1);
-  }
-}
-
-
-

@@ -376,7 +376,7 @@ function pager() {
 
         var mapStatus = function mapStatus(state) {
           var data = map.data(state);
-          var filtered = filter({ data: data, filterState: _this2.state.filter });
+          var filtered = filter ? filter({ data: data, filterState: _this2.state.filter }) : { data: data, state: {} };
           var rows = mapRows(data, { sort: _sort, map: map, filter: filtered.status });
 
           if (typeof rowsPerPage !== 'number') {

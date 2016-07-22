@@ -13,42 +13,19 @@ import contextTypes, { schemeNames, getTheme } from 'lib/context'
 import { Maximize } from 'lib/components/modules/react-maximize'
 import { Logo } from 'lib/components/modules/gridiron-react'
 
+import './styles/vendor/font-awesome'
+import './styles/fonts/fout.gcss'
+import './styles/fonts/fonts.gcss'
+import styles from './styles/App.css'
+
 const IdleMonitor = createIdleMonitor({ React, connect })
-
-const gridProps = { xs: 12
-                  , sm: 10
-                  , md: 8
-                  , lg: 4
-                  , xsOffset: 0
-                  , smOffset: 1
-                  , mdOffset: 2
-                  , lgOffset: 4
-                  }
-
-const browserInit = ({ theme }) => {
-  const { style } = theme
-  const { backgroundColor, margin, padding } = style.body
-  document.body.style.backgroundColor = 'rgb(150, 150, 150)' //backgroundColor
-  document.body.style.margin = margin
-  document.body.style.padding = padding
-  /*
-  if(!window.google_tag_manager)
-    console.info('GTM BLOCKED => consider disabling ad block so we can see how much usage we\'re getting')
-  */
-}
 
 class App extends Component {
   static propTypes = { dispatch: PropTypes.func.isRequired };
   static childContextTypes = contextTypes;
-  componentDidMount() {
-    require('app/fonts/fout')
-    require('app/fonts/Lato-Regular.ttf')
-    require('app/fonts/Lato-Bold.ttf')
-    //if(IS_BROWSER) browserInit(this.props)
-  }
   getChildContext() {
     const { theme } = this.props
-    return  { gridProps, theme }
+    return  { theme }
   }
   render(){
     const { dispatch, theme, title, subtitle, username, organization, email, full, packageName, errors, children } = this.props
@@ -58,7 +35,7 @@ class App extends Component {
       <Maximize>
         {container => (
           <div style={{ marginBottom: 70 }}>
-            <div style={style.app}>
+            <div className={styles.app}>
               <TopBar logo={<Logo />} username={username} email={email} packageName={packageName} />
               {cloneElement(children, { container })}
               <FooterBar />

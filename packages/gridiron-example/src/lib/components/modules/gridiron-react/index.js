@@ -18,7 +18,6 @@ import { sandy, black, carbon  } from 'gridiron-themes'
 import { createForm } from '../react-formula'
 const should = require('chai').should()
 
-
 const { compose } = reactStamp(React)
 
 let defaults = { styles, theme: carbon }
@@ -29,12 +28,12 @@ const { CoreGrid, DrillGrid, Footer, Logo } = gridironReact({ React, shallowComp
 
 const filterForms = [ createForm('filter-form-1'), createForm('filter-form-2') ]
 const FilterForm = ({ id }) => {
-  const { Input } = filterForms[id]
+  const { Field, Submit } = filterForms[id]
   return (
     <div>
-      <Input name="checkbox_1" type="checkbox" />
-      <Input name="checkbox_2" type="checkbox" />
-      <Input name="submit" type="submit" />
+      <Field name="checkbox_1" type="checkbox" labelPre="checkbox 1" />
+      <Field name="checkbox_2" type="checkbox" labelPre="checkbox 2" />
+      <Submit name="submit" type="submit">submit</Submit>
     </div>
   )
 }

@@ -79,17 +79,17 @@ export default function reactFormula (deps, defaults) {
       , init() {
           this.__registers = []
 
-          this.onCreateInput = ({ formID, field }) => {
+          this.onCreateInput = ({ formID, field, initialValue = '' }) => {
             const fieldsPath = [ formID, field ]
             if(typeof this.state.forms.getIn(fieldsPath) === 'undefined') {
-              const forms = this.state.forms.setIn(fieldsPath, '')
+              const forms = this.state.forms.setIn(fieldsPath, initialValue)
               this.setState({ forms })
             }
           }
           this.onUpdateInput = ({ formID, field, value }) => {
             const fieldsPath = [ formID, field ]
             const forms = this.state.forms.setIn(fieldsPath, value)
-            console.warn('input updated', util.inspect(forms.toJS()), formID, field, value)
+            console.info('input updated', util.inspect(forms.toJS()), formID, field, value)
             this.setState({ forms })
           }
         }
@@ -101,15 +101,23 @@ export default function reactFormula (deps, defaults) {
               {visible ? (
                 <Dock enabled={enabled}>
                   <span className={cn(styles.dockWrap, theme.dockWrap)}>
-                    {this.state.forms.entrySeq().map(([ formID, fields ], key) => (
-                      <span key={key} className={cn(styles.dockForm, theme.dockForm)}>
-                        <div className={cn(styles.dockFormName, theme.dockFormName)}>{formID}</div>
-                        <Pre>{fields}</Pre>
-                      </span>
-                    ))}
+                    <div className={cn(styles.dockTitle, theme.dockTitle)}>react-∳ormula</div>
+                    <div className={cn(styles.dockEntries, theme.dockEntries)}>
+                      {this.state.forms.entrySeq().map(([ formID, fields ], key) => (
+                        <span key={key} className={cn(styles.dockForm, theme.dockForm)}>
+                          <div className={cn(styles.dockFormName, theme.dockFormName)}>{formID}</div>
+                          <div className={cn(styles.dockFormFields, theme.dockFormFields)}>
+                            {fields.entrySeq().map(([ field, value ], key) => (
+                              <div key={key} className={cn(styles.dockFormEntry, theme.dockFormEntry)}>{field}: <Pre>{value}</Pre></div>
+                            ))}
+                          </div>
+                        </span>
+                      ))}
+                    </div>
                   </span>
+
                   <button
-                    className={cn(styles.dockButton, theme.dockButton)}
+                    className={cn(styles.dockButton, theme.dockButton, { [styles.active]: enabled, [theme.active]: enabled })}
                     onClick={() => this.setState({ enabled: !enabled })}
                   >
                     <Logo />
@@ -195,7 +203,7 @@ export default function reactFormula (deps, defaults) {
 
     function createForm (formID) {
       should.exist(formID, 'formID is required')
-      console.warn('CREATE_FORM', formID)
+      console.info('CREATE_FORM', formID)
 
       const Input = compose(
         { displayName: 'input'
@@ -209,32 +217,22 @@ export default function reactFormula (deps, defaults) {
         , defaultProps: { ...defaults
                         }
         , componentDidMount() {
-            const field = this.props.name
-            EE.emit(events.createInput, { formID, field })
+            const { name, initialValue } = this.props
+            EE.emit(events.createInput, { formID, field: name, initialValue })
 
-            const selectString = `#${formID} input[name="${field}"]`
-            console.warn('input mount', selectString)
+            const selectString = `#${formID} input[name="${name}"]`
             const input = document.querySelector(selectString)
             if(typeof input !== 'undefined' && input !== null) {
               if(this.input.type == 'checkbox') {
                 if(input.value == 'true') {
-                  console.warn('setting "CHECKED" checkbox value =>', input.value, `|typeof ${typeof input.value}|`, this.input.value, this.input.checked, this.input.type, this.input)
-                  //this.input.setAttribute('checked', 'checked')
                   this.input.checked = true
-                } else //if(input.value === false) {
-                  console.warn('removing "CHECKED" checkbox value =>', input.value, `|typeof ${typeof input.value}|`, this.input.value, this.input.checked, this.input.type, this.input)
+                } else
                   this.input.removeAttribute('checked')
-                  /*
-                } else {
-                  //throw new Error('Checkbox must have boolean value')
-                }
-                */
               } else {
-                console.warn('setting value', input.value, this.input.value, this.input.type, this.input)
                 this.input.value = input.value
               }
             } else {
-              console.warn('skipping value', input)
+              //console.info('skipping value', input)
             }
           }
         , render() {
@@ -242,8 +240,7 @@ export default function reactFormula (deps, defaults) {
             const { styles, theme, name, type, initialValue, ...inputProps } = this.props
             const value = this.props.value || initialValue
             return (
-              <label className={cn(styles.inputLabel, theme.inputLabel)}>
-                <Pre>{this.props}</Pre>
+              <span className={cn(styles.inputUIWrap, theme.inputUIWrap)}>
                 <input
                   {...inputProps}
                   ref={x => this.input = x}
@@ -254,12 +251,51 @@ export default function reactFormula (deps, defaults) {
                   }}
                 />
                 <div className={cn(styles.inputUI, theme.inputUI)} />
+              </span>
+            )
+          }
+        }
+      )
+
+      const Submit = compose(
+        { displayName: 'submit'
+        , propTypes:  { styles: PropTypes.object.isRequired
+                      , theme: PropTypes.object.isRequired
+                      , children: PropTypes.any.isRequired
+                      }
+        , defaultProps: { ...defaults
+                        }
+        , render() {
+            const { styles, theme, children, ...inputProps } = this.props
+            return (
+              <Field {...inputProps} type="submit" initialValue={children} styles={styles} theme={theme} />
+            )
+          }
+        }
+      )
+
+      const Field = compose(
+        { displayName: 'field'
+        , propTypes:  { styles: PropTypes.object.isRequired
+                      , theme: PropTypes.object.isRequired
+                      , labelPre: PropTypes.any
+                      , labelPost: PropTypes.any
+                      }
+        , defaultProps: { ...defaults
+                        }
+        , render() {
+            const { styles, theme, labelPre, labelPost, ...inputProps } = this.props
+            return (
+              <label className={cn(styles.inputLabel, theme.inputLabel)}>
+                <span className={cn(styles.inputLabelPre, theme.inputLabelPre)}>{labelPre}</span>
+                <Input {...inputProps} styles={styles} theme={theme} />
+                <span className={cn(styles.inputLabelPost, theme.inputLabelPost)}>{labelPost}</span>
               </label>
             )
           }
         }
       )
-      return { Input }
+      return { Input, Submit, Field }
     }
 
     render(<FormsContext visible={true} />)

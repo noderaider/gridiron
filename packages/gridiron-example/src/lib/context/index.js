@@ -2,16 +2,6 @@ import { PropTypes } from 'react'
 
 export { getTheme, schemeNames } from './theme'
 
-export const gridPropsShape = PropTypes.shape({ xs: PropTypes.number
-                                              , sm: PropTypes.number
-                                              , md: PropTypes.number
-                                              , lg: PropTypes.number
-                                              , xsOffset: PropTypes.number
-                                              , smOffset: PropTypes.number
-                                              , mdOffset: PropTypes.number
-                                              , lgOffset: PropTypes.number
-                                              })
-
 const paletteShape = PropTypes.shape( { scheme: PropTypes.string
                                       , base03: PropTypes.string
                                       , base02: PropTypes.string
@@ -76,8 +66,7 @@ const themeShape = PropTypes.shape( { palette: paletteShape
                                     , style: styleShape
                                     })
 
-const contextTypes =  { gridProps: gridPropsShape
-                      , theme: themeShape
+const contextTypes =  { theme: themeShape
                       }
 
 export default contextTypes
