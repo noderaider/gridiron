@@ -166,11 +166,10 @@
 
 .pane {
   position: absolute;
-  /*
-  min-height: 300px;
-  height: 300px;
-  */
   flex: 1 1 auto;
+ /*
+  display: none;
+  */
   display: flex;
   z-index: 1000;
   top:100%;
@@ -178,11 +177,28 @@
   right: 0;
   margin:0;
   padding:0;
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px;
-  animation-duration: 500ms;
+  animation-duration: 300ms;
   animation-fill-mode: forwards;
-  animation-timing-function: ease-in;
+  animation-timing-function: linear;
+  overflow: auto;
+  visibility: hidden;
+
+  will-change: overflow, transform, visibility;
+}
+
+
+.pane::-webkit-scrollbar-track {
+  box-shadow: inset 0px 0px 0px 6px rgba(0,0,0,0.3);
+  background-color: rgb(40, 40, 40);
+}
+
+.pane::-webkit-scrollbar {
+  width: 10px;
+  background-color: rgb(255, 255, 255);
+}
+
+.pane::-webkit-scrollbar-thumb {
+  background-color: rgb(10, 160, 217);
 }
 
 .pane,
@@ -193,6 +209,7 @@
 
 .paneEnabled,
 .paneTransition.paneDisabled {
+  visibility: visible;
   clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
   transform: translateY(0%);
 }
@@ -202,13 +219,16 @@
 }
 
 .paneTransition.paneEnabled {
+  overflow:hidden !important;
   animation-name: pane-slide-in;
 }
 
 .paneTransition.paneDisabled {
+  overflow:hidden !important;
   animation-name: pane-slide-out;
 }
 
+/*
 .paneEnabled:not(.paneTransition) {
   overflow: auto;
 }
@@ -216,6 +236,7 @@
 .paneDisabled {
   overflow: hidden;
 }
+*/
 
 @keyframes pane-slide-in {
   from {

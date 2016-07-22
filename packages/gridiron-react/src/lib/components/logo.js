@@ -17,9 +17,9 @@ export default function logo (deps, defaults = { styles: { logo: 'logo' } }) {
                     return (
                       <span className={styles.logo}>
                         <span className={styles.text}>gridiron</span>
-                        <span className={styles.bar}></span>
                       </span>
                     )
+                    //<span className={styles.bar}></span>
                   }
                 }
   return compose(desc)

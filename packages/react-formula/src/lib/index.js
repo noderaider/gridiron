@@ -100,15 +100,19 @@ export default function reactFormula (deps, defaults) {
             <div id={contextID} ref={setContext} className={cn(styles.FormsContext, theme.FormsContext)}>
               {visible ? (
                 <Dock enabled={enabled}>
-                  <Logo />
                   <span className={cn(styles.dockWrap, theme.dockWrap)}>
-                    <Pre>{this.state}</Pre>
+                    {this.state.forms.entrySeq().map(([ formID, fields ], key) => (
+                      <span key={key} className={cn(styles.dockForm, theme.dockForm)}>
+                        <div className={cn(styles.dockFormName, theme.dockFormName)}>{formID}</div>
+                        <Pre>{fields}</Pre>
+                      </span>
+                    ))}
                   </span>
                   <button
                     className={cn(styles.dockButton, theme.dockButton)}
                     onClick={() => this.setState({ enabled: !enabled })}
                   >
-                    forms
+                    <Logo />
                   </button>
                 </Dock>
               ) : null}
