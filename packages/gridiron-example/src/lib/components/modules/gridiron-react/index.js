@@ -32,7 +32,7 @@ const { CoreGrid, DrillGrid, Footer, Logo } = gridironReact(deps, defaults)
 function createContext() {
   const headers = [ header(), header() ]
 
-  const mapCols = ({ status, actions }) => {
+  const mapCols = ({ status, actions, filters }) => {
     return  [ { id: 'id'
               , header: ({ theme }) => {
                   const { Header } = headers[0]
@@ -41,6 +41,7 @@ function createContext() {
                       id="id"
                       checkbox={{ value: 'header_checkbox' }}
                       status={status}
+                      filter={filters['id']}
                       actions={actions}
                       styles={styles}
                     >
@@ -59,6 +60,7 @@ function createContext() {
                     <Header
                       id="state"
                       status={status}
+                      filter={filters['state']}
                       actions={actions}
                       theme={theme}
                       styles={styles}
@@ -149,35 +151,49 @@ function createContext() {
   return { mapCols, mapRows }
 }
 
+
+const filter = (data, formState) => {
+  if(formState) {
+    let anyFiltered = false
+    let filtered = Object.keys(data).filter(x => {
+      console.warn('FILTERING KEY', x, formState)
+      const value = formState.getIn([ `filter_${x}`, 'value' ], false)
+      if(value)
+        anyFiltered = true
+      console.warn('VALUE => ', value)
+      return value
+    }).reduce((newData, x) => ({ ...newData, [x]: data[x] }), {})
+    console.warn('POST RUN FILTER', filtered)
+    return anyFiltered ? filtered : data
+  }
+  return data
+}
+
+const filterStream = id => (getData, onChange) => {
+  const { subscribe } = forms(`filter-form-${id}`)
+  const unsubscribe = subscribe(formState => onChange(filter(getData(), formState)))
+  return unsubscribe
+}
+
 const FilterForm = compose(
-  { init() {
+  { statics: { filter }
+  , init() {
       const { id } = this.props
       this.formula = forms(`filter-form-${id}`)
     }
+    /*
   , componentDidMount() {
       console.warn('SUBSCRIBING')
-      const { onChange } = this.props
-      if(onChange) {
-        this.unsubscribe = this.formula.subscribe(formState => {
-          console.warn('SUBSCRIBE CALLED')
-          onChange(data => {
-            let filtered = Object.keys(data).filter(x => {
-              console.warn('FILTERING KEY', x, formState)
-              const value = formState.getIn([ `filter_${x}`, 'value' ], false)
-              console.warn('VALUE => ', value)
-              return value
-            }).reduce((newData, x) => ({ ...newData, [x]: data[x] }), {})
-            console.warn('POST RUN FILTER', filtered)
-            return filtered.length > 0 ? filtered : data
-          })
-        })
-      }
+      const { id, data, onChange } = this.props
+      if(onChange)
+        this.unsubscribe = filterStream(id, { getData: () => data, onChange })
     }
   , componentWillUnmount() {
       console.warn('UNSUBSCRIBING')
       if(this.unsubscribe)
         this.unsubscribe()
     }
+    */
   , shouldComponentUpdate(nextProps, nextState) {
       return shallowCompare(this, nextProps, nextState)
     }
@@ -187,7 +203,7 @@ const FilterForm = compose(
       return (
         <div>
           {Object.keys(data).map((name, key) => (
-            <Field key={key} name={`filter_${name}`} type="checkbox" labelPre={name} />
+            <Field key={key} name={`filter_${name}`} type="checkbox" label={name} />
           ))}
         </div>
       )
@@ -213,9 +229,15 @@ const Gridiron = compose(
 
           <Pager
             maxRecords={5}
+
             mapCols={mapCols}
             mapRows={mapRows}
-
+            filterStream={filterStream}
+            filters={
+              { id: filterStream('id')
+              , state: filterStream('state')
+              }
+            }
             map={ { data: state => detailProps.ids.reduce((subState, id) => subState[id], state)
                   , rowData: data => {
                       return Object.keys(data).map(x => [ [ ...detailProps.ids, x ], data[x] ]) //Object.keys(data).map(x => [ [ detailProps.ids, data ] ])
@@ -279,6 +301,12 @@ const Gridiron = compose(
 
             mapCols={mapCols}
             mapRows={mapRows}
+            filterStream={filterStream}
+            filters={
+              { id: filterStream('id')
+              , state: filterStream('state')
+              }
+            }
 
             map={ { data: state => state
                   , rowData: data => {
