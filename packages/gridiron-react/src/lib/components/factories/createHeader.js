@@ -5,7 +5,7 @@ import pane from '../pane'
 
 const should = require('chai').should()
 
-export default function createHeader ({ React }, defaults) {
+export default function createHeader ({ React, shallowCompare, forms }, defaults) {
   const { Component, PropTypes } = React
   const wrapStyle = { display: 'flex'
                     , flexDirection: 'row'
@@ -42,13 +42,15 @@ export default function createHeader ({ React }, defaults) {
   { propTypes:  { theme: PropTypes.object.isRequired
                 , styles: PropTypes.object.isRequired
                 , status: PropTypes.object.isRequired
-                , filter: PropTypes.object
                 , checkbox: PropTypes.object
                 , radio: PropTypes.object
                 }
   , defaultProps: { ...defaults
                   , status: {}
                   }
+  , shouldComponentUpdate(nextProps, nextState) {
+      return shallowCompare(this, nextProps, nextState)
+    }
   , init() {
       const { checked, sort } = this.props
       this.state =  { checked
@@ -75,9 +77,8 @@ export default function createHeader ({ React }, defaults) {
             , actions
             } = this.props
 
-      const sort = status && status.sort ? status.sort : null
-      const filter = status && status.filter ? status.filter[id] : null
-      console.warn('HEADER FILTER', filter)
+      const sort = status.sort ? status.sort : null
+      const filter = status.filter ? status.filter : null
 
       const { checked
             , headerEnabled
@@ -88,7 +89,6 @@ export default function createHeader ({ React }, defaults) {
                           , headerEnabled ? styles.headerEnabled : styles.headerDisabled
                           , headerEnabled ? theme.headerEnabled : theme.headerDisabled
                           )
-
       return (
         <div className={className}>
           <span style={wrapStyle} className={cn(styles.header, theme.header)}>
@@ -103,11 +103,7 @@ export default function createHeader ({ React }, defaults) {
               <span style={childrenStyle}>{children}</span>
             </span>
             <span>
-              {id && sort && sort.cols && sort.cols.includes(id) ? (
-                <button onClick={() => actions.sort(id)}>
-                  <SortIcon direction={sort.direction && sort.direction[id]} />
-                </button>
-              ) : null}
+
               {filter ? (
                 <button
                   className={cn(styles.filterButton, theme.filterButton)}
@@ -123,10 +119,15 @@ export default function createHeader ({ React }, defaults) {
                   ))}
                 </span>
               ) : null}
+              {id && sort && sort.get('cols', []).includes(id) ? (
+                <button onClick={() => actions.sort(id)}>
+                  <SortIcon direction={sort.getIn([ 'direction', id ])} />
+                </button>
+              ) : null}
             </span>
           </span>
           <Pane enabled={headerEnabled}>
-            {filter ? filter.content : null}
+            {filter ? filter({ id }) : null}
           </Pane>
         </div>
       )

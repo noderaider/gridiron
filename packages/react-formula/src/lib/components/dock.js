@@ -2,46 +2,102 @@ import cn from 'classnames'
 import reactStamp from 'react-stamp'
 const should = require('chai').should()
 
-export default function dock ({ React }, defaults = {}) {
+export default function dock ({ React, shallowCompare }, defaults = {}) {
   const { PropTypes } = React
   const { compose } = reactStamp(React)
 
   return compose(
     { displayName: 'dock'
-    , state: { transition: false }
     , propTypes:  { styles: PropTypes.object.isRequired
                   , theme: PropTypes.object.isRequired
-                  , enabled: PropTypes.bool.isRequired
+                  , transitionDelay: PropTypes.number.isRequired
                   }
     , defaultProps: { ...defaults
-                    , enabled: false
+                    , transitionDelay: 200
                     }
-    , componentWillReceiveProps(nextProps) {
-        if(nextProps.enabled !== this.props.enabled)
-          this.setState({ transition: true })
-        setTimeout(() => this.setState({ transition: false }), 500)
+    , init() {
+        let timeoutID = null
+
+        this.isActive = () => {
+          const { styles, theme } = this.props
+          return !(this.element && this.element.className && this.element.className.includes(styles.dockDisabled))
+        }
+
+        this._getStyles = ({ isActive = false, isBusy = false } = {}) => {
+          const { styles, theme } = this.props
+
+          const commonClasses = [ styles.dock, theme.dock ]
+          const busyClasses = isBusy ? [ styles.busy, theme.busy ] : []
+          const transitionClasses = [ styles.dockTransition, theme.dockTransition, ...busyClasses ]
+
+          if(isActive) {
+            const enabledClasses =  [ ...commonClasses
+                                    , styles.dockEnabled
+                                    , theme.dockEnabled
+                                    ]
+            return ([ cn(enabledClasses)
+                    , cn(enabledClasses, transitionClasses)
+                    ])
+          } else {
+            const disabledClasses = [ ...commonClasses
+                                    , styles.dockDisabled
+                                    , theme.dockDisabled
+                                    ]
+            return ([ cn(disabledClasses)
+                    , cn(disabledClasses, transitionClasses)
+                    ])
+          }
+        }
+
+        this.transition = ([ primaryStyle, transitionStyle ], done) => {
+          this.element.className = transitionStyle || primaryStyle
+          if(transitionStyle) {
+            const { transitionDelay } = this.props
+            setTimeout(() => {
+              this.element.className = primaryStyle
+              if(done) done()
+            }, transitionDelay)
+          }
+        }
+
+        this.toggle = (done = () => {}) => {
+          this.props.busy(notBusy => {
+            if(this.element) {
+              this.transition(this._getStyles({ isActive: !this.isActive(), isBusy: false }), () => {
+                done()
+                notBusy()
+              })
+            }
+          })
+        }
+
+      }
+    , shouldComponentUpdate (nextProps) {
+        return shallowCompare(this, nextProps)
       }
     , render() {
-        const { styles, theme, enabled, children } = this.props
-        const { transition } = this.state
-        const className = cn( styles.dock
-                            , theme.dock
-                            , enabled ? styles.dockEnabled : styles.dockDisabled
-                            , enabled ? theme.dockEnabled : theme.dockDisabled
-                            , transition ? styles.dockTransition : null
-                            , transition ? theme.dockTransition : null
-                            )
+        const { styles, theme, children, toggleContent } = this.props
 
-        const DockColumn = ({ children }) => (
-          <div className={cn(styles.dockColumn, theme.dockColumn)}>
-            {children}
-          </div>
-        )
+        const [ primaryStyle ] = this._getStyles()
 
         return (
-          <div className={className}>
+          <div ref={x => this.element = x} className={primaryStyle}>
             <div className={cn(styles.dockContent, theme.dockContent)}>
-              <DockColumn>{children}</DockColumn>
+              <div className={cn(styles.dockColumn, theme.dockColumn)}>
+                {children}
+              </div>
+            </div>
+
+            <div className={cn(styles.buttonContainer, theme.buttonContainer)}>
+              <span className={cn(styles.flexSpacer, theme.flexSpacer)} />
+              <span className={cn(styles.flexItem, theme.flexItem)}>
+                <button
+                  className={cn(styles.dockButton, theme.dockButton)}
+                  onClick={() => this.toggle()}
+                >
+                  {toggleContent}
+                </button>
+              </span>
             </div>
           </div>
         )

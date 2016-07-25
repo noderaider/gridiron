@@ -1,64 +1,69 @@
-/* ===== == = === 20em (320px) === = == ===== */
-@custom-media --xs-screen only screen and (width >= 20em);
+/** xs-screen | 320px  */ @custom-media --xs-screen only screen and (width >= 20em);
+/** sm-screen | 480px  */ @custom-media --sm-screen only screen and (width >= 30em);
+/** md-screen | 600px  */ @custom-media --md-screen only screen and (width >= 37.5em);
+/** lg-screen | 768px  */ @custom-media --lg-screen only screen and (width >= 48em);
+/** xl-screen | 900px  */ @custom-media --xl-screen only screen and (width >= 56.25em);
+/** 2x-screen | 1100px */ @custom-media --2x-screen only screen and (width >= 68.75em);
+/** 3x-screen | 1300px */ @custom-media --3x-screen only screen and (width >= 81.25em);
 
-/* ===== == = === 30em (480px) === = == ===== */
-@custom-media --sm-screen only screen and (width >= 30em);
-
-/* ===== == = === 37.5em (600px) === = == ===== */
-@custom-media --md-screen only screen and (width >= 37.5em);
-
-/* ===== == = === 48em (768px) === = == ===== */
-@custom-media --lg-screen only screen and (width >= 48em);
-
-/* ===== == = === 56.25em (900px) === = == ===== */
-@custom-media --xl-screen only screen and (width >= 56.25em);
-
-/* ===== == = === 68.75em (1100px) === = == ===== */
-@custom-media --2x-screen only screen and (width >= 68.75em);
-
-/* ===== == = === 81.25em (1300px) === = == ===== */
-@custom-media --3x-screen only screen and (width >= 81.25em);
+:root {
+  --formula-dark: rgb(16, 34, 43);
+  --formula-blue: rgb(10, 160, 217);
+  --formula-red: rgb(217, 37, 37);
+  --formula-orange: rgb(217, 118, 10);
+  --formula-green: rgb(121, 208, 255);
+}
 
 
 .logo {
   font-family: monospace;
-  /*
-  font-family: "modesto-initials-inline",sans-serif;
-  font-family: "boucherie-block",sans-serif;
-  font-family: "modesto-open-shadow",sans-serif;
-  font-family: "citizen",sans-serif;
-  font-family: "coquette",fantasy;
-  font-family: "acier-bat-noir",sans-serif;
-  font-family: "industry-inc-bevel",sans-serif;
-  */
 }
-
 
 .dockButton {
   margin-left: auto;
   margin-right: auto;
-  border-radius: 0 0 4px 4px;
-  border-width: 0 1px 1px;
-  border-color: rgb(45, 48, 51);
-  background-color: rgb(45, 48, 51);
-  color: rgb(10, 160, 217);
-  border-style: double;
+  border-color: var(--formula-dark);
+  background-color: var(--formula-dark);
+  color: var(--formula-blue);
+  border-style: solid;
   text-decoration: none;
   cursor: pointer;
+  box-shadow: 0 0 0.05rem 0.15rem rgb(--formula-dark);
 
-  will-change: background-color, border-color, color;
-
-  &.active {
-    background-color: rgb(10, 160, 217);
-    border-color: rgb(10, 160, 217);
-    color: rgb(45, 48, 51);
-  }
+  will-change: background-color, border-color, color, box-shadow;
 
   &:hover {
-    border-color: rgb(10, 160, 217);
+    color: var(--formula-green) !important;
+  }
+
+  &:focus {
+    outline: none !important;
   }
 }
 
+.busy .dockButton {
+  color: var(--formula-orange) !important;
+}
+
+.dockDisabled .dockButton {
+  &:hover {
+    box-shadow: 0 0 0.05rem 0.1rem var(--formula-green);
+  }
+}
+
+.dockEnabled .dockButton {
+  background-color: var(--formula-blue);
+  border-color: var(--formula-blue);
+  color: var(--formula-dark);
+  box-shadow: none;
+}
+
+.dockEnabled .flexSpacer {
+  background-color: var(--formula-blue);
+  border-color: var(--formula-blue);
+  color: var(--formula-dark);
+  box-shadow: none;
+}
 
 .dockWrap {
   font-family: monospace;
@@ -67,20 +72,15 @@
   background-color: rgba(45, 48, 51, 0.95);
   color: rgb(10, 160, 217);
   padding:4px;
-  border-width: 0 0 1px 1px;
+  border-width: 0 1px 1px 1px;
   border-style: solid;
   border-color: rgb(10, 160, 217);
+  border-radius: 0 0 1px 1px;
   max-height: 60vh;
   overflow: auto;
 
   will-change: overflow;
 
-  @media (--lg-screen) {
-    margin: 0 0 0 15px;
-    border-radius: 0 0 0 4px;
-    border-width: 0 0 2px 2px;
-    max-height: 50vh;
-  }
 
   &::-webkit-scrollbar-track {
     background-color: rgb(40, 40, 40);
@@ -122,6 +122,34 @@
 .dockItem {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
+}
+
+
+
+
+.dockTitle {
+  font-size:1rem;
+  letter-spacing:0.2rem;
+  display:flex;
+  align-self: center;
+  font-weight:bold;
+}
+
+.dockFormName {
+  font-weight: bold;
+  font-size:0.9rem;
+  letter-spacing:0.2rem;
+  margin-top: 0.8rem;
+}
+
+
+.dockFormFields {
+  margin-left: 1rem;
+  font-size: 0.7rem;
+}
+
+.dockFormFields pre {
+  display: inline-flex !important;
 }

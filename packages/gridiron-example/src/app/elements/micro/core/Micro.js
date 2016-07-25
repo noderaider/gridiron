@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import { toggleVisibility } from 'lib/redux/actions/visual'
 import Label from 'app/elements/forms/controls/Label'
 
+import styles from './Micro.css'
+
 const getLabelID = componentID => `label_${componentID}`
 const getTooltipID = componentID => `tooltip_${componentID}`
 
@@ -36,14 +38,11 @@ class Micro extends Component {
     const tooltipID = getTooltipID(componentID)
     const isToggled = visibility.getIn([ componentID, 'value' ], false)
 
-    const microStyle =  { display: 'inline-block'
-                        , fontStyle: isToggled ? 'italic' : 'normal'
-                        }
     const captionStyle = { fontSize: '0.8em', color: '#888' }
     const data = actionType === 'clipboard' ? (typeof actionData === 'string' ? actionData : JSON.stringify(actionData, null, 2))
                                             : null
     return (typeof tooltip !== 'undefined') ? (
-      <div style={microStyle}>
+      <div className={styles.microStyle}>
         <Label
             id={getLabelID(componentID)}
             data-tip

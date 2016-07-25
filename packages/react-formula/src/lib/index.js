@@ -17,7 +17,7 @@ const applyCapitalization = str => str.length <= 2 ? str.toUpperCase() : `${str[
 export default function reactFormula (deps, defaults) {
   const Dock = dock(deps, defaults)
   const Logo = logo(deps, defaults)
-  const { React, ReactDOM, Immutable, reactPre } = deps
+  const { React, ReactDOM, Immutable, shallowCompare, reactPre } = deps
   const { Component, PropTypes, cloneElement } = React
   const { Pre } = reactPre
   const { compose } = reactStamp(React)
@@ -27,7 +27,7 @@ export default function reactFormula (deps, defaults) {
   function formula(formulaID) {
     should.exist(formulaID, 'must specify formulaID')
     if(typeof window !== 'object')
-      return { createForm: () => { Input: props => {} } }
+      return () => { Input: props => {} }
 
     const contextID = `__formula__${formulaID}`
     const rootNodeID = `${contextID}_root`
@@ -61,79 +61,88 @@ export default function reactFormula (deps, defaults) {
         }
       }
     }
-    const events =  { createForm: 'createForm'
-                    , createInput: 'createInput'
+    const events =  { registerInput: 'registerInput'
                     , updateInput: 'updateInput'
+                    , formsWillUpdate: 'formsWillUpdate'
+                    , formWillUpdate: formName => `formWillUpdate_${formName}`
+                    , inputWillUpdate: (formName, name) => `inputWillUpdate_${formName}_${name}`
                     }
+
+    const stylePropTypes = ({ theme: PropTypes.object.isRequired
+                            , styles: PropTypes.object.isRequired
+                            })
+
+
+
 
     const FormsContext = compose (
       { displayName: 'FormsContext'
+      , propTypes:  { ...stylePropTypes
+                    }
+      , defaultProps: { ...defaults
+                      }
+      , shouldComponentUpdate(nextProps) {
+          return shallowCompare(this, nextProps)
+        }
+      , init() {
+          this.busy = work => {
+            if(this.devTools)
+              return this.devTools.busy(work)
+            return work(() => {})
+          }
+        }
+      , render() {
+          const { showDevTools, styles, theme } = this.props
+          return (
+            <div id={contextID} ref={setContext} className={cn(styles.FormsContext, theme.FormsContext)}>
+              <FormsState busy={this.busy}>
+                {forms => showDevTools ? <DevTools ref={x => this.devTools = x} forms={forms} /> : null}
+              </FormsState>
+            </div>
+          )
+        }
+      }
+    )
+
+    const select =  { inputValue: (formName, name) => [ formName, name, 'value' ]
+                    , inputType: (formName, name) => [ formName, name, 'type' ]
+                    }
+
+    const FormsState = compose (
+      { displayName: 'FormsState'
       , state:  { forms: Immutable.Map()
-                , enabled: false
                 }
-      , propTypes:  { theme: PropTypes.object.isRequired
-                    , styles: PropTypes.object.isRequired
+      , propTypes:  { ...stylePropTypes
+                    , busy: PropTypes.func.isRequired
                     }
       , defaultProps: { ...defaults
                       }
       , init() {
+          const { busy } = this.props
           this.__registers = []
 
-          this.onCreateInput = ({ formID, field, initialValue = '' }) => {
-            const fieldsPath = [ formID, field ]
-            if(typeof this.state.forms.getIn(fieldsPath) === 'undefined') {
-              const forms = this.state.forms.setIn(fieldsPath, initialValue)
-              this.setState({ forms })
+          this.onRegisterInput = ({ formName, name, initialValue = '', type }) => {
+            const path = select.inputValue(formName, name)
+            if(typeof this.state.forms.getIn(path) === 'undefined') {
+              busy(notBusy => {
+                const forms = this.state.forms.setIn(path, initialValue)
+                if(type)
+                  this.state.forms.setIn(select.inputType(formName, name), type)
+                this.setState({ forms }, notBusy)
+              })
             }
           }
-          this.onUpdateInput = ({ formID, field, value }) => {
-            const fieldsPath = [ formID, field ]
-            const forms = this.state.forms.setIn(fieldsPath, value)
-            console.info('input updated', util.inspect(forms.toJS()), formID, field, value)
-            this.setState({ forms })
+          this.onUpdateInput = ({ formName, name, value }) => {
+            busy(notBusy => {
+              const path = select.inputValue(formName, name)
+              const forms = this.state.forms.setIn(path, value)
+              this.setState({ forms }, notBusy)
+            })
           }
-        }
-      , render() {
-          const { visible, styles, theme } = this.props
-          const { enabled } = this.state
-          return (
-            <div id={contextID} ref={setContext} className={cn(styles.FormsContext, theme.FormsContext)}>
-              {visible ? (
-                <Dock enabled={enabled}>
-                  <span className={cn(styles.dockWrap, theme.dockWrap)}>
-                    <div className={cn(styles.dockTitle, theme.dockTitle)}>react-∳ormula</div>
-                    <div className={cn(styles.dockEntries, theme.dockEntries)}>
-                      {this.state.forms.entrySeq().map(([ formID, fields ], key) => (
-                        <span key={key} className={cn(styles.dockForm, theme.dockForm)}>
-                          <div className={cn(styles.dockFormName, theme.dockFormName)}>{formID}</div>
-                          <div className={cn(styles.dockFormFields, theme.dockFormFields)}>
-                            {fields.entrySeq().map(([ field, value ], key) => (
-                              <div key={key} className={cn(styles.dockFormEntry, theme.dockFormEntry)}>{field}: <Pre>{value}</Pre></div>
-                            ))}
-                          </div>
-                        </span>
-                      ))}
-                    </div>
-                  </span>
 
-                  <button
-                    className={cn(styles.dockButton, theme.dockButton, { [styles.active]: enabled, [theme.active]: enabled })}
-                    onClick={() => this.setState({ enabled: !enabled })}
-                  >
-                    <Logo />
-                  </button>
-                </Dock>
-              ) : null}
-              <span className={cn(styles.Forms, theme.Forms)}>
-                {this.state.forms.entrySeq().map(([ formID, fields ], key) => (
-                  <Form key={key} formID={formID} fields={fields} />
-                ))}
-              </span>
-            </div>
-          )
         }
       , componentDidMount() {
-          this.__registers.push(registerListeners(events.createInput, [ this.onCreateInput ]))
+          this.__registers.push(registerListeners(events.registerInput, [ this.onRegisterInput ]))
           this.__registers.push(registerListeners(events.updateInput, [ this.onUpdateInput ]))
         }
       , componentWillUnmount() {
@@ -141,21 +150,47 @@ export default function reactFormula (deps, defaults) {
             this.__registers.pop()()
           }
         }
+      , shouldComponentUpdate(nextProps, nextState) {
+          if(shallowCompare(this, nextProps, nextState)) {
+            EE.emit(events.formsWillUpdate, nextState.forms)
+            return true
+          }
+          return false
+        }
+      , render() {
+          const { styles, theme, children } = this.props
+          const { forms } = this.state
+          return (
+            <span className={cn(styles.Forms, theme.Forms)}>
+              {forms.entrySeq().map(([ formName, inputs ], key) => (
+                <FormState key={key} formName={formName} inputs={inputs} />
+              ))}
+              {children(forms)}
+            </span>
+          )
+        }
       }
     )
 
-
-
-    const Form = compose(
-      { displayName: 'form'
+    const FormState = compose(
+      { displayName: 'FormState'
       , propTypes:  { theme: PropTypes.object.isRequired
                     , styles: PropTypes.object.isRequired
-                    , fields: PropTypes.object.isRequired
+                    , formName: PropTypes.string.isRequired
+                    , inputs: PropTypes.object.isRequired
                     , onSubmit: PropTypes.func
                     , onChange: PropTypes.func
                     }
       , defaultProps: { ...defaults
                       }
+      , shouldComponentUpdate(nextProps) {
+          if(shallowCompare(this, nextProps)) {
+            const { formName } = this.props
+            EE.emit(events.formWillUpdate(formName), nextProps.inputs)
+            return true
+          }
+          return false
+        }
       , init() {
           this.inputs = []
           this.onSubmit = e => {
@@ -165,32 +200,21 @@ export default function reactFormula (deps, defaults) {
           }
         }
       , render() {
-          const { formID
-                , children
-                , styles
+          const { styles
                 , theme
-                , actions
-                , enabled
+                , formName
+                , inputs
                 , onSubmit
-                , onChange
-
-                , fields
                 } = this.props
 
           return (
             <form
-              id={formID}
+              id={formName}
               ref={x => this.form = x}
               onSubmit={onSubmit}
             >
-              {fields.entrySeq().map(([ field, value ], key) => (
-                <input
-                  key={key}
-                  ref={x => this.inputs[field] = x}
-                  name={field}
-                  value={value}
-                  type="hidden"
-                />
+              {inputs.entrySeq().map(([ name, meta ], key) => (
+                <InputState key={key} formName={formName} name={name} value={meta.get('value')} type={meta.get('type')} />
               ))}
             </form>
           )
@@ -198,12 +222,136 @@ export default function reactFormula (deps, defaults) {
       }
     )
 
+    const InputState = compose(
+      { displayName: 'InputState'
+      , propTypes:  { theme: PropTypes.object.isRequired
+                    , styles: PropTypes.object.isRequired
+                    , formName: PropTypes.string.isRequired
+                    , name: PropTypes.string.isRequired
+                    , value: PropTypes.any.isRequired
+                    , type: PropTypes.string
+                    }
+      , defaultProps: { ...defaults
+                      }
+      , shouldComponentUpdate(nextProps) {
+          if(shallowCompare(this, nextProps)) {
+            const { formName, name } = this.props
+            EE.emit(events.inputWillUpdate(formName, name), nextProps.value)
+            return true
+          }
+          return false
+        }
+      , render() {
+          const { name, value } = this.props
+          return (
+            <input
+              ref={x => this.input = x}
+              name={name}
+              value={value}
+              type="hidden"
+            />
+          )
+        }
+      }
+    )
+
+
+    const DevTools = compose (
+      { displayName: 'DevTools'
+      , propTypes:  { ...stylePropTypes
+                    , forms: PropTypes.object.isRequired
+                    }
+      , defaultProps: defaults
+      , init() {
+          this.busy = work => {
+            if(this.logo) {
+              requestAnimationFrame(() => this.logo.busy())
+              work(() => setTimeout(() => requestAnimationFrame(() => this.logo.notBusy()), 100))
+            }
+          }
+
+          this.toggle = () => {
+            if(this.dock)
+              this.dock.toggle(done)
+          }
+        }
+      , shouldComponentUpdate(nextProps) {
+          return shallowCompare(this, nextProps)
+        }
+      , render() {
+          const { styles, theme, forms } = this.props
+
+          return (
+            <Dock
+              ref={x => this.dock = x}
+              busy={this.busy}
+              toggleContent={(
+                <Logo ref={x => this.logo = x} />
+              )}
+            >
+              <div className={cn(styles.dockWrap, theme.dockWrap)}>
+                <div className={cn(styles.dockTitle, theme.dockTitle)}>react-∳ormula</div>
+                <div className={cn(styles.dockEntries, theme.dockEntries)}>
+                  <FormsView forms={forms} />
+                </div>
+              </div>
+            </Dock>
+          )
+
+        }
+      }
+    )
+
+
+    const FormsView = compose (
+      { displayName: 'FormsView'
+      , propTypes:  { ...stylePropTypes
+                    , forms: PropTypes.object.isRequired
+                    }
+      , defaultProps: defaults
+      , shouldComponentUpdate(nextProps) {
+          return shallowCompare(this, nextProps)
+        }
+      , render() {
+          const { styles, theme, forms } = this.props
+          return forms ? (
+            <span>
+              {forms.entrySeq().map(([ formName, inputs ], key) => (
+                <span key={key} className={cn(styles.dockForm, theme.dockForm)}>
+                  <div className={cn(styles.dockFormName, theme.dockFormName)}>{formName}</div>
+                  <div className={cn(styles.dockFormFields, theme.dockFormFields)}>
+                    {inputs.entrySeq().map(([ name, meta ], key) => (
+                      <div key={key} className={cn(styles.dockFormEntry, theme.dockFormEntry)}>{name}: <Pre>{meta.get('value')}</Pre></div>
+                    ))}
+                  </div>
+                </span>
+              ))}
+            </span>
+          ) : null
+        }
+      }
+    )
 
 
 
-    function createForm (formID) {
-      should.exist(formID, 'formID is required')
-      console.info('CREATE_FORM', formID)
+    let currentState = Immutable.Map()
+    EE.on(events.formsWillUpdate, newState => {
+      currentState = newState
+    })
+    const getState = () => currentState
+
+
+    function forms (formName) {
+      should.exist(formName, 'formName is required')
+
+      const getFormState = () => {
+        return currentState.get(formName)
+      }
+
+      const subscribe = cb => {
+        EE.on(events.formWillUpdate(formName), cb)
+        return () => EE.removeListener(events.formWillUpdate(formName), cb)
+      }
 
       const Input = compose(
         { displayName: 'input'
@@ -212,15 +360,23 @@ export default function reactFormula (deps, defaults) {
                       , name: PropTypes.string.isRequired
                       , type: PropTypes.string.isRequired
                       , initialValue: PropTypes.any
-                      //, onChange: PropTypes.func.isRequired
                       }
         , defaultProps: { ...defaults
                         }
+        , init() {
+            this.getInputState = () => {
+              const { name, initialValue } = this.props
+              return currentState.getIn(select.inputValue(formName, name), initialValue)
+            }
+          }
+        , shouldComponentUpdate(nextProps) {
+            return shallowCompare(this, nextProps)
+          }
         , componentDidMount() {
-            const { name, initialValue } = this.props
-            EE.emit(events.createInput, { formID, field: name, initialValue })
+            const { name, type, initialValue } = this.props
+            EE.emit(events.registerInput, { formName, name, type, initialValue })
 
-            const selectString = `#${formID} input[name="${name}"]`
+            const selectString = `#${formName} input[name="${name}"]`
             const input = document.querySelector(selectString)
             if(typeof input !== 'undefined' && input !== null) {
               if(this.input.type == 'checkbox') {
@@ -236,7 +392,6 @@ export default function reactFormula (deps, defaults) {
             }
           }
         , render() {
-            const field = this.props.name
             const { styles, theme, name, type, initialValue, ...inputProps } = this.props
             const value = this.props.value || initialValue
             return (
@@ -247,11 +402,37 @@ export default function reactFormula (deps, defaults) {
                   type={type}
                   onChange={e => {
                     const { value, checked } = e.target
-                    EE.emit(events.updateInput, { formID, field, value: type === 'checkbox' ? checked : value })
+                    EE.emit(events.updateInput, { formName, name, value: type === 'checkbox' ? checked : value })
                   }}
                 />
                 <div className={cn(styles.inputUI, theme.inputUI)} />
               </span>
+            )
+          }
+        }
+      )
+
+      const Field = compose(
+        { displayName: 'field'
+        , propTypes:  { styles: PropTypes.object.isRequired
+                      , theme: PropTypes.object.isRequired
+                      , labelPre: PropTypes.any
+                      , labelPost: PropTypes.any
+                      , onChange: PropTypes.func
+                      }
+        , defaultProps: { ...defaults
+                        }
+        , shouldComponentUpdate(nextProps) {
+            return shallowCompare(this, nextProps)
+          }
+        , render() {
+            const { styles, theme, labelPre, labelPost, onChange, ...inputProps } = this.props
+            return (
+              <label className={cn(styles.inputLabel, theme.inputLabel)}>
+                <span className={cn(styles.inputLabelPre, theme.inputLabelPre)}>{labelPre}</span>
+                <Input {...inputProps} styles={styles} theme={theme} onChange={onChange} />
+                <span className={cn(styles.inputLabelPost, theme.inputLabelPost)}>{labelPost}</span>
+              </label>
             )
           }
         }
@@ -265,6 +446,9 @@ export default function reactFormula (deps, defaults) {
                       }
         , defaultProps: { ...defaults
                         }
+        , shouldComponentUpdate(nextProps) {
+            return shallowCompare(this, nextProps)
+          }
         , render() {
             const { styles, theme, children, ...inputProps } = this.props
             return (
@@ -274,32 +458,16 @@ export default function reactFormula (deps, defaults) {
         }
       )
 
-      const Field = compose(
-        { displayName: 'field'
-        , propTypes:  { styles: PropTypes.object.isRequired
-                      , theme: PropTypes.object.isRequired
-                      , labelPre: PropTypes.any
-                      , labelPost: PropTypes.any
-                      }
-        , defaultProps: { ...defaults
-                        }
-        , render() {
-            const { styles, theme, labelPre, labelPost, ...inputProps } = this.props
-            return (
-              <label className={cn(styles.inputLabel, theme.inputLabel)}>
-                <span className={cn(styles.inputLabelPre, theme.inputLabelPre)}>{labelPre}</span>
-                <Input {...inputProps} styles={styles} theme={theme} />
-                <span className={cn(styles.inputLabelPost, theme.inputLabelPost)}>{labelPost}</span>
-              </label>
-            )
-          }
-        }
-      )
-      return { Input, Submit, Field }
+
+
+      return { Input, Submit, Field, getFormState, subscribe }
     }
 
-    render(<FormsContext visible={true} />)
-    return { createForm }
+
+    Object.assign(forms, { getState })
+
+    render(<FormsContext showDevTools={true} />)
+    return forms
   }
   return formula
 }

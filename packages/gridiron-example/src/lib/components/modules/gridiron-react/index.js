@@ -15,28 +15,19 @@ import reduxPager from 'redux-pager'
 import styles from 'gridiron-styles'
 import { sandy, black, carbon  } from 'gridiron-themes'
 
-import { createForm } from '../react-formula'
+import forms from '../react-formula'
 const should = require('chai').should()
 
 const { compose } = reactStamp(React)
 
 let defaults = { styles, theme: carbon }
 
-const { Pager } = reduxPager({ React, connect, shallowCompare }, defaults)
-const { header } = factories({ React }, defaults)
-const { CoreGrid, DrillGrid, Footer, Logo } = gridironReact({ React, shallowCompare, connect, Immutable, createForm }, defaults)
+const deps = { React, connect, shallowCompare, Immutable, forms }
 
-const filterForms = [ createForm('filter-form-1'), createForm('filter-form-2') ]
-const FilterForm = ({ id }) => {
-  const { Field, Submit } = filterForms[id]
-  return (
-    <div>
-      <Field name="checkbox_1" type="checkbox" labelPre="checkbox 1" />
-      <Field name="checkbox_2" type="checkbox" labelPre="checkbox 2" />
-      <Submit name="submit" type="submit">submit</Submit>
-    </div>
-  )
-}
+const { Pager } = reduxPager(deps, defaults)
+const { header } = factories(deps, defaults)
+const { CoreGrid, DrillGrid, Footer, Logo } = gridironReact(deps, defaults)
+
 
 function createContext() {
   const headers = [ header(), header() ]
@@ -116,14 +107,13 @@ function createContext() {
 
   const mapRows = (data, { sort, map } = {}) => {
     const rowData = map.rowData(data)
-    const multipliers = sort.direction ? sort.cols.map(colID => sort.direction[colID] === 'desc' ? -1 : 1) : []
-
+    const multipliers = sort.get('direction') ? sort.get('cols').map(colID => sort.getIn([ 'direction', colID ]) === 'desc' ? -1 : 1) : []
 
     function createSortKeys (cellData) {
-      return sort.cols
-        .filter(colID => sort.direction && typeof sort.direction[colID] === 'string')
+      return sort.get('cols')
+        .filter(colID => typeof sort.getIn([ 'direction', colID ]) === 'string')
         .map(colID => {
-          const sortKey = sort.keys ? sort.keys[colID] : null
+          const sortKey = sort.getIn([ 'keys', colID ], null)
           const cellDatum = cellData[colID]
           const currentKey = sortKey ? sortKey(cellDatum) : cellDatum
           return typeof currentKey === 'string' ? currentKey : currentKey.toString()
@@ -143,10 +133,10 @@ function createContext() {
               })
     })
 
-    if(rows.some(x => x.sortKeys.length > 0)) {
+    if(rows.some(x => x.sortKeys.size > 0)) {
       rows.sort(function comparator(a, b) {
-        for(let colIndex = 0; colIndex < a.sortKeys.length; colIndex++) {
-          let result = a.sortKeys[colIndex].localeCompare(b.sortKeys[colIndex]) * multipliers[colIndex]
+        for(let colIndex = 0; colIndex < a.sortKeys.size; colIndex++) {
+          let result = a.sortKeys.get(colIndex).localeCompare(b.sortKeys.get(colIndex)) * multipliers.get(colIndex)
           if(result !== 0)
             return result
         }
@@ -159,13 +149,66 @@ function createContext() {
   return { mapCols, mapRows }
 }
 
+const FilterForm = compose(
+  { init() {
+      const { id } = this.props
+      this.formula = forms(`filter-form-${id}`)
+    }
+  , componentDidMount() {
+      console.warn('SUBSCRIBING')
+      const { onChange } = this.props
+      if(onChange) {
+        this.unsubscribe = this.formula.subscribe(formState => {
+          console.warn('SUBSCRIBE CALLED')
+          onChange(data => {
+            let filtered = Object.keys(data).filter(x => {
+              console.warn('FILTERING KEY', x, formState)
+              const value = formState.getIn([ `filter_${x}`, 'value' ], false)
+              console.warn('VALUE => ', value)
+              return value
+            }).reduce((newData, x) => ({ ...newData, [x]: data[x] }), {})
+            console.warn('POST RUN FILTER', filtered)
+            return filtered.length > 0 ? filtered : data
+          })
+        })
+      }
+    }
+  , componentWillUnmount() {
+      console.warn('UNSUBSCRIBING')
+      if(this.unsubscribe)
+        this.unsubscribe()
+    }
+  , shouldComponentUpdate(nextProps, nextState) {
+      return shallowCompare(this, nextProps, nextState)
+    }
+  , render() {
+      const { id, data } = this.props
+      const { Field, Submit } = this.formula
+      return (
+        <div>
+          {Object.keys(data).map((name, key) => (
+            <Field key={key} name={`filter_${name}`} type="checkbox" labelPre={name} />
+          ))}
+        </div>
+      )
+    }
+  }
+)
+
 const Gridiron = compose(
   { displayName: 'gridiron'
+  , init() {
+      //setInterval(() => this.forceUpdate(), 5000)
+
+    }
+  , state: { forms: Immutable.Map() }
+  , shouldComponentUpdate(nextProps, nextState) {
+      return shallowCompare(this, nextProps, nextState)
+    }
   , render() {
       const { container } = this.props
       const ReduxGridDetail = detailProps => {
         const { mapCols, mapRows } = createContext()
-        console.warn('DETAIL', detailProps)
         return container(({ Controls, Box, isMaximized, id, actions }) => (
 
           <Pager
@@ -186,6 +229,16 @@ const Gridiron = compose(
                           , state: data => Object.keys(data).join('_')
                           }
                   }}
+
+            filter={data => {
+              const status =  { id: { content: <FilterForm id="id" data={data} onChange={() => this.forceUpdate()} /> }
+                              , state: { content: <FilterForm id="state" data={data} onChange={() => this.forceUpdate()} /> }
+                              }
+              return { data, status }
+            }}
+
+
+
             theme={black}>
             {pager => (
               <Box>
@@ -228,28 +281,31 @@ const Gridiron = compose(
             mapRows={mapRows}
 
             map={ { data: state => state
-                  , rowData: data => Object.keys(data).map(x => [ [ x ], data[x] ])
+                  , rowData: data => {
+                      return Object.keys(data).map(x => [ [ x ], data[x] ])
+                    /*
+                      const formState = forms.getState()
+                      let filtered = Object.keys(data).filter(x => {
+                        const value = formState.getIn([ 'filter-form-id', `filter_${x}` ], false)
+                        console.warn('VALUE => ', value)
+                        return value
+                      })
+                      console.warn('POST RUN FILTER', filtered)
+                      return (filtered.size > 0 ? Array.from(filtered.values()) : Object.keys(data)).map(x => [ [ x ], data[x] ])
+                      */
+                    }
                   , cellData: (rowID, rowDatum) => ({ id: rowID, state: rowDatum })
                   }
                 }
 
+            Filter={FilterForm}
 
-            filter={data => {
-              const status =  { id: { content: <FilterForm id={0} /> }
-                              , state: { content: <FilterForm id={1} /> }
-                              }
-                              console.warn('DATA', data)
-              return ({ data
-                      , status
-                      })
-            }}
-
-            sort={
+            sort={Immutable.fromJS(
               { cols: [ 'id', 'state' ]
               , keys: { id: data => data.join('_')
                       , state: data => Object.keys(data).join('_')
                       }
-              }
+              })
             }
 
             theme={carbon}>

@@ -6,10 +6,11 @@ import contextTypes from 'lib/context'
 
 import { IS_DEV, IS_HOT } from 'config'
 
-const inlineStyle = { display: 'inline-block' }
+import styles from './FooterBar.css'
+
 
 const AttributesBar = props => (
-  <div style={inlineStyle}>
+  <div className={styles.attributesBar}>
     {IS_DEV ? <DevMicro /> : null}
     {IS_HOT ? <HotMicro /> : null}
   </div>
@@ -30,25 +31,24 @@ export default class FooterBar extends Component {
   render() {
     const { showAttributes, showLegal, showCopyright } = this.props
     const { palette, color, brand, style } = this.context.theme
-    const { footer } = style
 
     /** TODO: FIGURE OUT WHERE THE FUCK THIS CONTEXT STYLES COMING FROM */
     return (
-      <div style={{ zIndex: 1000, ...footer.wrapper }}>
-        <div style={footer.left}>
-          <div style={footer.row}>
+      <div className={styles.footerBar}>
+        <div className={styles.left}>
+          <div className={styles.row}>
+          </div>
+          <div className={styles.row}>
             <a href="https://js.org" target="_blank" title="JS.ORG | JavaScript Community">
               <img src="https://logo.js.org/dark_horz.png" width="102" alt="JS.ORG Logo"/>
             </a>
             {/* alternatives [bright|dark]_[horz|vert|tiny].png (width[horz:102,vert:50,tiny:77]) */}
           </div>
-          <div style={footer.row}>
-          </div>
         </div>
-        <div style={footer.right}>
-          <div style={footer.row}>
+        <div className={styles.right}>
+          <div className={styles.row}>
           </div>
-          <div style={footer.row}>
+          <div className={styles.row}>
             <AttributesBar />
           </div>
         </div>

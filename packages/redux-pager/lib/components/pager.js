@@ -4,15 +4,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 exports.default = pager;
 
-var _reactStamp = require('react-stamp');
+var _reactStamp2 = require('react-stamp');
 
-var _reactStamp2 = _interopRequireDefault(_reactStamp);
+var _reactStamp3 = _interopRequireDefault(_reactStamp2);
 
 var _classnames = require('classnames');
 
@@ -23,16 +21,6 @@ var _solvent2 = require('solvent');
 var _solvent3 = _interopRequireDefault(_solvent2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
@@ -50,18 +38,21 @@ function nextDirection(direction) {
 }
 
 function pager() {
-  var _class, _temp;
-
   var deps = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
   var defaults = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
-  var _solvent = (0, _solvent3.default)({ React: 'object', connect: 'function', shallowCompare: 'function' })(deps);
+  var _solvent = (0, _solvent3.default)({ React: 'object', connect: 'function', shallowCompare: 'function', Immutable: 'object' })(deps);
 
   var React = _solvent.React;
   var connect = _solvent.connect;
   var shallowCompare = _solvent.shallowCompare;
+  var Immutable = _solvent.Immutable;
   var Component = React.Component;
   var PropTypes = React.PropTypes;
+
+  var _reactStamp = (0, _reactStamp3.default)(React);
+
+  var compose = _reactStamp.compose;
 
 
   var PagerComponents = function PagerComponents(pagerProps) {
@@ -225,12 +216,12 @@ function pager() {
     },
     theme: { select: 'pagerSelect' }
     /** TODO: MAKE THIS DEFAULT AN ARRAY (COLUMN SORTS) */
-    , sort: { cols: ['id', 'key'],
-      keys: { id: function id(data) {
+    , sort: Immutable.Map({ cols: Immutable.List(['id', 'key']),
+      keys: Immutable.Map({ id: function id(data) {
           return data;
-        } },
-      direction: { id: 'asc', key: 'desc' }
-    },
+        } }),
+      direction: Immutable.Map({ id: 'asc', key: 'desc' })
+    }),
     mapCellData: function mapCellData(rowID, rowData) {
       return rowData;
     },
@@ -330,135 +321,154 @@ function pager() {
     }
   }, defaults);
 
-  return _temp = _class = function (_Component) {
-    _inherits(Pager, _Component);
+  return compose({ displayName: 'Pager',
+    propTypes: propTypes,
+    defaultProps: defaultProps,
+    state: { status: Immutable.Map() },
+    init: function init() {
+      var _this = this;
 
-    function Pager(props) {
-      _classCallCheck(this, Pager);
-
-      var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Pager).call(this, props));
-
-      _this.state = { page: props.page,
-        rowsPerPage: props.rowsPerPage,
-        sort: props.sort,
-        filter: {}
+      var getProps = function getProps() {
+        return _this.props;
       };
-      return _this;
-    }
+      var getStatus = function getStatus(status) {
+        return _this.state.status;
+      };
+      var setStatus = function setStatus(status) {
+        return _this.setState({ status: status });
+      };
 
-    _createClass(Pager, [{
-      key: 'shouldComponentUpdate',
-      value: function shouldComponentUpdate(nextProps, nextState) {
-        return shallowCompare(this, nextProps, nextState);
-      }
-    }, {
-      key: 'componentDidUpdate',
-      value: function componentDidUpdate() {
-        if (this.props.onChange) this.props.onChange(this.state);
-      }
-    }, {
-      key: 'render',
-      value: function render() {
-        var _this2 = this;
+      var access = { get page() {
+          return getStatus().get('page', getProps().page);
+        },
+        set page(value) {
+          setStatus(getStatus().set('page', value));
+        },
+        get rowsPerPage() {
+          return getStatus().get('rowsPerPage', getProps().rowsPerPage);
+        },
+        set rowsPerPage(value) {
+          setStatus(getStatus().set('rowsPerPage', value));
+        },
+        get sort() {
+          return getStatus().get('sort', getProps().sort);
+        },
+        set sort(value) {
+          getStatus().set('sort', value);
+        },
+        getSortDirection: function getSortDirection(id) {
+          return getStatus().getIn(['sort', 'direction', id], null);
+        },
+        merge: function merge(value) {
+          return setStatus(_this.state.status.merge(value));
+        }
+      };
 
-        var _props = this.props;
+      var mapStatus = function mapStatus(state) {
+        var _props = _this.props;
         var map = _props.map;
-        var mapCols = _props.mapCols;
         var mapRows = _props.mapRows;
         var rowsPerPageOptions = _props.rowsPerPageOptions;
-        var mapCellData = _props.mapCellData;
-        var filter = _props.filter;
-        var _state = this.state;
-        var page = _state.page;
-        var rowsPerPage = _state.rowsPerPage;
-        var _sort = _state.sort;
+        var Filter = _props.Filter;
 
+        var sort = access.sort;
+        var page = access.page;
+        var rowsPerPage = access.rowsPerPage;
+        var data = map.data(state);
+        //const filtered = map.rowData(data)
+        //const filtered = this.state.filter ? this.state.filter(data) : data
+        //console.info('FILTERED DATA', filtered)
+        var filtered = _this.state.filter ? _this.state.filter(data) : data;
+        var rows = mapRows(filtered, { sort: sort, map: map });
 
-        var mapStatus = function mapStatus(state) {
-          var data = map.data(state);
-          var filtered = filter ? filter({ data: data, filterState: _this2.state.filter }) : { data: data, state: {} };
-          var rows = mapRows(data, { sort: _sort, map: map, filter: filtered.status });
-
-          if (typeof rowsPerPage !== 'number') {
-            return { rows: rows,
-              startIndex: 0,
-              lastIndex: rows.length,
-              page: page,
-              pages: 1,
-              rowsPerPage: rowsPerPage,
-              rowsPerPageOptions: rowsPerPageOptions,
-              totalRows: rows.size || rows.length,
-              sort: _sort,
-              filter: filtered.status
-            };
-          }
-
-          var startIndex = page * rowsPerPage;
-          var endIndex = (page + 1) * rowsPerPage;
-          var pages = Math.ceil(rows.length / rowsPerPage);
-          var rowSlice = rows.slice(startIndex, endIndex);
-          var lastIndex = startIndex + rowSlice.length;
-
-          return { rows: rowSlice,
+        if (typeof rowsPerPage !== 'number') {
+          return { rows: rows,
+            startIndex: 0,
+            lastIndex: rows.size || rows.length,
             page: page,
-            pages: pages,
-            startIndex: startIndex,
-            lastIndex: lastIndex,
+            pages: 1,
             rowsPerPage: rowsPerPage,
             rowsPerPageOptions: rowsPerPageOptions,
             totalRows: rows.size || rows.length,
-            sort: _sort,
-            filter: filtered.status
+            sort: sort
           };
+        }
+
+        var startIndex = page * rowsPerPage;
+        var endIndex = (page + 1) * rowsPerPage;
+        var pages = Math.ceil((rows.size || rows.length) / rowsPerPage);
+        var rowSlice = rows.slice(startIndex, endIndex);
+        var lastIndex = startIndex + (rowSlice.size || rowSlice.length);
+
+        var filter = function filter(_ref10) {
+          var id = _ref10.id;
+          return React.createElement(Filter, { id: id, data: data, onChange: function onChange(x) {
+              return _this.setState({ filter: x });
+            } });
         };
 
-        var mapStateToProps = function mapStateToProps(state) {
-          var status = mapStatus(state);
-          var actions = { fastBackward: function fastBackward() {
-              return _this2.setState({ page: 0 });
-            },
-            stepBackward: function stepBackward() {
-              return _this2.setState({ page: page - 1 });
-            },
-            stepForward: function stepForward() {
-              return _this2.setState({ page: page + 1 });
-            },
-            fastForward: function fastForward() {
-              return _this2.setState({ page: status.pages - 1 });
-            },
-            select: function select(x) {
-              return _this2.setState({ page: x });
-            },
-            rowsPerPage: function rowsPerPage(x) {
-              return _this2.setState({ rowsPerPage: x, page: typeof x === 'number' ? Math.floor(status.startIndex / x) : 0 });
-            },
-            sort: function sort(id) {
-              var index = _sort.cols.indexOf(id);
-              if (!index === -1) throw new Error('id ' + id + ' is not a sortable column.');
-              var lastDirection = _sort.direction && _sort.direction[id] ? _sort.direction[id] : null;
-              var newDirection = nextDirection(lastDirection);
-              var direction = _extends({}, _sort.direction, _defineProperty({}, id, newDirection));
-              var remaining = [].concat(_toConsumableArray(_sort.cols.slice(0, index)), _toConsumableArray(_sort.cols.slice(index + 1)));
-              if (remaining.includes(id)) throw new Error('internal sort error: id \'' + id + '\' should not exist in ' + JSON.stringify(remaining) + '!');
-              var cols = newDirection ? [id].concat(_toConsumableArray(remaining)) : [].concat(_toConsumableArray(remaining), [id]);
-              _this2.setState({ sort: _extends({}, _sort, { cols: cols, direction: direction }) });
-            },
-            filter: function filter(x) {
-              return _this2.setState({ filter: x });
-            }
-          };
-
-          var cols = mapCols({ status: status, actions: actions });
-          return { actions: actions,
-            status: status,
-            cols: cols
-          };
+        return { rows: rowSlice,
+          page: page,
+          pages: pages,
+          startIndex: startIndex,
+          lastIndex: lastIndex,
+          rowsPerPage: rowsPerPage,
+          rowsPerPageOptions: rowsPerPageOptions,
+          totalRows: rows.size || rows.length,
+          sort: sort,
+          filter: filter
         };
-        var ConnectedPager = connect(mapStateToProps)(PagerComponents);
-        return React.createElement(ConnectedPager, this.props);
-      }
-    }]);
+      };
 
-    return Pager;
-  }(Component), _class.propTypes = propTypes, _class.defaultProps = defaultProps, _temp;
+      this.mapStateToProps = function (state) {
+        var status = mapStatus(state);
+        var actions = { fastBackward: function fastBackward() {
+            access.page = 0;
+          },
+          stepBackward: function stepBackward() {
+            access.page = access.page - 1;
+          },
+          stepForward: function stepForward() {
+            access.page = access.page + 1;
+          },
+          fastForward: function fastForward() {
+            access.page = access.page - 1;
+          },
+          select: function select(x) {
+            access.page = x;
+          },
+          rowsPerPage: function rowsPerPage(_rowsPerPage) {
+            access.merge({ rowsPerPage: _rowsPerPage,
+              page: typeof _rowsPerPage === 'number' ? Math.floor(status.startIndex / _rowsPerPage) : 0
+            });
+          },
+          sort: function sort(id) {
+            var sort = access.sort;
+            var _cols = sort.get('cols');
+            var index = _cols.indexOf(id);
+            if (index === -1) throw new Error('id ' + id + ' is not a sortable column.');
+            var lastDirection = sort.getIn(['direction', id], null);
+            var newDirection = nextDirection(lastDirection);
+            var direction = sort.get('direction', new Immutable.Map()).set(id, newDirection);
+            var cols = newDirection ? _cols.delete(index).unshift(id) : _cols.delete(index).push(id);
+            var newSort = sort.merge({ cols: cols, direction: direction });
+            access.merge({ sort: newSort });
+          }
+        };
+
+        var cols = _this.props.mapCols({ status: status, actions: actions });
+        return { actions: actions,
+          status: status,
+          cols: cols
+        };
+      };
+    },
+    shouldComponentUpdate: function shouldComponentUpdate(nextProps, nextState) {
+      return shallowCompare(this, nextProps, nextState);
+    },
+    render: function render() {
+      var ReduxPager = connect(this.mapStateToProps)(PagerComponents);
+      return React.createElement(ReduxPager, this.props);
+    }
+  });
 }

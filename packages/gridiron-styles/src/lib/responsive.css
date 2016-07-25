@@ -1,52 +1,7 @@
-/* ===== == = === Base Styles === = == ===== */
-
-/* ===== == = === 20em (320px) === = == ===== */
-@custom-media --xs-viewport only screen and (width >= 20em);
-
-/* ===== == = === 30em (480px) === = == ===== */
-@custom-media --sm-viewport only screen and (width >= 30em);
-
-/* ===== == = === 37.5em (600px) === = == ===== */
-@custom-media --md-viewport only screen and (width >= 37.5em);
-
-/* ===== == = === 48em (768px) === = == ===== */
-@custom-media --lg-viewport only screen and (width >= 48em);
-
-/* ===== == = === 56.25em (900px) === = == ===== */
-@custom-media --xl-viewport only screen and (width >= 56.25em);
-
-/* ===== == = === 68.75em (1100px) === = == ===== */
-@custom-media --2x-viewport only screen and (width >= 68.75em);
-
-/* ===== == = === 81.25em (1300px) === = == ===== */
-@custom-media --3x-viewport only screen and (width >= 81.25em);
-
-
-
-/* ===== == = === 20em (320px) === = == ===== */
-@media only screen and (min-width : 20em) {
-}
-
-/* ===== == = === 30em (480px) === = == ===== */
-@media only screen and (min-width : 30em) {
-}
-
-/* ===== == = === 37.5em (600px) === = == ===== */
-@media only screen and (min-width: 37.5em) {
-}
-
-/* ===== == = === 48em (768px) === = == ===== */
-@media only screen and (min-width : 48em) {
-}
-
-/* ===== == = === 56.25em (900px) === = == ===== */
-@media only screen and (min-width : 56.25em) {
-}
-
-/* ===== == = === 68.75em (1100px) === = == ===== */
-@media only screen and (min-width : 68.75em) {
-}
-
-/* ===== == = === 81.25em (1300px) === = == ===== */
-@media only screen and (min-width : 81.25em) {
-}
+/** xs-screen | 320px  */ @custom-media --xs-screen only screen and (width >= 20em);
+/** sm-screen | 480px  */ @custom-media --sm-screen only screen and (width >= 30em);
+/** md-screen | 600px  */ @custom-media --md-screen only screen and (width >= 37.5em);
+/** lg-screen | 768px  */ @custom-media --lg-screen only screen and (width >= 48em);
+/** xl-screen | 900px  */ @custom-media --xl-screen only screen and (width >= 56.25em);
+/** 2x-screen | 1100px */ @custom-media --2x-screen only screen and (width >= 68.75em);
+/** 3x-screen | 1300px */ @custom-media --3x-screen only screen and (width >= 81.25em);

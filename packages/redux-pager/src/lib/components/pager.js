@@ -15,8 +15,9 @@ function nextDirection(direction) {
 }
 
 export default function pager (deps = {}, defaults = {}) {
-  const { React, connect, shallowCompare } = solvent({ React: 'object', connect: 'function', shallowCompare: 'function' })(deps)
+  const { React, connect, shallowCompare, Immutable } = solvent({ React: 'object', connect: 'function', shallowCompare: 'function', Immutable: 'object' })(deps)
   const { Component, PropTypes } = React
+  const { compose } = reactStamp(React)
 
   const PagerComponents = pagerProps => {
     const { children, status, cols, actions, content, styles, theme } = pagerProps
@@ -118,10 +119,10 @@ export default function pager (deps = {}, defaults = {}) {
                                   }
                         , theme:  { select: 'pagerSelect' }
                         /** TODO: MAKE THIS DEFAULT AN ARRAY (COLUMN SORTS) */
-                        , sort: { cols: [ 'id', 'key' ]
-                                , keys: { id: data => data }
-                                , direction: { id: 'asc', key: 'desc' }
-                                }
+                        , sort: Immutable.Map({ cols: Immutable.List([ 'id', 'key' ])
+                                              , keys: Immutable.Map({ id: data => data })
+                                              , direction: Immutable.Map({ id: 'asc', key: 'desc' })
+                                              })
                         , mapCellData: (rowID, rowData) => rowData
                         , page: 0
                         , rowsPerPage: 5
@@ -141,99 +142,116 @@ export default function pager (deps = {}, defaults = {}) {
                         , ...defaults
                         }
 
-  return class Pager extends Component {
-    static propTypes = propTypes;
-    static defaultProps = defaultProps;
-    constructor(props) {
-      super(props)
-      this.state =  { page: props.page
-                    , rowsPerPage: props.rowsPerPage
-                    , sort: props.sort
-                    , filter: {}
+  return compose(
+    { displayName: 'Pager'
+    , propTypes: propTypes
+    , defaultProps: defaultProps
+    , state: { status: Immutable.Map() }
+    , init() {
+        const getProps = () => this.props
+        const getStatus = status => this.state.status
+        const setStatus = status => this.setState({ status })
+
+
+        const access =  { get page() { return getStatus().get('page', getProps().page) }
+                        , set page(value) { setStatus(getStatus().set('page', value)) }
+                        , get rowsPerPage() { return getStatus().get('rowsPerPage', getProps().rowsPerPage) }
+                        , set rowsPerPage(value) { setStatus(getStatus().set('rowsPerPage', value)) }
+                        , get sort() { return getStatus().get('sort', getProps().sort) }
+                        , set sort(value) { getStatus().set('sort', value) }
+                        , getSortDirection: id => getStatus().getIn([ 'sort', 'direction', id ], null)
+                        , merge: value => setStatus(this.state.status.merge(value))
+                        }
+
+        const mapStatus = state => {
+          const { map, mapRows, rowsPerPageOptions, Filter } = this.props
+          const sort = access.sort
+          const page = access.page
+          const rowsPerPage = access.rowsPerPage
+          const data = map.data(state)
+          //const filtered = map.rowData(data)
+          //const filtered = this.state.filter ? this.state.filter(data) : data
+          //console.info('FILTERED DATA', filtered)
+          const filtered = this.state.filter ? this.state.filter(data) : data
+          const rows = mapRows(filtered, { sort, map })
+
+
+          if(typeof rowsPerPage !== 'number') {
+            return  { rows
+                    , startIndex: 0
+                    , lastIndex: rows.size || rows.length
+                    , page
+                    , pages: 1
+                    , rowsPerPage
+                    , rowsPerPageOptions
+                    , totalRows: rows.size || rows.length
+                    , sort
                     }
-    }
-    shouldComponentUpdate(nextProps, nextState) {
-      return shallowCompare(this, nextProps, nextState)
-    }
-    componentDidUpdate() {
-      if(this.props.onChange)
-        this.props.onChange(this.state)
-    }
-    render() {
-      const { map, mapCols, mapRows, rowsPerPageOptions, mapCellData, filter } = this.props
-      const { page, rowsPerPage, sort } = this.state
+          }
 
-      const mapStatus = state => {
-        const data = map.data(state)
-        const filtered = filter ? filter({ data, filterState: this.state.filter }) : { data, state: {} }
-        const rows = mapRows(data, { sort, map, filter: filtered.status })
+          const startIndex = page * rowsPerPage
+          const endIndex = (page + 1) * rowsPerPage
+          const pages = Math.ceil((rows.size || rows.length) / rowsPerPage)
+          const rowSlice = rows.slice(startIndex, endIndex)
+          const lastIndex = startIndex + (rowSlice.size || rowSlice.length)
 
-        if(typeof rowsPerPage !== 'number') {
-          return  { rows
-                  , startIndex: 0
-                  , lastIndex: rows.length
+          const filter = ({ id }) => <Filter id={id} data={data} onChange={x => this.setState({ filter: x })} />
+
+          return  { rows: rowSlice
                   , page
-                  , pages: 1
+                  , pages
+                  , startIndex
+                  , lastIndex
                   , rowsPerPage
                   , rowsPerPageOptions
                   , totalRows: rows.size || rows.length
                   , sort
-                  , filter: filtered.status
+                  , filter
                   }
         }
 
-        const startIndex = page * rowsPerPage
-        const endIndex = (page + 1) * rowsPerPage
-        const pages = Math.ceil(rows.length / rowsPerPage)
-        const rowSlice = rows.slice(startIndex, endIndex)
-        const lastIndex = startIndex + rowSlice.length
-
-        return  { rows: rowSlice
-                , page
-                , pages
-                , startIndex
-                , lastIndex
-                , rowsPerPage
-                , rowsPerPageOptions
-                , totalRows: rows.size || rows.length
-                , sort
-                , filter: filtered.status
-                }
-      }
-
-      const mapStateToProps = state => {
-        const status = mapStatus(state)
-        const actions = { fastBackward: () => this.setState({ page: 0 })
-                        , stepBackward: () => this.setState({ page: page - 1 })
-                        , stepForward: () => this.setState({ page: page + 1 })
-                        , fastForward: () => this.setState({ page: status.pages - 1 })
-                        , select: x => this.setState({ page: x })
-                        , rowsPerPage: x => this.setState({ rowsPerPage: x, page: typeof x === 'number' ? Math.floor(status.startIndex / x) : 0 })
-                        , sort: id => {
-                            let index = sort.cols.indexOf(id)
-                            if(!index === -1)
-                              throw new Error(`id ${id} is not a sortable column.`)
-                            let lastDirection = sort.direction && sort.direction[id] ? sort.direction[id] : null
-                            let newDirection = nextDirection(lastDirection)
-                            let direction = { ...sort.direction, [id]: newDirection }
-                            let remaining = [ ...sort.cols.slice(0, index), ...sort.cols.slice(index + 1) ]
-                            if(remaining.includes(id))
-                              throw new Error(`internal sort error: id '${id}' should not exist in ${JSON.stringify(remaining)}!`)
-                            let cols = newDirection ? [ id, ...remaining ] : [ ...remaining, id ]
-                            this.setState({ sort: { ...sort, cols, direction } })
+        this.mapStateToProps = state => {
+          const status = mapStatus(state)
+          const actions = { fastBackward: () => { access.page = 0 }
+                          , stepBackward: () => { access.page = access.page - 1 }
+                          , stepForward: () => { access.page = access.page + 1 }
+                          , fastForward: () => { access.page = access.page - 1 }
+                          , select: x => { access.page = x }
+                          , rowsPerPage: rowsPerPage => {
+                              access.merge( { rowsPerPage
+                                            , page: typeof rowsPerPage === 'number' ? Math.floor(status.startIndex / rowsPerPage) : 0
+                                            } )
+                            }
+                          , sort: id => {
+                              const sort = access.sort
+                              const _cols = sort.get('cols')
+                              const index = _cols.indexOf(id)
+                              if(index === -1)
+                                throw new Error(`id ${id} is not a sortable column.`)
+                              let lastDirection = sort.getIn([ 'direction', id ], null)
+                              let newDirection = nextDirection(lastDirection)
+                              let direction = sort.get('direction', new Immutable.Map()).set(id, newDirection)
+                              let cols = newDirection ? _cols.delete(index).unshift(id) : _cols.delete(index).push(id)
+                              const newSort = sort.merge({ cols, direction })
+                              access.merge({ sort: newSort })
+                            }
                           }
-                        , filter: x => this.setState({ filter: x })
-                        }
 
 
-        const cols = mapCols({ status, actions })
-        return  { actions
-                , status
-                , cols
-                }
+          const cols = this.props.mapCols({ status, actions })
+          return  { actions
+                  , status
+                  , cols
+                  }
+        }
       }
-      const ConnectedPager = connect(mapStateToProps)(PagerComponents)
-      return <ConnectedPager {...this.props} />
+    , shouldComponentUpdate(nextProps, nextState) {
+        return shallowCompare(this, nextProps, nextState)
+      }
+    , render() {
+        const ReduxPager = connect(this.mapStateToProps)(PagerComponents)
+        return <ReduxPager {...this.props} />
+      }
     }
-  }
+  )
 }

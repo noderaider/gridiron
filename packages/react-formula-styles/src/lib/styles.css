@@ -1,37 +1,24 @@
-/* ===== == = === 20em (320px) === = == ===== */
-@custom-media --xs-screen only screen and (width >= 20em);
-
-/* ===== == = === 30em (480px) === = == ===== */
-@custom-media --sm-screen only screen and (width >= 30em);
-
-/* ===== == = === 37.5em (600px) === = == ===== */
-@custom-media --md-screen only screen and (width >= 37.5em);
-
-/* ===== == = === 48em (768px) === = == ===== */
-@custom-media --lg-screen only screen and (width >= 48em);
-
-/* ===== == = === 56.25em (900px) === = == ===== */
-@custom-media --xl-screen only screen and (width >= 56.25em);
-
-/* ===== == = === 68.75em (1100px) === = == ===== */
-@custom-media --2x-screen only screen and (width >= 68.75em);
-
-/* ===== == = === 81.25em (1300px) === = == ===== */
-@custom-media --3x-screen only screen and (width >= 81.25em);
-
-
+/** xs-screen | 320px  */ @custom-media --xs-screen only screen and (width >= 20em);
+/** sm-screen | 480px  */ @custom-media --sm-screen only screen and (width >= 30em);
+/** md-screen | 600px  */ @custom-media --md-screen only screen and (width >= 37.5em);
+/** lg-screen | 768px  */ @custom-media --lg-screen only screen and (width >= 48em);
+/** xl-screen | 900px  */ @custom-media --xl-screen only screen and (width >= 56.25em);
+/** 2x-screen | 1100px */ @custom-media --2x-screen only screen and (width >= 68.75em);
+/** 3x-screen | 1300px */ @custom-media --3x-screen only screen and (width >= 81.25em);
 
 .dock {
   position: fixed;
   flex: 1 1 auto;
   display: flex;
+  flex-direction: column;
   z-index: 1000;
   top:0;
   left: 0;
   right: 0;
   margin:0;
-  padding:0;
-  animation-duration: 300ms;
+  padding: 0 0.5rem 0.5rem;
+
+  animation-duration: 200ms;
   animation-fill-mode: forwards;
   animation-timing-function: linear;
   overflow: hidden;
@@ -39,16 +26,24 @@
   will-change: transform;
 }
 
-
+.dock button {
+  padding: 0;
+}
 
 .dock,
 .dockDisabled {
-  transform: translateY(calc(-100% + 2rem));
+  transform: translateY(calc(-100% + 3rem));
 }
 
 .dockEnabled,
 .dockTransition.dockDisabled {
   transform: translateY(0%);
+}
+
+.dockWrap {
+  @media (--lg-screen) {
+    max-height: 50vh;
+  }
 }
 
 .dockTransition .dockWrap,
@@ -66,7 +61,7 @@
 
 @keyframes dock-slide-in {
   from {
-    transform: translateY(calc(-100% + 2rem));
+    transform: translateY(calc(-100% + 3rem));
   }
   to {
     transform: translateY(0%);
@@ -78,66 +73,98 @@
     transform: translateY(0%);
   }
   to {
-    transform: translateY(calc(-100% + 2rem));
+    transform: translateY(calc(-100% + 3rem));
   }
 }
 
-
-.dockTitle {
-  font-size:1rem;
-  letter-spacing:0.2rem;
-  display:flex;
-  align-self: center;
-  font-weight:bold;
-}
-
-.dockFormName {
-  font-weight: bold;
-  font-size:0.9rem;
-  letter-spacing:0.2rem;
-  margin-top: 0.8rem;
-}
 
 .dockEntries {
   padding: 0.5rem;
 }
 
-.dockFormFields {
-  margin-left: 1rem;
-  font-size: 0.7rem;
+.buttonContainer {
+  display:flex;
+  font-size:2rem;
+  flex:0 0 3rem;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 }
 
-.dockFormFields pre {
-  display: inline-flex !important;
+
+.buttonContainer > .flexSpacer {
+  display:inline-flex;
+  flex: 0 0 0.5em;
+  font-size:1em;
+  width: 1.4em;
 }
 
+.dockEnabled .buttonContainer > .flexSpacer {
+  flex: 0 0 1em;
+}
+
+.buttonContainer > .flexItem {
+  display: inline-flex;
+  flex: 0 0 1em;
+  font-size:1em;
+}
 
 .dockButton {
-  font-size: 1.9rem;
-  height:2rem;
-  width:2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display:flex;
+  position: relative;
+  font-size:2rem;
+  width:1em;
+  height:1em;
+  border-width:0.5em;
+  border-radius:50%;
+
+  will-change: border-width margin-top;
 }
 
-.logo {
+.dockEnabled .dockButton {
+  border-width: 0.7em;
+  margin-top:-0.9em;
+}
+
+
+.overlay {
+  position: absolute;
+  font-size:1em;
+  width:1em;
+  height:1em;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border:0;
+}
+
+
+.dockLogo {
   position: relative;
   display:flex;
   align-items: center;
   justify-content: center;
-  font-size:1em;
+  font-size:2rem;
+  transform: translate(-0.5em, -0.5em);
 }
 
 .logoIcon {
-  position: absolute;
+  font-size: 1em;
+  line-height:1em;
+  display:flex;
   align-items: center;
-  align-self: center;
   justify-content: center;
-  font-size: 0.95em;
+  margin:0;
 }
 
 .logoText {
-  display:flex;
-  font-size: 0.6em;
+  font-size: 1em;
+  line-height:1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  transform: scale(0.5) translate(0.02em, -0.04em);
 }
+
