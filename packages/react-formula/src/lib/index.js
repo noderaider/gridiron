@@ -369,8 +369,8 @@ export default function reactFormula (deps, defaults) {
               return currentState.getIn(select.inputValue(formName, name), initialValue)
             }
           }
-        , shouldComponentUpdate(nextProps) {
-            return shallowCompare(this, nextProps)
+        , shouldComponentUpdate(nextProps, nextState) {
+            return shallowCompare(this, nextProps, nextState)
           }
         , componentDidMount() {
             const { name, type, initialValue } = this.props
@@ -395,7 +395,7 @@ export default function reactFormula (deps, defaults) {
             const { styles, theme, name, type, initialValue, ...inputProps } = this.props
             const value = this.props.value || initialValue
             return (
-              <span className={cn(styles.inputUIWrap, theme.inputUIWrap)}>
+              <span className={cn(styles.inputWrap, theme.inputWrap, styles[`type_${type}`], theme[`type_${type}`] )}>
                 <input
                   {...inputProps}
                   ref={x => this.input = x}
@@ -404,6 +404,7 @@ export default function reactFormula (deps, defaults) {
                     const { value, checked } = e.target
                     EE.emit(events.updateInput, { formName, name, value: type === 'checkbox' ? checked : value })
                   }}
+                  className={cn(styles.input, theme.input)}
                 />
                 <div className={cn(styles.inputUI, theme.inputUI)} />
               </span>
@@ -416,23 +417,31 @@ export default function reactFormula (deps, defaults) {
         { displayName: 'field'
         , propTypes:  { styles: PropTypes.object.isRequired
                       , theme: PropTypes.object.isRequired
-                      , labelPre: PropTypes.any
-                      , labelPost: PropTypes.any
-                      , onChange: PropTypes.func
+                      , align: PropTypes.string.isRequired
+                      , label: PropTypes.any
                       }
         , defaultProps: { ...defaults
+                        , align: 'left'
                         }
         , shouldComponentUpdate(nextProps) {
             return shallowCompare(this, nextProps)
           }
         , render() {
-            const { styles, theme, labelPre, labelPost, onChange, ...inputProps } = this.props
+            const { styles, theme, align, label, ...inputProps } = this.props
+            const fieldClass = cn ( styles.field
+                                  , theme.field
+                                  , align === 'right' ? styles.alignRight : styles.alignLeft
+                                  , align === 'right' ? theme.alignRight : theme.alignLeft
+                                  )
+            const labelSpan = <span className={cn(styles.inputLabel, theme.inputLabel)}>{label}</span>
             return (
-              <label className={cn(styles.inputLabel, theme.inputLabel)}>
-                <span className={cn(styles.inputLabelPre, theme.inputLabelPre)}>{labelPre}</span>
-                <Input {...inputProps} styles={styles} theme={theme} onChange={onChange} />
-                <span className={cn(styles.inputLabelPost, theme.inputLabelPost)}>{labelPost}</span>
-              </label>
+              <span className={fieldClass}>
+                <label className={cn(styles.inputLabel, theme.inputLabel)}>
+                  {align === 'left' ? null : labelSpan}
+                  <Input {...inputProps} styles={styles} theme={theme} />
+                  {align === 'right' ? null : labelSpan}
+                </label>
+              </span>
             )
           }
         }

@@ -194,7 +194,6 @@
 
   will-change: overflow, transform, clip-path, visibility;
 
-
   &::-webkit-scrollbar-track {
     background-color: rgb(40, 40, 40);
   }

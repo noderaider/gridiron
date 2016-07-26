@@ -3,7 +3,7 @@ import reactStamp from 'react-stamp'
 const should = require('chai').should()
 
 
-export default function pane ({ React }, defaults = {}) {
+export default function pane ({ React, shallowCompare }, defaults = {}) {
   const { PropTypes } = React
   const { compose } = reactStamp(React)
 
@@ -18,6 +18,9 @@ export default function pane ({ React }, defaults = {}) {
     , defaultProps: { ...defaults
                     , enabled: false
                     }
+    , shouldComponentUpdate(nextProps, nextState) {
+        return shallowCompare(this, nextProps, nextState)
+      }
     , componentWillReceiveProps(nextProps) {
         if(nextProps.enabled !== this.props.enabled)
           this.setState({ transition: true })

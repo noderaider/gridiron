@@ -5,7 +5,8 @@ import pane from '../pane'
 
 const should = require('chai').should()
 
-export default function createHeader ({ React, shallowCompare, forms }, defaults) {
+export default function createHeader (deps, defaults) {
+  const { React, shallowCompare, forms } = deps
   const { Component, PropTypes } = React
   const wrapStyle = { display: 'flex'
                     , flexDirection: 'row'
@@ -28,7 +29,7 @@ export default function createHeader ({ React, shallowCompare, forms }, defaults
                         }
 
   const pubSub = reactPubSub({ React })
-  const Pane = pane({ React }, defaults)
+  const Pane = pane(deps, defaults)
 
   const SortIcon = ({ direction }) => {
     let sortClass = 'fa fa-sort'
@@ -48,14 +49,12 @@ export default function createHeader ({ React, shallowCompare, forms }, defaults
   , defaultProps: { ...defaults
                   , status: {}
                   }
+  , state: { headerEnabled: false, checked: false }
   , shouldComponentUpdate(nextProps, nextState) {
       return shallowCompare(this, nextProps, nextState)
     }
   , init() {
-      const { checked, sort } = this.props
-      this.state =  { checked
-                    , headerEnabled: false
-                    }
+      const { sort } = this.props
 
       this.onReceiveSub = ({ state } = {}) => {
         console.warn('received from sub', state)
@@ -75,10 +74,10 @@ export default function createHeader ({ React, shallowCompare, forms }, defaults
             , radio
             , status
             , actions
+            , filter
             } = this.props
 
       const sort = status.sort ? status.sort : null
-      const filter = status.filter ? status.filter : null
 
       const { checked
             , headerEnabled
@@ -127,7 +126,7 @@ export default function createHeader ({ React, shallowCompare, forms }, defaults
             </span>
           </span>
           <Pane enabled={headerEnabled}>
-            {filter ? filter({ id }) : null}
+            {filter ? filter : null}
           </Pane>
         </div>
       )
