@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 exports.default = pager;
@@ -84,11 +86,12 @@ function pager() {
     styles: PropTypes.object.isRequired,
     theme: PropTypes.object.isRequired,
     sort: PropTypes.object.isRequired,
+    createSortKeys: PropTypes.func.isRequired,
+    createSortKeyComparator: PropTypes.func.isRequired,
     page: PropTypes.number.isRequired,
     rowsPerPage: PropTypes.any.isRequired,
     rowsPerPageOptions: PropTypes.arrayOf(PropTypes.any).isRequired,
     mapRows: PropTypes.func.isRequired,
-    mapCellData: PropTypes.func.isRequired,
     typeSingular: PropTypes.string.isRequired,
     typePlural: PropTypes.string.isRequired,
     content: PropTypes.shape(contentShape).isRequired
@@ -106,9 +109,30 @@ function pager() {
           return data;
         } }),
       direction: Immutable.Map({ id: 'asc', key: 'desc' })
-    }),
-    mapCellData: function mapCellData(rowID, rowData) {
-      return rowData;
+    })
+    /** CREATES SORT KEYS FOR A ROW */
+    , createSortKeys: function createSortKeys(cellData, sort) {
+      return sort.get('cols').filter(function (colID) {
+        return typeof sort.getIn(['direction', colID]) === 'string';
+      }).map(function (colID) {
+        var sortKey = sort.getIn(['keys', colID], null);
+        var cellDatum = cellData[colID];
+        var currentKey = sortKey ? sortKey(cellDatum) : cellDatum;
+        return typeof currentKey === 'string' ? currentKey : currentKey.toString();
+      });
+    }
+    /** COMPARES SORT KEYS OF TWO ROWS */
+    , createSortKeyComparator: function createSortKeyComparator(sort) {
+      var multipliers = sort.get('direction') ? sort.get('cols').map(function (colID) {
+        return sort.getIn(['direction', colID]) === 'desc' ? -1 : 1;
+      }) : [];
+      return function (sortKeysA, sortKeysB) {
+        for (var colIndex = 0; colIndex < sortKeysA.size; colIndex++) {
+          var result = sortKeysA.get(colIndex).localeCompare(sortKeysB.get(colIndex)) * multipliers.get(colIndex);
+          if (result !== 0) return result;
+        }
+        return 0;
+      };
     },
     page: 0,
     rowsPerPage: 5,
@@ -215,37 +239,101 @@ function pager() {
       var map = _props.map;
       var mapRows = _props.mapRows;
       var rowsPerPageOptions = _props.rowsPerPageOptions;
+      var createSortKeys = _props.createSortKeys;
+      var createSortKeyComparator = _props.createSortKeyComparator;
 
-      var childProps = _objectWithoutProperties(_props, ['map', 'mapRows', 'rowsPerPageOptions']);
+      var childProps = _objectWithoutProperties(_props, ['map', 'mapRows', 'rowsPerPageOptions', 'createSortKeys', 'createSortKeyComparator']);
 
-      return React.createElement(PagerFilter, _extends({}, childProps, {
+      return React.createElement(PagerDataFilter, _extends({}, childProps, {
 
         mapStateToData: function mapStateToData(state) {
-          return map.data(state);
+          var data = map.data(state);
+          if (!Immutable.Map.isMap(data)) {
+            console.warn('redux-pager: map.data() should return an Immutable Map for best performance (converting...).');
+            return Immutable.Map(data);
+          }
+          return data;
         },
-        mapDataToStatus: function mapDataToStatus(data, access) {
+        filterData: function filterData(data, filterState) {
+          if (filterState) {
+            var anyFiltered = false;
+            var filtered = data.entrySeq().filter(function (_ref10) {
+              var _ref11 = _slicedToArray(_ref10, 2);
+
+              var id = _ref11[0];
+              var datum = _ref11[1];
+
+              var value = Object.keys(filterState).some(function (filterID) {
+                return filterState[filterID](id) === true;
+              });
+
+              if (value) anyFiltered = true;
+              return value;
+            }).reduce(function (newData, x) {
+              return _extends({}, newData, _defineProperty({}, x, data[x]));
+            }, {});
+            console.warn('FILTERED =>', filterState, filtered);
+            return anyFiltered ? filtered : data;
+          }
+          return data;
+        },
+        mapDataToRows: function mapDataToRows(data, access) {
+          throw new Error('OBSOLETE');
           var sort = access.sort;
           var page = access.page;
           var rowsPerPage = access.rowsPerPage;
-          var rows = mapRows(data, { sort: sort, map: map });
+          var rows = map.rowData(data);
+          console.warn('MAPPING ROWS =>', rows);
+          if (!Immutable.List.isList(rows)) {
+            console.warn('redux-pager: map.rowData() should return an Immutable List for best performance (converting...).');
+            return Immutable.List(rows);
+          }
+          return rows;
+          //return mapRows(data, { sort, map })
+        },
+        filterRows: function filterRows(rows, filterState, access) {
+          throw new Error('OBSOLETE');
+          return rows;
+        },
+        mapCellContext: function mapCellContext(data, access) {
+          var cellContext = data.map(function (rowDatum, rowID) {
+            var cellData = map.cellData(rowID, rowDatum);
+            var sortKeys = createSortKeys(cellData, access.sort);
+            var cellContext = Immutable.Map({ cellData: cellData, sortKeys: sortKeys });
+            return cellContext;
+          });
+          return cellContext;
+        },
+        sortRows: function sortRows(data, cellContext, access) {
+          var comparator = createSortKeyComparator(access.sort);
+          return data.sortBy(function (rowDatum, rowID) {
+            var sortKeys = cellContext.getIn([rowID, 'sortKeys']);
+            console.warn('SORT KEYS =>', sortKeys);
+            return sortKeys;
+          }, comparator);
+        },
+        mapRowsToStatus: function mapRowsToStatus(data, access) {
+          var sort = access.sort;
+          var page = access.page;
+          var rowsPerPage = access.rowsPerPage;
 
           if (typeof rowsPerPage !== 'number') {
-            return { rows: rows,
+            return { rows: data,
               startIndex: 0,
-              lastIndex: rows.size || rows.length,
+              lastIndex: data.size || data.length,
               page: page,
               pages: 1,
               rowsPerPage: rowsPerPage,
               rowsPerPageOptions: rowsPerPageOptions,
-              totalRows: rows.size || rows.length,
+              totalRows: data.size || data.length,
               sort: sort
             };
           }
 
           var startIndex = page * rowsPerPage;
           var endIndex = (page + 1) * rowsPerPage;
-          var pages = Math.ceil((rows.size || rows.length) / rowsPerPage);
-          var rowSlice = rows.slice(startIndex, endIndex);
+          var pages = Math.ceil((data.size || data.length) / rowsPerPage);
+          var rowSlice = data.slice(startIndex, endIndex);
           var lastIndex = startIndex + (rowSlice.size || rowSlice.length);
 
           return { rows: rowSlice,
@@ -255,7 +343,7 @@ function pager() {
             lastIndex: lastIndex,
             rowsPerPage: rowsPerPage,
             rowsPerPageOptions: rowsPerPageOptions,
-            totalRows: rows.size || rows.length,
+            totalRows: data.size || data.length,
             sort: sort
           };
         },
@@ -298,31 +386,96 @@ function pager() {
     }
   });
 
-  var PagerFilter = connect(function (state) {
+  var PagerDataFilter = connect(function (state) {
     return { state: state };
-  })(composePure({ displayName: 'PagerFilter',
+  })(composePure({ displayName: 'PagerDataFilter',
     propTypes: { state: PropTypes.object.isRequired,
-      filterStream: PropTypes.func.isRequired,
       mapStateToData: PropTypes.func.isRequired,
-      mapDataToStatus: PropTypes.func.isRequired,
-      mapStatusToActions: PropTypes.func.isRequired,
-      mapCols: PropTypes.func.isRequired
+      filterStream: PropTypes.func.isRequired,
+      filterData: PropTypes.func.isRequired
+    },
+    defaultProps: { filterData: function filterData(data, filterState) {
+        return data;
+      }
     },
     state: { data: null,
       status: Immutable.Map(),
       rows: []
     },
-    init: function init() {
+
+    componentWillMount: function componentWillMount() {
       var _this = this;
 
+      var _props2 = this.props;
+      var filters = _props2.filters;
+      var mapStateToData = _props2.mapStateToData;
+      var filterStream = _props2.filterStream;
+      var filterData = _props2.filterData;
+      var Filter = _props2.Filter;
+
+
+      var getData = function getData() {
+        return mapStateToData(_this.props.state);
+      };
+      var onFilter = function onFilter(filterState) {
+        var data = filterData(getData(), filterState);
+        _this.setState({ data: data });
+      };
+
+      this.filterContent = Object.keys(filters).reduce(function (rendered, id) {
+        return _extends({}, rendered, _defineProperty({}, id, React.createElement(Filter, { id: id, data: getData() })));
+      }, {});
+
+      this.unsubscribe = filterStream(onFilter);
+      this.setState({ data: getData() });
+    },
+    componentWillUnmount: function componentWillUnmount() {
+      this.unsubscribe();
+    },
+    render: function render() {
+      var _props3 = this.props;
+      var data = _props3.data;
+      var mapStateToData = _props3.mapStateToData;
+      var filterData = _props3.filterData;
+
+      var childProps = _objectWithoutProperties(_props3, ['data', 'mapStateToData', 'filterData']);
+
+      console.warn('DATA FILTER RENDER =>', this.state.data);
+
+      return React.createElement(PagerRowFilter, _extends({}, childProps, {
+        data: this.state.data,
+        filterContent: this.filterContent
+      }));
+    }
+  }));
+
+  var PagerRowFilter = composePure({ displayName: 'PagerRowFilter',
+    propTypes: { data: PropTypes.object.isRequired,
+      filterRows: PropTypes.func.isRequired,
+      sortRows: PropTypes.func.isRequired,
+      mapRowsToStatus: PropTypes.func.isRequired,
+      mapStatusToActions: PropTypes.func.isRequired,
+      mapCols: PropTypes.func.isRequired
+    }
+    /*
+    , defaultProps: { filterRows: (rows, filterState, access) => rows
+      , sortRows: (rows, access) => rows
+      }
+      */
+    , state: { status: Immutable.Map(),
+      data: null
+    },
+    init: function init() {
+      var _this2 = this;
+
       var getProps = function getProps() {
-        return _this.props;
+        return _this2.props;
       };
       var getStatus = function getStatus(status) {
-        return _this.state.status;
+        return _this2.state.status;
       };
       var setStatus = function setStatus(status) {
-        return _this.setState({ status: status });
+        return _this2.setState({ status: status });
       };
 
       this.access = { get page() {
@@ -334,87 +487,75 @@ function pager() {
         get rowsPerPage() {
           return getStatus().get('rowsPerPage', getProps().rowsPerPage);
         },
-        set rowsPerPage(value) {
-          setStatus(getStatus().set('rowsPerPage', value));
-        },
         get sort() {
           return getStatus().get('sort', getProps().sort);
-        },
-        set sort(value) {
-          getStatus().set('sort', value);
         },
         getSortDirection: function getSortDirection(id) {
           return getStatus().getIn(['sort', 'direction', id], null);
         },
         merge: function merge(value) {
-          return setStatus(_this.state.status.merge(value));
+          return setStatus(_this2.state.status.merge(value));
         }
+      };
+      this.getRows = function (data) {
+        var _props4 = _this2.props;
+        var mapDataToRows = _props4.mapDataToRows;
+        var filterRows = _props4.filterRows;
+        var filterState = _props4.filterState;
+        var mapCellContext = _props4.mapCellContext;
+        var sortRows = _props4.sortRows;
+        //const filteredRows = filterRows(mapDataToRows(data, this.access), filterState, this.access)
+        //const cellContext = mapCellContext(filteredRows, this.access)
+
+        var cellContext = mapCellContext(data, _this2.access);
+        //const sortedRows = sortRows(filteredRows, cellContext, this.access)
+        console.info('CELL CONTEXT MAPPED', cellContext.toJS());
+        var sortedRows = sortRows(data, cellContext, _this2.access);
+        console.info('SORTED ROWS => ', sortedRows);
+        return sortedRows;
       };
     },
     componentWillMount: function componentWillMount() {
-      var _this2 = this;
-
-      var _props2 = this.props;
-      var filters = _props2.filters;
-      var mapStateToData = _props2.mapStateToData;
-      var Filter = _props2.Filter;
-
-
-      var getData = function getData() {
-        return mapStateToData(_this2.props.state);
-      };
-
-      this.filterContent = Object.keys(filters).reduce(function (rendered, id) {
-        return _extends({}, rendered, _defineProperty({}, id, React.createElement(Filter, { id: id, data: getData() })));
-      }, {});
-
-      this.unsubscribes = Object.keys(filters).map(function (id) {
-        return filters[id](function () {
-          return getData();
-        }, function (data) {
-          return _this2.setState({ data: data });
-        });
-      });
-
-      this.setState({ data: getData() });
+      this.setState({ data: this.getRows(this.props.data) });
     },
-    componentWillUnmount: function componentWillUnmount() {
-      this.unsubscribes.map(function (x) {
-        return x();
-      });
+    componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+      this.setState({ data: this.getRows(nextProps.data) });
     },
     render: function render() {
-      var _props3 = this.props;
-      var mapStateToData = _props3.mapStateToData;
-      var mapDataToStatus = _props3.mapDataToStatus;
-      var mapStatusToActions = _props3.mapStatusToActions;
-      var mapCols = _props3.mapCols;
-      var filterStream = _props3.filterStream;
+      var _props5 = this.props;
+      var rows = _props5.rows;
+      var data = _props5.data;
+      var mapDataToRows = _props5.mapDataToRows;
+      var rowFilter = _props5.rowFilter;
+      var mapRowsToStatus = _props5.mapRowsToStatus;
+      var mapStatusToActions = _props5.mapStatusToActions;
+      var mapCols = _props5.mapCols;
 
-      var childProps = _objectWithoutProperties(_props3, ['mapStateToData', 'mapDataToStatus', 'mapStatusToActions', 'mapCols', 'filterStream']);
+      var childProps = _objectWithoutProperties(_props5, ['rows', 'data', 'mapDataToRows', 'rowFilter', 'mapRowsToStatus', 'mapStatusToActions', 'mapCols']);
 
-      var data = this.state.data;
-
-      var status = mapDataToStatus(data, this.access);
+      var status = mapRowsToStatus(this.state.data, this.access);
       var actions = mapStatusToActions(status, this.access);
-      var cols = mapCols({ status: status, actions: actions, filters: this.filterContent });
+      var cols = mapCols({ status: status, actions: actions, filters: this.props.filterContent });
+
+      console.info('PAGER ROWS =>', { rows: this.state.data.toJS(), status: status });
 
       return React.createElement(Pager, _extends({}, childProps, {
         status: status,
         actions: actions,
+        data: this.state.data,
         cols: cols
       }));
     }
-  }));
+  });
 
   var Pager = composePure({
     render: function render() {
-      var _props4 = this.props;
-      var children = _props4.children;
-      var cols = _props4.cols;
-      var rows = _props4.rows;
+      var _props6 = this.props;
+      var children = _props6.children;
+      var cols = _props6.cols;
+      var data = _props6.data;
 
-      var childProps = _objectWithoutProperties(_props4, ['children', 'cols', 'rows']);
+      var childProps = _objectWithoutProperties(_props6, ['children', 'cols', 'data']);
 
       var status = childProps.status;
       var actions = childProps.actions;
@@ -426,8 +567,8 @@ function pager() {
       status.page.should.be.a('number', 'page must be a number');
 
       return children({ status: status,
-        rows: status.rows,
         cols: cols,
+        data: data,
         actions: actions,
         Controls: function Controls(props) {
           return React.createElement(PagerControls, _extends({}, props, childProps));
@@ -453,13 +594,13 @@ function pager() {
 
   var PagerControls = composePure({
     render: function render() {
-      var _props5 = this.props;
-      var children = _props5.children;
-      var status = _props5.status;
-      var actions = _props5.actions;
-      var content = _props5.content;
-      var styles = _props5.styles;
-      var theme = _props5.theme;
+      var _props7 = this.props;
+      var children = _props7.children;
+      var status = _props7.status;
+      var actions = _props7.actions;
+      var content = _props7.content;
+      var styles = _props7.styles;
+      var theme = _props7.theme;
 
       return React.createElement(
         'span',
@@ -501,12 +642,12 @@ function pager() {
     render: function render() {
       var _this3 = this;
 
-      var _props6 = this.props;
-      var status = _props6.status;
-      var actions = _props6.actions;
-      var content = _props6.content;
-      var styles = _props6.styles;
-      var theme = _props6.theme;
+      var _props8 = this.props;
+      var status = _props8.status;
+      var actions = _props8.actions;
+      var content = _props8.content;
+      var styles = _props8.styles;
+      var theme = _props8.theme;
 
       return typeof status.rowsPerPage === 'number' && status.rowsPerPage > 0 ? React.createElement(
         'select',
@@ -536,13 +677,13 @@ function pager() {
     render: function render() {
       var _this4 = this;
 
-      var _props7 = this.props;
-      var label = _props7.label;
-      var status = _props7.status;
-      var actions = _props7.actions;
-      var content = _props7.content;
-      var styles = _props7.styles;
-      var theme = _props7.theme;
+      var _props9 = this.props;
+      var label = _props9.label;
+      var status = _props9.status;
+      var actions = _props9.actions;
+      var content = _props9.content;
+      var styles = _props9.styles;
+      var theme = _props9.theme;
 
       return React.createElement(
         'span',
@@ -578,15 +719,15 @@ function pager() {
 
   var PagerStatus = composePure({
     render: function render() {
-      var _props8 = this.props;
-      var styleName = _props8.styleName;
-      var Content = _props8.Content;
-      var className = _props8.className;
-      var status = _props8.status;
-      var actions = _props8.actions;
-      var content = _props8.content;
-      var styles = _props8.styles;
-      var theme = _props8.theme;
+      var _props10 = this.props;
+      var styleName = _props10.styleName;
+      var Content = _props10.Content;
+      var className = _props10.className;
+      var status = _props10.status;
+      var actions = _props10.actions;
+      var content = _props10.content;
+      var styles = _props10.styles;
+      var theme = _props10.theme;
 
       return React.createElement(
         'span',

@@ -2,7 +2,7 @@ import { CoreGrid as Core } from 'gridiron-core'
 import reactStamp from 'react-stamp'
 import solvent from 'solvent'
 import expander from './expander'
-import classNames from 'classnames'
+import cn from 'classnames'
 import util from 'util'
 import grid from './grid'
 import autoSizer from './autoSizer'
@@ -37,18 +37,20 @@ export default function coreGrid (deps, defaults = {}) {
     , defaultProps: Core.DefaultProps(React)
     , state: {}
     , render() {
-        const { cols, rows, maxHeight, style, styles, theme, gridStyle, maxWidth, header, footer, pager } = this.props
+        const { cols, data, Pre, maxHeight, style, styles, theme, gridStyle, maxWidth, header, footer, pager } = this.props
+        /*
         const spannedRows = rows.reduce((spanned, x, i) => {
           if(x.span === true)
             return [ ...spanned, i ]
           return spanned
         }, [])
+        */
         should.exist(cols)
-        should.exist(rows)
+        should.exist(data)
         cols.should.be.instanceof(Array)
-        rows.should.be.instanceof(Array)
+        data.should.be.an('object')
         const colCount = cols.length
-        const getRowCount = ({ rows = rows /*= mapRows(state)*/ } = {}) => (rows.size || rows.length) // 2 more than index for header and footer
+        const getRowCount = ({ data = data /*= mapRows(state)*/ } = {}) => (data.size || data.length) // 2 more than index for header and footer
 
         const resolveColWidth = (calculated, { minWidth, maxWidth } = {}) => {
           //console.debug('RESOLVE COL WIDTH', calculated, minWidth, maxWidth)
@@ -64,9 +66,9 @@ export default function coreGrid (deps, defaults = {}) {
         }
 
 
-        const containerClass = classNames(styles.container, theme.container)
-        const innerContainerClass = classNames(styles.innerContainer, theme.innerContainer)
-        const gridClass = classNames(styles.BodyGrid, theme.BodyGrid)
+        const containerClass = cn(styles.container, theme.container)
+        const innerContainerClass = cn(styles.innerContainer, theme.innerContainer)
+        const gridClass = cn(styles.BodyGrid, theme.BodyGrid)
 
         const renderGrid = ({ preHeader, postHeader } = {}) => (
           <div className={containerClass} style={style}>
@@ -89,7 +91,7 @@ export default function coreGrid (deps, defaults = {}) {
                   const variableWidth = width - fixedWidth
                   const variableColCount = cols.length - fixedCols.length
                   const colWidths = cols.reduce((widthMap, x) => ({ ...widthMap, [x.id]: resolveColWidth(x.width ? x.width : variableWidth / variableColCount, x) }), {})
-                  const rowCount = getRowCount({ rows })
+                  const rowCount = getRowCount({ data })
                   return (
                     <Grid
                       ref={x => this.grid = x}
@@ -99,6 +101,10 @@ export default function coreGrid (deps, defaults = {}) {
                       height={this.state.height || dimensions.height || 100}
                       columnCount={colCount}
                       rowCount={rowCount}
+
+                      data={data}
+                      Pre={Pre}
+
                       columnWidth={
 
                         ({ index }) => {
@@ -108,6 +114,18 @@ export default function coreGrid (deps, defaults = {}) {
                       }
                       rowHeight={1}
 
+                      GridHeader={(...args) => <Pre>{{ GridHeader: args }}</Pre>}
+                      ColumnHeader={(...args) => <Pre>{{ ColumnHeader: args }}</Pre>}
+                      Row={({ rowID, rowDatum, children, style }) => (
+                        <div key={rowID} id={`${rowID}-row`} className={styles.row, theme.row} style={style}>
+                          {children}
+                        </div>
+                      )}
+                      Cell={({ rowID, colID }) => <Pre>{{ Cell: { rowID, colID } }}</Pre>}
+                      ColumnFooter={(...args) => <Pre>{{ ColumnFooter: args }}</Pre>}
+                      GridFooter={(...args) => <Pre>{{ GridFooter: args }}</Pre>}
+
+
                       cellRangeRenderer={
                         ({ cellCache, cellRenderer, columnSizeAndPositionManager, columnStartIndex, columnStopIndex, horizontalOffsetAdjustment, isScrolling, rowSizeAndPositionManager, rowStartIndex, rowStopIndex, scrollLeft, scrollTop, verticalOffsetAdjustment } = {}) => {
                           const renderedRows = []
@@ -116,7 +134,7 @@ export default function coreGrid (deps, defaults = {}) {
                           /** GRID ROW HEADER */
                           if(header)
                             renderedRows.push(
-                              <div key="grid-header" className={classNames(styles.headerGrid, theme.headerGrid)}>
+                              <div key="grid-header" className={cn(styles.headerGrid, theme.headerGrid)}>
                                 {preHeader ? preHeader : null}
                                 {typeof header === 'function' ? header() : header}
                                 {postHeader ? postHeader : null}
@@ -139,7 +157,7 @@ export default function coreGrid (deps, defaults = {}) {
                                       className={typeof cellClass === 'function' ? cellClass(i) : cellClass}
                                       style={computedStyle}
                                     >
-                                      <span className={classNames(styles.innerCell, theme.innerCell)}>{x}</span>
+                                      <span className={cn(styles.innerCell, theme.innerCell)}>{x}</span>
                                     </div>
                                 )
                                 })
@@ -149,7 +167,8 @@ export default function coreGrid (deps, defaults = {}) {
                           }
 
                           /** COLUMN HEADERS */
-                          renderedRows.push(gridRow('col-headers', cols.map(x => x.header({ rows, theme })), { rowClass: styles.rowStyle, cellClass: i => classNames(styles.headerCell, theme.headerCell, cols[i].className) }))
+                          renderedRows.push(gridRow('col-headers', cols.map(x => x.header({ data, theme })), { rowClass: styles.rowStyle, cellClass: i => cn(styles.headerCell, theme.headerCell, cols[i].className) }))
+
 
                           for (let rowIndex = rowStartIndex; rowIndex <= rowStopIndex; rowIndex++) {
                             const renderedCells = []
@@ -160,9 +179,9 @@ export default function coreGrid (deps, defaults = {}) {
                                 <div
                                   key={key}
                                   //style={wideStyle}
-                                  className={classNames(styles.Grid__span, theme.expanded, 'drill')}
+                                  className={cn(styles.Grid__span, theme.expanded, 'drill')}
                                 >
-                                  {rows[rowIndex].render()}
+                                  {data[rowIndex].render()}
                                 </div>
                               )
                               renderedRows.push(child)
@@ -199,15 +218,15 @@ export default function coreGrid (deps, defaults = {}) {
                                 renderedCells.push(renderedCell)
                               }
                             }
-                            const cellClass = i => classNames(styles.cell, theme.cell, cols[i].className, rowIndex % 2 === 0 ? theme.evenRow : theme.oddRow)
+                            const cellClass = i => cn(styles.cell, theme.cell, cols[i].className, rowIndex % 2 === 0 ? theme.evenRow : theme.oddRow)
                             renderedRows.push(gridRow(rowIndex, renderedCells, { rowClass: styles.rowStyle, cellClass }))
                           }
 
-                          renderedRows.push(gridRow('col-footers', cols.map(x => x.footer ? x.footer({ rows, theme }) : null), { rowClass: styles.rowStyle, cellClass: i => classNames(styles.footerCell, theme.footerCell, cols[i].className) }))
+                          renderedRows.push(gridRow('col-footers', cols.map(x => x.footer ? x.footer({ rows, theme }) : null), { rowClass: styles.rowStyle, cellClass: i => cn(styles.footerCell, theme.footerCell, cols[i].className) }))
 
                           if(footer) {
                             renderedRows.push(
-                              <div key="grid-footer" style={wideStyle} className={classNames(styles.footerGrid, theme.footerGrid)}>
+                              <div key="grid-footer" style={wideStyle} className={cn(styles.footerGrid, theme.footerGrid)}>
                                 {typeof footer === 'function' ? footer() : footer}
                               </div>)
                           }

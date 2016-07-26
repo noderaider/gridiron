@@ -20,7 +20,7 @@ export default function drillGrid (deps, defaults) {
       this.state = { drilledRows: [] }
     }
     render() {
-      const { styles, theme, cols, rows, mapDrill, ...rest } = this.props
+      const { styles, theme, cols, data, mapDrill, ...rest } = this.props
       const { drilledRows } = this.state
       const onToggleExpand = index => {
         let newDrilledRows = drilledRows.includes(index) ? drilledRows.filter(x => x !== index) : [ ...drilledRows, index ]
@@ -45,8 +45,16 @@ export default function drillGrid (deps, defaults) {
               , ...cols
               ]
             )}
-            rows={rows.reduce((rows, x, i) => {
-                if(this.state.drilledRows.includes(i)) {
+            data={data} /*data.reduce((rows, rowDatum, rowID) => {
+
+                if(this.state.drilledRows.includes(rowID)) {
+                  const drilled = { rowID: `${x.rowId}_span`
+                                  , span: true
+                                  , render: () => mapDrill(x.rowID)
+                                  }
+                  return rows.push(drilled)
+
+                  /*
                   return  [ ...rows
                           , { ...x
                             , cells:  [ () => <Expander expanded={true} handleExpand={() => onToggleExpand(i)} theme={theme} />
@@ -58,7 +66,10 @@ export default function drillGrid (deps, defaults) {
                             , render: () => mapDrill(x.rowID)
                             }
                           ]
+                          */
+                          /*
                 }
+
                 return  [ ...rows
                         , { ...x
                           , cells:  [ () => <Expander expanded={false} handleExpand={() => onToggleExpand(i)} theme={theme} />
@@ -67,7 +78,7 @@ export default function drillGrid (deps, defaults) {
                           }
                         ]
               }, [])
-            }
+            }*/
           />
       )
     }

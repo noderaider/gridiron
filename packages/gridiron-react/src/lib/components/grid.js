@@ -442,7 +442,17 @@ export default function grid (deps, defaults) {
         rowCount,
         style,
         tabIndex,
-        width
+        width,
+
+        data,
+        Pre,
+        GridHeader,
+        ColumnHeader,
+        Cell,
+        Row,
+        ColumnFooter,
+        GridFooter
+
       } = this.props
 
       const {
@@ -499,6 +509,13 @@ export default function grid (deps, defaults) {
         this._rowStartIndex = overscanRowIndices.overscanStartIndex
         this._rowStopIndex = overscanRowIndices.overscanStopIndex
 
+
+
+        childrenToDisplay = data.entrySeq().map(([ rowID, rowDatum ]) => {
+          return <Row key={rowID} rowID={rowID} rowDatum={rowDatum}><Pre>{rowDatum}</Pre></Row>
+        })
+
+/*
         childrenToDisplay = cellRangeRenderer(
           { cellCache: this._cellCache
           , cellClassName: this._wrapCellClassNameGetter(cellClassName)
@@ -516,6 +533,7 @@ export default function grid (deps, defaults) {
           , scrollTop
           , verticalOffsetAdjustment
           })
+          */
       }
 
       const gridStyle = { ...style, height: autoHeight ? 'auto' : height, width }
@@ -554,7 +572,7 @@ export default function grid (deps, defaults) {
           style={gridStyle}
           tabIndex={tabIndex}
         >
-          {childrenToDisplay.length > 0 &&
+          {childrenToDisplay.size > 0 &&
             <div
               className='Grid__innerScrollContainer'
               style={ { width: columnCount === 1 ? 'auto' : totalColumnsWidth

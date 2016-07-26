@@ -52,12 +52,12 @@
   max-width: inherit !important;
 }
 
-.rowStyle {
+.row {
   position: relative;
   display: flex;
 }
 
-.rowStyle:last-child {
+.row:last-child {
   border-bottom: none;
 }
 

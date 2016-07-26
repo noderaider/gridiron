@@ -340,6 +340,16 @@ export default function reactFormula (deps, defaults) {
     })
     const getState = () => currentState
 
+    const subscribe = (formNames, cb) => {
+      const onChange = (...args) => {
+        console.warn('SUBSCRIBE EVENT', currentState.toJS(), ...args)
+        cb(formNames.map(name => currentState.get(name)))
+      }
+      return formNames.map(formName => {
+        EE.on(events.formWillUpdate(formName), onChange)
+        return () => EE.removeListener(events.formWillUpdate(formName), onChange)
+      })
+    }
 
     function forms (formName) {
       should.exist(formName, 'formName is required')
@@ -348,10 +358,7 @@ export default function reactFormula (deps, defaults) {
         return currentState.get(formName)
       }
 
-      const subscribe = cb => {
-        EE.on(events.formWillUpdate(formName), cb)
-        return () => EE.removeListener(events.formWillUpdate(formName), cb)
-      }
+
 
       const Input = compose(
         { displayName: 'input'
@@ -469,11 +476,16 @@ export default function reactFormula (deps, defaults) {
 
 
 
-      return { Input, Submit, Field, getFormState, subscribe }
+      return  { Input
+              , Submit
+              , Field
+              , getFormState
+              , subscribe: cb => subscribe([ formName ], formStates => cb(formStates[0]))
+              }
     }
 
 
-    Object.assign(forms, { getState })
+    Object.assign(forms, { getState, subscribe })
 
     render(<FormsContext showDevTools={true} />)
     return forms

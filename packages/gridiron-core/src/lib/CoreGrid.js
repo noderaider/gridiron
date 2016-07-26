@@ -4,7 +4,8 @@ const should = require('chai').should()
  * PropTypes factory for <CoreGrid /> components.
  */
 export const PropTypes = React => ( { cols: React.PropTypes.array.isRequired
-                                    , rows: React.PropTypes.array.isRequired
+                                    //, rows: React.PropTypes.array.isRequired
+                                    , data: React.PropTypes.object.isRequired
                                     , styles: React.PropTypes.object.isRequired
                                     , theme: React.PropTypes.object.isRequired
                                     , gridStyle: React.PropTypes.object.isRequired

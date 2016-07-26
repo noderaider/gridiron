@@ -152,11 +152,12 @@ function createContext() {
 }
 
 
-const filter = (data, formState) => {
-  if(formState) {
+
+const filter = (data, filterState) => {
+  if(filterState) {
     let anyFiltered = false
     let filtered = Object.keys(data).filter(x => {
-      const value = formState.getIn([ `filter_${x}`, 'value' ], false)
+      const value = filterState.getIn([ `filter_${x}`, 'value' ], false)
       if(value)
         anyFiltered = true
       return value
@@ -166,25 +167,48 @@ const filter = (data, formState) => {
   return data
 }
 
+const filterData = (data, filterState) => {
+  if(filterState) {
+    let anyFiltered = false
+    let filtered = data.entrySeq().filter(([ id, datum ]) => {
+      const value = Object.keys(filterState).some(filterID => {
+        return filterState[filterID](id) === true
+      })
+
+      if(value)
+        anyFiltered = true
+      return value
+    }).reduce((newData, x) => ({ ...newData, [x]: data[x] }), {})
+    console.warn('FILTERED =>', filterState, filtered)
+    return anyFiltered ? filtered : data
+  }
+  return data
+}
+
+const createFilterStream = ids => onFilter => {  //(getData, onChange) => {
+  const formNames = ids.map(getFormName)
+  return forms.subscribe(formNames, formStates => {
+
+    const filterState = ids.reduce((result, id, i) => {
+      const getFilterValue = dataKey => formStates[i].getIn([ getFilterName(dataKey), 'value' ], false)
+      return { ...result, [id]: getFilterValue }
+    })
+    console.warn('FILTER STREAM', filterState)
+    onFilter(filterState)
+    //onChange(filterData(getData(), filterState))
+  })
+}
+
 const filterStream = id => (getData, onChange) => {
   const { subscribe } = forms(`filter-form-${id}`)
-  const unsubscribe = subscribe(formState => onChange(filter(getData(), formState)))
+  const unsubscribe = subscribe(filterState => onChange(filter(getData(), filterState)))
   return unsubscribe
 }
+
 
 const getFormName = id => `filter-form-${id}`
+const getFilterName = id => `filter_${id}`
 
-/*
-const filterStreams = ids => (getData, onChange) => {
-  ids.reduce((result, id) => {
-
-    forms(getFormName(id)).subscribe(formState => onChange())
-
-  const { subscribe } = forms(getFormName(id))
-  const unsubscribe = subscribe(formState => onChange(filter(getData(), formState)))
-  return unsubscribe
-}
-*/
 
 const FilterForm = compose(
   { statics: { filter }
@@ -217,6 +241,87 @@ const Gridiron = compose(
     }
   , render() {
       const { container } = this.props
+
+      const { mapCols, mapRows } = createContext()
+
+      return (
+        container(({ Controls, Box, isMaximized, id, actions }) => (
+          <Pager
+            rowsPerPage={5}
+
+            mapCols={mapCols}
+            mapRows={mapRows}
+            filters={
+              { id: filterStream('id')
+              , state: filterStream('state')
+              }
+            }
+            filterStream={
+              createFilterStream([ 'id', 'state' ])
+            }
+
+            map={ { data: state => Immutable.Map(state)
+                  , rowData: data => {
+                      return Immutable.Map(data)
+                      //return Object.keys(data).map(x => [ [ x ], data[x] ])
+                    }
+                  , cellData: (rowID, rowDatum) => ({ id: rowID, state: rowDatum })
+                  }
+                }
+
+            Filter={FilterForm}
+
+            sort={Immutable.fromJS(
+              { cols: [ 'id', 'state' ]
+              , keys: { id: data => data.join('_')
+                      , state: data => Object.keys(data).join('_')
+                      }
+              })
+            }
+
+            theme={carbon}>
+            {pager => (
+              <Box>
+                <DrillGrid
+                    styles={styles}
+                    theme={carbon}
+                    cols={pager.cols}
+                    data={pager.data}
+                    mapDrill={parentId => <div>Sub grid for {parentID}</div>} //<ReduxGridDetail ids={parentId} />}
+                    header={
+                      [ <h3 key="title" style={{ margin: 0, letterSpacing: 6 }}>gridiron - {id}</h3>
+                      , <Controls key="maximize" />
+                      ]
+                    }
+                    footer={[ <pager.Controls key="pager-buttons"><pager.Select /></pager.Controls>
+                            , <pager.RowStatus key="pager-row-status" />
+                            , <pager.PageStatus key="pager-page-status" />
+                            , <pager.RowsPerPage label="Rows Per Page" key="rows-per-page" />
+                            ]}
+                    Pre={Pre}
+                    {...this.props}
+                  />
+              </Box>
+            )}
+          </Pager>
+        ))
+      )
+    }
+  }
+)
+
+export { Logo, Gridiron }
+
+
+
+
+
+
+
+
+
+
+      /*
       const ReduxGridDetail = detailProps => {
         const { mapCols, mapRows } = createContext()
         return container(({ Controls, Box, isMaximized, id, actions }) => (
@@ -284,68 +389,4 @@ const Gridiron = compose(
           </Pager>
         ))
       }
-
-      const { mapCols, mapRows } = createContext()
-
-      return (
-        container(({ Controls, Box, isMaximized, id, actions }) => (
-          <Pager
-            rowsPerPage={5}
-
-            mapCols={mapCols}
-            mapRows={mapRows}
-            filters={
-              { id: filterStream('id')
-              , state: filterStream('state')
-              }
-            }
-
-            map={ { data: state => state
-                  , rowData: data => {
-                      return Object.keys(data).map(x => [ [ x ], data[x] ])
-                    }
-                  , cellData: (rowID, rowDatum) => ({ id: rowID, state: rowDatum })
-                  }
-                }
-
-            Filter={FilterForm}
-
-            sort={Immutable.fromJS(
-              { cols: [ 'id', 'state' ]
-              , keys: { id: data => data.join('_')
-                      , state: data => Object.keys(data).join('_')
-                      }
-              })
-            }
-
-            theme={carbon}>
-            {pager => (
-              <Box>
-                <DrillGrid
-                    styles={styles}
-                    theme={carbon}
-                    cols={pager.cols}
-                    rows={pager.rows}
-                    mapDrill={parentId => <ReduxGridDetail ids={parentId} />}
-                    header={
-                      [ <h3 key="title" style={{ margin: 0, letterSpacing: 6 }}>gridiron - {id}</h3>
-                      , <Controls key="maximize" />
-                      ]
-                    }
-                    footer={[ <pager.Controls key="pager-buttons"><pager.Select /></pager.Controls>
-                            , <pager.RowStatus key="pager-row-status" />
-                            , <pager.PageStatus key="pager-page-status" />
-                            , <pager.RowsPerPage label="Rows Per Page" key="rows-per-page" />
-                            ]}
-                    {...this.props}
-                  />
-              </Box>
-            )}
-          </Pager>
-        ))
-      )
-    }
-  }
-)
-
-export { Logo, Gridiron }
+      */
