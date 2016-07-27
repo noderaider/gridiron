@@ -50,7 +50,6 @@ export default function pager (deps = {}, defaults = {}) {
                     , page: PropTypes.number.isRequired
                     , rowsPerPage: PropTypes.any.isRequired
                     , rowsPerPageOptions: PropTypes.arrayOf(PropTypes.any).isRequired
-                    , mapRows: PropTypes.func.isRequired
                     , typeSingular: PropTypes.string.isRequired
                     , typePlural: PropTypes.string.isRequired
                     , content: PropTypes.shape(contentShape).isRequired
@@ -61,8 +60,7 @@ export default function pager (deps = {}, defaults = {}) {
                                   , control: 'pagerControl'
                                   , select: 'pagerSelect'
                                   }
-                        , theme:  { select: 'pagerSelect' }
-                        /** TODO: MAKE THIS DEFAULT AN ARRAY (COLUMN SORTS) */
+                        , theme:  {}
                         , sort: Immutable.Map({ cols: Immutable.List([ 'id', 'key' ])
                                               , keys: Immutable.Map({ id: data => data })
                                               , direction: Immutable.Map({ id: 'asc', key: 'desc' })
@@ -116,7 +114,6 @@ export default function pager (deps = {}, defaults = {}) {
     , defaultProps: defaultProps
     , render() {
         const { map
-              , mapRows
               , rowsPerPageOptions
               , createSortKeys
               , createSortKeyComparator
@@ -126,18 +123,19 @@ export default function pager (deps = {}, defaults = {}) {
           <PagerDataFilter
             {...childProps}
 
-            mapStateToData={state => {
-              const data = map.data(state)
-              if(!Immutable.Map.isMap(data)) {
-                console.warn('redux-pager: map.data() should return an Immutable Map for best performance (converting...).')
-                return Immutable.Map(data)
+            mapStateToRowData={state => {
+              const rowData = map.rowData(state)
+              if(!Immutable.Map.isMap(rowData)) {
+                console.warn('redux-pager: map.rowData() should return an Immutable Map for best performance (converting...).')
+                return Immutable.Map(rowData)
               }
-              return data
+              return rowData
             }}
-            filterData={(data, filterState) => {
+            /** CALLED BY FILTER STREAM */
+            filterRowData={(rowData, filterState) => {
               if(filterState) {
                 let anyFiltered = false
-                let filtered = data.entrySeq().filter(([ id, datum ]) => {
+                let newRowData = rowData.entrySeq().filter(([ id, datum ]) => {
                   const value = Object.keys(filterState).some(filterID => {
                     return filterState[filterID](id) === true
                   })
@@ -145,75 +143,59 @@ export default function pager (deps = {}, defaults = {}) {
                   if(value)
                     anyFiltered = true
                   return value
-                }).reduce((newData, x) => ({ ...newData, [x]: data[x] }), {})
+                }).reduce((filtered, x) => ({ ...filtered, [x]: rowData[x] }), {})
                 console.warn('FILTERED =>', filterState, filtered)
-                return anyFiltered ? filtered : data
+                return anyFiltered ? newRowData : rowData
               }
-              return data
-            }}
-            mapDataToRows={(data, access) => {
-              throw new Error('OBSOLETE')
-              const sort = access.sort
-              const page = access.page
-              const rowsPerPage = access.rowsPerPage
-              const rows = map.rowData(data)
-              console.warn('MAPPING ROWS =>', rows)
-              if(!Immutable.List.isList(rows)) {
-                console.warn('redux-pager: map.rowData() should return an Immutable List for best performance (converting...).')
-                return Immutable.List(rows)
-              }
-              return rows
-              //return mapRows(data, { sort, map })
-            }}
-            filterRows={(rows, filterState, access) => {
-              throw new Error('OBSOLETE')
-              return rows
+              return rowData
             }}
             /** MAP CELL AND SORT DATA AND ADD TO DATA CONSTRUCT */
-            mapDataContext={(data, access) => {
-              /** MAYBE DATA.UPDATE FOR BETTER PERF? */
-              return data.map((rowDatum, rowID) => {
+            mapData={(rowData, access) => {
+              const rows = rowData.map((rowDatum, rowID) => {
                 const cellData = map.cellData(rowID, rowDatum)
                 const sortKeys = createSortKeys(cellData, access.sort)
                 return Immutable.Map({ rowDatum, cellData, sortKeys })
               })
+              const columns = rows.first().get('cellData').keySeq()
+              return Immutable.Map({ rows, columns })
             }}
-            sortRows={(data, access) => {
+            sortData={(data, access) => {
               const comparator = createSortKeyComparator(access.sort)
-              return data.sortBy((context, rowID) => context.get('sortKeys'), comparator)
+              return data.set('rows', data.get('rows').sortBy((context, rowID) => context.get('sortKeys'), comparator))
             }}
-            mapRowsToStatus={(data, access) => {
+            mapDataToStatus={(data, access) => {
               const sort = access.sort
               const page = access.page
               const rowsPerPage = access.rowsPerPage
+              const rows = data.get('rows')
 
               if(typeof rowsPerPage !== 'number') {
                 return  Immutable.Map({ data
                                       , startIndex: 0
-                                      , lastIndex: data.size || data.length
+                                      , lastIndex: rows.size
                                       , page
                                       , pages: 1
                                       , rowsPerPage
                                       , rowsPerPageOptions
-                                      , totalRows: data.size || data.length
+                                      , totalRows: rows.size
                                       , sort
                                       })
               }
 
               const startIndex = page * rowsPerPage
               const endIndex = (page + 1) * rowsPerPage
-              const pages = Math.ceil((data.size || data.length) / rowsPerPage)
-              const rowSlice = data.slice(startIndex, endIndex)
+              const pages = Math.ceil(rows.size / rowsPerPage)
+              const rowSlice = rows.slice(startIndex, endIndex)
               const lastIndex = startIndex + (rowSlice.size || rowSlice.length)
 
-              return  Immutable.Map({ data: rowSlice
+              return  Immutable.Map({ data: data.set('rows', rowSlice)
                                     , page
                                     , pages
                                     , startIndex
                                     , lastIndex
                                     , rowsPerPage
                                     , rowsPerPageOptions
-                                    , totalRows: data.size || data.length
+                                    , totalRows: rows.size
                                     , sort
                                     })
             }}
@@ -254,48 +236,49 @@ export default function pager (deps = {}, defaults = {}) {
   const PagerDataFilter = connect(state => ({ state }))(composePure(
     { displayName: 'PagerDataFilter'
     , propTypes:  { state: PropTypes.object.isRequired
-                  , mapStateToData: PropTypes.func.isRequired
+                  , mapStateToRowData: PropTypes.func.isRequired
                   , filterStream: PropTypes.func.isRequired
-                  , filterData: PropTypes.func.isRequired
+                  , filterRowData: PropTypes.func.isRequired
                   }
-    , defaultProps: { filterData: (data, filterState) => data
+    , defaultProps: { filterRowData: (rowData, filterState) => rowData
                     }
-    , state:  { data: null
+    , state:  { rowData: null
               }
 
     , componentWillMount() {
-        const { filters, mapStateToData, filterStream, filterData, Filter } = this.props
+        const { mapStateToRowData, filterStream, filterRowData, Filter } = this.props
 
-        const getData = () => mapStateToData(this.props.state)
-        const onFilter = filterState => {
-          const data = filterData(getData(), filterState)
-          this.setState({ data })
-        }
+        const getRowData = () => mapStateToRowData(this.props.state)
 
+/*
         this.filterContent = Object.keys(filters).reduce((rendered, id) => {
-          return ({ ...rendered, [id]: <Filter id={id} data={getData()} /> })
+          return ({ ...rendered, [id]: <Filter id={id} rowData={getRowData()} /> })
         }, {})
+        */
 
+        const onFilter = filterState => {
+          const rowData = filterRowData(getRowData(), filterState)
+          this.setState({ rowData })
+        }
         this.unsubscribe = filterStream(onFilter)
-        this.setState({ data: getData() })
+
+        this.setState({ rowData: getRowData() })
       }
     , componentWillUnmount() {
         this.unsubscribe()
       }
     , render() {
-        const { data
-              , mapStateToData
-              , filterData
+        const { rowData
+              , mapStateToRowData
+              , filterRows
               , ...childProps
               } = this.props
-
-        console.warn('DATA FILTER RENDER =>', this.state.data)
 
         return (
           <PagerRowFilter
             {...childProps}
-            data={this.state.data}
-            filterContent={this.filterContent}
+            rowData={this.state.rowData}
+            //filterContent={this.filterContent}
           />
         )
       }
@@ -304,12 +287,12 @@ export default function pager (deps = {}, defaults = {}) {
 
   const PagerRowFilter = composePure(
     { displayName: 'PagerRowFilter'
-    , propTypes:  { data: PropTypes.object.isRequired
-                  , filterRows: PropTypes.func.isRequired
-                  , sortRows: PropTypes.func.isRequired
-                  , mapRowsToStatus: PropTypes.func.isRequired
+    , propTypes:  { rowData: PropTypes.object.isRequired
+                  , mapData: PropTypes.func.isRequired
+                  , sortData: PropTypes.func.isRequired
+                  , mapDataToStatus: PropTypes.func.isRequired
                   , mapStatusToActions: PropTypes.func.isRequired
-                  , mapCols: PropTypes.func.isRequired
+                  //, mapCols: PropTypes.func.isRequired
                   }
     , state:  { status: Immutable.Map()
               , data: null
@@ -326,13 +309,14 @@ export default function pager (deps = {}, defaults = {}) {
                       , getSortDirection: id => getStatus().getIn([ 'sort', 'direction', id ], null)
                       , merge: value => setStatus(this.state.status.merge(value))
                       }
-        this._processData = data => {
-          const { mapDataContext, sortRows } = this.props
-          return sortRows(mapDataContext(data, this.access), this.access)
+        this._processData = rowData => {
+          const { mapData, sortData } = this.props
+          const data = mapData(rowData, this.access)
+          return sortData(data, this.access)
         }
       }
     , componentWillMount() {
-        const data = this._processData(this.props.data)
+        const data = this._processData(this.props.rowData)
         this.setState({ data })
       }
     , componentWillReceiveProps(nextProps) {
@@ -340,29 +324,31 @@ export default function pager (deps = {}, defaults = {}) {
         this.setState({ data })
       }
     , render() {
-        const { data
-              , mapDataContext
+        const { rowData
+              , mapData
               , rowFilter
-              , mapRowsToStatus
+              , sortRows
+              , mapDataToStatus
               , mapStatusToActions
-              , mapCols
-              , filterContent
+              //, mapCols
+              //, filterContent
               , ...childProps
               } = this.props
 
-        const status = mapRowsToStatus(this.state.data, this.access)
+        const status = mapDataToStatus(this.state.data, this.access)
         const actions = mapStatusToActions(status, this.access)
-        const cols = mapCols( { status
+        /*const cols = mapCols( { status
                               , actions
-                              , filters: filterContent
+                              //, filters: filterContent
                               } )
+                              */
 
         return (
           <Pager
             {...childProps}
             status={status}
             actions={actions}
-            cols={cols}
+            //cols={cols}
           />
         )
       }
@@ -376,7 +362,7 @@ export default function pager (deps = {}, defaults = {}) {
         const { status, actions, content, styles, theme } = childProps
 
         return children({ status
-                        , cols
+                        //, cols
                         , actions
                         , Controls: props => <PagerControls {...props} {...childProps} />
                         , Select: props => <PagerSelect {...props} {...childProps} />
@@ -472,7 +458,5 @@ export default function pager (deps = {}, defaults = {}) {
       }
     }
   )
-
   return PagerContext
-
 }

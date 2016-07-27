@@ -8,7 +8,7 @@
 
 
 
-:global .Grid {
+.grid {
   position: relative;
   overflow: auto;
   -webkit-overflow-scrolling: touch;

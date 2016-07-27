@@ -1,6 +1,6 @@
-import createHeader from './createHeader'
+import createColumn from './createColumn'
 
 export default function factories (deps, defaults) {
-  return  { header: createHeader(deps, defaults)
+  return  { column: createColumn(deps, defaults)
           }
 }

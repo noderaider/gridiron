@@ -25,12 +25,12 @@ let defaults = { styles, theme: carbon }
 const deps = { React, connect, shallowCompare, Immutable, forms, Pre }
 
 const { Pager } = reduxPager(deps, defaults)
-const { header } = factories(deps, defaults)
-const { CoreGrid, DrillGrid, Footer, Logo } = gridironReact(deps, defaults)
+const { column } = factories(deps, defaults)
+const { Grid, CoreGrid, DrillGrid, Footer, Logo } = gridironReact(deps, defaults)
 
 
 function createContext() {
-  const headers = [ header(), header() ]
+
 
   const mapCols = ({ status, actions, filters }) => {
     return  [ { id: 'id'
@@ -242,31 +242,21 @@ const Gridiron = compose(
   , render() {
       const { container } = this.props
 
-      const { mapCols, mapRows } = createContext()
+      //const { mapCols, mapRows } = createContext()
 
       return (
         container(({ Controls, Box, isMaximized, id, actions }) => (
           <Pager
             rowsPerPage={5}
 
-            mapCols={mapCols}
-            mapRows={mapRows}
-            filters={
-              { id: filterStream('id')
-              , state: filterStream('state')
-              }
-            }
+            //mapCols={mapCols}
+            //mapRows={mapRows}
+
             filterStream={
               createFilterStream([ 'id', 'state' ])
             }
 
-            map={ { data: state => Immutable.Map.isMap(state) ? state : Immutable.Map(state)
-              /*
-                  , rowData: data => {
-                      return Immutable.Map(data)
-                      //return Object.keys(data).map(x => [ [ x ], data[x] ])
-                    }
-                    */
+            map={ { rowData: state => Immutable.Map.isMap(state) ? state : Immutable.Map(state)
                   , cellData: (rowID, rowDatum) => Immutable.Map({ id: rowID, state: rowDatum })
                   }
                 }
@@ -284,11 +274,56 @@ const Gridiron = compose(
             theme={carbon}>
             {pager => (
               <Box>
-                <DrillGrid
+                <Grid
                     styles={styles}
                     theme={carbon}
                     cols={pager.cols}
                     data={pager.status.get('data', Immutable.Map())}
+
+                    mapColumn={(
+                      { local: ({ colID }) => {
+                          const { Header, Cell, Footer } = column({ colID })
+                          return { Header, Cell, Footer }
+                        }
+                      , header: ({ local, ...props }) => {
+                          return (
+                            <local.Header {...props} />
+                          )
+                        }
+                      , cell: ({ local, ...props }) => { //({ context, local, rowID, colID, cellDatum }) => {
+                          return (
+                            <local.Cell {...props} />
+                          )
+                        }
+                      , footer: ({ local, ...props }) => {
+                          return (
+                            <local.Footer {...props} />
+                          )
+                        }
+                      }
+                    )}
+
+/*
+                    templates={
+                      { GridHeader: props => <span style={{ textAlign: 'center' }}><h3>Accordion</h3></span>
+                      , Row: ({ context, rowID, children, ...props }) => (
+                          <div style={{ margin: 10
+                                      , padding: 10
+                                      , color: '#000'
+                                      , fontWeight: 'bold'
+                                      , border: '2px dashed rgb(100, 100, 200)'
+                                      , borderRadius: 3
+                                      , backgroundColor: 'rgba(180, 180, 200, 0.7)'
+                                      , cursor: 'pointer'
+                                      }} {...props}>
+                            <h4>{rowID}</h4>
+                          </div>
+                        )
+                      }
+                    }
+                    */
+
+
                     mapDrill={parentId => <div>Sub grid for {parentID}</div>} //<ReduxGridDetail ids={parentId} />}
                     header={
                       [ <h3 key="title" style={{ margin: 0, letterSpacing: 6 }}>gridiron - {id}</h3>

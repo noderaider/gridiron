@@ -21,7 +21,7 @@ export default function coreGrid (deps, defaults = {}) {
   const { getState } = defaults
   should.exist(React)
   should.exist(connect)
-  const Expander = expander({ React })
+  const Expander = expander(deps, defaults)
 
   const wideStyle = { display: 'flex'
                     , flexDirection: 'row'
@@ -103,6 +103,7 @@ export default function coreGrid (deps, defaults = {}) {
                       rowCount={rowCount}
 
                       data={data}
+                      cols={cols}
                       Pre={Pre}
 
                       columnWidth={

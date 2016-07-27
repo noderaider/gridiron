@@ -7,7 +7,7 @@
 /** 3x-screen | 1300px */ @custom-media --3x-screen only screen and (width >= 81.25em);
 
 
-.BodyGrid {
+.grid {
   margin:0;
   padding: 0px;
   border: 2px solid rgb(100, 100, 100);
