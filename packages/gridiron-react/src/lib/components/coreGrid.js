@@ -37,7 +37,7 @@ export default function coreGrid (deps, defaults = {}) {
     , defaultProps: Core.DefaultProps(React)
     , state: {}
     , render() {
-        const { cols, data, Pre, maxHeight, style, styles, theme, gridStyle, maxWidth, header, footer, pager } = this.props
+        const { cols, data, templates, Pre, maxHeight, style, styles, theme, gridStyle, maxWidth, header, footer, pager } = this.props
         /*
         const spannedRows = rows.reduce((spanned, x, i) => {
           if(x.span === true)
@@ -114,14 +114,28 @@ export default function coreGrid (deps, defaults = {}) {
                       }
                       rowHeight={1}
 
-                      GridHeader={(...args) => <Pre>{{ GridHeader: args }}</Pre>}
-                      ColumnHeader={(...args) => <Pre>{{ ColumnHeader: args }}</Pre>}
-                      Row={({ rowID, rowDatum, children, style }) => (
-                        <div key={rowID} id={`${rowID}-row`} className={styles.row, theme.row} style={style}>
-                          {children}
+                      templates={templates}
+
+                      rowClass={rowIndex => cn(styles.row, theme.row)}
+                      cellClass={rowIndex => {
+                        const stripeStyle =`${rowIndex % 2 === 0 ? 'even' : 'odd'}Row`
+                        return cn(styles.cell, theme.cell, style[stripeStyle], theme[stripeStyle])
+                      }}
+                      innerCellClass={rowIndex => cn(styles.innerCell, theme.innerCell)}
+
+                      GridHeader={props => <templates.GridHeader {...props} />} // <Pre>{{ GridHeader: args }}</Pre>}
+                      ColumnHeader={props => <templates.ColumnHeader {...props} />} //<Pre>{{ ColumnHeader: args }}</Pre>}
+                      Row={props => <templates.Row {...props} />} //<div key={rowID} {...childProps} />
+                      Cell={({ context, rowID, cellID, cellDatum, innerCellClass,  ...childProps }) => (
+                        <div key={cellID} {...childProps}>
+                          <templates.Cell className={innerCellClass} {...childProps} />
                         </div>
+                        /* //<Pre>{{ [cellID]: cellDatum }}</Pre></span>
+                        <Pre>
+                          {{ [`${rowID}_${cellID}`]: cellDatum  }}
+                        </Pre>
+                      */
                       )}
-                      Cell={({ rowID, colID }) => <Pre>{{ Cell: { rowID, colID } }}</Pre>}
                       ColumnFooter={(...args) => <Pre>{{ ColumnFooter: args }}</Pre>}
                       GridFooter={(...args) => <Pre>{{ GridFooter: args }}</Pre>}
 

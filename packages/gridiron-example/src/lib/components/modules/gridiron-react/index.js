@@ -22,7 +22,7 @@ const { compose } = reactStamp(React)
 
 let defaults = { styles, theme: carbon }
 
-const deps = { React, connect, shallowCompare, Immutable, forms }
+const deps = { React, connect, shallowCompare, Immutable, forms, Pre }
 
 const { Pager } = reduxPager(deps, defaults)
 const { header } = factories(deps, defaults)
@@ -260,12 +260,14 @@ const Gridiron = compose(
               createFilterStream([ 'id', 'state' ])
             }
 
-            map={ { data: state => Immutable.Map(state)
+            map={ { data: state => Immutable.Map.isMap(state) ? state : Immutable.Map(state)
+              /*
                   , rowData: data => {
                       return Immutable.Map(data)
                       //return Object.keys(data).map(x => [ [ x ], data[x] ])
                     }
-                  , cellData: (rowID, rowDatum) => ({ id: rowID, state: rowDatum })
+                    */
+                  , cellData: (rowID, rowDatum) => Immutable.Map({ id: rowID, state: rowDatum })
                   }
                 }
 
@@ -286,7 +288,7 @@ const Gridiron = compose(
                     styles={styles}
                     theme={carbon}
                     cols={pager.cols}
-                    data={pager.data}
+                    data={pager.status.get('data', Immutable.Map())}
                     mapDrill={parentId => <div>Sub grid for {parentID}</div>} //<ReduxGridDetail ids={parentId} />}
                     header={
                       [ <h3 key="title" style={{ margin: 0, letterSpacing: 6 }}>gridiron - {id}</h3>

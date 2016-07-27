@@ -332,8 +332,6 @@ export default function reactFormula (deps, defaults) {
       }
     )
 
-
-
     let currentState = Immutable.Map()
     EE.on(events.formsWillUpdate, newState => {
       currentState = newState

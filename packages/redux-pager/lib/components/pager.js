@@ -294,22 +294,20 @@ function pager() {
         filterRows: function filterRows(rows, filterState, access) {
           throw new Error('OBSOLETE');
           return rows;
-        },
-        mapCellContext: function mapCellContext(data, access) {
-          var cellContext = data.map(function (rowDatum, rowID) {
+        }
+        /** MAP CELL AND SORT DATA AND ADD TO DATA CONSTRUCT */
+        , mapDataContext: function mapDataContext(data, access) {
+          /** MAYBE DATA.UPDATE FOR BETTER PERF? */
+          return data.map(function (rowDatum, rowID) {
             var cellData = map.cellData(rowID, rowDatum);
             var sortKeys = createSortKeys(cellData, access.sort);
-            var cellContext = Immutable.Map({ cellData: cellData, sortKeys: sortKeys });
-            return cellContext;
+            return Immutable.Map({ rowDatum: rowDatum, cellData: cellData, sortKeys: sortKeys });
           });
-          return cellContext;
         },
-        sortRows: function sortRows(data, cellContext, access) {
+        sortRows: function sortRows(data, access) {
           var comparator = createSortKeyComparator(access.sort);
-          return data.sortBy(function (rowDatum, rowID) {
-            var sortKeys = cellContext.getIn([rowID, 'sortKeys']);
-            console.warn('SORT KEYS =>', sortKeys);
-            return sortKeys;
+          return data.sortBy(function (context, rowID) {
+            return context.get('sortKeys');
           }, comparator);
         },
         mapRowsToStatus: function mapRowsToStatus(data, access) {
@@ -318,7 +316,7 @@ function pager() {
           var rowsPerPage = access.rowsPerPage;
 
           if (typeof rowsPerPage !== 'number') {
-            return { rows: data,
+            return Immutable.Map({ data: data,
               startIndex: 0,
               lastIndex: data.size || data.length,
               page: page,
@@ -327,7 +325,7 @@ function pager() {
               rowsPerPageOptions: rowsPerPageOptions,
               totalRows: data.size || data.length,
               sort: sort
-            };
+            });
           }
 
           var startIndex = page * rowsPerPage;
@@ -336,7 +334,7 @@ function pager() {
           var rowSlice = data.slice(startIndex, endIndex);
           var lastIndex = startIndex + (rowSlice.size || rowSlice.length);
 
-          return { rows: rowSlice,
+          return Immutable.Map({ data: rowSlice,
             page: page,
             pages: pages,
             startIndex: startIndex,
@@ -345,7 +343,7 @@ function pager() {
             rowsPerPageOptions: rowsPerPageOptions,
             totalRows: data.size || data.length,
             sort: sort
-          };
+          });
         },
         mapStatusToActions: function mapStatusToActions(status, access) {
           return { fastBackward: function fastBackward() {
@@ -365,7 +363,7 @@ function pager() {
             },
             rowsPerPage: function rowsPerPage(_rowsPerPage) {
               access.merge({ rowsPerPage: _rowsPerPage,
-                page: typeof _rowsPerPage === 'number' ? Math.floor(status.startIndex / _rowsPerPage) : 0
+                page: typeof _rowsPerPage === 'number' ? Math.floor(status.get('startIndex') / status.get('rowsPerPage')) : 0
               });
             },
             sort: function sort(id) {
@@ -398,9 +396,7 @@ function pager() {
         return data;
       }
     },
-    state: { data: null,
-      status: Immutable.Map(),
-      rows: []
+    state: { data: null
     },
 
     componentWillMount: function componentWillMount() {
@@ -456,13 +452,8 @@ function pager() {
       mapRowsToStatus: PropTypes.func.isRequired,
       mapStatusToActions: PropTypes.func.isRequired,
       mapCols: PropTypes.func.isRequired
-    }
-    /*
-    , defaultProps: { filterRows: (rows, filterState, access) => rows
-      , sortRows: (rows, access) => rows
-      }
-      */
-    , state: { status: Immutable.Map(),
+    },
+    state: { status: Immutable.Map(),
       data: null
     },
     init: function init() {
@@ -497,52 +488,44 @@ function pager() {
           return setStatus(_this2.state.status.merge(value));
         }
       };
-      this.getRows = function (data) {
+      this._processData = function (data) {
         var _props4 = _this2.props;
-        var mapDataToRows = _props4.mapDataToRows;
-        var filterRows = _props4.filterRows;
-        var filterState = _props4.filterState;
-        var mapCellContext = _props4.mapCellContext;
+        var mapDataContext = _props4.mapDataContext;
         var sortRows = _props4.sortRows;
-        //const filteredRows = filterRows(mapDataToRows(data, this.access), filterState, this.access)
-        //const cellContext = mapCellContext(filteredRows, this.access)
 
-        var cellContext = mapCellContext(data, _this2.access);
-        //const sortedRows = sortRows(filteredRows, cellContext, this.access)
-        console.info('CELL CONTEXT MAPPED', cellContext.toJS());
-        var sortedRows = sortRows(data, cellContext, _this2.access);
-        console.info('SORTED ROWS => ', sortedRows);
-        return sortedRows;
+        return sortRows(mapDataContext(data, _this2.access), _this2.access);
       };
     },
     componentWillMount: function componentWillMount() {
-      this.setState({ data: this.getRows(this.props.data) });
+      var data = this._processData(this.props.data);
+      this.setState({ data: data });
     },
     componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-      this.setState({ data: this.getRows(nextProps.data) });
+      var data = this._processData(nextProps.data);
+      this.setState({ data: data });
     },
     render: function render() {
       var _props5 = this.props;
-      var rows = _props5.rows;
       var data = _props5.data;
-      var mapDataToRows = _props5.mapDataToRows;
+      var mapDataContext = _props5.mapDataContext;
       var rowFilter = _props5.rowFilter;
       var mapRowsToStatus = _props5.mapRowsToStatus;
       var mapStatusToActions = _props5.mapStatusToActions;
       var mapCols = _props5.mapCols;
+      var filterContent = _props5.filterContent;
 
-      var childProps = _objectWithoutProperties(_props5, ['rows', 'data', 'mapDataToRows', 'rowFilter', 'mapRowsToStatus', 'mapStatusToActions', 'mapCols']);
+      var childProps = _objectWithoutProperties(_props5, ['data', 'mapDataContext', 'rowFilter', 'mapRowsToStatus', 'mapStatusToActions', 'mapCols', 'filterContent']);
 
       var status = mapRowsToStatus(this.state.data, this.access);
       var actions = mapStatusToActions(status, this.access);
-      var cols = mapCols({ status: status, actions: actions, filters: this.props.filterContent });
-
-      console.info('PAGER ROWS =>', { rows: this.state.data.toJS(), status: status });
+      var cols = mapCols({ status: status,
+        actions: actions,
+        filters: filterContent
+      });
 
       return React.createElement(Pager, _extends({}, childProps, {
         status: status,
         actions: actions,
-        data: this.state.data,
         cols: cols
       }));
     }
@@ -563,12 +546,9 @@ function pager() {
       var styles = childProps.styles;
       var theme = childProps.theme;
 
-      should.exist(status.page, 'page should exist');
-      status.page.should.be.a('number', 'page must be a number');
 
       return children({ status: status,
         cols: cols,
-        data: data,
         actions: actions,
         Controls: function Controls(props) {
           return React.createElement(PagerControls, _extends({}, props, childProps));
@@ -607,13 +587,13 @@ function pager() {
         { className: (0, _classnames2.default)(styles.controls) },
         React.createElement(
           'button',
-          { onClick: actions.fastBackward, className: (0, _classnames2.default)(styles.control), disabled: status.page === 0 },
+          { onClick: actions.fastBackward, className: (0, _classnames2.default)(styles.control), disabled: status.get('page') === 0 },
           React.createElement(content.FastBackward, this.props)
         ),
         ' ',
         React.createElement(
           'button',
-          { onClick: actions.stepBackward, className: (0, _classnames2.default)(styles.control), disabled: status.page === 0 },
+          { onClick: actions.stepBackward, className: (0, _classnames2.default)(styles.control), disabled: status.get('page') === 0 },
           React.createElement(content.StepBackward, this.props)
         ),
         ' ',
@@ -625,13 +605,13 @@ function pager() {
         ' ',
         React.createElement(
           'button',
-          { onClick: actions.stepForward, className: (0, _classnames2.default)(styles.control), disabled: status.page === status.pages - 1 },
+          { onClick: actions.stepForward, className: (0, _classnames2.default)(styles.control), disabled: status.get('page') === status.get('pages') - 1 },
           React.createElement(content.StepForward, this.props)
         ),
         ' ',
         React.createElement(
           'button',
-          { onClick: actions.fastForward, className: (0, _classnames2.default)(styles.control), disabled: status.page === status.pages - 1 },
+          { onClick: actions.fastForward, className: (0, _classnames2.default)(styles.control), disabled: status.get('page') === status.get('pages') - 1 },
           React.createElement(content.FastForward, this.props)
         )
       );
@@ -649,16 +629,16 @@ function pager() {
       var styles = _props8.styles;
       var theme = _props8.theme;
 
-      return typeof status.rowsPerPage === 'number' && status.rowsPerPage > 0 ? React.createElement(
+      return typeof status.get('rowsPerPage') === 'number' && status.get('rowsPerPage') > 0 ? React.createElement(
         'select',
         {
-          value: status.page,
+          value: status.get('page'),
           onChange: function onChange(x) {
             return actions.select(parseInt(x.target.value));
           },
           className: (0, _classnames2.default)(styles.select, theme.select)
         },
-        Array.from(Array(status.pages).keys()).map(function (x) {
+        Array.from(Array(status.get('pages')).keys()).map(function (x) {
           return React.createElement(
             'option',
             { key: x, value: x },
@@ -697,7 +677,7 @@ function pager() {
         React.createElement(
           'select',
           {
-            value: status.rowsPerPage,
+            value: status.get('rowsPerPage'),
             onChange: function onChange(x) {
               var value = x.target.value;
 
@@ -705,7 +685,7 @@ function pager() {
             },
             className: (0, _classnames2.default)(styles.select, theme.select)
           },
-          status.rowsPerPageOptions.map(function (x) {
+          status.get('rowsPerPageOptions').map(function (x) {
             return React.createElement(
               'option',
               { key: x, value: x },

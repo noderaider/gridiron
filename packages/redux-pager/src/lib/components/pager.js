@@ -169,22 +169,18 @@ export default function pager (deps = {}, defaults = {}) {
               throw new Error('OBSOLETE')
               return rows
             }}
-            mapCellContext={(data, access) => {
-              const cellContext = data.map((rowDatum, rowID) => {
+            /** MAP CELL AND SORT DATA AND ADD TO DATA CONSTRUCT */
+            mapDataContext={(data, access) => {
+              /** MAYBE DATA.UPDATE FOR BETTER PERF? */
+              return data.map((rowDatum, rowID) => {
                 const cellData = map.cellData(rowID, rowDatum)
                 const sortKeys = createSortKeys(cellData, access.sort)
-                const cellContext = Immutable.Map({ cellData, sortKeys })
-                return cellContext
+                return Immutable.Map({ rowDatum, cellData, sortKeys })
               })
-              return cellContext
             }}
-            sortRows={(data, cellContext, access) => {
+            sortRows={(data, access) => {
               const comparator = createSortKeyComparator(access.sort)
-              return data.sortBy((rowDatum, rowID) => {
-                const sortKeys = cellContext.getIn([ rowID, 'sortKeys' ])
-                console.warn('SORT KEYS =>', sortKeys)
-                return sortKeys
-              }, comparator)
+              return data.sortBy((context, rowID) => context.get('sortKeys'), comparator)
             }}
             mapRowsToStatus={(data, access) => {
               const sort = access.sort
@@ -192,16 +188,16 @@ export default function pager (deps = {}, defaults = {}) {
               const rowsPerPage = access.rowsPerPage
 
               if(typeof rowsPerPage !== 'number') {
-                return  { rows: data
-                        , startIndex: 0
-                        , lastIndex: data.size || data.length
-                        , page
-                        , pages: 1
-                        , rowsPerPage
-                        , rowsPerPageOptions
-                        , totalRows: data.size || data.length
-                        , sort
-                        }
+                return  Immutable.Map({ data
+                                      , startIndex: 0
+                                      , lastIndex: data.size || data.length
+                                      , page
+                                      , pages: 1
+                                      , rowsPerPage
+                                      , rowsPerPageOptions
+                                      , totalRows: data.size || data.length
+                                      , sort
+                                      })
               }
 
               const startIndex = page * rowsPerPage
@@ -210,16 +206,16 @@ export default function pager (deps = {}, defaults = {}) {
               const rowSlice = data.slice(startIndex, endIndex)
               const lastIndex = startIndex + (rowSlice.size || rowSlice.length)
 
-              return  { rows: rowSlice
-                      , page
-                      , pages
-                      , startIndex
-                      , lastIndex
-                      , rowsPerPage
-                      , rowsPerPageOptions
-                      , totalRows: data.size || data.length
-                      , sort
-                      }
+              return  Immutable.Map({ data: rowSlice
+                                    , page
+                                    , pages
+                                    , startIndex
+                                    , lastIndex
+                                    , rowsPerPage
+                                    , rowsPerPageOptions
+                                    , totalRows: data.size || data.length
+                                    , sort
+                                    })
             }}
             mapStatusToActions={(status, access) => {
               return (
@@ -230,7 +226,7 @@ export default function pager (deps = {}, defaults = {}) {
                 , select: x => { access.page = x }
                 , rowsPerPage: rowsPerPage => {
                     access.merge( { rowsPerPage
-                                  , page: typeof rowsPerPage === 'number' ? Math.floor(status.startIndex / rowsPerPage) : 0
+                                  , page: typeof rowsPerPage === 'number' ? Math.floor(status.get('startIndex') / status.get('rowsPerPage')) : 0
                                   } )
                   }
                 , sort: id => {
@@ -265,8 +261,6 @@ export default function pager (deps = {}, defaults = {}) {
     , defaultProps: { filterData: (data, filterState) => data
                     }
     , state:  { data: null
-              , status: Immutable.Map()
-              , rows: []
               }
 
     , componentWillMount() {
@@ -317,11 +311,6 @@ export default function pager (deps = {}, defaults = {}) {
                   , mapStatusToActions: PropTypes.func.isRequired
                   , mapCols: PropTypes.func.isRequired
                   }
-                  /*
-    , defaultProps: { filterRows: (rows, filterState, access) => rows
-                    , sortRows: (rows, access) => rows
-                    }
-                    */
     , state:  { status: Immutable.Map()
               , data: null
               }
@@ -337,47 +326,42 @@ export default function pager (deps = {}, defaults = {}) {
                       , getSortDirection: id => getStatus().getIn([ 'sort', 'direction', id ], null)
                       , merge: value => setStatus(this.state.status.merge(value))
                       }
-        this.getRows = data => {
-          const { mapDataToRows, filterRows, filterState, mapCellContext, sortRows } = this.props
-          //const filteredRows = filterRows(mapDataToRows(data, this.access), filterState, this.access)
-          //const cellContext = mapCellContext(filteredRows, this.access)
-          const cellContext = mapCellContext(data, this.access)
-          //const sortedRows = sortRows(filteredRows, cellContext, this.access)
-          console.info('CELL CONTEXT MAPPED', cellContext.toJS())
-          const sortedRows = sortRows(data, cellContext, this.access)
-          console.info('SORTED ROWS => ', sortedRows)
-          return sortedRows
+        this._processData = data => {
+          const { mapDataContext, sortRows } = this.props
+          return sortRows(mapDataContext(data, this.access), this.access)
         }
       }
     , componentWillMount() {
-      this.setState({ data: this.getRows(this.props.data) })
-    }
+        const data = this._processData(this.props.data)
+        this.setState({ data })
+      }
     , componentWillReceiveProps(nextProps) {
-      this.setState({ data: this.getRows(nextProps.data) })
-    }
+        const data = this._processData(nextProps.data)
+        this.setState({ data })
+      }
     , render() {
-        const { rows
-              , data
-              , mapDataToRows
+        const { data
+              , mapDataContext
               , rowFilter
               , mapRowsToStatus
               , mapStatusToActions
               , mapCols
+              , filterContent
               , ...childProps
               } = this.props
 
         const status = mapRowsToStatus(this.state.data, this.access)
         const actions = mapStatusToActions(status, this.access)
-        const cols = mapCols({ status, actions, filters: this.props.filterContent })
-
-        console.info('PAGER ROWS =>', { rows: this.state.data.toJS(), status })
+        const cols = mapCols( { status
+                              , actions
+                              , filters: filterContent
+                              } )
 
         return (
           <Pager
             {...childProps}
             status={status}
             actions={actions}
-            data={this.state.data}
             cols={cols}
           />
         )
@@ -390,13 +374,9 @@ export default function pager (deps = {}, defaults = {}) {
     { render() {
         const { children, cols, data, ...childProps } = this.props
         const { status, actions, content, styles, theme } = childProps
-        should.exist(status.page, 'page should exist')
-        status.page.should.be.a('number', 'page must be a number')
-
 
         return children({ status
                         , cols
-                        , data
                         , actions
                         , Controls: props => <PagerControls {...props} {...childProps} />
                         , Select: props => <PagerSelect {...props} {...childProps} />
@@ -415,21 +395,21 @@ export default function pager (deps = {}, defaults = {}) {
         const { children, status, actions, content, styles, theme } = this.props
         return (
           <span className={classNames(styles.controls)}>
-            <button onClick={actions.fastBackward} className={classNames(styles.control)} disabled={status.page === 0}>
+            <button onClick={actions.fastBackward} className={classNames(styles.control)} disabled={status.get('page') === 0}>
               <content.FastBackward {...this.props} />
             </button>
             {' '}
-            <button onClick={actions.stepBackward} className={classNames(styles.control)} disabled={status.page === 0}>
+            <button onClick={actions.stepBackward} className={classNames(styles.control)} disabled={status.get('page') === 0}>
               <content.StepBackward {...this.props} />
             </button>
             {' '}
             {children ? <span className={classNames(styles.controlsChildren)}>{children}</span> : null}
             {' '}
-            <button onClick={actions.stepForward} className={classNames(styles.control)} disabled={status.page === status.pages - 1}>
+            <button onClick={actions.stepForward} className={classNames(styles.control)} disabled={status.get('page') === status.get('pages') - 1}>
               <content.StepForward {...this.props} />
             </button>
             {' '}
-            <button onClick={actions.fastForward} className={classNames(styles.control)} disabled={status.page === status.pages - 1}>
+            <button onClick={actions.fastForward} className={classNames(styles.control)} disabled={status.get('page') === status.get('pages') - 1}>
               <content.FastForward {...this.props} />
             </button>
           </span>
@@ -441,13 +421,13 @@ export default function pager (deps = {}, defaults = {}) {
   const PagerSelect = composePure(
     { render() {
         const { status, actions, content, styles, theme } = this.props
-        return typeof status.rowsPerPage === 'number' && status.rowsPerPage > 0 ? (
+        return typeof status.get('rowsPerPage') === 'number' && status.get('rowsPerPage') > 0 ? (
           <select
-            value={status.page}
+            value={status.get('page')}
             onChange={x =>  actions.select(parseInt(x.target.value))}
             className={classNames(styles.select, theme.select)}
           >
-            {Array.from(Array(status.pages).keys()).map(x => <option key={x} value={x}>{content.selectOption({ ...this.props, index: x })}</option>)}
+            {Array.from(Array(status.get('pages')).keys()).map(x => <option key={x} value={x}>{content.selectOption({ ...this.props, index: x })}</option>)}
           </select>
         ) : <span>All</span>
       }
@@ -462,7 +442,7 @@ export default function pager (deps = {}, defaults = {}) {
             {label ? <label>{label}</label> : null}
             {' '}
             <select
-              value={status.rowsPerPage}
+              value={status.get('rowsPerPage')}
               onChange={x => {
                 const { value } = x.target
                 if(typeof value === 'string' && value.toLowerCase() === 'all')
@@ -472,7 +452,7 @@ export default function pager (deps = {}, defaults = {}) {
               }}
               className={classNames(styles.select, theme.select)}
             >
-              {status.rowsPerPageOptions.map(x => <option key={x} value={x}>{content.rowsPerPageOption({ ...this.props, index: x })}</option>)}
+              {status.get('rowsPerPageOptions').map(x => <option key={x} value={x}>{content.rowsPerPageOption({ ...this.props, index: x })}</option>)}
             </select>
           </span>
         )
