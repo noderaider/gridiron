@@ -10,4 +10,6 @@ export default function gridironReact (deps, defaults) {
   return Object.keys(components).reduce((libs, x) => ({ ...libs, [applyCapitalization(x)]: components[x](deps, defaults) }), {})
 }
 
-export { default as factories } from './components/factories'
+/*
+export { default as configureColumn } from './components/column'
+*/

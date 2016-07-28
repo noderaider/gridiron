@@ -30,27 +30,6 @@
   width: inherit !important;
 }
 
-.innerContainer > div {
-  height: initial !important;
-  width: inherit !important;
-}
-
-.BodyGrid {
-  box-sizing:border-box;
-  border: 1px solid #e0e0e0;
-  height: initial !important;
-  width: inherit !important;
-}
-
-:global .Grid__innerScrollContainer {
-  box-sizing: border-box;
-  overflow-x: hidden;
-  overflow-y: auto;
-  height: initial !important;
-  max-height: initial !important;
-  width: inherit !important;
-  max-width: inherit !important;
-}
 
 .row {
   position: relative;
@@ -65,34 +44,22 @@
   height: 100%;
 }
 
-.headerCell, .cell, .footerCell {
+.cell {
   border-right: 1px solid #666;
 }
-
-
-.headerCell:last-child, .cell:last-child, .footerCell:last-child {
+.cell:last-child {
   border-right: none;
 }
 
-:global .drill {
-  animation-duration: 1000ms;
-  animation-name: slidein;
-  overflow: hidden;
-
-  will-change: max-height;
+.gridHeaderWrap,
+.gridFooterWrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
-:global @keyframes slidein {
-  from {
-    max-height: 0;
-  }
-  to {
-    max-height: 100vh;
-  }
-}
-
-.headerGrid,
-.footerGrid {
+.gridHeader,
+.gridFooter {
   display: flex;
   flex: 1 0 auto;
   justify-content: space-between;
@@ -106,13 +73,13 @@
 }
 
 .cell,
-.headerCell,
-.footerCell {
-  height: initial !important;
+.columnHeader,
+.columnFooter {
   display: flex;
 }
-.headerCell,
-.footerCell {
+
+.columnHeader,
+.columnFooter {
   display: flex;
   flex: 1 0 auto;
   flex-direction: column;
@@ -123,14 +90,14 @@
   font-weight:bold;
 }
 
-.headerCell h3 {
+.columnHeader h3 {
   cursor: default;
 }
 
-.headerGrid button,
-.headerCell button,
-.footerCell button,
-.footerGrid button {
+.gridHeader button,
+.gridFooter button,
+.columnHeader button,
+.columnFooter button {
   border: 1px solid transparent;
   cursor: pointer;
   background-color: transparent;
@@ -144,11 +111,6 @@
   position:absolute;
 }
 
-.headerCell .innerCell,
-.footerCell .innerCell {
-  margin: 0;
-}
-
 .cell {
   display: flex;
   flex: 1 1 auto;
@@ -156,7 +118,9 @@
   justify-content: space-around;
 }
 
-.innerCell {
+.cellHeader,
+.cellBody,
+.cellFooter {
   margin: 4px;
 }
 
@@ -168,12 +132,6 @@
   padding: 0;
   font-family: monospace;
   font-size: 0.8rem;
-}
-
-.headerContainer {
-  position: relative;
-  display: flex;
-  flex-direction: column;
 }
 
 .pane {
@@ -300,5 +258,22 @@ a:hover .logo {
   }
   to {
     transform: rotate3d(0, 1, 0, 360deg);
+  }
+}
+
+
+.drill {
+  animation-duration: 1000ms;
+  animation-name: slidein;
+  overflow: hidden;
+  will-change: max-height;
+}
+
+@keyframes slidein {
+  from {
+    max-height: 0;
+  }
+  to {
+    max-height: 100vh;
   }
 }

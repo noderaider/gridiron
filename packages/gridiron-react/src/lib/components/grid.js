@@ -8,6 +8,7 @@ export default function grid (deps, defaults) {
         , shallowCompare
         , Immutable
         , Pre
+        , formula
         } = solvent({ React: 'object'
                     , shallowCompare: 'function'
                     , Immutable: 'object'
@@ -20,7 +21,9 @@ export default function grid (deps, defaults) {
   /** Entire grid designed in templates to invert the control here. */
   const templatesShape =
     { GridHeader: PropTypes.func
+    , GridFooter: PropTypes.func
     , ColumnHeader: PropTypes.func
+    , ColumnFooter: PropTypes.func
     , Row: PropTypes.func
     , RowHeader: PropTypes.func
     , RowBody: PropTypes.func
@@ -28,15 +31,13 @@ export default function grid (deps, defaults) {
     , Cell: PropTypes.func
     , CellHeader: PropTypes.func
     , CellFooter: PropTypes.func
-    , ColumnFooter: PropTypes.func
-    , GridFooter: PropTypes.func
     }
 
   const defaultTemplates =
-    { GridHeader: ({ context, ...props }) => <div {...props} />
-    , GridFooter: props => <div {...props} />
-    , ColumnHeader: ({ context, ...props }) => <div {...props} />
-    , ColumnFooter: props => <div {...props} />
+    { GridHeader: props => <div className={cn(styles.gridHeader, theme.gridHeader)} {...props} />
+    , GridFooter: props => <div className={cn(styles.gridFooter, theme.gridFooter)} {...props} />
+    , ColumnHeader: ({ children, ...props }) => <div className={cn(styles.columnHeader, theme.columnHeader)}>{cloneElement(children, props)}</div>
+    , ColumnFooter: ({ children, ...props }) => <div className={cn(styles.columnFooter, theme.columnFooter)}>{cloneElement(children, props)}</div>
     , Row: ({ context, rowID, children, ...props }) => (
         <div className={cn(styles.row, theme.row)}>
           {children}
@@ -47,7 +48,11 @@ export default function grid (deps, defaults) {
           {children}
         </div>
       )
-    , Cell: ({ children, ...props }) => cloneElement(children, props)
+    , Cell: ({ children, ...props }) => (
+        <div className={cn(styles.cell, theme.cell)}>
+          {cloneElement(children, props)}
+        </div>
+      )
     //, Cell: ({ context, rowID, colID, cellDatum, ...props }) => <div {...props} />
     , NoContent: props => <div {...props} />
     }
@@ -170,8 +175,8 @@ export default function grid (deps, defaults) {
         const gridColumns = locals.entrySeq().map(([ colID, local ]) => {
           console.info('ITERATING LOCALS =>', local, colID)
           return (
-            { header: mapColumn.header({ colID, local })
-            , cell: ({ props }) => mapColumn.cell({ colID, local, styles, theme, ...props })
+            { header: () => mapColumn.header({ colID, local })
+            , cell: rowProps => mapColumn.cell({ colID, local, styles, theme, ...rowProps })
             , footer: mapColumn.footer({ colID, local })
             }
           )
@@ -189,11 +194,14 @@ export default function grid (deps, defaults) {
           >
             <templates.GridHeader />
               <templates.Row key="row-headers" isHeader={true}>
-                {gridColumns.map((x, i) => <templates.ColumnHeader key={i}>{x.header}</templates.ColumnHeader>)}
+                {gridColumns.map((x, i) => {
+                  return <templates.ColumnHeader key={i}>{x.header()}</templates.ColumnHeader>
+                })}
               </templates.Row>
               {rows.entrySeq().map(
                 ([ rowID, context ]) => {
                   const rowProps = { context, rowID }
+                  console.info('PASSING ROWPROPS => ', rowProps)
                   return (
                     <templates.Row key={rowID} {...rowProps}>
                       {templates.RowHeader ? (
@@ -201,8 +209,7 @@ export default function grid (deps, defaults) {
                       ) : null}
                       <templates.RowBody key="row-body" {...rowProps}>
                         {gridColumns.map((x, i) => {
-                          console.warn('MAPPING GRID COLLLLLUMNS =>', x, i)
-                          return x.cell({ rowID, context })
+                          return <templates.Cell key={i}>{x.cell(rowProps)}</templates.Cell>
                         })}
                       </templates.RowBody>
                       {templates.RowFooter? (

@@ -8,45 +8,52 @@ import util from 'util'
 
 const should = require('chai').should()
 
-const applyCapitalization = str => str.length <= 2 ? str.toUpperCase() : `${str[0].toUpperCase()}${str.slice(1)}`
+const APP_SCOPE = 'app'
+const GLOBAL_KEY = '__FORMULA__'
 
 /**
  * reactFormula
  * Requires dependencies { React, Immutable } and component defaults and returns form component factory.
  */
-export default function reactFormula (deps, defaults) {
+export default function reactFormula (deps, { appScopeName = 'app', ...defaults } = {}) {
   const Dock = dock(deps, defaults)
   const Logo = logo(deps, defaults)
-  const { React, ReactDOM, Immutable, shallowCompare, reactPre } = deps
+  const { React, ReactDOM, Immutable, shallowCompare, Pre } = deps
   const { Component, PropTypes, cloneElement } = React
-  const { Pre } = reactPre
   const { compose } = reactStamp(React)
 
-  should.not.exist(global.__formula__, 'reactFormula should only be called once per application.')
+  function composePure (...desc) {
+    return compose( { shouldComponentUpdate(nextProps, nextState) {
+                        return shallowCompare(this, nextProps, nextState)
+                      }
+                    }
+                  , ...desc
+                  )
+  }
 
-  function formula(formulaID) {
-    should.exist(formulaID, 'must specify formulaID')
-    if(typeof window !== 'object')
-      return () => { Input: props => {} }
+  /** This is just here to throw errors if the user is accidentally instantiating formula twice. */
+  should.not.exist(global[GLOBAL_KEY], 'react-formula: reactFormula function should only be called once per application.')
 
-    const contextID = `__formula__${formulaID}`
-    const rootNodeID = `${contextID}_root`
-    let rootNode
-    function render(component) {
-      if(!rootNode) {
-        rootNode = document.createElement('div')
-        rootNode.id = rootNodeID
-        document.body.appendChild(rootNode)
-      }
-      ReactDOM.render(component, rootNode)
-    }
+  function scope(scopeName) {
+    should.exist(scopeName, 'react-formula: scope function requires a unique scopeName.')
 
-    function setContext(context) {
-      global[contextID] = context
-    }
-    function getContext() {
-      return global[contextID]
-    }
+    const SCOPE_ID = `__formula__${scopeName}`
+    const SCOPE_DOM_ID = `${SCOPE_ID}_root`
+
+    const access =  { get scope() { return global[SCOPE_ID] }
+                    , set scope(value) { global[SCOPE_ID] = value }
+                    , getDOMNode() {
+                        if(typeof window !== 'object')
+                          return console.warn('react-formula: bypassing rendering on server.')
+                        let rootNode = document.getElementById(SCOPE_DOM_ID)
+                        if(rootNode)
+                          return rootNode
+                        rootNode = document.createElement('div')
+                        rootNode.id = SCOPE_DOM_ID
+                        document.body.appendChild(rootNode)
+                        return rootNode
+                      }
+                    }
 
 
     const EE = new EventEmitter()
@@ -63,7 +70,7 @@ export default function reactFormula (deps, defaults) {
     }
     const events =  { registerInput: 'registerInput'
                     , updateInput: 'updateInput'
-                    , formsWillUpdate: 'formsWillUpdate'
+                    , formsDidUpdate: 'formsDidUpdate'
                     , formWillUpdate: formName => `formWillUpdate_${formName}`
                     , inputWillUpdate: (formName, name) => `inputWillUpdate_${formName}_${name}`
                     }
@@ -75,15 +82,12 @@ export default function reactFormula (deps, defaults) {
 
 
 
-    const FormsContext = compose (
+    const FormsContext = composePure(
       { displayName: 'FormsContext'
       , propTypes:  { ...stylePropTypes
                     }
       , defaultProps: { ...defaults
                       }
-      , shouldComponentUpdate(nextProps) {
-          return shallowCompare(this, nextProps)
-        }
       , init() {
           this.busy = work => {
             if(this.devTools)
@@ -94,7 +98,7 @@ export default function reactFormula (deps, defaults) {
       , render() {
           const { showDevTools, styles, theme } = this.props
           return (
-            <div id={contextID} ref={setContext} className={cn(styles.FormsContext, theme.FormsContext)}>
+            <div id={SCOPE_ID} ref={x => access.scope = x} className={cn(styles.FormsContext, theme.FormsContext)}>
               <FormsState busy={this.busy}>
                 {forms => showDevTools ? <DevTools ref={x => this.devTools = x} forms={forms} /> : null}
               </FormsState>
@@ -108,7 +112,7 @@ export default function reactFormula (deps, defaults) {
                     , inputType: (formName, name) => [ formName, name, 'type' ]
                     }
 
-    const FormsState = compose (
+    const FormsState = composePure(
       { displayName: 'FormsState'
       , state:  { forms: Immutable.Map()
                 }
@@ -126,9 +130,10 @@ export default function reactFormula (deps, defaults) {
             if(typeof this.state.forms.getIn(path) === 'undefined') {
               busy(notBusy => {
                 const forms = this.state.forms.setIn(path, initialValue)
-                if(type)
-                  this.state.forms.setIn(select.inputType(formName, name), type)
-                this.setState({ forms }, notBusy)
+                console.warn('INPUT REGISTERED', path, forms)
+                this.setState({ forms: type ? forms.setIn(select.inputType(formName, name), type)
+                                            : forms
+                              }, notBusy)
               })
             }
           }
@@ -141,7 +146,7 @@ export default function reactFormula (deps, defaults) {
           }
 
         }
-      , componentDidMount() {
+      , componentWillMount() {
           this.__registers.push(registerListeners(events.registerInput, [ this.onRegisterInput ]))
           this.__registers.push(registerListeners(events.updateInput, [ this.onUpdateInput ]))
         }
@@ -150,12 +155,9 @@ export default function reactFormula (deps, defaults) {
             this.__registers.pop()()
           }
         }
-      , shouldComponentUpdate(nextProps, nextState) {
-          if(shallowCompare(this, nextProps, nextState)) {
-            EE.emit(events.formsWillUpdate, nextState.forms)
-            return true
-          }
-          return false
+      , componentDidUpdate(prevProps, prevState) {
+          if(prevState.forms !== this.state.forms)
+            EE.emit(events.formsDidUpdate, this.state.forms)
         }
       , render() {
           const { styles, theme, children } = this.props
@@ -172,7 +174,7 @@ export default function reactFormula (deps, defaults) {
       }
     )
 
-    const FormState = compose(
+    const FormState = composePure(
       { displayName: 'FormState'
       , propTypes:  { theme: PropTypes.object.isRequired
                     , styles: PropTypes.object.isRequired
@@ -183,13 +185,10 @@ export default function reactFormula (deps, defaults) {
                     }
       , defaultProps: { ...defaults
                       }
-      , shouldComponentUpdate(nextProps) {
-          if(shallowCompare(this, nextProps)) {
-            const { formName } = this.props
+      , componentWillReceiveProps(nextProps) {
+          const { formName, inputs } = this.props
+          if(inputs !== nextProps.inputs)
             EE.emit(events.formWillUpdate(formName), nextProps.inputs)
-            return true
-          }
-          return false
         }
       , init() {
           this.inputs = []
@@ -222,7 +221,7 @@ export default function reactFormula (deps, defaults) {
       }
     )
 
-    const InputState = compose(
+    const InputState = composePure(
       { displayName: 'InputState'
       , propTypes:  { theme: PropTypes.object.isRequired
                     , styles: PropTypes.object.isRequired
@@ -233,13 +232,18 @@ export default function reactFormula (deps, defaults) {
                     }
       , defaultProps: { ...defaults
                       }
-      , shouldComponentUpdate(nextProps) {
-          if(shallowCompare(this, nextProps)) {
+      , init() {
+          this.emitValue = value => {
             const { formName, name } = this.props
-            EE.emit(events.inputWillUpdate(formName, name), nextProps.value)
-            return true
+            EE.emit(events.inputWillUpdate(formName, name), value)
           }
-          return false
+        }
+        , componentWillMount() {
+          this.emitValue(this.props.value)
+        }
+      , componentWillReceiveProps(nextProps) {
+          if(this.props.value !== nextProps.value)
+            this.emitValue(nextProps.value)
         }
       , render() {
           const { name, value } = this.props
@@ -256,7 +260,7 @@ export default function reactFormula (deps, defaults) {
     )
 
 
-    const DevTools = compose (
+    const DevTools = composePure(
       { displayName: 'DevTools'
       , propTypes:  { ...stylePropTypes
                     , forms: PropTypes.object.isRequired
@@ -274,9 +278,6 @@ export default function reactFormula (deps, defaults) {
             if(this.dock)
               this.dock.toggle(done)
           }
-        }
-      , shouldComponentUpdate(nextProps) {
-          return shallowCompare(this, nextProps)
         }
       , render() {
           const { styles, theme, forms } = this.props
@@ -303,15 +304,12 @@ export default function reactFormula (deps, defaults) {
     )
 
 
-    const FormsView = compose (
+    const FormsView = composePure(
       { displayName: 'FormsView'
       , propTypes:  { ...stylePropTypes
                     , forms: PropTypes.object.isRequired
                     }
       , defaultProps: defaults
-      , shouldComponentUpdate(nextProps) {
-          return shallowCompare(this, nextProps)
-        }
       , render() {
           const { styles, theme, forms } = this.props
           return forms ? (
@@ -333,7 +331,7 @@ export default function reactFormula (deps, defaults) {
     )
 
     let currentState = Immutable.Map()
-    EE.on(events.formsWillUpdate, newState => {
+    EE.on(events.formsDidUpdate, newState => {
       currentState = newState
     })
     const getState = () => currentState
@@ -349,6 +347,11 @@ export default function reactFormula (deps, defaults) {
       })
     }
 
+    const subscribeInput = ([ formName, name ], cb) => {
+      EE.on(events.inputWillUpdate(formName, name), cb)
+      return () => EE.removeListener(events.inputWillUpdate(formName, name), cb)
+    }
+
     function forms (formName) {
       should.exist(formName, 'formName is required')
 
@@ -356,15 +359,21 @@ export default function reactFormula (deps, defaults) {
         return currentState.get(formName)
       }
 
+      const subscribeForm = cb => subscribe([ formName ], formStates => cb(formStates[0]))
+      const subscribeFormInput = (name, cb) => subscribeInput([ formName, name ], cb)
 
 
-      const Input = compose(
+      const Input = composePure(
         { displayName: 'input'
         , propTypes:  { styles: PropTypes.object.isRequired
                       , theme: PropTypes.object.isRequired
                       , name: PropTypes.string.isRequired
                       , type: PropTypes.string.isRequired
                       , initialValue: PropTypes.any
+                      , subscribeTo: PropTypes.shape( { formName: PropTypes.string.isRequired
+                                                      , name: PropTypes.string.isRequired
+                                                      , shouldUpdate: PropTypes.func
+                                                      })
                       }
         , defaultProps: { ...defaults
                         }
@@ -373,31 +382,64 @@ export default function reactFormula (deps, defaults) {
               const { name, initialValue } = this.props
               return currentState.getIn(select.inputValue(formName, name), initialValue)
             }
-          }
-        , shouldComponentUpdate(nextProps, nextState) {
-            return shallowCompare(this, nextProps, nextState)
+
+            this.setValue = value => {
+              switch(this.input.type) {
+                case 'checkbox':
+                  if(value == 'true' || value == true || value == 'checked')
+                    this.input.checked = true
+                  else
+                    this.input.removeAttribute('checked')
+                  break
+                default:
+                  this.input.value = value
+                  break
+              }
+            }
+
+            this.getValue = () => {
+              const { type, value, checked } = this.input
+              switch(type) {
+                case 'checkbox':
+                  return checked == 'true' || checked == 'checked'
+                default:
+                  return value
+              }
+            }
+            this.syncValue = (formName, name) => {
+              const value = getState().getIn(select.inputValue(formName, name))
+              console.info('SYNC VALUE', value)
+              this.setValue(value)
+            }
           }
         , componentDidMount() {
-            const { name, type, initialValue } = this.props
+            const { name, type, initialValue, subscribeTo } = this.props
             EE.emit(events.registerInput, { formName, name, type, initialValue })
 
             const selectString = `#${formName} input[name="${name}"]`
             const input = document.querySelector(selectString)
             if(typeof input !== 'undefined' && input !== null) {
-              if(this.input.type == 'checkbox') {
-                if(input.value == 'true') {
-                  this.input.checked = true
-                } else
-                  this.input.removeAttribute('checked')
-              } else {
-                this.input.value = input.value
-              }
+              this.setValue(input.value)
             } else {
               //console.info('skipping value', input)
             }
+
+            if(subscribeTo) {
+              this.unsubscribeInput = subscribeInput([ subscribeTo.formName, subscribeTo.name ], value => {
+                if(subscribeTo.shouldUpdate && subscribeTo.shouldUpdate(value, this.getValue()))
+                  this.setValue(value)
+                else
+                  this.setValue(value)
+              })
+              this.syncValue(subscribeTo.formName, subscribeTo.name)
+            }
+          }
+        , componentWillUnmount() {
+            if(this.unsubscribeInput)
+              this.unsubscribeInput()
           }
         , render() {
-            const { styles, theme, name, type, initialValue, ...inputProps } = this.props
+            const { styles, theme, name, type, initialValue, subscribeTo, ...inputProps } = this.props
             const value = this.props.value || initialValue
             return (
               <span className={cn(styles.inputWrap, theme.inputWrap, styles[`type_${type}`], theme[`type_${type}`] )}>
@@ -418,7 +460,7 @@ export default function reactFormula (deps, defaults) {
         }
       )
 
-      const Field = compose(
+      const Field = composePure(
         { displayName: 'field'
         , propTypes:  { styles: PropTypes.object.isRequired
                       , theme: PropTypes.object.isRequired
@@ -428,8 +470,16 @@ export default function reactFormula (deps, defaults) {
         , defaultProps: { ...defaults
                         , align: 'left'
                         }
-        , shouldComponentUpdate(nextProps) {
-            return shallowCompare(this, nextProps)
+        , init() {
+
+            this.setValue = value => {
+              this.inner.setValue(value)
+            }
+
+            this.getValue = () => {
+              this.inner.getValue()
+            }
+
           }
         , render() {
             const { styles, theme, align, label, ...inputProps } = this.props
@@ -443,7 +493,7 @@ export default function reactFormula (deps, defaults) {
               <span className={fieldClass}>
                 <label className={cn(styles.inputLabel, theme.inputLabel)}>
                   {align === 'left' ? null : labelSpan}
-                  <Input {...inputProps} styles={styles} theme={theme} />
+                  <Input ref={x => this.inner = x} {...inputProps} styles={styles} theme={theme} />
                   {align === 'right' ? null : labelSpan}
                 </label>
               </span>
@@ -452,7 +502,7 @@ export default function reactFormula (deps, defaults) {
         }
       )
 
-      const Submit = compose(
+      const Submit = composePure(
         { displayName: 'submit'
         , propTypes:  { styles: PropTypes.object.isRequired
                       , theme: PropTypes.object.isRequired
@@ -460,9 +510,6 @@ export default function reactFormula (deps, defaults) {
                       }
         , defaultProps: { ...defaults
                         }
-        , shouldComponentUpdate(nextProps) {
-            return shallowCompare(this, nextProps)
-          }
         , render() {
             const { styles, theme, children, ...inputProps } = this.props
             return (
@@ -474,19 +521,30 @@ export default function reactFormula (deps, defaults) {
 
 
 
-      return  { Input
+      return  { formName
+              , Input
               , Submit
               , Field
-              , getFormState
-              , subscribe: cb => subscribe([ formName ], formStates => cb(formStates[0]))
+              , getState: getFormState
+              , subscribe: subscribeForm
+              , subscribeInput: subscribeFormInput
               }
     }
 
 
-    Object.assign(forms, { getState, subscribe })
 
-    render(<FormsContext showDevTools={true} />)
-    return forms
+    const domNode = access.getDOMNode()
+    if(domNode)
+      ReactDOM.render(<FormsContext showDevTools={true} />, domNode)
+
+    forms.getState = getState
+    forms.subscribe = subscribe
+    forms.subscribeInput = subscribeInput
+    return Object.assign(forms, { getState, subscribe, subscribeInput })
   }
+  let formula = scope(APP_SCOPE)
+  formula.scope = scope
+  Object.freeze(formula)
+  Object.freeze(formula.scope)
   return formula
 }

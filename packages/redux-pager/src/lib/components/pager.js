@@ -21,10 +21,7 @@ export default function pager (deps = {}, defaults = {}) {
 
   function composePure(...desc) {
     return compose(
-      { shouldComponentUpdate(nextProps, nextState) {
-          return shallowCompare(this, nextProps, nextState)
-        }
-      }
+      { shouldComponentUpdate(nextProps, nextState) { return shallowCompare(this, nextProps, nextState) } }
       , ...desc
     )
   }
@@ -144,7 +141,6 @@ export default function pager (deps = {}, defaults = {}) {
                     anyFiltered = true
                   return value
                 }).reduce((filtered, x) => ({ ...filtered, [x]: rowData[x] }), {})
-                console.warn('FILTERED =>', filterState, filtered)
                 return anyFiltered ? newRowData : rowData
               }
               return rowData

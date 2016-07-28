@@ -270,7 +270,6 @@ function pager() {
             }).reduce(function (filtered, x) {
               return _extends({}, filtered, _defineProperty({}, x, rowData[x]));
             }, {});
-            console.warn('FILTERED =>', filterState, filtered);
             return anyFiltered ? newRowData : rowData;
           }
           return rowData;

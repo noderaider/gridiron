@@ -5,28 +5,28 @@ import reactStamp from 'react-stamp'
 import ReactHeight from 'react-height'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
-import gridironReact, { factories } from 'gridiron-react'
+import gridironReact from 'gridiron-react'
 import util from 'util'
 
-import { Pre, Arrows } from 'lib/components/modules/react-pre'
+import { Pre, Arrows } from '../react-pre'
+import formula from '../react-formula'
 
 import reduxPager from 'redux-pager'
 
 import styles from 'gridiron-styles'
 import { sandy, black, carbon  } from 'gridiron-themes'
 
-import forms from '../react-formula'
 const should = require('chai').should()
 
 const { compose } = reactStamp(React)
 
 let defaults = { styles, theme: carbon }
 
-const deps = { React, connect, shallowCompare, Immutable, forms, Pre }
+const deps = { React, connect, shallowCompare, Immutable, formula, Pre }
 
 const { Pager } = reduxPager(deps, defaults)
-const { column } = factories(deps, defaults)
-const { Grid, CoreGrid, DrillGrid, Footer, Logo } = gridironReact(deps, defaults)
+//const createColumn = configureColumn(deps, defaults)
+const { Grid, Footer, Logo, Column } = gridironReact(deps, defaults)
 
 
 function createContext() {
@@ -107,65 +107,9 @@ function createContext() {
   const Cell = headers[0].createCell(cell)
 
 
-  const mapRows = (data, { sort, map } = {}) => {
-    const rowData = map.rowData(data)
-    const multipliers = sort.get('direction') ? sort.get('cols').map(colID => sort.getIn([ 'direction', colID ]) === 'desc' ? -1 : 1) : []
-
-    function createSortKeys (cellData) {
-      return sort.get('cols')
-        .filter(colID => typeof sort.getIn([ 'direction', colID ]) === 'string')
-        .map(colID => {
-          const sortKey = sort.getIn([ 'keys', colID ], null)
-          const cellDatum = cellData[colID]
-          const currentKey = sortKey ? sortKey(cellDatum) : cellDatum
-          return typeof currentKey === 'string' ? currentKey : currentKey.toString()
-        })
-    }
-
-    let rows = rowData.map(([ rowID, rowDatum ]) => {
-      const cellData = map.cellData(rowID, rowDatum)
-      const sortKeys = createSortKeys(cellData)
-      return ({ rowID
-              , rowDatum
-              , cellData
-              , sortKeys
-              , cells:  [ ({ datum }) => <Cell><Arrows>{datum}</Arrows></Cell>
-                        , ({ datum }) => <Pre>{datum}</Pre>
-                        ]
-              })
-    })
-
-    if(rows.some(x => x.sortKeys.size > 0)) {
-      rows.sort(function comparator(a, b) {
-        for(let colIndex = 0; colIndex < a.sortKeys.size; colIndex++) {
-          let result = a.sortKeys.get(colIndex).localeCompare(b.sortKeys.get(colIndex)) * multipliers.get(colIndex)
-          if(result !== 0)
-            return result
-        }
-        return 0
-      })
-    }
-
-    return rows
-  }
-  return { mapCols, mapRows }
+  return { mapCols }
 }
 
-
-
-const filter = (data, filterState) => {
-  if(filterState) {
-    let anyFiltered = false
-    let filtered = Object.keys(data).filter(x => {
-      const value = filterState.getIn([ `filter_${x}`, 'value' ], false)
-      if(value)
-        anyFiltered = true
-      return value
-    }).reduce((newData, x) => ({ ...newData, [x]: data[x] }), {})
-    return anyFiltered ? filtered : data
-  }
-  return data
-}
 
 const filterData = (data, filterState) => {
   if(filterState) {
@@ -187,7 +131,7 @@ const filterData = (data, filterState) => {
 
 const createFilterStream = ids => onFilter => {  //(getData, onChange) => {
   const formNames = ids.map(getFormName)
-  return forms.subscribe(formNames, formStates => {
+  return formula.subscribe(formNames, formStates => {
 
     const filterState = ids.reduce((result, id, i) => {
       const getFilterValue = dataKey => formStates[i].getIn([ getFilterName(dataKey), 'value' ], false)
@@ -195,33 +139,24 @@ const createFilterStream = ids => onFilter => {  //(getData, onChange) => {
     })
     console.warn('FILTER STREAM', filterState)
     onFilter(filterState)
-    //onChange(filterData(getData(), filterState))
   })
 }
-
-const filterStream = id => (getData, onChange) => {
-  const { subscribe } = forms(`filter-form-${id}`)
-  const unsubscribe = subscribe(filterState => onChange(filter(getData(), filterState)))
-  return unsubscribe
-}
-
 
 const getFormName = id => `filter-form-${id}`
 const getFilterName = id => `filter_${id}`
 
 
 const FilterForm = compose(
-  { statics: { filter }
-  , init() {
+  { init() {
       const { id } = this.props
-      this.formula = forms(`filter-form-${id}`)
+      this.form = formula(`filter-form-${id}`)
     }
   , shouldComponentUpdate(nextProps, nextState) {
       return shallowCompare(this, nextProps, nextState)
     }
   , render() {
       const { id, data } = this.props
-      const { Field, Submit } = this.formula
+      const { Field, Submit } = this.form
       return (
         <div>
           {Object.keys(data).map((name, key) => (
@@ -282,12 +217,12 @@ const Gridiron = compose(
 
                     mapColumn={(
                       { local: ({ colID }) => {
-                          const { Header, Cell, Footer } = column({ colID })
+                          const { Header, Cell, Footer } = Column(colID)
                           return { Header, Cell, Footer }
                         }
                       , header: ({ local, ...props }) => {
                           return (
-                            <local.Header {...props} />
+                            <local.Header checkbox={{ label: 'check here' }} {...props}>{props.colID}</local.Header>
                           )
                         }
                       , cell: ({ local, ...props }) => { //({ context, local, rowID, colID, cellDatum }) => {
