@@ -1,8 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import shallowCompare from 'react-addons-shallow-compare'
-import reactStamp from 'react-stamp'
-import ReactHeight from 'react-height'
+import pureStamp from 'pure-stamp'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
 import gridironReact from 'gridiron-react'
@@ -18,19 +17,17 @@ import { sandy, black, carbon  } from 'gridiron-themes'
 
 const should = require('chai').should()
 
-const { compose } = reactStamp(React)
 
-let defaults = { styles, theme: carbon }
 
-const deps = { React, connect, shallowCompare, Immutable, formula, Pre }
+const deps = { React, shallowCompare, connect, Immutable, formula, Pre }
+const defaults = { styles, theme: carbon }
+const pure = pureStamp(deps, defaults)
 
 const { Pager } = reduxPager(deps, defaults)
-//const createColumn = configureColumn(deps, defaults)
-const { Grid, Footer, Logo, Column } = gridironReact(deps, defaults)
+const { Grid, Column, Logo } = gridironReact(deps, defaults)
 
 
 function createContext() {
-
 
   const mapCols = ({ status, actions, filters }) => {
     return  [ { id: 'id'
@@ -146,34 +143,31 @@ const getFormName = id => `filter-form-${id}`
 const getFilterName = id => `filter_${id}`
 
 
-const FilterForm = compose(
-  { init() {
-      const { id } = this.props
-      this.form = formula(`filter-form-${id}`)
-    }
-  , shouldComponentUpdate(nextProps, nextState) {
-      return shallowCompare(this, nextProps, nextState)
+
+const FilterForm = pure (
+  { displayName: 'FilterForm'
+  , propTypes:  { columnID: PropTypes.any.isRequired
+                , rows: PropTypes.object.isRequired
+                }
+  , init() {
+      this.form = formula(`filter-form-${this.props.columnID}`)
     }
   , render() {
-      const { id, data } = this.props
-      const { Field, Submit } = this.form
+      const { rows } = this.props
       return (
         <div>
-          {Object.keys(data).map((name, key) => (
-            <Field key={key} name={`filter_${name}`} type="checkbox" label={name} />
-          ))}
+          {rows.toSetSeq().sort().map((name, key) =>
+            <this.form.Field key={key} name={`filter_${name}`} type="checkbox" label={name} />
+          )}
         </div>
       )
     }
   }
 )
 
-const Gridiron = compose(
-  { displayName: 'gridiron'
+const Gridiron = pure (
+  { displayName: 'Gridiron'
   , state: { forms: Immutable.Map() }
-  , shouldComponentUpdate(nextProps, nextState) {
-      return shallowCompare(this, nextProps, nextState)
-    }
   , render() {
       const { container } = this.props
 
@@ -196,8 +190,6 @@ const Gridiron = compose(
                   }
                 }
 
-            Filter={FilterForm}
-
             sort={Immutable.fromJS(
               { cols: [ 'id', 'state' ]
               , keys: { id: data => data.join('_')
@@ -216,28 +208,46 @@ const Gridiron = compose(
                     data={pager.status.get('data', Immutable.Map())}
 
                     mapColumn={(
-                      { local: ({ colID }) => {
-                          const { Header, Cell, Footer } = Column(colID)
-                          return { Header, Cell, Footer }
-                        }
+                      { local: ({ colID }) => ({ column: Column(colID) })
                       , header: ({ local, ...props }) => {
+                          const { column } = local
+                          const { colID } = props
                           return (
-                            <local.Header checkbox={{ label: 'check here' }} {...props}>{props.colID}</local.Header>
+
+                            <column.Header
+                              fields={{ checkbox: true
+                                      , radio: [ { yes: 'Yes', no: 'No' }, 'yes' ]
+                                      , filter: true
+                                      }}
+                              pane={<FilterForm rowData={pager.status.getIn([ 'data', 'rows' ])} />}
+                            >
+                              {props.colID}
+                            </column.Header>
                           )
                         }
-                      , cell: ({ local, ...props }) => { //({ context, local, rowID, colID, cellDatum }) => {
+                      , cell: ({ local, ...props }) => {
+                          const { column } = local
+                          const { context, rowID, colID, cellDatum, children } = props
                           return (
-                            <local.Cell {...props} />
+                            <column.Cell inputs={{ checkbox: false }} {...props}>
+                              <Pre>{{ rowID, colID }}</Pre>
+                            </column.Cell>
                           )
                         }
                       , footer: ({ local, ...props }) => {
+                          const { column } = local
                           return (
-                            <local.Footer {...props} />
+                            <column.Footer {...props} />
                           )
                         }
                       }
                     )}
-
+                            /*
+                      status={status}
+                      filter={filters['id']}
+                      actions={actions}
+                      styles={styles}
+                      */
 /*
                     templates={
                       { GridHeader: props => <span style={{ textAlign: 'center' }}><h3>Accordion</h3></span>

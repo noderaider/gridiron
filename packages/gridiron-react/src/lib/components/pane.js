@@ -1,15 +1,11 @@
 import cn from 'classnames'
-import reactStamp from 'react-stamp'
 const should = require('chai').should()
 
+export default function pane (pure) {
+  const { React, PropTypes, defaults } = pure
 
-export default function pane ({ React, shallowCompare }, defaults = {}) {
-  const { PropTypes } = React
-  const { compose } = reactStamp(React)
-
-
-  return compose(
-    { displayName: 'pane'
+  return pure (
+    { displayName: 'Pane'
     , state: { transition: false }
     , propTypes:  { styles: PropTypes.object.isRequired
                   , theme: PropTypes.object.isRequired
@@ -18,9 +14,6 @@ export default function pane ({ React, shallowCompare }, defaults = {}) {
     , defaultProps: { ...defaults
                     , enabled: false
                     }
-    , shouldComponentUpdate(nextProps, nextState) {
-        return shallowCompare(this, nextProps, nextState)
-      }
     , componentWillReceiveProps(nextProps) {
         if(nextProps.enabled !== this.props.enabled)
           this.setState({ transition: true })

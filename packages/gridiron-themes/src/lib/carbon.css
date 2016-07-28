@@ -79,14 +79,14 @@
 }
 
 
-.headerEnabled .header {
+.paneEnabled .header {
   background: linear-gradient(180deg, rgba(20, 20, 20, 0), rgba(20, 20, 20, 0.8));
   border-style: double;
   border-color: rgba(100, 100, 100, 0.8);
   border-width: 1px 1px 0;
 }
 
-.headerDisabled .header {
+.paneDisabled .header {
   border-style: double;
   border-color: transparent;
   border-width: 1px 1px 0;
@@ -97,7 +97,7 @@
   outline: none;
 }
 
-.headerEnabled .filterButton {
+.paneEnabled .filterButton {
   color: #268bd2;
 }
 

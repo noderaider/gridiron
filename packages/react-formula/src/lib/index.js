@@ -1,10 +1,10 @@
-export { logo } from './components'
 import cn from 'classnames'
-import reactStamp from 'react-stamp'
+import formsContext from './formsContext'
 import dock from './components/dock'
 import logo from './components/logo'
 import EventEmitter from 'eventemitter3'
 import util from 'util'
+import pureStamp from 'pure-stamp'
 
 const should = require('chai').should()
 
@@ -16,20 +16,11 @@ const GLOBAL_KEY = '__FORMULA__'
  * Requires dependencies { React, Immutable } and component defaults and returns form component factory.
  */
 export default function reactFormula (deps, { appScopeName = 'app', ...defaults } = {}) {
-  const Dock = dock(deps, defaults)
-  const Logo = logo(deps, defaults)
-  const { React, ReactDOM, Immutable, shallowCompare, Pre } = deps
-  const { Component, PropTypes, cloneElement } = React
-  const { compose } = reactStamp(React)
+  const pure = pureStamp(deps, defaults)
+  const { React, PropTypes, cloneElement, ReactDOM, Immutable, Pre } = pure
+  const Dock = dock(pure)
+  const Logo = logo(pure)
 
-  function composePure (...desc) {
-    return compose( { shouldComponentUpdate(nextProps, nextState) {
-                        return shallowCompare(this, nextProps, nextState)
-                      }
-                    }
-                  , ...desc
-                  )
-  }
 
   /** This is just here to throw errors if the user is accidentally instantiating formula twice. */
   should.not.exist(global[GLOBAL_KEY], 'react-formula: reactFormula function should only be called once per application.')
@@ -82,7 +73,7 @@ export default function reactFormula (deps, { appScopeName = 'app', ...defaults 
 
 
 
-    const FormsContext = composePure(
+    const FormsContext = pure (
       { displayName: 'FormsContext'
       , propTypes:  { ...stylePropTypes
                     }
@@ -112,7 +103,7 @@ export default function reactFormula (deps, { appScopeName = 'app', ...defaults 
                     , inputType: (formName, name) => [ formName, name, 'type' ]
                     }
 
-    const FormsState = composePure(
+    const FormsState = pure (
       { displayName: 'FormsState'
       , state:  { forms: Immutable.Map()
                 }
@@ -174,7 +165,7 @@ export default function reactFormula (deps, { appScopeName = 'app', ...defaults 
       }
     )
 
-    const FormState = composePure(
+    const FormState = pure (
       { displayName: 'FormState'
       , propTypes:  { theme: PropTypes.object.isRequired
                     , styles: PropTypes.object.isRequired
@@ -221,7 +212,7 @@ export default function reactFormula (deps, { appScopeName = 'app', ...defaults 
       }
     )
 
-    const InputState = composePure(
+    const InputState = pure (
       { displayName: 'InputState'
       , propTypes:  { theme: PropTypes.object.isRequired
                     , styles: PropTypes.object.isRequired
@@ -260,7 +251,7 @@ export default function reactFormula (deps, { appScopeName = 'app', ...defaults 
     )
 
 
-    const DevTools = composePure(
+    const DevTools = pure (
       { displayName: 'DevTools'
       , propTypes:  { ...stylePropTypes
                     , forms: PropTypes.object.isRequired
@@ -304,7 +295,7 @@ export default function reactFormula (deps, { appScopeName = 'app', ...defaults 
     )
 
 
-    const FormsView = composePure(
+    const FormsView = pure (
       { displayName: 'FormsView'
       , propTypes:  { ...stylePropTypes
                     , forms: PropTypes.object.isRequired
@@ -337,14 +328,14 @@ export default function reactFormula (deps, { appScopeName = 'app', ...defaults 
     const getState = () => currentState
 
     const subscribe = (formNames, cb) => {
-      const onChange = (...args) => {
-        console.warn('SUBSCRIBE EVENT', currentState.toJS(), ...args)
+      return formNames.map(formName => subscribeForm(formName, (...args) => {
         cb(formNames.map(name => currentState.get(name)))
-      }
-      return formNames.map(formName => {
-        EE.on(events.formWillUpdate(formName), onChange)
-        return () => EE.removeListener(events.formWillUpdate(formName), onChange)
-      })
+      }))
+    }
+
+    function subscribeForm (formName, cb) {
+      EE.on(events.formWillUpdate(formName), cb)
+      return () => EE.removeListener(events.formWillUpdate(formName), cb)
     }
 
     const subscribeInput = ([ formName, name ], cb) => {
@@ -352,185 +343,14 @@ export default function reactFormula (deps, { appScopeName = 'app', ...defaults 
       return () => EE.removeListener(events.inputWillUpdate(formName, name), cb)
     }
 
-    function forms (formName) {
-      should.exist(formName, 'formName is required')
 
-      const getFormState = () => {
-        return currentState.get(formName)
-      }
-
-      const subscribeForm = cb => subscribe([ formName ], formStates => cb(formStates[0]))
-      const subscribeFormInput = (name, cb) => subscribeInput([ formName, name ], cb)
-
-
-      const Input = composePure(
-        { displayName: 'input'
-        , propTypes:  { styles: PropTypes.object.isRequired
-                      , theme: PropTypes.object.isRequired
-                      , name: PropTypes.string.isRequired
-                      , type: PropTypes.string.isRequired
-                      , initialValue: PropTypes.any
-                      , subscribeTo: PropTypes.shape( { formName: PropTypes.string.isRequired
-                                                      , name: PropTypes.string.isRequired
-                                                      , shouldUpdate: PropTypes.func
-                                                      })
-                      }
-        , defaultProps: { ...defaults
-                        }
-        , init() {
-            this.getInputState = () => {
-              const { name, initialValue } = this.props
-              return currentState.getIn(select.inputValue(formName, name), initialValue)
-            }
-
-            this.setValue = value => {
-              switch(this.input.type) {
-                case 'checkbox':
-                  if(value == 'true' || value == true || value == 'checked')
-                    this.input.checked = true
-                  else
-                    this.input.removeAttribute('checked')
-                  break
-                default:
-                  this.input.value = value
-                  break
-              }
-            }
-
-            this.getValue = () => {
-              const { type, value, checked } = this.input
-              switch(type) {
-                case 'checkbox':
-                  return checked == 'true' || checked == 'checked'
-                default:
-                  return value
-              }
-            }
-            this.syncValue = (formName, name) => {
-              const value = getState().getIn(select.inputValue(formName, name))
-              console.info('SYNC VALUE', value)
-              this.setValue(value)
-            }
-          }
-        , componentDidMount() {
-            const { name, type, initialValue, subscribeTo } = this.props
-            EE.emit(events.registerInput, { formName, name, type, initialValue })
-
-            const selectString = `#${formName} input[name="${name}"]`
-            const input = document.querySelector(selectString)
-            if(typeof input !== 'undefined' && input !== null) {
-              this.setValue(input.value)
-            } else {
-              //console.info('skipping value', input)
-            }
-
-            if(subscribeTo) {
-              this.unsubscribeInput = subscribeInput([ subscribeTo.formName, subscribeTo.name ], value => {
-                if(subscribeTo.shouldUpdate && subscribeTo.shouldUpdate(value, this.getValue()))
-                  this.setValue(value)
-                else
-                  this.setValue(value)
-              })
-              this.syncValue(subscribeTo.formName, subscribeTo.name)
-            }
-          }
-        , componentWillUnmount() {
-            if(this.unsubscribeInput)
-              this.unsubscribeInput()
-          }
-        , render() {
-            const { styles, theme, name, type, initialValue, subscribeTo, ...inputProps } = this.props
-            const value = this.props.value || initialValue
-            return (
-              <span className={cn(styles.inputWrap, theme.inputWrap, styles[`type_${type}`], theme[`type_${type}`] )}>
-                <input
-                  {...inputProps}
-                  ref={x => this.input = x}
-                  type={type}
-                  onChange={e => {
-                    const { value, checked } = e.target
-                    EE.emit(events.updateInput, { formName, name, value: type === 'checkbox' ? checked : value })
-                  }}
-                  className={cn(styles.input, theme.input)}
-                />
-                <div className={cn(styles.inputUI, theme.inputUI)} />
-              </span>
-            )
-          }
-        }
-      )
-
-      const Field = composePure(
-        { displayName: 'field'
-        , propTypes:  { styles: PropTypes.object.isRequired
-                      , theme: PropTypes.object.isRequired
-                      , align: PropTypes.string.isRequired
-                      , label: PropTypes.any
-                      }
-        , defaultProps: { ...defaults
-                        , align: 'left'
-                        }
-        , init() {
-
-            this.setValue = value => {
-              this.inner.setValue(value)
-            }
-
-            this.getValue = () => {
-              this.inner.getValue()
-            }
-
-          }
-        , render() {
-            const { styles, theme, align, label, ...inputProps } = this.props
-            const fieldClass = cn ( styles.field
-                                  , theme.field
-                                  , align === 'right' ? styles.alignRight : styles.alignLeft
-                                  , align === 'right' ? theme.alignRight : theme.alignLeft
-                                  )
-            const labelSpan = <span className={cn(styles.inputLabel, theme.inputLabel)}>{label}</span>
-            return (
-              <span className={fieldClass}>
-                <label className={cn(styles.inputLabel, theme.inputLabel)}>
-                  {align === 'left' ? null : labelSpan}
-                  <Input ref={x => this.inner = x} {...inputProps} styles={styles} theme={theme} />
-                  {align === 'right' ? null : labelSpan}
-                </label>
-              </span>
-            )
-          }
-        }
-      )
-
-      const Submit = composePure(
-        { displayName: 'submit'
-        , propTypes:  { styles: PropTypes.object.isRequired
-                      , theme: PropTypes.object.isRequired
-                      , children: PropTypes.any.isRequired
-                      }
-        , defaultProps: { ...defaults
-                        }
-        , render() {
-            const { styles, theme, children, ...inputProps } = this.props
-            return (
-              <Field {...inputProps} type="submit" initialValue={children} styles={styles} theme={theme} />
-            )
-          }
-        }
-      )
-
-
-
-      return  { formName
-              , Input
-              , Submit
-              , Field
-              , getState: getFormState
-              , subscribe: subscribeForm
-              , subscribeInput: subscribeFormInput
-              }
-    }
-
+    const forms = formsContext(pure)( { getState
+                                      , subscribe
+                                      , subscribeForm
+                                      , subscribeInput
+                                      , events
+                                      , emit: (...args) => EE.emit(...args)
+                                      } )
 
 
     const domNode = access.getDOMNode()

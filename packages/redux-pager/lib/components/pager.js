@@ -64,7 +64,7 @@ function pager() {
       desc[_key] = arguments[_key];
     }
 
-    return compose.apply(undefined, [{
+    return compose.apply(undefined, [{ displayName: 'PureComponent',
       shouldComponentUpdate: function shouldComponentUpdate(nextProps, nextState) {
         return shallowCompare(this, nextProps, nextState);
       }

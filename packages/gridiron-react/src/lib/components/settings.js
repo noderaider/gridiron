@@ -1,13 +1,11 @@
 import { Settings as Core } from 'gridiron-core'
-import classNames from 'classnames'
-import reactStamp from 'react-stamp'
 const should = require('chai').should()
 
-export default ({ React }) => {
-  const { compose } = reactStamp(React)
+export default function settings (pure) {
+  const { React, defaults } = pure
 
-  return compose(
-    { displayName: 'settings'
+  return pure (
+    { displayName: 'Settings'
     , propTypes: Core.PropTypes(React)
     , defaultProps: Core.DefaultProps(React)
     , render() {

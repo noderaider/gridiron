@@ -21,7 +21,9 @@ export default function pager (deps = {}, defaults = {}) {
 
   function composePure(...desc) {
     return compose(
-      { shouldComponentUpdate(nextProps, nextState) { return shallowCompare(this, nextProps, nextState) } }
+      { displayName: 'PureComponent'
+      , shouldComponentUpdate(nextProps, nextState) { return shallowCompare(this, nextProps, nextState) }
+      }
       , ...desc
     )
   }

@@ -1,22 +1,17 @@
-import solvent from 'solvent'
-import reactStamp from 'react-stamp'
 import cn from 'classnames'
 import raf from 'raf'
 
-export default function grid (deps, defaults) {
+export default function grid (pure) {
   const { React
+        , PropTypes
+        , cloneElement
         , shallowCompare
         , Immutable
         , Pre
         , formula
-        } = solvent({ React: 'object'
-                    , shallowCompare: 'function'
-                    , Immutable: 'object'
-                    , Pre: 'function'
-                    })(deps)
-  const { PropTypes, cloneElement } = React
+        , defaults
+        } = pure
   const { styles = {}, theme = {} } = defaults
-  const { compose } = reactStamp(React)
 
   /** Entire grid designed in templates to invert the control here. */
   const templatesShape =
@@ -50,7 +45,7 @@ export default function grid (deps, defaults) {
       )
     , Cell: ({ children, ...props }) => (
         <div className={cn(styles.cell, theme.cell)}>
-          {cloneElement(children, props)}
+          {children}
         </div>
       )
     //, Cell: ({ context, rowID, colID, cellDatum, ...props }) => <div {...props} />
@@ -58,7 +53,7 @@ export default function grid (deps, defaults) {
     }
 
   /** Renders a flexbox based grid with Immutable data. */
-  return compose(
+  return pure (
     { displayName: 'Grid'
     , propTypes:  { 'aria-label': PropTypes.string
 
@@ -227,20 +222,6 @@ export default function grid (deps, defaults) {
         )
       }
 
-
-/*
-                              {(
-                          context.get('cellData').entrySeq().map(([ colID, cellDatum ]) => {
-                            const cellProps = { cellDatum, colID }
-                            return <templates.Cell key={colID}>{mapColumn.cell({ local: locals.get(colID), ...rowProps, ...cellProps })}</templates.Cell>
-                          })
-                        )}
-                        */
-
-            /* gridBody.size > 0 ? gridBody : */
-    , shouldComponentUpdate (nextProps, nextState) {
-        return shallowCompare(this, nextProps, nextState)
-      }
     }
   )
 }

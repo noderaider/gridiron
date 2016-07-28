@@ -1,17 +1,10 @@
-import solvent, { TYPES } from 'solvent'
 import cn from 'classnames'
-import reactStamp from 'react-stamp'
 
-export default function logo (deps, defaults) {
-  const { React
-        } = solvent({ ...TYPES.React
-                    })(deps)
+export default function logo (pure) {
+  const { React, PropTypes, defaults } = pure
 
-  const { PropTypes } = React
-  const { compose } = reactStamp(React)
-
-  return compose(
-    { displayName: 'logo'
+  return pure (
+    { displayName: 'Logo'
     , propTypes:  { styles: PropTypes.object.isRequired
                   , theme: PropTypes.object.isRequired
                   }
@@ -39,9 +32,6 @@ export default function logo (deps, defaults) {
       }
     , componentDidMount() {
         this.notBusy()
-      }
-    , shouldComponentUpdate(nextProps, nextState) {
-        return false
       }
     , render() {
         const { styles, theme, busy } = this.props

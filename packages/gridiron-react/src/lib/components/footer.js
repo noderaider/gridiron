@@ -1,7 +1,8 @@
 import { Footer as Core } from 'gridiron-core'
 const should = require('chai').should()
 
-export default ({ React }) => {
+export default function footer (pure) {
+  const { React, defaults } = pure
   const wrapStyle = { display: 'flex'
                     , flexDirection: 'row'
                     , flexWrap: 'nowrap'

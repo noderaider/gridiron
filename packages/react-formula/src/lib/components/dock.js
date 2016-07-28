@@ -1,13 +1,11 @@
 import cn from 'classnames'
-import reactStamp from 'react-stamp'
 const should = require('chai').should()
 
-export default function dock ({ React, shallowCompare }, defaults = {}) {
-  const { PropTypes } = React
-  const { compose } = reactStamp(React)
+export default function dock (pure) {
+  const { React, PropTypes, defaults } = pure
 
-  return compose(
-    { displayName: 'dock'
+  return pure (
+    { displayName: 'Dock'
     , propTypes:  { styles: PropTypes.object.isRequired
                   , theme: PropTypes.object.isRequired
                   , transitionDelay: PropTypes.number.isRequired
@@ -71,9 +69,6 @@ export default function dock ({ React, shallowCompare }, defaults = {}) {
           })
         }
 
-      }
-    , shouldComponentUpdate (nextProps) {
-        return shallowCompare(this, nextProps)
       }
     , render() {
         const { styles, theme, children, toggleContent } = this.props

@@ -1,8 +1,9 @@
-import classNames from 'classnames'
+import cn from 'classnames'
 import { Expander as Core } from 'gridiron-core'
 const should = require('chai').should()
 
-export default ({ React }) => {
+export default function expander (pure) {
+  const { React, defaults } = pure
   const wrapStyle = { display: 'flex'
                     , flexDirection: 'row'
                     , flexWrap: 'nowrap'
@@ -20,7 +21,7 @@ export default ({ React }) => {
       {props.visible ? (
         <span>
           <button style={expanderButtonStyle} onClick={props.handleExpand}>
-            <i className={classNames(`fa fa-${(props.expanded ? 'minus' : 'plus')}-square`, props.theme.expander)} />
+            <i className={cn(`fa fa-${(props.expanded ? 'minus' : 'plus')}-square`, props.theme.expander)} />
           </button>
         </span>
       ) : null}
