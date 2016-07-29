@@ -18,7 +18,6 @@ import { sandy, black, carbon  } from 'gridiron-themes'
 const should = require('chai').should()
 
 
-
 const deps = { React, shallowCompare, connect, Immutable, formula, Pre }
 const defaults = { styles, theme: carbon }
 const pure = pureStamp(deps, defaults)
@@ -89,13 +88,9 @@ function createContext() {
                           type="checkbox"
                           checked={checkboxValue}
                           onChange={({ target }) => {
-                            const newState = { checked: target.checked }
-                            this.sendPub({ state: newState })
-                            this.setSubState(newState)
                           }}
                         />
                         {children}
-                        <span><Pre>{this.state}</Pre></span>
                       </div>
                     )
                   }
@@ -147,17 +142,18 @@ const getFilterName = id => `filter_${id}`
 const FilterForm = pure (
   { displayName: 'FilterForm'
   , propTypes:  { columnID: PropTypes.any.isRequired
-                , rows: PropTypes.object.isRequired
+                , data: PropTypes.object.isRequired
                 }
   , init() {
       this.form = formula(`filter-form-${this.props.columnID}`)
     }
   , render() {
-      const { rows } = this.props
+      const { data } = this.props
       return (
         <div>
-          {rows.toSetSeq().sort().map((name, key) =>
-            <this.form.Field key={key} name={`filter_${name}`} type="checkbox" label={name} />
+          ROW HERE
+          {data.get('rows').toSet().sort().map((name, key) =>
+            <this.form.Field key={key} name={`filter_${name}`} type="checkbox">{name}</this.form.Field>
           )}
         </div>
       )
@@ -171,16 +167,10 @@ const Gridiron = pure (
   , render() {
       const { container } = this.props
 
-      //const { mapCols, mapRows } = createContext()
-
       return (
         container(({ Controls, Box, isMaximized, id, actions }) => (
           <Pager
             rowsPerPage={5}
-
-            //mapCols={mapCols}
-            //mapRows={mapRows}
-
             filterStream={
               createFilterStream([ 'id', 'state' ])
             }
@@ -215,11 +205,13 @@ const Gridiron = pure (
                           return (
 
                             <column.Header
+                              actions={pager.actions}
                               fields={{ checkbox: true
-                                      , radio: [ { yes: 'Yes', no: 'No' }, 'yes' ]
+                                      //, radio: [ { yes: 'Yes', no: 'No' }, 'yes' ]
                                       , filter: true
+                                      , sort: pager.status.get('sort')
                                       }}
-                              pane={<FilterForm rowData={pager.status.getIn([ 'data', 'rows' ])} />}
+                              pane={<span> PANE CONTENT</span>} //<FilterForm data={pager.status.get('data')} columnID={colID} />}
                             >
                               {props.colID}
                             </column.Header>

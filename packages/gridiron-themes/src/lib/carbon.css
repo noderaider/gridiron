@@ -18,12 +18,12 @@
   box-shadow: 2px 2px 3px rgba(50, 50, 50, 0.5);
 }
 
-.evenRow {
+.row.even {
   background-color: rgba(40, 40, 40, 0.9);
   color: rgb(220, 220, 220);
 }
 
-.oddRow {
+.row.odd {
   background-color: rgba(50, 50, 50, 0.9);
   color: rgb(220, 220, 220);
 }
@@ -44,49 +44,33 @@
   color: rgba(100, 100, 100, 0.5);
 }
 
-.headerGrid,
-.footerGrid,
-.headerCell,
-.footerCell {
+.gridHeader,
+.gridFooter,
+.columnHeader,
+.columnFooter {
   color: #fff !important;
   background-color: rgba(0, 0, 0, 0.3);
+
+  & button {
+    color: #fff;
+  }
 }
 
-.headerGrid,
-.footerGrid {
+.gridHeader,
+.gridFooter {
   padding: 5px;
   margin: 0;
 }
 
 
-.headerGrid:hover,
-.headerCell:hover,
-.footerCell:hover,
-.footerGrid:hover {
-}
-
-.headerGrid button,
-.headerCell button,
-.footerCell button,
-.footerGrid button {
-  color: #fff;
-}
-
-.headerGrid button:hover,
-.headerCell button:hover,
-.footerCell button:hover,
-.footerGrid button:hover {
-}
-
-
-.paneEnabled .header {
+.paneVisible .header {
   background: linear-gradient(180deg, rgba(20, 20, 20, 0), rgba(20, 20, 20, 0.8));
   border-style: double;
   border-color: rgba(100, 100, 100, 0.8);
   border-width: 1px 1px 0;
 }
 
-.paneDisabled .header {
+.paneHidden .header {
   border-style: double;
   border-color: transparent;
   border-width: 1px 1px 0;
@@ -97,7 +81,7 @@
   outline: none;
 }
 
-.paneEnabled .filterButton {
+.paneVisible .filterButton {
   color: #268bd2;
 }
 

@@ -15,7 +15,8 @@ export default function grid (pure) {
 
   /** Entire grid designed in templates to invert the control here. */
   const templatesShape =
-    { GridHeader: PropTypes.func
+    { Grid: PropTypes.func
+    , GridHeader: PropTypes.func
     , GridFooter: PropTypes.func
     , ColumnHeader: PropTypes.func
     , ColumnFooter: PropTypes.func
@@ -28,18 +29,23 @@ export default function grid (pure) {
     , CellFooter: PropTypes.func
     }
 
+
   const defaultTemplates =
-    { GridHeader: props => <div className={cn(styles.gridHeader, theme.gridHeader)} {...props} />
+    { GridContainer: props => <div className={cn(styles.grid, theme.grid)} {...props} />
+    , GridHeader: props => <div className={cn(styles.gridHeader, theme.gridHeader)} {...props} />
     , GridFooter: props => <div className={cn(styles.gridFooter, theme.gridFooter)} {...props} />
-    , ColumnHeader: ({ children, ...props }) => <div className={cn(styles.columnHeader, theme.columnHeader)}>{cloneElement(children, props)}</div>
-    , ColumnFooter: ({ children, ...props }) => <div className={cn(styles.columnFooter, theme.columnFooter)}>{cloneElement(children, props)}</div>
-    , Row: ({ context, rowID, children, ...props }) => (
-        <div className={cn(styles.row, theme.row)}>
-          {children}
-        </div>
-      )
+    , ColumnHeader: ({ children, ...props }) => <div className={cn(styles.columnHeader, theme.columnHeader)}>{children}</div>
+    , ColumnFooter: ({ children, ...props }) => <div className={cn(styles.columnFooter, theme.columnFooter)}>{children}</div>
+    , Row: ({ context, rowID, rowIndex, children, ...props }) => {
+        const moduloStyle = typeof rowIndex === 'number' ? (rowIndex % 2 === 0 ? 'even' : 'odd') : null
+        return (
+          <div className={cn(styles.row, theme.row, styles[moduloStyle], theme[moduloStyle])}>
+            {children}
+          </div>
+        )
+      }
     , RowBody: ({ context, rowID, children, ...props }) => (
-        <div className={cn(styles.row, theme.row)}>
+        <div className={cn(styles.rowBody, theme.rowBody)}>
           {children}
         </div>
       )
@@ -160,15 +166,7 @@ export default function grid (pure) {
 
         const rows = data.get('rows')
 
-/*
-                                  context.get('cellData').entrySeq().map(([ colID, cellDatum ]) => {
-                            const cellProps = { cellDatum, colID }
-                            return <templates.Cell key={colID}>{mapColumn.cell({ local: locals.get(colID), ...rowProps, ...cellProps })}</templates.Cell>
-                          })
-                          */
-
         const gridColumns = locals.entrySeq().map(([ colID, local ]) => {
-          console.info('ITERATING LOCALS =>', local, colID)
           return (
             { header: () => mapColumn.header({ colID, local })
             , cell: rowProps => mapColumn.cell({ colID, local, styles, theme, ...rowProps })
@@ -179,9 +177,8 @@ export default function grid (pure) {
 
 
         return (
-          <div
+          <templates.Grid
             ref={x => this.container = x}
-            className={cn(styles.grid, theme.grid)}
             style={style}
             aria-label={this.props['aria-label']}
             role='grid'
@@ -189,14 +186,11 @@ export default function grid (pure) {
           >
             <templates.GridHeader />
               <templates.Row key="row-headers" isHeader={true}>
-                {gridColumns.map((x, i) => {
-                  return <templates.ColumnHeader key={i}>{x.header()}</templates.ColumnHeader>
-                })}
+                {gridColumns.map((x, i) => <templates.ColumnHeader key={i}>{x.header()}</templates.ColumnHeader>)}
               </templates.Row>
               {rows.entrySeq().map(
-                ([ rowID, context ]) => {
-                  const rowProps = { context, rowID }
-                  console.info('PASSING ROWPROPS => ', rowProps)
+                ([ rowID, context ], rowIndex) => {
+                  const rowProps = { context, rowID, rowIndex }
                   return (
                     <templates.Row key={rowID} {...rowProps}>
                       {templates.RowHeader ? (
@@ -207,7 +201,7 @@ export default function grid (pure) {
                           return <templates.Cell key={i}>{x.cell(rowProps)}</templates.Cell>
                         })}
                       </templates.RowBody>
-                      {templates.RowFooter? (
+                      {templates.RowFooter ? (
                         <templates.RowFooter key="row-footer" {...rowProps} />
                       ) : null}
                     </templates.Row>

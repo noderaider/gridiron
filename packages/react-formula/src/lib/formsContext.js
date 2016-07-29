@@ -4,21 +4,29 @@ const should = require('chai').should()
 export default function formsContext (pure) {
   const { React, PropTypes, cloneElement, defaults } = pure
 
-  return ({ getState
+  return context => {
+    const { getState
           , subscribe
           , subscribeForm
           , subscribeInput
           , events
           , emit
-          }) => {
+          } = context
 
     const getStateValue = (formName, name, defaultValue) => getState().getIn([ formName, name, 'value' ], defaultValue)
+
+    const filterKeys = Object.keys(context).concat([ 'style', 'theme', 'shouldUpdate' ])
+    const filterProps = props => Object.entries(props)
+      .reduce ( (filtered, [ key, value ]) => filterKeys.includes(key) ? filtered : ({ ...filtered, [key]: value })
+              , {}
+              )
 
     return function forms (formName) {
       should.exist(formName, 'formName is required')
 
       const getFormState = () => getState().get(formName)
       const getFormStateValue = (name, defaultValue) => getStateValue(formName, name, defaultValue)
+
 
       const Input = pure(
         { displayName: 'Input'
@@ -29,7 +37,7 @@ export default function formsContext (pure) {
                       , name: PropTypes.string.isRequired
                       , type: PropTypes.string.isRequired
                       , initialValue: PropTypes.any
-                      , subscribeInput: PropTypes.object
+                      , subscribeInput: PropTypes.array
                       , subscribeForm: PropTypes.object
                       , shouldUpdate: PropTypes.func.isRequired
                       }
@@ -52,6 +60,8 @@ export default function formsContext (pure) {
             }
 
             this.getValue = () => {
+              if(!this.input)
+                return
               const { type, value, checked } = this.input
               console.info('GET VALUE', value, checked)
               switch(type) {
@@ -128,12 +138,12 @@ export default function formsContext (pure) {
               this.unsubscribeForm()
           }
         , render() {
-            const { styles, theme, name, type, initialValue, subscribeTo, ...inputProps } = this.props
+            const { styles, theme, name, type, initialValue, ...inputProps } = this.props
             const value = this.props.value || initialValue
             return (
               <span className={cn(styles.inputWrap, theme.inputWrap, styles[`type_${type}`], theme[`type_${type}`] )}>
                 <input
-                  {...inputProps}
+                  {...filterProps(inputProps)}
                   ref={x => {
                     this.input = x
                     //emit(events.updateInput, { formName, name, value: this.getValue() })
@@ -150,6 +160,7 @@ export default function formsContext (pure) {
           }
         }
       )
+
 
       const Field = pure(
         { displayName: 'Field'
@@ -173,13 +184,13 @@ export default function formsContext (pure) {
 
           }
         , render() {
-            const { styles, theme, align, label, ...inputProps } = this.props
+            const { styles, theme, align, children, ...inputProps } = this.props
             const fieldClass = cn ( styles.field
                                   , theme.field
                                   , align === 'right' ? styles.alignRight : styles.alignLeft
                                   , align === 'right' ? theme.alignRight : theme.alignLeft
                                   )
-            const labelSpan = <span className={cn(styles.inputLabel, theme.inputLabel)}>{label}</span>
+            const labelSpan = children ? <span className={cn(styles.inputLabel, theme.inputLabel)}>{children}</span> : null
             return (
               <span className={fieldClass}>
                 <label className={cn(styles.inputLabel, theme.inputLabel)}>

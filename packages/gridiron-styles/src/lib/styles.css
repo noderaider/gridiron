@@ -34,22 +34,28 @@
 .row {
   position: relative;
   display: flex;
+  flex-direction: row;
+  flex: 1 1 auto;
+  width: 100%;
 }
 
 .row:last-child {
   border-bottom: none;
 }
 
+.rowBody {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex: 1 1 auto;
+  width: 100%;
+}
+
+
 .header {
   height: 100%;
 }
 
-.cell {
-  border-right: 1px solid #666;
-}
-.cell:last-child {
-  border-right: none;
-}
 
 .gridHeaderWrap,
 .gridFooterWrap {
@@ -62,6 +68,7 @@
 .gridFooter {
   display: flex;
   flex: 1 0 auto;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
   border-right: 0;
@@ -77,6 +84,24 @@
 .columnFooter {
   display: flex;
 }
+
+.cell {
+  border-right: 1px solid #666;
+}
+.cell:last-child {
+  border-right: none;
+}
+
+.cell {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+
 
 .columnHeader,
 .columnFooter {
@@ -109,13 +134,6 @@
 
 .expander {
   position:absolute;
-}
-
-.cell {
-  display: flex;
-  flex: 1 1 auto;
-  flex-direction: column;
-  justify-content: space-around;
 }
 
 .cellHeader,
@@ -167,29 +185,25 @@
   }
 }
 
-.pane,
-.paneDisabled {
+.paneHidden .pane {
   clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%);
   transform: translateY(-100%);
 }
 
-.paneEnabled,
-.paneTransition.paneDisabled {
+.paneVisible .pane,
+.paneTransition.paneHidden .pane {
   visibility: visible;
   clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
   transform: translateY(0%);
 }
 
 
-.paneTransition {
-}
-
-.paneTransition.paneEnabled {
+.paneTransition.paneVisible .pane {
   overflow:hidden !important;
   animation-name: pane-slide-in;
 }
 
-.paneTransition.paneDisabled {
+.paneTransition.paneVisible .pane {
   overflow:hidden !important;
   animation-name: pane-slide-out;
 }

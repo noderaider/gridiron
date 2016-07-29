@@ -43,7 +43,7 @@ export default function column(pure) {
     const HEADER_RADIO = 'HEADER_RADIO'
 
 
-    const getCellName = ({ type, rowID, colID }) => `R-${rowID}_C-${colID}_T-${type.toUpperCase()}`
+    const getCellName = ({ type, rowID }) => `R-${rowID}_C-${columnID}_T-${type.toUpperCase()}`
 
     const Header = pure (
       { displayName: 'Header'
@@ -56,8 +56,7 @@ export default function column(pure) {
       , defaultProps: { ...defaults
                       , status: {}
                       }
-      //, state: { headerEnabled: false, checked: false }
-      , state: { paneEnabled: false }
+      , state: { paneVisible: false }
       , init() {
           const { sort } = this.props
 
@@ -67,30 +66,18 @@ export default function column(pure) {
           }
         }
       , render() {
-          const { id
-                , children
+          const { children
                 , styles
                 , theme
-                //, checkbox
-                //, radio
-                //, status
                 , actions
-                //, filter
                 , fields
                 } = this.props
 
           const { checkbox, radio, sort, filter } = fields
-          //const sort = status.sort ? status.sort : null
 
-          const { paneEnabled } = this.state
+          const { paneVisible } = this.state
 
-/*
-          const { checked
-                , headerEnabled
-                } = this.state
-                */
-
-          const paneClassName = paneEnabled ? 'paneEnabled' : 'paneDisabled'
+          const paneClassName = paneVisible ? 'paneVisible' : 'paneHidden'
 
           const className = cn( styles.headerContainer
                               , theme.headerContainer
@@ -121,11 +108,10 @@ export default function column(pure) {
                   <span style={childrenStyle}>{children}</span>
                 </span>
                 <span>
-
                   {filter ? (
                     <button
                       className={cn(styles.filterButton, theme.filterButton)}
-                      onClick={() => this.setState({ paneEnabled: !paneEnabled })}
+                      onClick={() => this.setState({ paneVisible: !paneVisible })}
                     >
                       <i className={`fa fa-filter${''}`} />
                     </button>
@@ -133,20 +119,22 @@ export default function column(pure) {
                   {radio ? (
                     <span>
                       {Object.entries(radio[0]).map(([ name, text ], i) => (
-                        <input key={i} type="radio" name={name} value={text} />
+                        <input key={i} type="radio" name={name} value={text} checked={i === radio[1]} />
                       ))}
                     </span>
                   ) : null}
-                  {id && sort && sort.get('cols', []).includes(id) ? (
-                    <button onClick={() => actions.sort(id)}>
-                      <SortIcon direction={sort.getIn([ 'direction', id ])} />
+                  {sort && sort.get('cols', []).includes(columnID) ? (
+                    <button onClick={() => actions.sort(columnID)}>
+                      <SortIcon direction={sort.getIn([ 'direction', columnID ])} />
                     </button>
                   ) : null}
                 </span>
               </span>
-              <Pane enabled={paneEnabled}>
-                {filter ? filter : null}
-              </Pane>
+              {pane ? (
+                <Pane enabled={paneVisible}>
+                  {pane}
+                </Pane>
+              ) : null}
             </div>
           )
         }
@@ -159,56 +147,25 @@ export default function column(pure) {
       , propTypes:  { styles: PropTypes.object.isRequired
                     , theme: PropTypes.object.isRequired
                     , rowID: PropTypes.any.isRequired
-                    , colID: PropTypes.any.isRequired
                     }
       , state: { checked: false }
       , init() {
           this.getName = type => getCellName({ type, ...this.props })
         }
       , render() {
-          const { rowID, colID, checkbox, styles, theme, children, ...props } = this.props
-          //const { pub, sub } = this.state
-          //const checkboxValue = this.latest([ 'state', 'checked' ], false)
-
-
+          const { rowID, checkbox, styles, theme, children, ...props } = this.props
 
           return (
-              <div className={cn(styles.cell, theme.cell)}>
-                <cellForm.Field
-                  name={this.getName('checkbox')}
-                  type="checkbox"
-                  subscribeInput={[ headerForm.formName, HEADER_CHECKBOX ]}
-                  shouldUpdate={({ currentValue, subscribed, subscriptionType }) => {
-                    console.info('SHOULD UPDATE', currentValue, subscribed, subscriptionType)
-                    /*
-                    if(subscriptionType === 'input' && subscribed === true)
-                      return true
-                    */
-                    return true
-                  }}
-                  /*
-                    { formName: headerForm.formName
-                    , name: HEADER_CHECKBOX
-                    , shouldUpdate: (subscribedValue, value) => {
-                        console.warn('COLUMN UPDATE OCCURRED', subscribedValue, value)
-                        if(subscribedValue === true)
-                          return true
-                        return false
-                      }
-                    }
-                  }
-                  */
-                  //checked={checkboxValue}
-                  /*
-                  onChange={({ target }) => {
-                    const newState = { checked: target.checked }
-                    this.sendPub({ state: newState })
-                    this.setSubState(newState)
-                  }}
-                  */
-                />
-                {children}
-              </div>
+            <cellForm.Field
+              name={this.getName('checkbox')}
+              type="checkbox"
+              subscribeInput={[ headerForm.formName, HEADER_CHECKBOX ]}
+              shouldUpdate={({ currentValue, subscribed, subscriptionType }) => {
+                console.info('SHOULD UPDATE', currentValue, subscribed, subscriptionType)
+                return true
+              }}>
+              {children}
+            </cellForm.Field>
           )
         }
       }
@@ -218,11 +175,7 @@ export default function column(pure) {
       { displayName: 'Footer'
       , render() {
           const { children, ...props } = this.props
-          return (
-            <div className="footer">
-              {children ? cloneElement(children, props) : null}
-            </div>
-          )
+          return children ? cloneElement(children, props) : null
         }
       }
     )

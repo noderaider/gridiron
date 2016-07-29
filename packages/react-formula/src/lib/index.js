@@ -132,6 +132,7 @@ export default function reactFormula (deps, { appScopeName = 'app', ...defaults 
             busy(notBusy => {
               const path = select.inputValue(formName, name)
               const forms = this.state.forms.setIn(path, value)
+              console.info('UPDATE INPUT FOR => [', formName, name, value, '] | ', forms)
               this.setState({ forms }, notBusy)
             })
           }
