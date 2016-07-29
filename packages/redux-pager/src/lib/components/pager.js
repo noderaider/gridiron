@@ -96,9 +96,9 @@ export default function pager (deps = {}, defaults = {}) {
                                     , StepBackward: ({ status, ...props }) => <i className={'fa fa-step-backward'} />
                                     , StepForward: ({ status, ...props }) => <i className={'fa fa-step-forward'} />
                                     , FastForward: ({ status, ...props }) => <i className={'fa fa-fast-forward'} />
-                                    , PageStatus: ({ status, ...props }) => <span>Page {(status.page + 1).toLocaleString()} of {status.pages}</span>
-                                    , RowStatus: ({ status, ...props }) => <span>Showing {props.typePlural} {(status.startIndex + 1).toLocaleString()} through {status.lastIndex.toLocaleString()} ({status.totalRows.toLocaleString()} total)</span>
-                                    , RowCount: ({ status, ...props }) => <span>{status.totalRows.toLocaleString()} {status.totalRows === 1 ? props.typeSingular : props.typePlural}</span>
+                                    , PageStatus: ({ status, ...props }) => <span>Page {(status.get('page') + 1).toLocaleString()} of {status.get('pages')}</span>
+                                    , RowStatus: ({ status, ...props }) => <span>Showing {props.typePlural} {(status.get('startIndex') + 1).toLocaleString()} through {status.get('lastIndex').toLocaleString()} ({status.get('totalRows').toLocaleString()} total)</span>
+                                    , RowCount: ({ status, ...props }) => <span>{status.totalRows.toLocaleString()} {status.get('totalRows') === 1 ? props.typeSingular : props.typePlural}</span>
                                     , selectOption: ({ index, ...props }) => (index + 1).toLocaleString()
                                     , rowsPerPageOption: ({ index, ...props }) => typeof index === 'number' ? index.toLocaleString() : index
                                     }

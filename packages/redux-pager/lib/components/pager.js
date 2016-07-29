@@ -174,9 +174,9 @@ function pager() {
           'span',
           null,
           'Page ',
-          (status.page + 1).toLocaleString(),
+          (status.get('page') + 1).toLocaleString(),
           ' of ',
-          status.pages
+          status.get('pages')
         );
       },
       RowStatus: function RowStatus(_ref6) {
@@ -190,11 +190,11 @@ function pager() {
           'Showing ',
           props.typePlural,
           ' ',
-          (status.startIndex + 1).toLocaleString(),
+          (status.get('startIndex') + 1).toLocaleString(),
           ' through ',
-          status.lastIndex.toLocaleString(),
+          status.get('lastIndex').toLocaleString(),
           ' (',
-          status.totalRows.toLocaleString(),
+          status.get('totalRows').toLocaleString(),
           ' total)'
         );
       },
@@ -208,7 +208,7 @@ function pager() {
           null,
           status.totalRows.toLocaleString(),
           ' ',
-          status.totalRows === 1 ? props.typeSingular : props.typePlural
+          status.get('totalRows') === 1 ? props.typeSingular : props.typePlural
         );
       },
       selectOption: function selectOption(_ref8) {

@@ -14,19 +14,27 @@
   border-radius:4px;
   font-size: 0.95rem;
   font-family: monospace;
-  background: url(http://dribbble.s3.amazonaws.com/users/1672/screenshots/197056/carbonfiber_iphone4.png) !important;
   box-shadow: 2px 2px 3px rgba(50, 50, 50, 0.5);
+  background-color: rgb(60, 60, 60);
 }
 
+
 .row.even {
-  background-color: rgba(40, 40, 40, 0.9);
+  background-color: rgb(40, 40, 40);
   color: rgb(220, 220, 220);
 }
 
 .row.odd {
-  background-color: rgba(50, 50, 50, 0.9);
+  background-color: rgb(50, 50, 50);
   color: rgb(220, 220, 220);
 }
+
+.rowHeader,
+.rowFooter {
+  border: 1px solid rgb(60, 60, 60);
+}
+
+
 
 .expander {
   color: rgba(200, 200, 200, 0.7);
@@ -60,6 +68,7 @@
 .gridFooter {
   padding: 5px;
   margin: 0;
+  background: url(http://dribbble.s3.amazonaws.com/users/1672/screenshots/197056/carbonfiber_iphone4.png) !important;
 }
 
 

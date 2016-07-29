@@ -30,6 +30,12 @@
   width: inherit !important;
 }
 
+.rowGroup {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  width: 100%;
+}
 
 .row {
   position: relative;
@@ -37,10 +43,18 @@
   flex-direction: row;
   flex: 1 1 auto;
   width: 100%;
+  flex-wrap: wrap;
 }
 
 .row:last-child {
   border-bottom: none;
+}
+
+.rowHeader,
+.rowFooter {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
 }
 
 .rowBody {

@@ -24,7 +24,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var universalContext = (0, _universalStyles2.default)();
 exports.default = universalContext(addStyleUrls);
 function addStyleUrls(cssUrl) {
-  console.trace('addStyleUrls => ', _util2.default.inspect(cssUrl));
+  //console.trace('addStyleUrls => ', util.inspect(cssUrl))
   var styleElement = document.createElement('link');
   styleElement.rel = 'stylesheet';
   styleElement.type = 'text/css';

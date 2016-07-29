@@ -14,7 +14,7 @@ module.exports = function() {}
 module.exports.pitch = function pitchUseable (remainingRequest) {
   if(this.cacheable) this.cacheable()
   var query = parseQuery(this.query)
-  console.trace('useable =>', util.inspect({ remainingRequest, query, self: this }))
+  //console.trace('useable =>', util.inspect({ remainingRequest, query, self: this }))
 
   const addStylesPath = path.join(__dirname, 'compile', 'addStyles.js')
   const addStyles = `require(${stringifyRequest(this, `!${addStylesPath}`)}).default`

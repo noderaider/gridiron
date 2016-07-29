@@ -1,4 +1,5 @@
 export { default as grid } from './grid'
+export { default as accordion } from './accordion'
 export { default as expander } from './expander'
 export { default as footer } from './footer'
 export { default as pane } from './pane'

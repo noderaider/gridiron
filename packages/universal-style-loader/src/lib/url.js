@@ -13,7 +13,7 @@ const wrap = wrapper('universal-style-loader/lib/url.js')
 module.exports = function() {}
 module.exports.pitch = function pitchUrl (remainingRequest) {
   this.cacheable && this.cacheable()
-  console.trace('url =>', util.inspect({ remainingRequest, self: this }))
+  //console.trace('url =>', util.inspect({ remainingRequest, self: this }))
 
   const addStyleUrlsPath = path.join(__dirname, 'compile', 'addStyleUrls.js')
   const addStyleUrls = `require(${JSON.stringify(`!${addStyleUrlsPath}`)}).default`
@@ -25,7 +25,7 @@ var update = ${addStyleUrls}( require(${stringifyRequest(this, `!!${remainingReq
 /** Hot Module Replacement */
 if(module.hot) {
   module.hot.accept(${stringifyRequest(this, `!!${remainingRequest}`)}, function() {
-    console.info('universal-style-loader: pitchUrl() (COMPILED) (HOT)')
+    /* console.info('universal-style-loader: pitchUrl() (COMPILED) (HOT)') */
     update(require(${stringifyRequest(this, `!!${remainingRequest}`)}));
   });
   module.hot.dispose(function() { update(); });

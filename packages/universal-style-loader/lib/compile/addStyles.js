@@ -149,7 +149,7 @@ exports.default = universalContext(function () {
   }
 
   function createStyleElement(options, meta) {
-    console.trace('createStyleElement => ', _util2.default.inspect(options));
+    //console.trace('createStyleElement => ', util.inspect(options))
     var styleElement = document.createElement('style');
     styleElement.type = 'text/css';
     setMetaAttributes(styleElement, meta);
@@ -158,7 +158,7 @@ exports.default = universalContext(function () {
   }
 
   function createLinkElement(options, meta) {
-    console.trace('createLinkElement => ', _util2.default.inspect(options));
+    //console.trace('createLinkElement => ', util.inspect(options))
     var linkElement = document.createElement('link');
     linkElement.rel = 'stylesheet';
     setMetaAttributes(linkElement, meta);
@@ -171,7 +171,7 @@ exports.default = universalContext(function () {
   }
 
   function addStyle(obj, options, meta) {
-    console.trace('addStyle => ', _util2.default.inspect({ obj: obj, options: options }));
+    //console.trace('addStyle => ', util.inspect({ obj, options }))
     var styleElement, update, remove;
 
     if (options.singleton) {

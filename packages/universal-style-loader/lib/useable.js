@@ -28,7 +28,7 @@ module.exports = function () {};
 module.exports.pitch = function pitchUseable(remainingRequest) {
   if (this.cacheable) this.cacheable();
   var query = (0, _loaderUtils.parseQuery)(this.query);
-  console.trace('useable =>', _util2.default.inspect({ remainingRequest: remainingRequest, query: query, self: this }));
+  //console.trace('useable =>', util.inspect({ remainingRequest, query, self: this }))
 
   var addStylesPath = _path2.default.join(__dirname, 'compile', 'addStyles.js');
   var addStyles = 'require(' + (0, _loaderUtils.stringifyRequest)(this, '!' + addStylesPath) + ').default';

@@ -4,72 +4,28 @@ import shallowCompare from 'react-addons-shallow-compare'
 import pureStamp from 'pure-stamp'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
-import gridironReact from 'gridiron-react'
 import util from 'util'
 
+import gridironReact from 'gridiron-react'
+import reduxPager from 'redux-pager'
 import { Pre, Arrows } from '../react-pre'
 import formula from '../react-formula'
 
-import reduxPager from 'redux-pager'
 
 import styles from 'gridiron-styles'
 import { sandy, black, carbon  } from 'gridiron-themes'
 
 const should = require('chai').should()
 
-
 const deps = { React, shallowCompare, connect, Immutable, formula, Pre }
 const defaults = { styles, theme: carbon }
 const pure = pureStamp(deps, defaults)
 
 const { Pager } = reduxPager(deps, defaults)
-const { Grid, Column, Logo } = gridironReact(deps, defaults)
+const { Grid, Accordion, Column, Logo } = gridironReact(deps, defaults)
 
 
 function createContext() {
-
-  const mapCols = ({ status, actions, filters }) => {
-    return  [ { id: 'id'
-              , header: ({ theme }) => {
-                  const { Header } = headers[0]
-                  return (
-                    <Header
-                      id="id"
-                      checkbox={{ value: 'header_checkbox' }}
-                      status={status}
-                      filter={filters['id']}
-                      actions={actions}
-                      styles={styles}
-                    >
-                      Path
-                    </Header>
-                  )
-              }
-
-              //, footer: ({ rows }) => <Footer theme={sandy}>{rows.length} rows</Footer>
-              , width: 300
-              }
-            , { id: 'state'
-              , header: ({ theme }) => {
-                  const { Header } = headers[1]
-                  return (
-                    <Header
-                      id="state"
-                      status={status}
-                      filter={filters['state']}
-                      actions={actions}
-                      theme={theme}
-                      styles={styles}
-                    >
-                      State
-                    </Header>
-                  )
-                }
-              //, footer: ({ rows }) => <Footer theme={sandy}>State</Footer>
-              }
-            ]
-  }
-
   const cellStyle = { display: 'flex'
                     , flexDirection: 'row'
                     , flexWrap: 'wrap'
@@ -115,7 +71,7 @@ const filterData = (data, filterState) => {
         anyFiltered = true
       return value
     }).reduce((newData, x) => ({ ...newData, [x]: data[x] }), {})
-    console.warn('FILTERED =>', filterState, filtered)
+    //console.warn('FILTERED =>', filterState, filtered)
     return anyFiltered ? filtered : data
   }
   return data
@@ -129,7 +85,7 @@ const createFilterStream = ids => onFilter => {  //(getData, onChange) => {
       const getFilterValue = dataKey => formStates[i].getIn([ getFilterName(dataKey), 'value' ], false)
       return { ...result, [id]: getFilterValue }
     })
-    console.warn('FILTER STREAM', filterState)
+    //console.warn('FILTER STREAM', filterState)
     onFilter(filterState)
   })
 }
@@ -168,117 +124,113 @@ const Gridiron = pure (
       const { container } = this.props
 
       return (
-        container(({ Controls, Box, isMaximized, id, actions }) => (
-          <Pager
-            rowsPerPage={5}
-            filterStream={
-              createFilterStream([ 'id', 'state' ])
-            }
+        <div>
+          <div>
 
-            map={ { rowData: state => Immutable.Map.isMap(state) ? state : Immutable.Map(state)
-                  , cellData: (rowID, rowDatum) => Immutable.Map({ id: rowID, state: rowDatum })
+          </div>
+
+          <Accordion header={<h3 key="title" style={{ margin: 0, letterSpacing: 6 }}>Accordion</h3>}>
+            {accordionRow => Array(20).fill(0).map((x, i) => accordionRow(<div>ITEM {i}</div>, <div>ITEM {i} CONTENT</div>))}
+          </Accordion>
+
+
+          {container(({ Controls, Box, isMaximized, id, actions }) => (
+            <Pager
+              rowsPerPage={5}
+              filterStream={
+                createFilterStream([ 'id', 'state' ])
+              }
+
+              map={ { rowData: state => Immutable.Map.isMap(state) ? state : Immutable.Map(state)
+                    , cellData: (rowID, rowDatum) => Immutable.Map({ id: rowID, state: rowDatum })
+                    }
                   }
-                }
 
-            sort={Immutable.fromJS(
-              { cols: [ 'id', 'state' ]
-              , keys: { id: data => data.join('_')
-                      , state: data => Object.keys(data).join('_')
-                      }
-              })
-            }
-
-            theme={carbon}>
-            {pager => (
-              <Box>
-                <Grid
-                    styles={styles}
-                    theme={carbon}
-                    cols={pager.cols}
-                    data={pager.status.get('data', Immutable.Map())}
-
-                    mapColumn={(
-                      { local: ({ colID }) => ({ column: Column(colID) })
-                      , header: ({ local, ...props }) => {
-                          const { column } = local
-                          const { colID } = props
-                          return (
-
-                            <column.Header
-                              actions={pager.actions}
-                              fields={{ checkbox: true
-                                      //, radio: [ { yes: 'Yes', no: 'No' }, 'yes' ]
-                                      , filter: true
-                                      , sort: pager.status.get('sort')
-                                      }}
-                              pane={<span> PANE CONTENT</span>} //<FilterForm data={pager.status.get('data')} columnID={colID} />}
-                            >
-                              {props.colID}
-                            </column.Header>
-                          )
+              sort={Immutable.fromJS(
+                { cols: [ 'id', 'state' ]
+                , keys: { id: data => data.join('_')
+                        , state: data => Object.keys(data).join('_')
                         }
-                      , cell: ({ local, ...props }) => {
-                          const { column } = local
-                          const { context, rowID, colID, cellDatum, children } = props
+                })
+              }
+
+              theme={carbon}>
+              {pager => (
+                <Box>
+                  <Grid
+                      styles={styles}
+                      theme={carbon}
+                      cols={pager.cols}
+                      data={pager.status.get('data', Immutable.Map())}
+
+                      mapColumn={(
+                        { local: columnID => ({ column: Column(columnID) })
+                        , header: ({ local, columnID, columnIndex }) => {
+                            const { column } = local
+                            return (
+                              <column.Header
+                                actions={pager.actions}
+                                fields={{ checkbox: true
+                                        //, radio: [ { yes: 'Yes', no: 'No' }, 'yes' ]
+                                        , filter: true
+                                        , sort: pager.status.get('sort')
+                                        }}
+                                pane={<span> PANE CONTENT</span>} //<FilterForm data={pager.status.get('data')} columnID={columnIndex} />}
+                              >
+                                {columnID}
+                              </column.Header>
+                            )
+                          }
+                        , footer: ({ local, columnID, columnIndex }) => {
+                            const { column } = local
+                            return (
+                              <column.Footer />
+                            )
+                          }
+                        }
+                      )}
+
+                      mapRow={(
+                        { local: rowID => {}
+                        , header: ({ local, rowID, rowIndex, rowDatum }) => {
+                            return <h4>header: <Pre>{{ rowID, rowIndex }}</Pre></h4>
+                          }
+                        , footer: ({ local, rowID, rowIndex, rowDatum }) => {
+                            return <h4>footer: <Pre>{{ rowID, rowIndex }}</Pre></h4>
+                          }
+                        }
+                      )}
+
+                      mapCell={
+                        ({ columnLocal, rowLocal, rowIndex, columnIndex, rowID, columnID, datum }) => {
+                          const { column } = columnLocal
                           return (
-                            <column.Cell inputs={{ checkbox: false }} {...props}>
-                              <Pre>{{ rowID, colID }}</Pre>
+                            <column.Cell>
+                              <Pre>{{ rowIndex, columnIndex, rowID, columnID, datum }}</Pre>
                             </column.Cell>
                           )
                         }
-                      , footer: ({ local, ...props }) => {
-                          const { column } = local
-                          return (
-                            <column.Footer {...props} />
-                          )
-                        }
                       }
-                    )}
-                            /*
-                      status={status}
-                      filter={filters['id']}
-                      actions={actions}
-                      styles={styles}
-                      */
-/*
-                    templates={
-                      { GridHeader: props => <span style={{ textAlign: 'center' }}><h3>Accordion</h3></span>
-                      , Row: ({ context, rowID, children, ...props }) => (
-                          <div style={{ margin: 10
-                                      , padding: 10
-                                      , color: '#000'
-                                      , fontWeight: 'bold'
-                                      , border: '2px dashed rgb(100, 100, 200)'
-                                      , borderRadius: 3
-                                      , backgroundColor: 'rgba(180, 180, 200, 0.7)'
-                                      , cursor: 'pointer'
-                                      }} {...props}>
-                            <h4>{rowID}</h4>
-                          </div>
-                        )
+
+                      mapDrill={parentId => <div>Sub grid for {parentID}</div>} //<ReduxGridDetail ids={parentId} />}
+                      header={
+                        [ <h3 key="title" style={{ margin: 0, letterSpacing: 6 }}>Grid</h3>
+                        , <Controls key="maximize" />
+                        ]
                       }
-                    }
-                    */
-
-
-                    mapDrill={parentId => <div>Sub grid for {parentID}</div>} //<ReduxGridDetail ids={parentId} />}
-                    header={
-                      [ <h3 key="title" style={{ margin: 0, letterSpacing: 6 }}>gridiron - {id}</h3>
-                      , <Controls key="maximize" />
-                      ]
-                    }
-                    footer={[ <pager.Controls key="pager-buttons"><pager.Select /></pager.Controls>
-                            , <pager.RowStatus key="pager-row-status" />
-                            , <pager.PageStatus key="pager-page-status" />
-                            , <pager.RowsPerPage label="Rows Per Page" key="rows-per-page" />
-                            ]}
-                    Pre={Pre}
-                    {...this.props}
-                  />
-              </Box>
-            )}
-          </Pager>
-        ))
+                      footer={[ <pager.Controls key="pager-buttons"><pager.Select /></pager.Controls>
+                              , <pager.RowStatus key="pager-row-status" />
+                              , <pager.PageStatus key="pager-page-status" />
+                              , <pager.RowsPerPage label="Rows Per Page" key="rows-per-page" />
+                              ]}
+                      Pre={Pre}
+                      {...this.props}
+                    />
+                </Box>
+              )}
+            </Pager>
+          ))}
+        </div>
       )
     }
   }

@@ -2,7 +2,7 @@ import cn from 'classnames'
 import pane from '../pane'
 
 export default function column(pure) {
-  const { React, PropTypes, shallowCompare, formula, Pre, defaults } = pure
+  const { React, PropTypes, cloneElement, formula, Pre, defaults } = pure
   const Pane = pane(pure)
 
   const wrapStyle = { display: 'flex'
@@ -70,7 +70,7 @@ export default function column(pure) {
                 , styles
                 , theme
                 , actions
-                , fields
+                , fields = {}
                 } = this.props
 
           const { checkbox, radio, sort, filter } = fields
@@ -175,7 +175,8 @@ export default function column(pure) {
       { displayName: 'Footer'
       , render() {
           const { children, ...props } = this.props
-          return children ? cloneElement(children, props) : null
+          return <div>{children}</div>
+          //return children ? cloneElement(children, props) : null
         }
       }
     )
