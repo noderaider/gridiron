@@ -45,7 +45,8 @@
 
 .grid {
   position: relative;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
 
   /* Without this property, Chrome repaints the entire Grid any time a new row or column is added.

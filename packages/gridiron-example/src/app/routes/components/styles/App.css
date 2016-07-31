@@ -20,6 +20,12 @@
 @custom-media --3x-screen only screen and (width >= 81.25em);
 
 
+:global body {
+  background-color: rgb(100, 100, 100);
+  margin: 0px;
+  padding: 0px;
+}
+
 .app {
   width: 100%;
   color: rgb(131, 148, 150);

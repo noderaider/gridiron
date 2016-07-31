@@ -63,7 +63,7 @@ export default function accordion (pure) {
                     </div>
                     <div
                       ref={x => this.contents[rowID] = x}
-                      className={cn(styles.accordionContent, theme.accordionHeader)}
+                      className={cn(styles.accordionContent, theme.accordionContent)}
                     >
                       {mapContent({ rowIndex, rowID, datum: datum.get('content') })}
                     </div>

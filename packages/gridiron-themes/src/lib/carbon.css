@@ -14,13 +14,14 @@
 }
 
 .accordionHeader {
-  border-bottom: 1px dashed rgb(80, 80, 80);
+  border-bottom: 2px groove rgb(80, 80, 80);
   background-color: rgb(60, 60, 60);
   padding: 0 10px;
 }
 
 .accordionContent {
   padding: 0 10px;
+  background-color: rgb(70, 70, 70);
 }
 
 /** END ACCORDION */
@@ -28,7 +29,7 @@
 
 
 .grid {
-  margin:0;
+  margin:5px 0;
   padding: 0px;
   border: 2px solid rgb(100, 100, 100);
   border-radius:4px;
