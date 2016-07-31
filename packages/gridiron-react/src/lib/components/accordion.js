@@ -30,13 +30,17 @@ export default function accordion (pure) {
           const node = this.contents[rowID]
           if(ZERO_MEASURES.includes(node.style.maxHeight))
             raf(() => this.expandRow(rowID))
-          else
+          else if(this.collapseRow)
             raf(() => this.collapseRow(rowID))
         }
         this.expandRow = rowID => {
           if(this.collapseRow)
             this.collapseRow()
-          this.collapseRow = () => this.contents[rowID].style.maxHeight = 0
+          this.collapseRow = () => {
+            const node = this.contents[rowID]
+            if(node)
+              node.style.maxHeight = 0
+          }
           const node = this.contents[rowID]
           node.style.maxHeight = `${node.scrollHeight}px`
         }
