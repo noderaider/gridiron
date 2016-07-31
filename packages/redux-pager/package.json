@@ -46,7 +46,7 @@
     "classnames": "^2.2.5",
     "lodash": "^4.13.1",
     "ncp": "^2.0.0",
-    "react-stamp": "latest",
+    "pure-stamp": "^0.1.7",
     "solvent": "^0.12.1"
   },
   "devDependencies": {

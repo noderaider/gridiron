@@ -31,16 +31,18 @@ export default function pane (pure) {
                             , transition ? theme.paneTransition : null
                             )
 
+/*
         const PaneColumn = ({ children }) => (
           <div className={cn(styles.paneColumn, theme.paneColumn)}>
             {children}
           </div>
         )
+        */
 
         return (
           <div className={className}>
             <div className={cn(styles.paneContent, theme.paneContent)}>
-              <PaneColumn>{children}</PaneColumn>
+              {children}
             </div>
           </div>
         )

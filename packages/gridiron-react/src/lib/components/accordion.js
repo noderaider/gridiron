@@ -20,29 +20,37 @@ export default function accordion (pure) {
 
   return pure (
     { displayName: 'Accordion'
-    , propTypes:  {
+    , propTypes:  { styles: PropTypes.object.isRequired
+                  , theme: PropTypes.object.isRequired
+                  , mapHeader: PropTypes.func.isRequired
+                  , mapContent: PropTypes.func.isRequired
+                  , data: PropTypes.object.isRequired
+                  , transitionDurationMS: PropTypes.number
                   }
     , defaultProps: { ...defaults
                     }
     , init() {
         this.contents = {}
+        this.expanded = []
         this.toggleRow = rowID => {
           const node = this.contents[rowID]
           if(ZERO_MEASURES.includes(node.style.maxHeight))
             raf(() => this.expandRow(rowID))
-          else if(this.collapseRow)
-            raf(() => this.collapseRow(rowID))
+          else
+            raf(() => this.collapseRows())
         }
-        this.expandRow = rowID => {
-          if(this.collapseRow)
-            this.collapseRow()
-          this.collapseRow = () => {
-            const node = this.contents[rowID]
+        this.collapseRows = () => {
+          const failed = []
+          for(const node of Object.values(this.contents)) {
             if(node)
               node.style.maxHeight = 0
           }
+        }
+        this.expandRow = rowID => {
+          this.collapseRows()
           const node = this.contents[rowID]
           node.style.maxHeight = `${node.scrollHeight}px`
+          this.expanded.push(rowID)
         }
       }
     , render() {

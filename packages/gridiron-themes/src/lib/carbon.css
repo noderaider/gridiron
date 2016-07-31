@@ -11,22 +11,24 @@
 /** ACCORDION */
 
 .accordionRow {
+  background-color: rgb(50, 50, 50);
 }
 
 .accordionHeader {
-  border-bottom: 2px groove rgb(80, 80, 80);
   background-color: rgb(60, 60, 60);
-  padding: 0 10px;
 }
 
 .accordionHeader:hover {
-  border-bottom: 2px groove rgb(80, 80, 200);
   background-color: rgb(60, 60, 160);
 }
 
 .accordionContent {
-  padding: 0 10px;
   background-color: rgb(70, 70, 70);
+}
+
+.accordionHeader > *,
+.accordionContent > * {
+  margin: 15px;
 }
 
 .pagerSelect {
@@ -37,7 +39,6 @@
 }
 
 /** END ACCORDION */
-
 
 
 .grid {
@@ -52,6 +53,11 @@
   background: url(http://dribbble.s3.amazonaws.com/users/1672/screenshots/197056/carbonfiber_iphone4.png) !important;
 }
 
+.row.even,
+.row.odd {
+  border-top: 1px groove rgb(80, 80, 80);
+  border-bottom: 2px groove rgb(80, 80, 80);
+}
 
 .row.even {
   background-color: rgb(40, 40, 40);
@@ -69,16 +75,10 @@
 }
 
 
-
 .expander {
   color: rgba(200, 200, 200, 0.7);
 }
 
-
-
-.control[disabled] {
-  color: rgba(100, 100, 100, 0.5);
-}
 
 .gridHeader,
 .gridFooter,
@@ -103,13 +103,11 @@
   background: linear-gradient(180deg, rgba(20, 20, 20, 0), rgba(20, 20, 20, 0.8));
   border-style: double;
   border-color: rgba(100, 100, 100, 0.8);
-  border-width: 1px 1px 0;
 }
 
 .paneHidden .header {
   border-style: double;
-  border-color: transparent;
-  border-width: 1px 1px 0;
+  border-color: rgba(100, 100, 100, 0.8);
 }
 
 
@@ -167,67 +165,3 @@
   align-items: center;
 }
 
-
-.control {
-  font-size: 18px;
-  position: relative;
-  display: block;
-  margin-bottom: 15px;
-  padding-left: 30px;
-  cursor: pointer;
-}
-
-.control input {
-  position: absolute;
-  z-index: -1;
-  opacity: 0;
-}
-
-
-.checkbox, .radio {
-    opacity: 0;
-    position: absolute;
-}
-
-.checkbox, .checkbox-label, .radio, .radio-label {
-    display: inline-block;
-    vertical-align: middle;
-    margin: 5px;
-    cursor: pointer;
-}
-
-.checkbox-label, .radio-label {
-    position: relative;
-}
-
-.checkbox + .checkbox-label:before, .radio + .radio-label:before {
-    content: '';
-    background: #fff;
-    border: 2px solid #ddd;
-    display: inline-block;
-    vertical-align: middle;
-    width: 20px;
-    height: 20px;
-    padding: 2px;
-    margin-right: 10px;
-    text-align: center;
-}
-
-.checkbox:checked + .checkbox-label:before {
-    background: rebeccapurple;
-    box-shadow: inset 0px 0px 0px 4px #fff;
-}
-
-.radio + .radio-label:before {
-    border-radius: 50%;
-}
-
-.radio:checked + .radio-label:before {
-    background: #ccc;
-    box-shadow: inset 0px 0px 0px 4px #fff;
-}
-
-
-.checkbox:focus + .checkbox-label, .radio:focus + .radio-label {
-  outline: 1px solid #ddd; /* focus style */
-}

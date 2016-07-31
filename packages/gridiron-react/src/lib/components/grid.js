@@ -66,7 +66,9 @@ export default function grid (pure) {
       }
     , RowHeader: ({ children, ...props }) => (
         <div className={cn(styles.rowHeader, theme.rowHeader)}>
-          {children}
+          <span className={cn(styles.rowHeaderContent, theme.rowHeaderContent)}>
+            {children}
+          </span>
         </div>
       )
     , RowBody: ({ children, ...props }) => (
@@ -76,7 +78,9 @@ export default function grid (pure) {
       )
     , RowFooter: ({ children, ...props }) => (
         <div className={cn(styles.rowFooter, theme.rowFooter)}>
-          {children}
+          <span className={cn(styles.rowFooterContent, theme.rowFooterContent)}>
+            {children}
+          </span>
         </div>
       )
     , Cell: ({ children, ...props }) => (
@@ -169,7 +173,6 @@ export default function grid (pure) {
           const { data, mapColumn, mapRow } = this.props
           const columns = data.get('columns')
           const rows = data.get('rows')
-          //const locals = data.get('columns').reduce((map, columnID) => map.set(columnID, mapColumn.local(columnID)), Immutable.Map())
           const column = mapColumn.local ? columns.reduce((map, columnID) => map.set(columnID, mapColumn.local(columnID)), Immutable.Map()) : Immutable.Map()
           const row = mapRow.local ? rows.keySeq().reduce((map, rowID) => {
             return map.set(rowID, mapRow.local(rowID))
@@ -254,10 +257,6 @@ export default function grid (pure) {
             {rows.entrySeq().map(
               ([ rowID, rowContext ], rowIndex) => {
                 const local = locals.getIn([ 'row', rowID ])
-                if(!rowContext.get || !rowContext.get) {
-                  console.warn('ROW CONTEXT NO GOOD', rowContext)
-                  return null
-                }
                 const rowDatum = rowContext.get('rowDatum')
                 const cellData = rowContext.get('cellData')
                 return (

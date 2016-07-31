@@ -193,14 +193,14 @@
 .inputWrap {
   font-size: 1em;
   position: relative;
-  display: block;
+  display: flex;
 }
 
 .inputWrap.type_checkbox {
   /* Checkbox tick */
   & .inputUI:after {
-    top: 10%;
-    left: 34%;
+    top: 0;
+    left: 30%;
     width: 3px;
     height: 8px;
     transform: rotate(45deg);
@@ -230,7 +230,6 @@
   font-size:1em;
   height: 1em;
   width: 1em;
-  padding: 0.25em 0;
 
 
   & .input {
@@ -244,8 +243,9 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 1em;
-    height: 1em;
+    width: 0.9em;
+    height: 0.9em;
+    margin: 0.05em;
   }
 
     /* Check mark */

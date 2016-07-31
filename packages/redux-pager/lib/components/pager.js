@@ -10,17 +10,13 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 exports.default = pager;
 
-var _pureStamp = require('pure-stamp');
-
-var _pureStamp2 = _interopRequireDefault(_pureStamp);
-
 var _classnames = require('classnames');
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _solvent2 = require('solvent');
+var _solvent = require('solvent');
 
-var _solvent3 = _interopRequireDefault(_solvent2);
+var _solvent2 = _interopRequireDefault(_solvent);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -41,20 +37,15 @@ function nextDirection(direction) {
   }
 }
 
-function pager() {
-  var deps = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-  var defaults = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+function pager(pure) {
+  var React = pure.React;
+  var PropTypes = pure.PropTypes;
+  var cloneElement = pure.cloneElement;
+  var connect = pure.connect;
+  var shallowCompare = pure.shallowCompare;
+  var Immutable = pure.Immutable;
+  var defaults = pure.defaults;
 
-  var _solvent = (0, _solvent3.default)({ React: 'object', connect: 'function', shallowCompare: 'function', Immutable: 'object' })(deps);
-
-  var React = _solvent.React;
-  var connect = _solvent.connect;
-  var shallowCompare = _solvent.shallowCompare;
-  var Immutable = _solvent.Immutable;
-  var Component = React.Component;
-  var PropTypes = React.PropTypes;
-
-  var pure = (0, _pureStamp2.default)(deps, defaults);
 
   var contentShape = { FastBackward: PropTypes.any.isRequired,
     StepBackward: PropTypes.any.isRequired,
@@ -243,11 +234,11 @@ function pager() {
             var newRowData = rowData.entrySeq().filter(function (_ref10) {
               var _ref11 = _slicedToArray(_ref10, 2);
 
-              var id = _ref11[0];
+              var rowID = _ref11[0];
               var datum = _ref11[1];
 
-              var value = Object.keys(filterState).some(function (filterID) {
-                return filterState[filterID](id) === true;
+              var value = Object.keys(filterState).some(function (columnID) {
+                return filterState[columnID](rowID) === true;
               });
 
               if (value) anyFiltered = true;
@@ -379,12 +370,6 @@ function pager() {
         return mapStateToRowData(_this.props.state);
       };
 
-      /*
-              this.filterContent = Object.keys(filters).reduce((rendered, id) => {
-                return ({ ...rendered, [id]: <Filter id={id} rowData={getRowData()} /> })
-              }, {})
-              */
-
       var onFilter = function onFilter(filterState) {
         var rowData = filterRowData(getRowData(), filterState);
         _this.setState({ rowData: rowData });
@@ -406,7 +391,6 @@ function pager() {
 
       return React.createElement(PagerRowFilter, _extends({}, childProps, {
         rowData: this.state.rowData
-        //filterContent={this.filterContent}
       }));
     }
   }));
@@ -417,7 +401,6 @@ function pager() {
       sortData: PropTypes.func.isRequired,
       mapDataToStatus: PropTypes.func.isRequired,
       mapStatusToActions: PropTypes.func.isRequired
-      //, mapCols: PropTypes.func.isRequired
     },
     state: { status: Immutable.Map(),
       data: null
@@ -492,7 +475,8 @@ function pager() {
     }
   });
 
-  var Pager = pure({ defaultProps: defaults,
+  var Pager = pure({ displayName: 'Pager',
+    defaultProps: defaults,
     render: function render() {
       var _props6 = this.props;
       var children = _props6.children;
@@ -532,7 +516,8 @@ function pager() {
     }
   });
 
-  var PagerControls = pure({ defaultProps: defaults,
+  var PagerControls = pure({ displayName: 'PagerControls',
+    defaultProps: defaults,
     render: function render() {
       var _props7 = this.props;
       var children = _props7.children;
@@ -579,7 +564,8 @@ function pager() {
     }
   });
 
-  var PagerSelect = pure({ defaultProps: defaults,
+  var PagerSelect = pure({ displayName: 'PagerSelect',
+    defaultProps: defaults,
     render: function render() {
       var _this3 = this;
 
@@ -614,7 +600,8 @@ function pager() {
     }
   });
 
-  var PagerRowsPerPage = pure({ defaultProps: defaults,
+  var PagerRowsPerPage = pure({ displayName: 'PagerRowsPerPage',
+    defaultProps: defaults,
     render: function render() {
       var _this4 = this;
 
@@ -658,7 +645,8 @@ function pager() {
     }
   });
 
-  var PagerStatus = pure({ defaultProps: defaults,
+  var PagerStatus = pure({ displayName: 'PagerStatus',
+    defaultProps: defaults,
     render: function render() {
       var _props10 = this.props;
       var styleName = _props10.styleName;

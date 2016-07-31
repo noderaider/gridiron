@@ -5,27 +5,6 @@ export default function column(pure) {
   const { React, PropTypes, cloneElement, formula, Pre, defaults } = pure
   const Pane = pane(pure)
 
-  const wrapStyle = { display: 'flex'
-                    , flexDirection: 'row'
-                    , flexWrap: 'nowrap'
-                    , flexGrow: 1
-                    , alignItems: 'center'
-                    , justifyContent: 'space-between'
-                    }
-
-  const leftStyle = { display: 'flex'
-                    , flexDirection: 'row'
-                    , flexWrap: 'nowrap'
-                    , flex: 1
-                    , alignItems: 'center'
-                    }
-  const leftControlStyle =  { display: 'flex'
-                            , marginRight: 5
-                            }
-  const childrenStyle = { display: 'flex'
-                        }
-
-
   const SortIcon = ({ direction }) => {
     let sortClass = 'fa fa-sort'
     if(direction === 'asc' || direction === 'desc')
@@ -71,6 +50,7 @@ export default function column(pure) {
                 , theme
                 , actions
                 , fields = {}
+                , paneContent
                 } = this.props
 
           const { checkbox, radio, sort, filter } = fields
@@ -86,26 +66,23 @@ export default function column(pure) {
                               )
           return (
             <div className={className}>
-              <span style={wrapStyle} className={cn(styles.header, theme.header)}>
-                <span style={leftStyle}>
-                  <span style={leftControlStyle}>
-                    {checkbox ? (
-                      <headerForm.Field
-                        name={HEADER_CHECKBOX}
-                        type="checkbox"
-                        {...checkbox}
-                        subscribeForm={ { target: cellForm.formName
-                                        , selectValue: inputs => false
-                                        }
+              <span className={cn(styles.header, theme.header)}>
+                <span className={cn(styles.headerLeft, theme.headerLeft)}>
+                  {checkbox ? (
+                    <headerForm.Field
+                      name={HEADER_CHECKBOX}
+                      type="checkbox"
+                      {...checkbox}
+                      subscribeForm={ { target: cellForm.formName
+                                      , selectValue: inputs => false
                                       }
-                        shouldUpdate={(({ currentValue, subscribed, subscriptionType, from }) => {
-                          console.info('SHOULD UPDATE FROM FORM =>', currentValue, subscribed)
-                          return currentValue === true
-                        })}
-                      />
-                    ) : null}
-                  </span>
-                  <span style={childrenStyle}>{children}</span>
+                                    }
+                      shouldUpdate={(({ currentValue, subscribed, subscriptionType, from }) => {
+                        return currentValue === true
+                      })}
+                    />
+                  ) : null}
+                  <span className={cn(styles.headerContent, theme.headerContent)}>{children}</span>
                 </span>
                 <span>
                   {filter ? (
@@ -130,9 +107,9 @@ export default function column(pure) {
                   ) : null}
                 </span>
               </span>
-              {pane ? (
+              {paneContent ? (
                 <Pane enabled={paneVisible}>
-                  {pane}
+                  {paneContent}
                 </Pane>
               ) : null}
             </div>
@@ -162,7 +139,6 @@ export default function column(pure) {
                 type="checkbox"
                 subscribeInput={[ headerForm.formName, HEADER_CHECKBOX ]}
                 shouldUpdate={({ currentValue, subscribed, subscriptionType }) => {
-                  console.info('SHOULD UPDATE', currentValue, subscribed, subscriptionType)
                   return true
                 }}>
                 {children}

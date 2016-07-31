@@ -1,4 +1,3 @@
-import pureStamp from 'pure-stamp'
 import cn from 'classnames'
 import solvent from 'solvent'
 
@@ -15,10 +14,8 @@ function nextDirection(direction) {
   }
 }
 
-export default function pager (deps = {}, defaults = {}) {
-  const { React, connect, shallowCompare, Immutable } = solvent({ React: 'object', connect: 'function', shallowCompare: 'function', Immutable: 'object' })(deps)
-  const { Component, PropTypes } = React
-  const pure = pureStamp(deps, defaults)
+export default function pager (pure) {
+  const { React, PropTypes, cloneElement, connect, shallowCompare, Immutable, defaults } = pure
 
   const contentShape =  { FastBackward: PropTypes.any.isRequired
                         , StepBackward: PropTypes.any.isRequired
@@ -125,9 +122,9 @@ export default function pager (deps = {}, defaults = {}) {
             filterRowData={(rowData, filterState) => {
               if(filterState) {
                 let anyFiltered = false
-                let newRowData = rowData.entrySeq().filter(([ id, datum ]) => {
-                  const value = Object.keys(filterState).some(filterID => {
-                    return filterState[filterID](id) === true
+                let newRowData = rowData.entrySeq().filter(([ rowID, datum ]) => {
+                  const value = Object.keys(filterState).some(columnID => {
+                    return filterState[columnID](rowID) === true
                   })
 
                   if(value)
@@ -239,12 +236,6 @@ export default function pager (deps = {}, defaults = {}) {
 
         const getRowData = () => mapStateToRowData(this.props.state)
 
-/*
-        this.filterContent = Object.keys(filters).reduce((rendered, id) => {
-          return ({ ...rendered, [id]: <Filter id={id} rowData={getRowData()} /> })
-        }, {})
-        */
-
         const onFilter = filterState => {
           const rowData = filterRowData(getRowData(), filterState)
           this.setState({ rowData })
@@ -267,7 +258,6 @@ export default function pager (deps = {}, defaults = {}) {
           <PagerRowFilter
             {...childProps}
             rowData={this.state.rowData}
-            //filterContent={this.filterContent}
           />
         )
       }
@@ -281,7 +271,6 @@ export default function pager (deps = {}, defaults = {}) {
                   , sortData: PropTypes.func.isRequired
                   , mapDataToStatus: PropTypes.func.isRequired
                   , mapStatusToActions: PropTypes.func.isRequired
-                  //, mapCols: PropTypes.func.isRequired
                   }
     , state:  { status: Immutable.Map()
               , data: null
@@ -338,7 +327,8 @@ export default function pager (deps = {}, defaults = {}) {
 
 
    const Pager = pure (
-    { defaultProps: defaults
+    { displayName: 'Pager'
+    , defaultProps: defaults
     , render() {
         const { children, cols, data, ...childProps } = this.props
         const { status, actions, content, styles, theme } = childProps
@@ -358,7 +348,8 @@ export default function pager (deps = {}, defaults = {}) {
 
 
   const PagerControls = pure (
-    { defaultProps: defaults
+    { displayName: 'PagerControls'
+    , defaultProps: defaults
     , render() {
         const { children, status, actions, content, styles, theme } = this.props
         const buttonClass = cn(styles.pagerButton, theme.pagerButton)
@@ -388,7 +379,8 @@ export default function pager (deps = {}, defaults = {}) {
   )
 
   const PagerSelect = pure (
-    { defaultProps: defaults
+    { displayName: 'PagerSelect'
+    , defaultProps: defaults
     , render() {
         const { status, actions, content, styles, theme } = this.props
         return typeof status.get('rowsPerPage') === 'number' && status.get('rowsPerPage') > 0 ? (
@@ -405,7 +397,8 @@ export default function pager (deps = {}, defaults = {}) {
   )
 
   const PagerRowsPerPage = pure (
-    { defaultProps: defaults
+    { displayName: 'PagerRowsPerPage'
+    , defaultProps: defaults
     , render() {
         const { label, status, actions, content, styles, theme } = this.props
         return (
@@ -431,9 +424,9 @@ export default function pager (deps = {}, defaults = {}) {
     }
   )
 
-
   const PagerStatus = pure (
-    { defaultProps: defaults
+    { displayName: 'PagerStatus'
+    , defaultProps: defaults
     , render() {
         const { styleName, Content, className, status, actions, content, styles, theme } = this.props
         return (

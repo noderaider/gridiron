@@ -77,21 +77,21 @@ const filterData = (data, filterState) => {
   return data
 }
 
-const createFilterStream = ids => onFilter => {  //(getData, onChange) => {
-  const formNames = ids.map(getFormName)
+const createFilterStream = columnIDs => onFilter => {  //(getData, onChange) => {
+  const formNames = columnIDs.map(getFormName)
   return formula.subscribe(formNames, formStates => {
 
-    const filterState = ids.reduce((result, id, i) => {
-      const getFilterValue = dataKey => formStates[i].getIn([ getFilterName(dataKey), 'value' ], false)
-      return { ...result, [id]: getFilterValue }
-    })
+    const filterState = columnIDs.reduce((result, columnID, i) => {
+      const getFilterValue = rowID => formStates[i].getIn([ getFilterName(rowID), 'value' ], false)
+      return { ...result, [columnID]: getFilterValue }
+    }, {})
     //console.warn('FILTER STREAM', filterState)
     onFilter(filterState)
   })
 }
 
-const getFormName = id => `filter-form-${id}`
-const getFilterName = id => `filter_${id}`
+const getFormName = columnID => `filter-form-${columnID}`
+const getFilterName = rowID => `filter_${rowID}`
 
 
 
@@ -101,16 +101,22 @@ const FilterForm = pure (
                 , data: PropTypes.object.isRequired
                 }
   , init() {
-      this.form = formula(`filter-form-${this.props.columnID}`)
+      this.form = formula(getFormName(this.props.columnID))
     }
   , render() {
-      const { data } = this.props
+      const { data, columnID } = this.props
       return (
         <div>
-          ROW HERE
-          {data.get('rows').toSet().sort().map((name, key) =>
-            <this.form.Field key={key} name={`filter_${name}`} type="checkbox">{name}</this.form.Field>
-          )}
+          {data.get('rows').entrySeq().map(([ rowID, context ], rowIndex) => {
+            const cellDatum = context.getIn([ 'cellData', columnID ])
+            console.info('CELL CONTEXT', context.toJS(), columnID, cellDatum)
+
+            return (
+              <this.form.Field key={rowIndex} name={getFilterName(rowID)} type="checkbox"><Pre>{cellDatum}</Pre></this.form.Field>
+            )
+          })}
+          {/*data.get('rows').toSet().sort().map((name, key) =>
+          )*/}
         </div>
       )
     }
@@ -220,7 +226,7 @@ const Gridiron = pure (
                                         , filter: true
                                         , sort: pager.status.get('sort')
                                         }}
-                                pane={<span> PANE CONTENT</span>} //<FilterForm data={pager.status.get('data')} columnID={columnIndex} />}
+                                paneContent={<FilterForm data={pager.status.get('data')} columnID={columnID} />}
                               >
                                 {columnID}
                               </column.Header>
@@ -238,7 +244,7 @@ const Gridiron = pure (
                       mapRow={(
                         { local: rowID => {}
                         , header: ({ local, rowID, rowIndex, rowDatum }) => {
-                            return <h4>header: <Pre>{{ rowID, rowIndex }}</Pre></h4>
+                            return <h3>{rowID}</h3>
                           }
                         , footer: ({ local, rowID, rowIndex, rowDatum }) => {
                             return <h4>footer: <Pre>{{ rowID, rowIndex }}</Pre></h4>
