@@ -8,6 +8,41 @@
 
 
 
+/** ACCORDION */
+
+.accordionRow {
+  display:flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  width: 100%;
+}
+
+.accordionHeader {
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.accordionContent {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  overflow: hidden;
+
+  max-height:0;
+
+  will-change: max-height;
+
+  transition-property: max-height;
+  transition-duration: 300ms;
+  transition-timing-function: linear;
+}
+
+/** END ACCORDION */
+
+
 .grid {
   position: relative;
   overflow: auto;

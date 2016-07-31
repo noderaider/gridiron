@@ -56,14 +56,6 @@ export default function grid (pure) {
           {children}
         </div>
       )
-    , RowGroup: ({ rowIndex, children, ...props }) => {
-        const moduloStyle = typeof rowIndex === 'number' ? (rowIndex % 2 === 0 ? 'even' : 'odd') : null
-        return (
-          <div className={cn(styles.rowGroup, theme.rowGroup, styles[moduloStyle], theme[moduloStyle])}>
-            {children}
-          </div>
-        )
-      }
     , Row: ({ rowIndex, children, ...props }) => {
         const moduloStyle = typeof rowIndex === 'number' ? (rowIndex % 2 === 0 ? 'even' : 'odd') : null
         return (
@@ -219,16 +211,17 @@ export default function grid (pure) {
 
         const gridColumns = columns.map((columnID, columnIndex) => {
           const local = locals.getIn([ 'column', columnID ])
-          const header = (
+          const header = mapColumn.header ? (
             <templates.ColumnHeader key={columnIndex} columnIndex={columnIndex}>
               {mapColumn.header({ local, columnID, columnIndex })}
             </templates.ColumnHeader>
-          )
-          const footer = (
+          ) : null
+
+          const footer = mapColumn.footer ? (
             <templates.ColumnFooter key={columnIndex} columnIndex={columnIndex}>
               {mapColumn.footer({ local, columnID, columnIndex })}
             </templates.ColumnFooter>
-          )
+          ) : null
           return { header, footer }
         })
 
@@ -252,9 +245,11 @@ export default function grid (pure) {
             tabIndex={tabIndex}
           >
             {this.props.header ? <templates.Header>{this.props.header}</templates.Header> : null}
-            <templates.Row key="row-headers" isHeader={true}>
-              {gridColumns.map(columns => columns.header)}
-            </templates.Row>
+            {mapColumn.header ? (
+              <templates.Row key="row-headers" isHeader={true}>
+                {gridColumns.map(columns => columns.header)}
+              </templates.Row>
+            ) : null}
 
             {rows.entrySeq().map(
               ([ rowID, rowContext ], rowIndex) => {
@@ -292,9 +287,11 @@ export default function grid (pure) {
                 )
               }
             )}
-            <templates.Row key="row-footers" isFooter={true}>
-              {gridColumns.map(columns => columns.footer)}
-            </templates.Row>
+            {mapColumn.footer ? (
+              <templates.Row key="row-footers" isFooter={true}>
+                {gridColumns.map(columns => columns.footer)}
+              </templates.Row>
+            ) : null}
 
             {this.props.footer ? <templates.Footer>{this.props.footer}</templates.Footer> : null}
           </templates.Container>
@@ -304,13 +301,3 @@ export default function grid (pure) {
     }
   )
 }
-                      /*locals.entrySeq().map(([ columnID, local ], columnIndex) => {
-                        const datum = rowContext.getIn([ 'cellData', columnID ])
-                        const columnLocal = locals.getIn([ 'column', columnID ])
-                        const rowLocal = locals.getIn([ 'row', rowID ])
-                        return (
-                          <templates.Cell key={columnIndex} rowIndex={rowIndex} columnIndex={columnIndex}>
-                            {mapCell({ columnLocal, rowLocal, rowIndex, columnIndex, rowID, columnID, datum })}
-                          </templates.Cell>
-                        )
-                      })*/

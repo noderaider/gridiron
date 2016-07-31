@@ -7,6 +7,26 @@
 /** 3x-screen | 1300px */ @custom-media --3x-screen only screen and (width >= 81.25em);
 
 
+
+/** ACCORDION */
+
+.accordionRow {
+}
+
+.accordionHeader {
+  border-bottom: 1px dashed rgb(80, 80, 80);
+  background-color: rgb(60, 60, 60);
+  padding: 0 10px;
+}
+
+.accordionContent {
+  padding: 0 10px;
+}
+
+/** END ACCORDION */
+
+
+
 .grid {
   margin:0;
   padding: 0px;

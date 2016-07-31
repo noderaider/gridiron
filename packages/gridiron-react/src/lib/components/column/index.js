@@ -46,7 +46,7 @@ export default function column(pure) {
     const getCellName = ({ type, rowID }) => `R-${rowID}_C-${columnID}_T-${type.toUpperCase()}`
 
     const Header = pure (
-      { displayName: 'Header'
+      { displayName: 'Column.Header'
       , propTypes:  { theme: PropTypes.object.isRequired
                     , styles: PropTypes.object.isRequired
                     , status: PropTypes.object.isRequired
@@ -143,12 +143,12 @@ export default function column(pure) {
 
 
     const Cell = pure (
-      { displayName: 'Cell'
+      { displayName: 'Column.Cell'
       , propTypes:  { styles: PropTypes.object.isRequired
                     , theme: PropTypes.object.isRequired
                     , rowID: PropTypes.any.isRequired
                     }
-      , state: { checked: false }
+      , defaultProps: defaults
       , init() {
           this.getName = type => getCellName({ type, ...this.props })
         }
@@ -156,23 +156,26 @@ export default function column(pure) {
           const { rowID, checkbox, styles, theme, children, ...props } = this.props
 
           return (
-            <cellForm.Field
-              name={this.getName('checkbox')}
-              type="checkbox"
-              subscribeInput={[ headerForm.formName, HEADER_CHECKBOX ]}
-              shouldUpdate={({ currentValue, subscribed, subscriptionType }) => {
-                console.info('SHOULD UPDATE', currentValue, subscribed, subscriptionType)
-                return true
-              }}>
-              {children}
-            </cellForm.Field>
+            <div {...props}>
+              <cellForm.Field
+                name={this.getName('checkbox')}
+                type="checkbox"
+                subscribeInput={[ headerForm.formName, HEADER_CHECKBOX ]}
+                shouldUpdate={({ currentValue, subscribed, subscriptionType }) => {
+                  console.info('SHOULD UPDATE', currentValue, subscribed, subscriptionType)
+                  return true
+                }}>
+                {children}
+              </cellForm.Field>
+            </div>
           )
         }
       }
     )
 
     const Footer = pure (
-      { displayName: 'Footer'
+      { displayName: 'Column.Footer'
+      , defaultProps: defaults
       , render() {
           const { children, ...props } = this.props
           return <div>{children}</div>

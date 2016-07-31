@@ -125,13 +125,58 @@ const Gridiron = pure (
 
       return (
         <div>
-          <div>
 
-          </div>
+          {container(({ Controls, Box, isMaximized, id, actions }) => (
+            <Pager
+              rowsPerPage={5}
+              filterStream={
+                createFilterStream([ 'accordion' ])
+              }
 
-          <Accordion header={<h3 key="title" style={{ margin: 0, letterSpacing: 6 }}>Accordion</h3>}>
-            {accordionRow => Array(20).fill(0).map((x, i) => accordionRow(<div>ITEM {i}</div>, <div>ITEM {i} CONTENT</div>))}
-          </Accordion>
+              map={ { rowData: state => Immutable.Map.isMap(state) ? state : Immutable.Map(state)
+                    , cellData: (rowID, rowDatum) => Immutable.Map({ accordion: Immutable.Map({ header: rowID, content: rowDatum }) })
+                    }
+                  }
+
+              sort={Immutable.fromJS(
+                { cols: [ 'accordion' ]
+                , keys: { accordion: data => data.join('_') }
+                })
+              }
+
+              theme={carbon}>
+              {pager => (
+                <Box>
+                  <Accordion
+                      styles={styles}
+                      theme={carbon}
+                      cols={pager.cols}
+                      data={pager.status.get('data', Immutable.Map())}
+                      mapHeader={({ rowID, rowIndex, datum }) => {
+                        return <h3>{datum}</h3>
+                      }}
+                      mapContent={({ rowID, rowIndex, datum }) => {
+                        return (
+                          <h4>content: <Pre>{{ rowID, rowIndex, datum }}</Pre></h4>
+                        )
+                      }}
+                      header={
+                        [ <h2 key="title" style={{ margin: 0, letterSpacing: 6 }}>Accordion</h2>
+                        , <Controls key="maximize" />
+                        ]
+                      }
+                      footer={[ <pager.Controls key="pager-buttons"><pager.Select /></pager.Controls>
+                              , <pager.RowStatus key="pager-row-status" />
+                              , <pager.PageStatus key="pager-page-status" />
+                              , <pager.RowsPerPage label="Rows Per Page" key="rows-per-page" />
+                              ]}
+                      Pre={Pre}
+                      {...this.props}
+                    />
+                </Box>
+              )}
+            </Pager>
+          ))}
 
 
           {container(({ Controls, Box, isMaximized, id, actions }) => (
@@ -205,7 +250,7 @@ const Gridiron = pure (
                         ({ columnLocal, rowLocal, rowIndex, columnIndex, rowID, columnID, datum }) => {
                           const { column } = columnLocal
                           return (
-                            <column.Cell>
+                            <column.Cell rowID={rowID}>
                               <Pre>{{ rowIndex, columnIndex, rowID, columnID, datum }}</Pre>
                             </column.Cell>
                           )
@@ -214,7 +259,7 @@ const Gridiron = pure (
 
                       mapDrill={parentId => <div>Sub grid for {parentID}</div>} //<ReduxGridDetail ids={parentId} />}
                       header={
-                        [ <h3 key="title" style={{ margin: 0, letterSpacing: 6 }}>Grid</h3>
+                        [ <h2 key="title" style={{ margin: 0, letterSpacing: 6 }}>Grid</h2>
                         , <Controls key="maximize" />
                         ]
                       }

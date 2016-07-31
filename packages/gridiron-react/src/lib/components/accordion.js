@@ -1,6 +1,8 @@
 import cn from 'classnames'
+import raf from 'raf'
 import grid from './grid'
-import column from './column'
+import column from './column/index'
+import util from 'util'
 
 export default function accordion (pure) {
   const { React
@@ -14,119 +16,57 @@ export default function accordion (pure) {
         } = pure
 
   const Grid = grid(pure)
-  const Column = column(pure)
-
-  const AccordionRow = pure (
-    { displayName: 'AccordionRow'
-    , defaultProps: { ...defaults
-                    }
-    , render() {
-        const { styles, theme, children, ...childProps } = this.props
-        return (
-          <div className={cn(styles.accordionRow, theme.accordionRow)} {...childProps}>
-            {children}
-          </div>
-        )
-      }
-    }
-  )
-
-  const AccordionHeader = pure (
-    { displayName: 'AccordionHeader'
-    , defaultProps: { ...defaults
-                    }
-    , render() {
-        const { styles, theme, children, ...childProps } = this.props
-        return (
-          <div className={cn(styles.accordionHeader, theme.accordionHeader)} {...childProps}>
-            {children}
-          </div>
-        )
-      }
-    }
-  )
-
-
-  const AccordionChild = pure (
-    { displayName: 'AccordionChild'
-    , defaultProps: { ...defaults
-                    }
-    , render() {
-        const { styles, theme, children, ...childProps } = this.props
-        return (
-          <div className={cn(styles.accordionChild, theme.accordionChild)} {...childProps}>
-            <Pre>{{ children, childProps }}</Pre>
-          </div>
-        )
-      }
-    }
-  )
-
-
-  function accordionRow (header, child) {
-    const rowDatum = Immutable.Map({ header, child })
-    const cellData = Immutable.Map({ 'accordion': header })
-    return Immutable.Map({ rowDatum, cellData })
-  }
-
+  const ZERO_MEASURES = [ null, '', 0, '0', '0px' ]
 
   return pure (
     { displayName: 'Accordion'
-    , propTypes:  { children: PropTypes.any.isRequired
+    , propTypes:  {
                   }
     , defaultProps: { ...defaults
                     }
-    , state:  { data: Immutable.Map({ rows: Immutable.Map(), columns: Immutable.List([ 'accordion' ]) })
-              }
     , init() {
-        this._setData = () => {
-          const { children } = this.props
-          const { data } = this.state
-          const accordionRows = children(accordionRow)
-          const accordionMap = accordionRows.reduce((result, row, i) => {
-            return { ...result, [i]: row }
-          })
-          const rows = Immutable.OrderedMap(accordionMap)
-          this.setState({ data: data.set('rows', rows) })
+        this.contents = {}
+        this.toggleRow = rowID => {
+          const node = this.contents[rowID]
+          if(ZERO_MEASURES.includes(node.style.maxHeight))
+            raf(() => this.expandRow(rowID))
+          else
+            raf(() => this.collapseRow(rowID))
+        }
+        this.expandRow = rowID => {
+          if(this.collapseRow)
+            this.collapseRow()
+          this.collapseRow = () => this.contents[rowID].style.maxHeight = 0
+          const node = this.contents[rowID]
+          node.style.maxHeight = `${node.scrollHeight}px`
         }
       }
-    , componentWillMount() {
-        this._setData()
-      }
-    , componentWillReceiveProps() {
-        this._setData()
-      }
     , render() {
-        const { styles, theme, ...gridProps } = this.props
-        const { data } = this.state
+        const { styles, theme, mapHeader, mapContent, data, ...gridProps } = this.props
         return (
           <Grid
+            {...gridProps}
             data={data}
-            mapColumn={
-              { local: ({ colID }) => ({ column: Column(colID) })
-              , header: ({ local, ...props }) => {
-                  const { column } = local
-                  return <column.Header {...props}>HEADER</column.Header>
-                }
-              , footer: ({ local, ...props }) => {
-                  const { column } = local
-                  return <column.Footer {...props}>FOOTER</column.Footer>
-                }
-              }
-            }
             mapCell={
-              ({ columnLocal, rowIndex, columnIndex, rowID, columnID, datum }) => {
-                const { column } = columnLocal
-                console.warn('MAPCELL', datum)
+              ({ rowIndex, columnIndex, rowID, columnID, datum }) => {
                 return (
-                  <column.Cell rowID={rowID}>
-                    <AccordionHeader>{datum.header}</AccordionHeader>
-                    <AccordionChild>{datum.child}</AccordionChild>
-                  </column.Cell>
+                  <div className={cn(styles.accordionRow, theme.accordionRow)}>
+                    <div
+                      onClick={() => this.toggleRow(rowID)}
+                      className={cn(styles.accordionHeader, theme.accordionHeader)}
+                    >
+                      {mapHeader({ rowIndex, rowID, datum: datum.get('header') })}
+                    </div>
+                    <div
+                      ref={x => this.contents[rowID] = x}
+                      className={cn(styles.accordionContent, theme.accordionHeader)}
+                    >
+                      {mapContent({ rowIndex, rowID, datum: datum.get('content') })}
+                    </div>
+                  </div>
                 )
               }
             }
-            {...gridProps}
           />
         )
       }
