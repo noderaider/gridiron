@@ -19,9 +19,21 @@
   padding: 0 10px;
 }
 
+.accordionHeader:hover {
+  border-bottom: 2px groove rgb(80, 80, 200);
+  background-color: rgb(60, 60, 160);
+}
+
 .accordionContent {
   padding: 0 10px;
   background-color: rgb(70, 70, 70);
+}
+
+.pagerSelect {
+  color: rgb(255, 255, 255);
+  background-color: rgb(0, 0, 0);
+  border-radius: 4px;
+  font-size: 0.85rem;
 }
 
 /** END ACCORDION */
@@ -37,6 +49,7 @@
   font-family: monospace;
   box-shadow: 2px 2px 3px rgba(50, 50, 50, 0.5);
   background-color: rgb(60, 60, 60);
+  background: url(http://dribbble.s3.amazonaws.com/users/1672/screenshots/197056/carbonfiber_iphone4.png) !important;
 }
 
 
@@ -62,12 +75,6 @@
 }
 
 
-.select {
-  color: rgb(255, 255, 255);
-  background-color: rgb(0, 0, 0);
-  border-radius: 4px;
-  font-size: 0.85rem;
-}
 
 .control[disabled] {
   color: rgba(100, 100, 100, 0.5);
@@ -78,7 +85,7 @@
 .columnHeader,
 .columnFooter {
   color: #fff !important;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.5);
 
   & button {
     color: #fff;
@@ -89,7 +96,6 @@
 .gridFooter {
   padding: 5px;
   margin: 0;
-  background: url(http://dribbble.s3.amazonaws.com/users/1672/screenshots/197056/carbonfiber_iphone4.png) !important;
 }
 
 
@@ -154,10 +160,6 @@
   border: 2px solid #ddd;
 }
 
-.paneColumn {
-
-}
-
 .paneItem {
   display: flex;
   flex-direction: row;
@@ -180,12 +182,6 @@
   z-index: -1;
   opacity: 0;
 }
-
-.controlUI {
-
-}
-
-
 
 
 .checkbox, .radio {

@@ -1,6 +1,7 @@
-import reactStamp from 'react-stamp'
-import classNames from 'classnames'
+import pureStamp from 'pure-stamp'
+import cn from 'classnames'
 import solvent from 'solvent'
+
 const should = require('chai').should()
 
 function nextDirection(direction) {
@@ -17,17 +18,7 @@ function nextDirection(direction) {
 export default function pager (deps = {}, defaults = {}) {
   const { React, connect, shallowCompare, Immutable } = solvent({ React: 'object', connect: 'function', shallowCompare: 'function', Immutable: 'object' })(deps)
   const { Component, PropTypes } = React
-  const { compose } = reactStamp(React)
-
-  function composePure(...desc) {
-    return compose(
-      { displayName: 'PureComponent'
-      , shouldComponentUpdate(nextProps, nextState) { return shallowCompare(this, nextProps, nextState) }
-      }
-      , ...desc
-    )
-  }
-
+  const pure = pureStamp(deps, defaults)
 
   const contentShape =  { FastBackward: PropTypes.any.isRequired
                         , StepBackward: PropTypes.any.isRequired
@@ -107,7 +98,7 @@ export default function pager (deps = {}, defaults = {}) {
 
 
   /** PRE REDUX (CONFIG) */
-  const PagerContext = composePure(
+  const PagerContext = pure (
     { displayName: 'PagerContext'
     , propTypes: propTypes
     , defaultProps: defaultProps
@@ -231,7 +222,7 @@ export default function pager (deps = {}, defaults = {}) {
     }
   )
 
-  const PagerDataFilter = connect(state => ({ state }))(composePure(
+  const PagerDataFilter = connect(state => ({ state }))(pure (
     { displayName: 'PagerDataFilter'
     , propTypes:  { state: PropTypes.object.isRequired
                   , mapStateToRowData: PropTypes.func.isRequired
@@ -283,7 +274,7 @@ export default function pager (deps = {}, defaults = {}) {
     }
   ))
 
-  const PagerRowFilter = composePure(
+  const PagerRowFilter = pure (
     { displayName: 'PagerRowFilter'
     , propTypes:  { rowData: PropTypes.object.isRequired
                   , mapData: PropTypes.func.isRequired
@@ -328,25 +319,17 @@ export default function pager (deps = {}, defaults = {}) {
               , sortRows
               , mapDataToStatus
               , mapStatusToActions
-              //, mapCols
-              //, filterContent
               , ...childProps
               } = this.props
 
         const status = mapDataToStatus(this.state.data, this.access)
         const actions = mapStatusToActions(status, this.access)
-        /*const cols = mapCols( { status
-                              , actions
-                              //, filters: filterContent
-                              } )
-                              */
 
         return (
           <Pager
             {...childProps}
             status={status}
             actions={actions}
-            //cols={cols}
           />
         )
       }
@@ -354,46 +337,48 @@ export default function pager (deps = {}, defaults = {}) {
   )
 
 
-   const Pager = composePure(
-    { render() {
+   const Pager = pure (
+    { defaultProps: defaults
+    , render() {
         const { children, cols, data, ...childProps } = this.props
         const { status, actions, content, styles, theme } = childProps
 
         return children({ status
-                        //, cols
                         , actions
                         , Controls: props => <PagerControls {...props} {...childProps} />
                         , Select: props => <PagerSelect {...props} {...childProps} />
                         , RowsPerPage: props => <PagerRowsPerPage {...props} {...childProps} />
-                        , PageStatus: props => <PagerStatus {...props} {...childProps} styleName="pageStatus" Content={content.PageStatus} />
-                        , RowStatus: props => <PagerStatus {...props} {...childProps} styleName="rowStatus" Content={content.RowStatus} />
-                        , RowCount: props => <PagerStatus {...props} {...childProps} styleName="rowCount" Content={content.RowCount} />
+                        , PageStatus: props => <PagerStatus {...props} {...childProps} styleName="pagerPageStatus" Content={content.PageStatus} />
+                        , RowStatus: props => <PagerStatus {...props} {...childProps} styleName="pagerRowStatus" Content={content.RowStatus} />
+                        , RowCount: props => <PagerStatus {...props} {...childProps} styleName="pagerRowCount" Content={content.RowCount} />
                         })
       }
     }
   )
 
 
-  const PagerControls = composePure(
-    { render() {
+  const PagerControls = pure (
+    { defaultProps: defaults
+    , render() {
         const { children, status, actions, content, styles, theme } = this.props
+        const buttonClass = cn(styles.pagerButton, theme.pagerButton)
         return (
-          <span className={classNames(styles.controls)}>
-            <button onClick={actions.fastBackward} className={classNames(styles.control)} disabled={status.get('page') === 0}>
+          <span className={cn(styles.pagerControls, theme.pagerControls)}>
+            <button onClick={actions.fastBackward} className={buttonClass} disabled={status.get('page') === 0}>
               <content.FastBackward {...this.props} />
             </button>
             {' '}
-            <button onClick={actions.stepBackward} className={classNames(styles.control)} disabled={status.get('page') === 0}>
+            <button onClick={actions.stepBackward} className={buttonClass} disabled={status.get('page') === 0}>
               <content.StepBackward {...this.props} />
             </button>
             {' '}
-            {children ? <span className={classNames(styles.controlsChildren)}>{children}</span> : null}
+            {children ? <span className={cn(styles.pagerControlsChildren, theme.pagerControlsChildren)}>{children}</span> : null}
             {' '}
-            <button onClick={actions.stepForward} className={classNames(styles.control)} disabled={status.get('page') === status.get('pages') - 1}>
+            <button onClick={actions.stepForward} className={buttonClass} disabled={status.get('page') === status.get('pages') - 1}>
               <content.StepForward {...this.props} />
             </button>
             {' '}
-            <button onClick={actions.fastForward} className={classNames(styles.control)} disabled={status.get('page') === status.get('pages') - 1}>
+            <button onClick={actions.fastForward} className={buttonClass} disabled={status.get('page') === status.get('pages') - 1}>
               <content.FastForward {...this.props} />
             </button>
           </span>
@@ -402,14 +387,15 @@ export default function pager (deps = {}, defaults = {}) {
     }
   )
 
-  const PagerSelect = composePure(
-    { render() {
+  const PagerSelect = pure (
+    { defaultProps: defaults
+    , render() {
         const { status, actions, content, styles, theme } = this.props
         return typeof status.get('rowsPerPage') === 'number' && status.get('rowsPerPage') > 0 ? (
           <select
             value={status.get('page')}
             onChange={x =>  actions.select(parseInt(x.target.value))}
-            className={classNames(styles.select, theme.select)}
+            className={cn(styles.pagerSelect, theme.pagerSelect)}
           >
             {Array.from(Array(status.get('pages')).keys()).map(x => <option key={x} value={x}>{content.selectOption({ ...this.props, index: x })}</option>)}
           </select>
@@ -418,11 +404,12 @@ export default function pager (deps = {}, defaults = {}) {
     }
   )
 
-  const PagerRowsPerPage = composePure(
-    { render() {
+  const PagerRowsPerPage = pure (
+    { defaultProps: defaults
+    , render() {
         const { label, status, actions, content, styles, theme } = this.props
         return (
-          <span>
+          <span className={cn(styles.pagerRowsPerPage, theme.pagerRowsPerPage)}>
             {label ? <label>{label}</label> : null}
             {' '}
             <select
@@ -434,7 +421,7 @@ export default function pager (deps = {}, defaults = {}) {
                 else
                   actions.rowsPerPage(parseInt(value))
               }}
-              className={classNames(styles.select, theme.select)}
+              className={cn(styles.pagerSelect, theme.pagerSelect)}
             >
               {status.get('rowsPerPageOptions').map(x => <option key={x} value={x}>{content.rowsPerPageOption({ ...this.props, index: x })}</option>)}
             </select>
@@ -445,11 +432,12 @@ export default function pager (deps = {}, defaults = {}) {
   )
 
 
-  const PagerStatus = composePure(
-    { render() {
+  const PagerStatus = pure (
+    { defaultProps: defaults
+    , render() {
         const { styleName, Content, className, status, actions, content, styles, theme } = this.props
         return (
-          <span className={classNames(styles[styleName], theme[styleName])}>
+          <span className={cn(styles[styleName], theme[styleName])}>
             <Content {...this.props} />
           </span>
         )

@@ -10,9 +10,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 exports.default = pager;
 
-var _reactStamp2 = require('react-stamp');
+var _pureStamp = require('pure-stamp');
 
-var _reactStamp3 = _interopRequireDefault(_reactStamp2);
+var _pureStamp2 = _interopRequireDefault(_pureStamp);
 
 var _classnames = require('classnames');
 
@@ -54,22 +54,7 @@ function pager() {
   var Component = React.Component;
   var PropTypes = React.PropTypes;
 
-  var _reactStamp = (0, _reactStamp3.default)(React);
-
-  var compose = _reactStamp.compose;
-
-
-  function composePure() {
-    for (var _len = arguments.length, desc = Array(_len), _key = 0; _key < _len; _key++) {
-      desc[_key] = arguments[_key];
-    }
-
-    return compose.apply(undefined, [{ displayName: 'PureComponent',
-      shouldComponentUpdate: function shouldComponentUpdate(nextProps, nextState) {
-        return shallowCompare(this, nextProps, nextState);
-      }
-    }].concat(desc));
-  }
+  var pure = (0, _pureStamp2.default)(deps, defaults);
 
   var contentShape = { FastBackward: PropTypes.any.isRequired,
     StepBackward: PropTypes.any.isRequired,
@@ -229,7 +214,7 @@ function pager() {
   }, defaults);
 
   /** PRE REDUX (CONFIG) */
-  var PagerContext = composePure({ displayName: 'PagerContext',
+  var PagerContext = pure({ displayName: 'PagerContext',
     propTypes: propTypes,
     defaultProps: defaultProps,
     render: function render() {
@@ -367,7 +352,7 @@ function pager() {
 
   var PagerDataFilter = connect(function (state) {
     return { state: state };
-  })(composePure({ displayName: 'PagerDataFilter',
+  })(pure({ displayName: 'PagerDataFilter',
     propTypes: { state: PropTypes.object.isRequired,
       mapStateToRowData: PropTypes.func.isRequired,
       filterStream: PropTypes.func.isRequired,
@@ -426,7 +411,7 @@ function pager() {
     }
   }));
 
-  var PagerRowFilter = composePure({ displayName: 'PagerRowFilter',
+  var PagerRowFilter = pure({ displayName: 'PagerRowFilter',
     propTypes: { rowData: PropTypes.object.isRequired,
       mapData: PropTypes.func.isRequired,
       sortData: PropTypes.func.isRequired,
@@ -499,21 +484,15 @@ function pager() {
 
       var status = mapDataToStatus(this.state.data, this.access);
       var actions = mapStatusToActions(status, this.access);
-      /*const cols = mapCols( { status
-                            , actions
-                            //, filters: filterContent
-                            } )
-                            */
 
       return React.createElement(Pager, _extends({}, childProps, {
         status: status,
         actions: actions
-        //cols={cols}
       }));
     }
   });
 
-  var Pager = composePure({
+  var Pager = pure({ defaultProps: defaults,
     render: function render() {
       var _props6 = this.props;
       var children = _props6.children;
@@ -529,9 +508,8 @@ function pager() {
       var theme = childProps.theme;
 
 
-      return children({ status: status
-        //, cols
-        , actions: actions,
+      return children({ status: status,
+        actions: actions,
         Controls: function Controls(props) {
           return React.createElement(PagerControls, _extends({}, props, childProps));
         },
@@ -542,19 +520,19 @@ function pager() {
           return React.createElement(PagerRowsPerPage, _extends({}, props, childProps));
         },
         PageStatus: function PageStatus(props) {
-          return React.createElement(PagerStatus, _extends({}, props, childProps, { styleName: 'pageStatus', Content: content.PageStatus }));
+          return React.createElement(PagerStatus, _extends({}, props, childProps, { styleName: 'pagerPageStatus', Content: content.PageStatus }));
         },
         RowStatus: function RowStatus(props) {
-          return React.createElement(PagerStatus, _extends({}, props, childProps, { styleName: 'rowStatus', Content: content.RowStatus }));
+          return React.createElement(PagerStatus, _extends({}, props, childProps, { styleName: 'pagerRowStatus', Content: content.RowStatus }));
         },
         RowCount: function RowCount(props) {
-          return React.createElement(PagerStatus, _extends({}, props, childProps, { styleName: 'rowCount', Content: content.RowCount }));
+          return React.createElement(PagerStatus, _extends({}, props, childProps, { styleName: 'pagerRowCount', Content: content.RowCount }));
         }
       });
     }
   });
 
-  var PagerControls = composePure({
+  var PagerControls = pure({ defaultProps: defaults,
     render: function render() {
       var _props7 = this.props;
       var children = _props7.children;
@@ -564,43 +542,44 @@ function pager() {
       var styles = _props7.styles;
       var theme = _props7.theme;
 
+      var buttonClass = (0, _classnames2.default)(styles.pagerButton, theme.pagerButton);
       return React.createElement(
         'span',
-        { className: (0, _classnames2.default)(styles.controls) },
+        { className: (0, _classnames2.default)(styles.pagerControls, theme.pagerControls) },
         React.createElement(
           'button',
-          { onClick: actions.fastBackward, className: (0, _classnames2.default)(styles.control), disabled: status.get('page') === 0 },
+          { onClick: actions.fastBackward, className: buttonClass, disabled: status.get('page') === 0 },
           React.createElement(content.FastBackward, this.props)
         ),
         ' ',
         React.createElement(
           'button',
-          { onClick: actions.stepBackward, className: (0, _classnames2.default)(styles.control), disabled: status.get('page') === 0 },
+          { onClick: actions.stepBackward, className: buttonClass, disabled: status.get('page') === 0 },
           React.createElement(content.StepBackward, this.props)
         ),
         ' ',
         children ? React.createElement(
           'span',
-          { className: (0, _classnames2.default)(styles.controlsChildren) },
+          { className: (0, _classnames2.default)(styles.pagerControlsChildren, theme.pagerControlsChildren) },
           children
         ) : null,
         ' ',
         React.createElement(
           'button',
-          { onClick: actions.stepForward, className: (0, _classnames2.default)(styles.control), disabled: status.get('page') === status.get('pages') - 1 },
+          { onClick: actions.stepForward, className: buttonClass, disabled: status.get('page') === status.get('pages') - 1 },
           React.createElement(content.StepForward, this.props)
         ),
         ' ',
         React.createElement(
           'button',
-          { onClick: actions.fastForward, className: (0, _classnames2.default)(styles.control), disabled: status.get('page') === status.get('pages') - 1 },
+          { onClick: actions.fastForward, className: buttonClass, disabled: status.get('page') === status.get('pages') - 1 },
           React.createElement(content.FastForward, this.props)
         )
       );
     }
   });
 
-  var PagerSelect = composePure({
+  var PagerSelect = pure({ defaultProps: defaults,
     render: function render() {
       var _this3 = this;
 
@@ -618,7 +597,7 @@ function pager() {
           onChange: function onChange(x) {
             return actions.select(parseInt(x.target.value));
           },
-          className: (0, _classnames2.default)(styles.select, theme.select)
+          className: (0, _classnames2.default)(styles.pagerSelect, theme.pagerSelect)
         },
         Array.from(Array(status.get('pages')).keys()).map(function (x) {
           return React.createElement(
@@ -635,7 +614,7 @@ function pager() {
     }
   });
 
-  var PagerRowsPerPage = composePure({
+  var PagerRowsPerPage = pure({ defaultProps: defaults,
     render: function render() {
       var _this4 = this;
 
@@ -649,7 +628,7 @@ function pager() {
 
       return React.createElement(
         'span',
-        null,
+        { className: (0, _classnames2.default)(styles.pagerRowsPerPage, theme.pagerRowsPerPage) },
         label ? React.createElement(
           'label',
           null,
@@ -665,7 +644,7 @@ function pager() {
 
               if (typeof value === 'string' && value.toLowerCase() === 'all') actions.rowsPerPage(value);else actions.rowsPerPage(parseInt(value));
             },
-            className: (0, _classnames2.default)(styles.select, theme.select)
+            className: (0, _classnames2.default)(styles.pagerSelect, theme.pagerSelect)
           },
           status.get('rowsPerPageOptions').map(function (x) {
             return React.createElement(
@@ -679,7 +658,7 @@ function pager() {
     }
   });
 
-  var PagerStatus = composePure({
+  var PagerStatus = pure({ defaultProps: defaults,
     render: function render() {
       var _props10 = this.props;
       var styleName = _props10.styleName;

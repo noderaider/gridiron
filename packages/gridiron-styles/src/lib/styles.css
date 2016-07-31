@@ -7,6 +7,37 @@
 /** 3x-screen | 1300px */ @custom-media --3x-screen only screen and (width >= 81.25em);
 
 
+/** PAGER */
+
+.pagerControls {
+  display: inline-flex;
+  flex-direction: row;
+}
+
+
+.pagerSelect {
+  position: relative;
+  display: inline-flex;
+  min-width: 80px;
+  margin: 0;
+  padding: 0;
+  font-family: monospace;
+  font-size: 0.8rem;
+}
+
+.pagerRowsPerPage {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+
+  & label {
+    margin-right: 5px;
+  }
+}
+
+/** END PAGER */
+
+
 
 /** ACCORDION */
 
@@ -102,11 +133,6 @@
 }
 
 
-.header {
-  height: 100%;
-}
-
-
 .gridHeaderWrap,
 .gridFooterWrap {
   position: relative;
@@ -127,6 +153,10 @@
   font-weight: bold;
   padding-left: 6px;
   padding-right: 6px;
+}
+
+.gridFooter {
+  font-size:0.8em;
 }
 
 .cell,
@@ -192,15 +222,6 @@
   margin: 4px;
 }
 
-.select {
-  position: relative;
-  display: inline-flex;
-  min-width: 80px;
-  margin: 0;
-  padding: 0;
-  font-family: monospace;
-  font-size: 0.8rem;
-}
 
 .pane {
   position: absolute;
@@ -234,6 +255,7 @@
     background-color: rgb(10, 160, 217);
   }
 }
+
 
 .paneHidden .pane {
   clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%);
