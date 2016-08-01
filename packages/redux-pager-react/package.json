@@ -1,6 +1,6 @@
 {
   "name": "redux-pager-react",
-  "version": "0.12.1",
+  "version": "0.12.2",
   "description": "Lightweight composable Redux pagination component.",
   "main": "lib/index.js",
   "files": [
@@ -44,7 +44,7 @@
     "chai": "^3.5.0",
     "classnames": "^2.2.5",
     "ncp": "^2.0.0",
-    "redux-pager": "^0.12.1",
+    "redux-pager": "^0.12.2",
     "solvent": "^0.12.1"
   },
   "devDependencies": {
