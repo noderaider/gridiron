@@ -4,8 +4,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 exports.default = pager;
@@ -19,8 +17,6 @@ var _solvent = require('solvent');
 var _solvent2 = _interopRequireDefault(_solvent);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
@@ -61,7 +57,7 @@ function pager(pure) {
   var propTypes = { children: PropTypes.func.isRequired,
     styles: PropTypes.object.isRequired,
     theme: PropTypes.object.isRequired,
-    sort: PropTypes.object.isRequired,
+    sort: PropTypes.object,
     createSortKeys: PropTypes.func.isRequired,
     createSortKeyComparator: PropTypes.func.isRequired,
     page: PropTypes.number.isRequired,
@@ -72,33 +68,25 @@ function pager(pure) {
     content: PropTypes.shape(contentShape).isRequired
   };
 
-  var defaultProps = _extends({ styles: { controls: 'pagerControls',
-      controlsChildren: 'pagerControlsChildren',
-      control: 'pagerControl',
-      select: 'pagerSelect'
-    },
-    theme: {},
-    sort: Immutable.Map({ cols: Immutable.List(['id', 'key']),
-      keys: Immutable.Map({ id: function id(data) {
-          return data;
-        } }),
-      direction: Immutable.Map({ id: 'asc', key: 'desc' })
-    })
+  var defaultProps = _extends({ styles: {},
+    theme: {}
     /** CREATES SORT KEYS FOR A ROW */
-    , createSortKeys: function createSortKeys(cellData, sort) {
-      return sort.get('cols').filter(function (colID) {
-        return typeof sort.getIn(['direction', colID]) === 'string';
-      }).map(function (colID) {
-        var sortKey = sort.getIn(['keys', colID], null);
-        var cellDatum = cellData[colID];
+    , createSortKeys: function createSortKeys(cellData, access) {
+      var sort = access.sort;
+      return sort.get('cols').filter(function (columnID) {
+        return typeof sort.getIn(['direction', columnID]) === 'string';
+      }).map(function (columnID) {
+        var sortKey = sort.getIn(['keys', columnID], null);
+        var cellDatum = cellData.get(columnID);
         var currentKey = sortKey ? sortKey(cellDatum) : cellDatum;
         return typeof currentKey === 'string' ? currentKey : currentKey.toString();
       });
     }
     /** COMPARES SORT KEYS OF TWO ROWS */
-    , createSortKeyComparator: function createSortKeyComparator(sort) {
-      var multipliers = sort.get('direction') ? sort.get('cols').map(function (colID) {
-        return sort.getIn(['direction', colID]) === 'desc' ? -1 : 1;
+    , createSortKeyComparator: function createSortKeyComparator(access) {
+      var sort = access.sort;
+      var multipliers = sort.get('direction') ? sort.get('cols').map(function (columnID) {
+        return sort.getIn(['direction', columnID]) === 'desc' ? -1 : 1;
       }) : [];
       return function (sortKeysA, sortKeysB) {
         for (var colIndex = 0; colIndex < sortKeysA.size; colIndex++) {
@@ -209,6 +197,8 @@ function pager(pure) {
     propTypes: propTypes,
     defaultProps: defaultProps,
     render: function render() {
+      var _this = this;
+
       var _props = this.props;
       var map = _props.map;
       var rowsPerPageOptions = _props.rowsPerPageOptions;
@@ -228,44 +218,39 @@ function pager(pure) {
           return rowData;
         }
         /** CALLED BY FILTER STREAM */
-        , filterRowData: function filterRowData(rowData, filterState) {
+        , filterRowData: this.props.filterStream ? function (rowData, filterState) {
           if (filterState) {
             var anyFiltered = false;
-            var newRowData = rowData.entrySeq().filter(function (_ref10) {
-              var _ref11 = _slicedToArray(_ref10, 2);
-
-              var rowID = _ref11[0];
-              var datum = _ref11[1];
-
+            var filtered = rowData.filter(function (rowDatum, rowID) {
               var value = Object.keys(filterState).some(function (columnID) {
                 return filterState[columnID](rowID) === true;
               });
+              console.info('FILTERING ROW DATA', filterState, rowDatum, rowID, value);
 
               if (value) anyFiltered = true;
               return value;
-            }).reduce(function (filtered, x) {
-              return _extends({}, filtered, _defineProperty({}, x, rowData[x]));
-            }, {});
-            return anyFiltered ? newRowData : rowData;
+            });
+            //console.warn('FILTERED =>', filterState, filtered)
+            return anyFiltered ? filtered : rowData;
           }
           return rowData;
-        }
+        } : null
         /** MAP CELL AND SORT DATA AND ADD TO DATA CONSTRUCT */
         , mapData: function mapData(rowData, access) {
           var rows = rowData.map(function (rowDatum, rowID) {
             var cellData = map.cellData(rowID, rowDatum);
-            var sortKeys = createSortKeys(cellData, access.sort);
+            var sortKeys = _this.props.sort ? createSortKeys(cellData, access) : null;
             return Immutable.Map({ rowDatum: rowDatum, cellData: cellData, sortKeys: sortKeys });
           });
           var columns = rows.first().get('cellData').keySeq();
           return Immutable.Map({ rows: rows, columns: columns });
         },
-        sortData: function sortData(data, access) {
-          var comparator = createSortKeyComparator(access.sort);
+        sortData: this.props.sort ? function (data, access) {
+          var comparator = createSortKeyComparator(access);
           return data.set('rows', data.get('rows').sortBy(function (context, rowID) {
             return context.get('sortKeys');
           }, comparator));
-        },
+        } : null,
         mapDataToStatus: function mapDataToStatus(data, access) {
           var sort = access.sort;
           var page = access.page;
@@ -330,7 +315,7 @@ function pager(pure) {
               if (index === -1) throw new Error('id ' + id + ' is not a sortable column.');
               var lastDirection = sort.getIn(['direction', id], null);
               var newDirection = nextDirection(lastDirection);
-              var direction = sort.get('direction', new Immutable.Map()).set(id, newDirection);
+              var direction = sort.get('direction', Immutable.Map()).set(id, newDirection);
               var cols = newDirection ? _cols.delete(index).unshift(id) : _cols.delete(index).push(id);
               var newSort = sort.merge({ cols: cols, direction: direction });
               access.merge({ sort: newSort });
@@ -346,18 +331,13 @@ function pager(pure) {
   })(pure({ displayName: 'PagerDataFilter',
     propTypes: { state: PropTypes.object.isRequired,
       mapStateToRowData: PropTypes.func.isRequired,
-      filterStream: PropTypes.func.isRequired,
-      filterRowData: PropTypes.func.isRequired
+      filterStream: PropTypes.func,
+      filterRowData: PropTypes.func
     },
-    defaultProps: { filterRowData: function filterRowData(rowData, filterState) {
-        return rowData;
-      }
+    state: { filterState: null
     },
-    state: { rowData: null
-    },
-
     componentWillMount: function componentWillMount() {
-      var _this = this;
+      var _this2 = this;
 
       var _props2 = this.props;
       var mapStateToRowData = _props2.mapStateToRowData;
@@ -366,31 +346,31 @@ function pager(pure) {
       var Filter = _props2.Filter;
 
 
-      var getRowData = function getRowData() {
-        return mapStateToRowData(_this.props.state);
-      };
-
-      var onFilter = function onFilter(filterState) {
-        var rowData = filterRowData(getRowData(), filterState);
-        _this.setState({ rowData: rowData });
-      };
-      this.unsubscribe = filterStream(onFilter);
-
-      this.setState({ rowData: getRowData() });
+      if (filterStream) this.unsubscribe = filterStream(function (filterState) {
+        return _this2.setState({ filterState: filterState });
+      });
     },
     componentWillUnmount: function componentWillUnmount() {
-      this.unsubscribe();
+      if (this.unsubscribe) this.unsubscribe();
     },
     render: function render() {
       var _props3 = this.props;
-      var rowData = _props3.rowData;
       var mapStateToRowData = _props3.mapStateToRowData;
       var filterRows = _props3.filterRows;
+      var filterRowData = _props3.filterRowData;
+      var mapEarlyProps = _props3.mapEarlyProps;
 
-      var childProps = _objectWithoutProperties(_props3, ['rowData', 'mapStateToRowData', 'filterRows']);
+      var childProps = _objectWithoutProperties(_props3, ['mapStateToRowData', 'filterRows', 'filterRowData', 'mapEarlyProps']);
+
+      var filterState = this.state.filterState;
+
+
+      var rowData = mapStateToRowData(this.props.state);
+      var earlyProps = mapEarlyProps ? mapEarlyProps({ rowData: rowData }) : null;
 
       return React.createElement(PagerRowFilter, _extends({}, childProps, {
-        rowData: this.state.rowData
+        earlyProps: earlyProps,
+        rowData: filterRowData && filterState ? filterRowData(rowData, filterState) : rowData
       }));
     }
   }));
@@ -398,24 +378,23 @@ function pager(pure) {
   var PagerRowFilter = pure({ displayName: 'PagerRowFilter',
     propTypes: { rowData: PropTypes.object.isRequired,
       mapData: PropTypes.func.isRequired,
-      sortData: PropTypes.func.isRequired,
+      sortData: PropTypes.func,
       mapDataToStatus: PropTypes.func.isRequired,
       mapStatusToActions: PropTypes.func.isRequired
     },
-    state: { status: Immutable.Map(),
-      data: null
+    state: { status: Immutable.Map()
     },
     init: function init() {
-      var _this2 = this;
+      var _this3 = this;
 
       var getProps = function getProps() {
-        return _this2.props;
+        return _this3.props;
       };
       var getStatus = function getStatus(status) {
-        return _this2.state.status;
+        return _this3.state.status;
       };
       var setStatus = function setStatus(status) {
-        return _this2.setState({ status: status });
+        return _this3.setState({ status: status });
       };
 
       this.access = { get page() {
@@ -434,41 +413,33 @@ function pager(pure) {
           return getStatus().getIn(['sort', 'direction', id], null);
         },
         merge: function merge(value) {
-          return setStatus(_this2.state.status.merge(value));
+          return setStatus(_this3.state.status.merge(value));
         }
       };
-      this._processData = function (rowData) {
-        var _props4 = _this2.props;
-        var mapData = _props4.mapData;
-        var sortData = _props4.sortData;
-
-        var data = mapData(rowData, _this2.access);
-        return sortData(data, _this2.access);
-      };
-    },
-    componentWillMount: function componentWillMount() {
-      var data = this._processData(this.props.rowData);
-      this.setState({ data: data });
-    },
-    componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-      var data = this._processData(nextProps.data);
-      this.setState({ data: data });
     },
     render: function render() {
-      var _props5 = this.props;
-      var rowData = _props5.rowData;
-      var mapData = _props5.mapData;
-      var rowFilter = _props5.rowFilter;
-      var sortRows = _props5.sortRows;
-      var mapDataToStatus = _props5.mapDataToStatus;
-      var mapStatusToActions = _props5.mapStatusToActions;
+      var _props4 = this.props;
+      var rowData = _props4.rowData;
+      var mapData = _props4.mapData;
+      var sortData = _props4.sortData;
+      var rowFilter = _props4.rowFilter;
+      var sortRows = _props4.sortRows;
+      var mapDataToStatus = _props4.mapDataToStatus;
+      var mapStatusToActions = _props4.mapStatusToActions;
+      var mapLateProps = _props4.mapLateProps;
+      var earlyProps = _props4.earlyProps;
 
-      var childProps = _objectWithoutProperties(_props5, ['rowData', 'mapData', 'rowFilter', 'sortRows', 'mapDataToStatus', 'mapStatusToActions']);
+      var childProps = _objectWithoutProperties(_props4, ['rowData', 'mapData', 'sortData', 'rowFilter', 'sortRows', 'mapDataToStatus', 'mapStatusToActions', 'mapLateProps', 'earlyProps']);
 
-      var status = mapDataToStatus(this.state.data, this.access);
+      var rawData = mapData(rowData, this.access);
+      var data = sortData ? sortData(rawData, this.access) : rawData;
+      var status = mapDataToStatus(data, this.access);
       var actions = mapStatusToActions(status, this.access);
+      var lateProps = mapLateProps ? mapLateProps({ earlyProps: earlyProps, status: status, actions: actions }) : null;
 
       return React.createElement(Pager, _extends({}, childProps, {
+        earlyProps: earlyProps,
+        lateProps: lateProps,
         status: status,
         actions: actions
       }));
@@ -478,30 +449,27 @@ function pager(pure) {
   var Pager = pure({ displayName: 'Pager',
     defaultProps: defaults,
     render: function render() {
-      var _props6 = this.props;
-      var children = _props6.children;
-      var cols = _props6.cols;
-      var data = _props6.data;
+      var _props5 = this.props;
+      var children = _props5.children;
+      var data = _props5.data;
+      var content = _props5.content;
 
-      var childProps = _objectWithoutProperties(_props6, ['children', 'cols', 'data']);
+      var childProps = _objectWithoutProperties(_props5, ['children', 'data', 'content']);
 
       var status = childProps.status;
       var actions = childProps.actions;
-      var content = childProps.content;
       var styles = childProps.styles;
       var theme = childProps.theme;
 
 
-      return children({ status: status,
-        actions: actions,
-        Controls: function Controls(props) {
-          return React.createElement(PagerControls, _extends({}, props, childProps));
+      return children(_extends({}, childProps, { Controls: function Controls(props) {
+          return React.createElement(PagerControls, _extends({}, props, childProps, { content: content }));
         },
         Select: function Select(props) {
-          return React.createElement(PagerSelect, _extends({}, props, childProps));
+          return React.createElement(PagerSelect, _extends({}, props, childProps, { content: content }));
         },
         RowsPerPage: function RowsPerPage(props) {
-          return React.createElement(PagerRowsPerPage, _extends({}, props, childProps));
+          return React.createElement(PagerRowsPerPage, _extends({}, props, childProps, { content: content }));
         },
         PageStatus: function PageStatus(props) {
           return React.createElement(PagerStatus, _extends({}, props, childProps, { styleName: 'pagerPageStatus', Content: content.PageStatus }));
@@ -512,20 +480,20 @@ function pager(pure) {
         RowCount: function RowCount(props) {
           return React.createElement(PagerStatus, _extends({}, props, childProps, { styleName: 'pagerRowCount', Content: content.RowCount }));
         }
-      });
+      }));
     }
   });
 
   var PagerControls = pure({ displayName: 'PagerControls',
     defaultProps: defaults,
     render: function render() {
-      var _props7 = this.props;
-      var children = _props7.children;
-      var status = _props7.status;
-      var actions = _props7.actions;
-      var content = _props7.content;
-      var styles = _props7.styles;
-      var theme = _props7.theme;
+      var _props6 = this.props;
+      var children = _props6.children;
+      var status = _props6.status;
+      var actions = _props6.actions;
+      var content = _props6.content;
+      var styles = _props6.styles;
+      var theme = _props6.theme;
 
       var buttonClass = (0, _classnames2.default)(styles.pagerButton, theme.pagerButton);
       return React.createElement(
@@ -567,14 +535,14 @@ function pager(pure) {
   var PagerSelect = pure({ displayName: 'PagerSelect',
     defaultProps: defaults,
     render: function render() {
-      var _this3 = this;
+      var _this4 = this;
 
-      var _props8 = this.props;
-      var status = _props8.status;
-      var actions = _props8.actions;
-      var content = _props8.content;
-      var styles = _props8.styles;
-      var theme = _props8.theme;
+      var _props7 = this.props;
+      var status = _props7.status;
+      var actions = _props7.actions;
+      var content = _props7.content;
+      var styles = _props7.styles;
+      var theme = _props7.theme;
 
       return typeof status.get('rowsPerPage') === 'number' && status.get('rowsPerPage') > 0 ? React.createElement(
         'select',
@@ -589,7 +557,7 @@ function pager(pure) {
           return React.createElement(
             'option',
             { key: x, value: x },
-            content.selectOption(_extends({}, _this3.props, { index: x }))
+            content.selectOption(_extends({}, _this4.props, { index: x }))
           );
         })
       ) : React.createElement(
@@ -603,15 +571,15 @@ function pager(pure) {
   var PagerRowsPerPage = pure({ displayName: 'PagerRowsPerPage',
     defaultProps: defaults,
     render: function render() {
-      var _this4 = this;
+      var _this5 = this;
 
-      var _props9 = this.props;
-      var label = _props9.label;
-      var status = _props9.status;
-      var actions = _props9.actions;
-      var content = _props9.content;
-      var styles = _props9.styles;
-      var theme = _props9.theme;
+      var _props8 = this.props;
+      var label = _props8.label;
+      var status = _props8.status;
+      var actions = _props8.actions;
+      var content = _props8.content;
+      var styles = _props8.styles;
+      var theme = _props8.theme;
 
       return React.createElement(
         'span',
@@ -637,7 +605,7 @@ function pager(pure) {
             return React.createElement(
               'option',
               { key: x, value: x },
-              content.rowsPerPageOption(_extends({}, _this4.props, { index: x }))
+              content.rowsPerPageOption(_extends({}, _this5.props, { index: x }))
             );
           })
         )
@@ -648,15 +616,15 @@ function pager(pure) {
   var PagerStatus = pure({ displayName: 'PagerStatus',
     defaultProps: defaults,
     render: function render() {
-      var _props10 = this.props;
-      var styleName = _props10.styleName;
-      var Content = _props10.Content;
-      var className = _props10.className;
-      var status = _props10.status;
-      var actions = _props10.actions;
-      var content = _props10.content;
-      var styles = _props10.styles;
-      var theme = _props10.theme;
+      var _props9 = this.props;
+      var styleName = _props9.styleName;
+      var Content = _props9.Content;
+      var className = _props9.className;
+      var status = _props9.status;
+      var actions = _props9.actions;
+      var content = _props9.content;
+      var styles = _props9.styles;
+      var theme = _props9.theme;
 
       return React.createElement(
         'span',

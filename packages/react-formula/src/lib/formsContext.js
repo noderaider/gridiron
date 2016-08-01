@@ -44,17 +44,20 @@ export default function formsContext (pure) {
         , defaultProps: { ...defaults
                         , shouldUpdate: () => true
                         }
+        , state:  {
+                  }
         , init() {
             this.getStateValue = () => getFormStateValue(this.props.name, this.props.initialValue)
 
             this.setValue = value => {
-              console.info('SET VALUE', value)
               switch(this.input.type) {
                 case 'checkbox':
                   this.input.checked = value === true
+                  console.info('SET CHECKBOX', this.props.name, this.input.checked)
                   break
                 default:
                   this.input.value = value
+                  console.info('SET DEFAULT', this.props.name, this.input.value)
                   break
               }
             }
@@ -63,35 +66,30 @@ export default function formsContext (pure) {
               if(!this.input)
                 return
               const { type, value, checked } = this.input
-              console.info('GET VALUE', value, checked)
               switch(type) {
                 case 'checkbox':
-                  return checked === true || checked == 'true' || checked == 'checked'
+                  const resolved = checked === true || checked == 'true' || checked == 'checked'
+                  console.info('GET CHECKBOX', this.props.name, checked, resolved)
+                  return resolved
                 default:
+                  console.info('GET DEFAULT', this.props.name, value)
                   return value
               }
             }
-            this.syncValue = target => {
-              const value = getStateValue(...target)
+            this.syncValue = (formName, name, initialValue) => {
+              const value = getStateValue(formName, name, initialValue)
               this.setValue(value)
             }
           }
-        , componentDidMount() {
-            const { name, type, initialValue, shouldUpdate } = this.props
-            emit(events.registerInput, { formName, name, type, initialValue })
 
-            const selectString = `#${formName} input[name="${name}"]`
-            const input = document.querySelector(selectString)
-            if(typeof input !== 'undefined' && input !== null) {
-              this.setValue(input.value)
-            } else {
-              //console.info('skipping value', input)
-            }
+        , componentWillMount() {
+            const { name, type, initialValue, shouldUpdate } = this.props
+
 
             if(this.props.subscribeInput) {
               const target = this.props.subscribeInput
               this.unsubscribeInput = subscribeInput(target, value => {
-                console.info('RECEIVING VALUE', value)
+                //console.info('RECEIVING VALUE', value)
                 if(shouldUpdate({ currentValue: this.getValue()
                                 , subscribed: value
                                 , subscriptionType: 'input'
@@ -100,7 +98,6 @@ export default function formsContext (pure) {
                   this.setValue(value)
                 }
               })
-              this.syncValue(target)
             }
             if(this.props.subscribeForm) {
               const { target, targetName, selectValue, selectInitial } = this.props.subscribeForm
@@ -112,7 +109,6 @@ export default function formsContext (pure) {
                                 , target
                                 })) {
                   const resolvedName = (typeof targetName === 'function' ? targetName() : targetName)
-                  console.info('RESOLVED FORM NAME', resolvedName)
 
                   if(resolvedName) {
                     const value = inputs.getIn( [ resolvedName
@@ -127,8 +123,34 @@ export default function formsContext (pure) {
                   }
                 }
               })
+            }
+
+            console.info('INPUT WILL MOUNT', name)
+
+            emit(events.registerInput, { formName, name, type, initialValue })
+
+            const value = this.getStateValue()
+            if(value) {
+              if(type === 'checkbox') {
+                this.setState({ defaultChecked: value })
+              } else {
+                this.setState({ defaultValue: value })
+              }
+            }
+          }
+        , componentDidMount() {
+            const { name, type, initialValue, shouldUpdate } = this.props
+
+            if(this.props.subscribeInput) {
+              const target = this.props.subscribeInput
+              const value = getStateValue(...target)
+              this.setValue(value)
+            }
+
+            if(this.props.subscribeForm) {
+              const { target, targetName, selectValue, selectInitial } = this.props.subscribeForm
               if(selectInitial)
-                this.syncValue({ formName: target, name: typeof selectInitial === 'function' ? selectInitial() : selectInitial })
+                this.syncValue(target, typeof selectInitial === 'function' ? selectInitial() : selectInitial)
             }
           }
         , componentWillUnmount() {
@@ -139,14 +161,13 @@ export default function formsContext (pure) {
           }
         , render() {
             const { styles, theme, name, type, initialValue, ...inputProps } = this.props
-            const value = this.props.value || initialValue
             return (
               <span className={cn(styles.inputWrap, theme.inputWrap, styles[`type_${type}`], theme[`type_${type}`] )}>
                 <input
                   {...filterProps(inputProps)}
+                  {...this.state}
                   ref={x => {
                     this.input = x
-                    //emit(events.updateInput, { formName, name, value: this.getValue() })
                   }}
                   type={type}
                   onChange={e => {

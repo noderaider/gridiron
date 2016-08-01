@@ -71,8 +71,6 @@ export default function reactFormula (deps, { appScopeName = 'app', ...defaults 
                             })
 
 
-
-
     const FormsContext = pure (
       { displayName: 'FormsContext'
       , propTypes:  { ...stylePropTypes
@@ -115,25 +113,27 @@ export default function reactFormula (deps, { appScopeName = 'app', ...defaults 
       , init() {
           const { busy } = this.props
           this.__registers = []
+          this.forms = Immutable.Map()
 
           this.onRegisterInput = ({ formName, name, initialValue = '', type }) => {
             const path = select.inputValue(formName, name)
-            if(typeof this.state.forms.getIn(path) === 'undefined') {
+
+            if(typeof this.forms.getIn(path) === 'undefined') {
               busy(notBusy => {
-                const forms = this.state.forms.setIn(path, initialValue)
-                console.warn('INPUT REGISTERED', path, forms)
-                this.setState({ forms: type ? forms.setIn(select.inputType(formName, name), type)
-                                            : forms
-                              }, notBusy)
+                this.forms = this.forms.setIn(path, initialValue)
+                this.setState({ forms: this.forms }, notBusy)
+                /*
+                  : type ? forms.setIn(select.inputType(formName, name), type)
+                  : forms
+                */
               })
             }
           }
           this.onUpdateInput = ({ formName, name, value }) => {
             busy(notBusy => {
               const path = select.inputValue(formName, name)
-              const forms = this.state.forms.setIn(path, value)
-              console.info('UPDATE INPUT FOR => [', formName, name, value, '] | ', forms)
-              this.setState({ forms }, notBusy)
+              this.forms = this.forms.setIn(path, value)
+              this.setState({ forms: this.forms }, notBusy)
             })
           }
 
@@ -183,7 +183,6 @@ export default function reactFormula (deps, { appScopeName = 'app', ...defaults 
             EE.emit(events.formWillUpdate(formName), nextProps.inputs)
         }
       , init() {
-          this.inputs = []
           this.onSubmit = e => {
             if(this.props.onSubmit)
               this.props.onSubmit(e)
@@ -230,9 +229,9 @@ export default function reactFormula (deps, { appScopeName = 'app', ...defaults 
             EE.emit(events.inputWillUpdate(formName, name), value)
           }
         }
-        , componentWillMount() {
-          this.emitValue(this.props.value)
-        }
+      , componentWillMount() {
+        this.emitValue(this.props.value)
+      }
       , componentWillReceiveProps(nextProps) {
           if(this.props.value !== nextProps.value)
             this.emitValue(nextProps.value)
@@ -329,6 +328,7 @@ export default function reactFormula (deps, { appScopeName = 'app', ...defaults 
     const getState = () => currentState
 
     const subscribe = (formNames, cb) => {
+      console.warn('SUBSCRIBE', formNames)
       return formNames.map(formName => subscribeForm(formName, (...args) => {
         cb(formNames.map(name => currentState.get(name)))
       }))

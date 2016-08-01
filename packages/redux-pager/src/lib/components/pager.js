@@ -31,7 +31,7 @@ export default function pager (pure) {
   const propTypes = { children: PropTypes.func.isRequired
                     , styles: PropTypes.object.isRequired
                     , theme: PropTypes.object.isRequired
-                    , sort: PropTypes.object.isRequired
+                    , sort: PropTypes.object
                     , createSortKeys: PropTypes.func.isRequired
                     , createSortKeyComparator: PropTypes.func.isRequired
                     , page: PropTypes.number.isRequired
@@ -42,30 +42,24 @@ export default function pager (pure) {
                     , content: PropTypes.shape(contentShape).isRequired
                     }
 
-  const defaultProps =  { styles: { controls: 'pagerControls'
-                                  , controlsChildren: 'pagerControlsChildren'
-                                  , control: 'pagerControl'
-                                  , select: 'pagerSelect'
-                                  }
+  const defaultProps =  { styles: {}
                         , theme:  {}
-                        , sort: Immutable.Map({ cols: Immutable.List([ 'id', 'key' ])
-                                              , keys: Immutable.Map({ id: data => data })
-                                              , direction: Immutable.Map({ id: 'asc', key: 'desc' })
-                                              })
                           /** CREATES SORT KEYS FOR A ROW */
-                        , createSortKeys: (cellData, sort) => {
+                        , createSortKeys: (cellData, access) => {
+                            const sort = access.sort
                             return sort.get('cols')
-                              .filter(colID => typeof sort.getIn([ 'direction', colID ]) === 'string')
-                              .map(colID => {
-                                const sortKey = sort.getIn([ 'keys', colID ], null)
-                                const cellDatum = cellData[colID]
+                              .filter(columnID => typeof sort.getIn([ 'direction', columnID ]) === 'string')
+                              .map(columnID => {
+                                const sortKey = sort.getIn([ 'keys', columnID ], null)
+                                const cellDatum = cellData.get(columnID)
                                 const currentKey = sortKey ? sortKey(cellDatum) : cellDatum
                                 return typeof currentKey === 'string' ? currentKey : currentKey.toString()
                               })
                           }
                           /** COMPARES SORT KEYS OF TWO ROWS */
-                        , createSortKeyComparator: sort => {
-                            const multipliers = sort.get('direction') ? sort.get('cols').map(colID => sort.getIn([ 'direction', colID ]) === 'desc' ? -1 : 1) : []
+                        , createSortKeyComparator: access => {
+                            const sort = access.sort
+                            const multipliers = sort.get('direction') ? sort.get('cols').map(columnID => sort.getIn([ 'direction', columnID ]) === 'desc' ? -1 : 1) : []
                             return (sortKeysA, sortKeysB) => {
                               for(let colIndex = 0; colIndex < sortKeysA.size; colIndex++) {
                                 let result = sortKeysA.get(colIndex).localeCompare(sortKeysB.get(colIndex)) * multipliers.get(colIndex)
@@ -119,36 +113,38 @@ export default function pager (pure) {
               return rowData
             }}
             /** CALLED BY FILTER STREAM */
-            filterRowData={(rowData, filterState) => {
+            filterRowData={this.props.filterStream ? (rowData, filterState) => {
               if(filterState) {
                 let anyFiltered = false
-                let newRowData = rowData.entrySeq().filter(([ rowID, datum ]) => {
+                let filtered = rowData.filter((rowDatum, rowID) => {
                   const value = Object.keys(filterState).some(columnID => {
                     return filterState[columnID](rowID) === true
                   })
+                  console.info('FILTERING ROW DATA', filterState, rowDatum, rowID, value)
 
                   if(value)
                     anyFiltered = true
                   return value
-                }).reduce((filtered, x) => ({ ...filtered, [x]: rowData[x] }), {})
-                return anyFiltered ? newRowData : rowData
+                })
+                //console.warn('FILTERED =>', filterState, filtered)
+                return anyFiltered ? filtered : rowData
               }
               return rowData
-            }}
+            } : null}
             /** MAP CELL AND SORT DATA AND ADD TO DATA CONSTRUCT */
             mapData={(rowData, access) => {
               const rows = rowData.map((rowDatum, rowID) => {
                 const cellData = map.cellData(rowID, rowDatum)
-                const sortKeys = createSortKeys(cellData, access.sort)
+                const sortKeys = this.props.sort ? createSortKeys(cellData, access) : null
                 return Immutable.Map({ rowDatum, cellData, sortKeys })
               })
               const columns = rows.first().get('cellData').keySeq()
               return Immutable.Map({ rows, columns })
             }}
-            sortData={(data, access) => {
-              const comparator = createSortKeyComparator(access.sort)
+            sortData={this.props.sort ? (data, access) => {
+              const comparator = createSortKeyComparator(access)
               return data.set('rows', data.get('rows').sortBy((context, rowID) => context.get('sortKeys'), comparator))
-            }}
+            } : null}
             mapDataToStatus={(data, access) => {
               const sort = access.sort
               const page = access.page
@@ -205,7 +201,7 @@ export default function pager (pure) {
                       throw new Error(`id ${id} is not a sortable column.`)
                     let lastDirection = sort.getIn([ 'direction', id ], null)
                     let newDirection = nextDirection(lastDirection)
-                    let direction = sort.get('direction', new Immutable.Map()).set(id, newDirection)
+                    let direction = sort.get('direction', Immutable.Map()).set(id, newDirection)
                     let cols = newDirection ? _cols.delete(index).unshift(id) : _cols.delete(index).push(id)
                     const newSort = sort.merge({ cols, direction })
                     access.merge({ sort: newSort })
@@ -223,41 +219,39 @@ export default function pager (pure) {
     { displayName: 'PagerDataFilter'
     , propTypes:  { state: PropTypes.object.isRequired
                   , mapStateToRowData: PropTypes.func.isRequired
-                  , filterStream: PropTypes.func.isRequired
-                  , filterRowData: PropTypes.func.isRequired
+                  , filterStream: PropTypes.func
+                  , filterRowData: PropTypes.func
                   }
-    , defaultProps: { filterRowData: (rowData, filterState) => rowData
-                    }
-    , state:  { rowData: null
+    , state:  { filterState: null
               }
-
     , componentWillMount() {
         const { mapStateToRowData, filterStream, filterRowData, Filter } = this.props
 
-        const getRowData = () => mapStateToRowData(this.props.state)
-
-        const onFilter = filterState => {
-          const rowData = filterRowData(getRowData(), filterState)
-          this.setState({ rowData })
-        }
-        this.unsubscribe = filterStream(onFilter)
-
-        this.setState({ rowData: getRowData() })
+        if(filterStream)
+          this.unsubscribe = filterStream(filterState => this.setState({ filterState }))
       }
     , componentWillUnmount() {
-        this.unsubscribe()
+        if(this.unsubscribe)
+          this.unsubscribe()
       }
     , render() {
-        const { rowData
-              , mapStateToRowData
+        const { mapStateToRowData
               , filterRows
+              , filterRowData
+              , mapEarlyProps
               , ...childProps
               } = this.props
+        const { filterState } = this.state
+
+        const rowData = mapStateToRowData(this.props.state)
+        const earlyProps = mapEarlyProps ? mapEarlyProps({ rowData }) : null
+
 
         return (
           <PagerRowFilter
             {...childProps}
-            rowData={this.state.rowData}
+            earlyProps={earlyProps}
+            rowData={filterRowData && filterState ? filterRowData(rowData, filterState) : rowData}
           />
         )
       }
@@ -268,12 +262,11 @@ export default function pager (pure) {
     { displayName: 'PagerRowFilter'
     , propTypes:  { rowData: PropTypes.object.isRequired
                   , mapData: PropTypes.func.isRequired
-                  , sortData: PropTypes.func.isRequired
+                  , sortData: PropTypes.func
                   , mapDataToStatus: PropTypes.func.isRequired
                   , mapStatusToActions: PropTypes.func.isRequired
                   }
     , state:  { status: Immutable.Map()
-              , data: null
               }
     , init() {
         const getProps = () => this.props
@@ -287,36 +280,32 @@ export default function pager (pure) {
                       , getSortDirection: id => getStatus().getIn([ 'sort', 'direction', id ], null)
                       , merge: value => setStatus(this.state.status.merge(value))
                       }
-        this._processData = rowData => {
-          const { mapData, sortData } = this.props
-          const data = mapData(rowData, this.access)
-          return sortData(data, this.access)
-        }
-      }
-    , componentWillMount() {
-        const data = this._processData(this.props.rowData)
-        this.setState({ data })
-      }
-    , componentWillReceiveProps(nextProps) {
-        const data = this._processData(nextProps.data)
-        this.setState({ data })
+
       }
     , render() {
         const { rowData
               , mapData
+              , sortData
               , rowFilter
               , sortRows
               , mapDataToStatus
               , mapStatusToActions
+              , mapLateProps
+              , earlyProps
               , ...childProps
               } = this.props
 
-        const status = mapDataToStatus(this.state.data, this.access)
+        const rawData = mapData(rowData, this.access)
+        const data = sortData ? sortData(rawData, this.access) : rawData
+        const status = mapDataToStatus(data, this.access)
         const actions = mapStatusToActions(status, this.access)
+        const lateProps = mapLateProps ? mapLateProps({ earlyProps, status, actions }) : null
 
         return (
           <Pager
             {...childProps}
+            earlyProps={earlyProps}
+            lateProps={lateProps}
             status={status}
             actions={actions}
           />
@@ -330,14 +319,13 @@ export default function pager (pure) {
     { displayName: 'Pager'
     , defaultProps: defaults
     , render() {
-        const { children, cols, data, ...childProps } = this.props
-        const { status, actions, content, styles, theme } = childProps
+        const { children, data, content, ...childProps } = this.props
+        const { status, actions, styles, theme } = childProps
 
-        return children({ status
-                        , actions
-                        , Controls: props => <PagerControls {...props} {...childProps} />
-                        , Select: props => <PagerSelect {...props} {...childProps} />
-                        , RowsPerPage: props => <PagerRowsPerPage {...props} {...childProps} />
+        return children({ ...childProps
+                        , Controls: props => <PagerControls {...props} {...childProps} content={content} />
+                        , Select: props => <PagerSelect {...props} {...childProps} content={content} />
+                        , RowsPerPage: props => <PagerRowsPerPage {...props} {...childProps} content={content} />
                         , PageStatus: props => <PagerStatus {...props} {...childProps} styleName="pagerPageStatus" Content={content.PageStatus} />
                         , RowStatus: props => <PagerStatus {...props} {...childProps} styleName="pagerRowStatus" Content={content.RowStatus} />
                         , RowCount: props => <PagerStatus {...props} {...childProps} styleName="pagerRowCount" Content={content.RowCount} />

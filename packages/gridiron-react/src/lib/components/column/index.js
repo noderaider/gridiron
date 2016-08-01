@@ -36,14 +36,6 @@ export default function column(pure) {
                       , status: {}
                       }
       , state: { paneVisible: false }
-      , init() {
-          const { sort } = this.props
-
-          this.onReceiveSub = ({ state } = {}) => {
-            if(state && state.checked === false)
-              this.setLocalState({ checked: false })
-          }
-        }
       , render() {
           const { children
                 , styles
@@ -155,7 +147,6 @@ export default function column(pure) {
       , render() {
           const { children, ...props } = this.props
           return <div>{children}</div>
-          //return children ? cloneElement(children, props) : null
         }
       }
     )
