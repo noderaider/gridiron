@@ -1,6 +1,6 @@
 {
   "name": "gridiron",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "description": "Feature-Packed Grid Framework",
   "main": "lib/index.js",
   "files": [
@@ -49,14 +49,14 @@
     "ncp": "^2.0.0",
     "npm-run-all": "latest",
     "react-autosizer": "*",
-    "react-maximize": "^0.12.1",
-    "react-minimize": "^0.12.1",
-    "react-pub-sub": "^0.12.1",
+    "react-maximize": "^0.14.0",
+    "react-minimize": "^0.14.0",
+    "react-pub-sub": "^0.14.0",
     "react-stamp": "latest",
-    "gridiron-core": "^0.12.1",
-    "gridiron-react": "^0.13.0",
-    "redux-pager": "^0.13.0",
-    "solvent": "^0.12.1"
+    "gridiron-core": "^0.14.0",
+    "gridiron-react": "^0.14.0",
+    "redux-pager": "^0.14.0",
+    "solvent": "^0.14.0"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0",

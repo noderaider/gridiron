@@ -1,6 +1,6 @@
 {
   "name": "react-maximize-themes",
-  "version": "0.12.1",
+  "version": "0.14.0",
   "description": "React Component Styles for CSS Modules",
   "main": "lib/index.js",
   "scripts": {
@@ -21,9 +21,9 @@
     "classnames": "latest",
     "ncp": "latest",
     "npm-run-all": "latest",
-    "solvent": "^0.12.1",
+    "solvent": "^0.14.0",
     "react-stamp": "latest",
-    "react-themes": "^0.12.1"
+    "react-themes": "^0.14.0"
   },
   "devDependencies": {
     "babel-cli": "latest",
