@@ -1,6 +1,6 @@
 {
   "name": "react-formula-themes",
-  "version": "0.12.2",
+  "version": "0.13.0",
   "description": "React Component Styles for CSS Modules",
   "main": "lib/index.js",
   "scripts": {
