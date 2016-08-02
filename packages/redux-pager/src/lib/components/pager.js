@@ -112,6 +112,11 @@ export default function pager (pure) {
               }
               return rowData
             }}
+            mapColumnData={rowData => {
+              return rowData.map((rowDatum, rowID) => {
+                return map.cellData(rowID, rowDatum)
+              })
+            }}
             /** CALLED BY FILTER STREAM */
             filterRowData={this.props.filterStream ? (rowData, filterState) => {
               if(filterState) {
@@ -132,9 +137,10 @@ export default function pager (pure) {
               return rowData
             } : null}
             /** MAP CELL AND SORT DATA AND ADD TO DATA CONSTRUCT */
-            mapData={(rowData, access) => {
+
+            mapData={(rowData, columnData, access) => {
               const rows = rowData.map((rowDatum, rowID) => {
-                const cellData = map.cellData(rowID, rowDatum)
+                const cellData = columnData.get(rowID)
                 const sortKeys = this.props.sort ? createSortKeys(cellData, access) : null
                 return Immutable.Map({ rowDatum, cellData, sortKeys })
               })
@@ -219,39 +225,28 @@ export default function pager (pure) {
     { displayName: 'PagerDataFilter'
     , propTypes:  { state: PropTypes.object.isRequired
                   , mapStateToRowData: PropTypes.func.isRequired
+                  , mapColumnData: PropTypes.func.isRequired
                   , filterStream: PropTypes.func
                   , filterRowData: PropTypes.func
                   }
-    , state:  { filterState: null
-              }
-    , componentWillMount() {
-        const { mapStateToRowData, filterStream, filterRowData, Filter } = this.props
-
-        if(filterStream)
-          this.unsubscribe = filterStream(filterState => this.setState({ filterState }))
-      }
-    , componentWillUnmount() {
-        if(this.unsubscribe)
-          this.unsubscribe()
-      }
     , render() {
         const { mapStateToRowData
-              , filterRows
-              , filterRowData
+              , mapColumnData
               , mapEarlyProps
               , ...childProps
               } = this.props
-        const { filterState } = this.state
 
         const rowData = mapStateToRowData(this.props.state)
-        const earlyProps = mapEarlyProps ? mapEarlyProps({ rowData }) : null
+        const columnData = mapColumnData(rowData)
+        const earlyProps = mapEarlyProps ? mapEarlyProps({ rowData, columnData }) : null
 
 
         return (
           <PagerRowFilter
             {...childProps}
             earlyProps={earlyProps}
-            rowData={filterRowData && filterState ? filterRowData(rowData, filterState) : rowData}
+            rowData={rowData}
+            columnData={columnData}
           />
         )
       }
@@ -261,12 +256,14 @@ export default function pager (pure) {
   const PagerRowFilter = pure (
     { displayName: 'PagerRowFilter'
     , propTypes:  { rowData: PropTypes.object.isRequired
+                  , columnData: PropTypes.object.isRequired
                   , mapData: PropTypes.func.isRequired
                   , sortData: PropTypes.func
                   , mapDataToStatus: PropTypes.func.isRequired
                   , mapStatusToActions: PropTypes.func.isRequired
                   }
     , state:  { status: Immutable.Map()
+              , filterState: null
               }
     , init() {
         const getProps = () => this.props
@@ -282,8 +279,19 @@ export default function pager (pure) {
                       }
 
       }
+    , componentWillMount() {
+        const { mapStateToRowData, mapColumnData, filterStream, filterRowData, Filter } = this.props
+        if(filterStream)
+          this.unsubscribe = filterStream(filterState => this.setState({ filterState }))
+      }
+    , componentWillUnmount() {
+        if(this.unsubscribe)
+          this.unsubscribe()
+      }
     , render() {
         const { rowData
+              , columnData
+              , filterRowData
               , mapData
               , sortData
               , rowFilter
@@ -295,7 +303,11 @@ export default function pager (pure) {
               , ...childProps
               } = this.props
 
-        const rawData = mapData(rowData, this.access)
+        const { filterState } = this.state
+
+        const filteredData = filterRowData && filterState ? filterRowData(rowData, filterState) : rowData
+
+        const rawData = mapData(filteredData, columnData, this.access)
         const data = sortData ? sortData(rawData, this.access) : rawData
         const status = mapDataToStatus(data, this.access)
         const actions = mapStatusToActions(status, this.access)

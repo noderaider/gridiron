@@ -22,79 +22,44 @@ const defaults = { styles, theme: carbon }
 const pure = pureStamp(deps, defaults)
 
 const { Pager } = reduxPager(deps, defaults)
-const { Grid, Accordion, Column, Logo } = gridironReact(deps, defaults)
-
-
-function createContext() {
-  const cellStyle = { display: 'flex'
-                    , flexDirection: 'row'
-                    , flexWrap: 'wrap'
-                    , justifyContent: 'space-between'
-                    , alignItems: 'center'
-                    }
-
-  const cell =  { state: { checked: false }
-                , render() {
-                    const { checkbox, children } = this.props
-                    const { pub, sub } = this.state
-                    const checkboxValue = this.latest([ 'state', 'checked' ], false)
-                    return (
-                      <div style={cellStyle}>
-                        <input
-                          type="checkbox"
-                          checked={checkboxValue}
-                          onChange={({ target }) => {
-                          }}
-                        />
-                        {children}
-                      </div>
-                    )
-                  }
-                }
-
-  const Cell = headers[0].createCell(cell)
-
-
-  return { mapCols }
-}
-
-
-const createFilterStream = columnIDs => onFilter => {  //(getData, onChange) => {
-  const formNames = columnIDs.map(getFormName)
-  console.warn('FILTER STREAM CREATED', formNames)
-  return formula.subscribe(formNames, formStates => {
-    console.warn('GETTING FILTER STATE', formStates, columnIDs)
-
-    const filterState = columnIDs.reduce((result, columnID, i) => {
-      const formState = formStates[i]
-      const getFilterValue = rowID => formState ? formState.getIn([ getFilterName(rowID), 'value' ], false) : false
-      return { ...result, [columnID]: getFilterValue }
-    }, {})
-    console.warn('FILTER STREAM', filterState)
-
-    onFilter(filterState)
-  })
-}
+const { Grid, Accordion, Columns, Logo } = gridironReact(deps, defaults)
 
 const getFormName = columnID => `filter-form-${columnID}`
 const getFilterName = rowID => `filter_${rowID}`
+
+const createFilterStream = columnIDs => {
+  const formNames = columnIDs.map(getFormName)
+  return onFilter => {
+    const unsubscribe = formula.subscribe(formNames, formStates => {
+      console.warn('GETTING FILTER STATE', formStates, columnIDs)
+
+      const filterState = columnIDs.reduce((result, columnID, i) => {
+        const formState = formStates[i]
+        const getFilterValue = rowID => formState ? formState.getIn([ getFilterName(rowID), 'value' ], false) : false
+        return { ...result, [columnID]: getFilterValue }
+      }, {})
+      console.warn('FILTER STREAM', filterState)
+
+      onFilter(filterState)
+    })
+    return unsubscribe
+  }
+}
 
 
 
 const FilterForm = pure (
   { displayName: 'FilterForm'
   , propTypes:  { columnID: PropTypes.any
-                , rowData: PropTypes.object.isRequired
+                , columnData: PropTypes.object.isRequired
                 }
   , render() {
-      const { rowData, columnID } = this.props
-      if(!columnID)
-        return null
+      const { columnData, columnID } = this.props
       const form = formula(getFormName(this.props.columnID))
       return (
         <div>
-          {rowData.entrySeq().map(([ rowID, context ], rowIndex) => {
-            const cellDatum = context.getIn([ 'cellData', columnID ])
+          {columnData.entrySeq().map(([ rowID, cellData ], rowIndex) => {
+            const cellDatum = cellData.get(columnID)
             return (
               <form.Field key={rowIndex} name={getFilterName(rowID)} type="checkbox"><Pre>{cellDatum}</Pre></form.Field>
             )
@@ -111,6 +76,8 @@ const Gridiron = pure (
   , render() {
       const { container } = this.props
 
+      const columns = Columns('id', 'state')
+
       return (
         <div>
 
@@ -126,26 +93,16 @@ const Gridiron = pure (
               {pager => (
                 <Box>
 
-
-
                   <Accordion
-                      styles={styles}
                       theme={carbon}
-                      cols={pager.cols}
-
-
                       data={pager.status.get('data', Immutable.Map())}
 
-
-                      mapHeader={({ rowID, rowIndex, datum }) => {
-                        return <h3>{datum}</h3>
-                      }}
-                      mapContent={({ rowID, rowIndex, datum }) => {
-                        return (
-                          <h4>content: <Pre>{{ rowID, rowIndex, datum }}</Pre></h4>
-                        )
-                      }}
-
+                      mapHeader={({ rowID, rowIndex, datum }) => (
+                        <h3>{datum}</h3>
+                      )}
+                      mapContent={({ rowID, rowIndex, datum }) => (
+                        <h4>content: <Pre>{{ rowID, rowIndex, datum }}</Pre></h4>
+                      )}
 
 
                       header={
@@ -153,14 +110,13 @@ const Gridiron = pure (
                         , <Controls key="maximize" />
                         ]
                       }
-                      footer={[ <pager.Controls key="pager-buttons"><pager.Select /></pager.Controls>
-                              , <pager.RowStatus key="pager-row-status" />
-                              , <pager.PageStatus key="pager-page-status" />
-                              , <pager.RowsPerPage label="Rows Per Page" key="rows-per-page" />
-                              ]}
-
-                      Pre={Pre}
-                      {...this.props}
+                      footer={
+                        [ <pager.Controls key="pager-buttons"><pager.Select /></pager.Controls>
+                        , <pager.RowStatus key="pager-row-status" />
+                        , <pager.PageStatus key="pager-page-status" />
+                        , <pager.RowsPerPage label="Rows Per Page" key="rows-per-page" />
+                        ]
+                      }
                     />
 
 
@@ -173,9 +129,7 @@ const Gridiron = pure (
           {container(({ Controls, Box, isMaximized, id, actions }) => (
             <Pager
               rowsPerPage={5}
-              filterStream={
-                createFilterStream([ 'id', 'state' ])
-              }
+              filterStream={createFilterStream(columns.ids)}
 
               map={ { rowData: state => Immutable.Map.isMap(state) ? state : Immutable.Map(state)
                     , cellData: (rowID, rowDatum) => Immutable.Map({ id: rowID, state: rowDatum })
@@ -184,88 +138,60 @@ const Gridiron = pure (
 
               /** EARLY PROPS ({ rowData }) -> WILL BYPASS UPDATES IF DEFINED HERE */
               mapEarlyProps={
-                ({ rowData }) => {
-                  const filterForm = <FilterForm rowData={rowData} />
-                  return { filterForm }
+                ({ rowData, columnData }) => {
+                  const columnFilters = columns.reduce(columnID => <FilterForm columnData={columnData} columnID={columnID} />)
+                  return { columnFilters }
                 }
               }
 
-              mapProps={({ earlyProps, status, actions }) => {
-                //const filterForm = <FilterForm data={status.get('data')} />
-                const { filterForm } = earlyProps
-                return (
-                  { mapColumn:
-                      { local: columnID => ({ column: Column(columnID) })
-                      , header: ({ local, columnID, columnIndex }) => {
-                        console.info('HEADER', local, columnID, columnIndex)
-                          const { column } = local
-                          return (
-                            <column.Header
-                              actions={actions}
-                              fields={{ checkbox: true
-                                      //, radio: [ { yes: 'Yes', no: 'No' }, 'yes' ]
-                                      , filter: true
-                                      , sort: status.get('sort')
-                                      }}
-                              paneContent={cloneElement(filterForm, { columnID })}
-                            >
-                              {columnID}
-                            </column.Header>
-                          )
-                        }
-                      , footer: ({ local, columnID, columnIndex }) => {
-                          const { column } = local
-                          return (
-                            <column.Footer />
-                          )
-                        }
-                      }
-                  , mapCell:
-                      ({ columnLocal, rowLocal, rowIndex, columnIndex, rowID, columnID, datum }) => {
-                        console.info('MAPPING CELLS', columnLocal)
-                        const { column } = columnLocal
-                        return (
-                          <column.Cell rowID={rowID}>
-                            <Pre>{{ rowIndex, columnIndex, rowID, columnID, datum }}</Pre>
-                          </column.Cell>
-                        )
-                      }
-                  }
-                )
-              }}
-
-
               sort={Immutable.fromJS(
-                { cols: [ 'id', 'state' ]
+                { cols: columns.ids
                 , keys: { id: datum => datum
                         , state: datum => Object.keys(datum).join('_')
                         }
                 })
               }
-
               theme={carbon}>
               {pager => (
                 <Box>
                   <Grid
-                      styles={styles}
                       theme={carbon}
-                      cols={pager.cols}
                       data={pager.status.get('data', Immutable.Map())}
-
-                      mapColumn={pager.mapColumn}
-
                       mapRow={(
-                        { local: rowID => {}
-                        , header: ({ local, rowID, rowIndex, rowDatum }) => {
-                            return <h3>{rowID}</h3>
-                          }
-                        , footer: ({ local, rowID, rowIndex, rowDatum }) => {
-                            return <h4>footer: <Pre>{{ rowID, rowIndex }}</Pre></h4>
-                          }
+                        { header: ({ local, rowID, rowIndex, rowDatum }) => (
+                            <h3>{rowID}</h3>
+                          )
+                        , footer: ({ local, rowID, rowIndex, rowDatum }) => (
+                            <h5 style={{ float: 'right' }}>({rowIndex + 1})</h5>
+                          )
                         }
                       )}
+                      mapColumn={
+                        { local: columnID => columns[columnID]
+                        , header: ({ local, columnID, columnIndex }) => (
+                            <local.Header
+                              actions={pager.actions}
+                              fields={{ checkbox: true
+                                      //, radio: [ { yes: 'Yes', no: 'No' }, 'yes' ]
+                                      , filter: true
+                                      , sort: pager.status.get('sort')
+                                      }}
+                              paneContent={pager.earlyProps.columnFilters[columnID]}
+                            >
+                              {columnID}
+                            </local.Header>
+                          )
+                        , footer: ({ local, columnID, columnIndex }) => (
+                            <local.Footer />
+                          )
+                        }
+                      }
+                      mapCell={({ columnLocal, rowLocal, rowIndex, columnIndex, rowID, columnID, datum }) => (
+                        <columnLocal.Cell rowID={rowID}>
+                          <Pre>{{ rowIndex, columnIndex, rowID, columnID, datum }}</Pre>
+                        </columnLocal.Cell>
+                      )}
 
-                      mapCell={pager.mapCell}
 
                       mapDrill={parentId => <div>Sub grid for {parentID}</div>} //<ReduxGridDetail ids={parentId} />}
                       header={

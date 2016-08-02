@@ -216,6 +216,11 @@ function pager(pure) {
             return Immutable.Map(rowData);
           }
           return rowData;
+        },
+        mapColumnData: function mapColumnData(rowData) {
+          return rowData.map(function (rowDatum, rowID) {
+            return map.cellData(rowID, rowDatum);
+          });
         }
         /** CALLED BY FILTER STREAM */
         , filterRowData: this.props.filterStream ? function (rowData, filterState) {
@@ -236,9 +241,10 @@ function pager(pure) {
           return rowData;
         } : null
         /** MAP CELL AND SORT DATA AND ADD TO DATA CONSTRUCT */
-        , mapData: function mapData(rowData, access) {
+
+        , mapData: function mapData(rowData, columnData, access) {
           var rows = rowData.map(function (rowDatum, rowID) {
-            var cellData = map.cellData(rowID, rowDatum);
+            var cellData = columnData.get(rowID);
             var sortKeys = _this.props.sort ? createSortKeys(cellData, access) : null;
             return Immutable.Map({ rowDatum: rowDatum, cellData: cellData, sortKeys: sortKeys });
           });
@@ -331,70 +337,52 @@ function pager(pure) {
   })(pure({ displayName: 'PagerDataFilter',
     propTypes: { state: PropTypes.object.isRequired,
       mapStateToRowData: PropTypes.func.isRequired,
+      mapColumnData: PropTypes.func.isRequired,
       filterStream: PropTypes.func,
       filterRowData: PropTypes.func
     },
-    state: { filterState: null
-    },
-    componentWillMount: function componentWillMount() {
-      var _this2 = this;
-
+    render: function render() {
       var _props2 = this.props;
       var mapStateToRowData = _props2.mapStateToRowData;
-      var filterStream = _props2.filterStream;
-      var filterRowData = _props2.filterRowData;
-      var Filter = _props2.Filter;
+      var mapColumnData = _props2.mapColumnData;
+      var mapEarlyProps = _props2.mapEarlyProps;
 
-
-      if (filterStream) this.unsubscribe = filterStream(function (filterState) {
-        return _this2.setState({ filterState: filterState });
-      });
-    },
-    componentWillUnmount: function componentWillUnmount() {
-      if (this.unsubscribe) this.unsubscribe();
-    },
-    render: function render() {
-      var _props3 = this.props;
-      var mapStateToRowData = _props3.mapStateToRowData;
-      var filterRows = _props3.filterRows;
-      var filterRowData = _props3.filterRowData;
-      var mapEarlyProps = _props3.mapEarlyProps;
-
-      var childProps = _objectWithoutProperties(_props3, ['mapStateToRowData', 'filterRows', 'filterRowData', 'mapEarlyProps']);
-
-      var filterState = this.state.filterState;
-
+      var childProps = _objectWithoutProperties(_props2, ['mapStateToRowData', 'mapColumnData', 'mapEarlyProps']);
 
       var rowData = mapStateToRowData(this.props.state);
-      var earlyProps = mapEarlyProps ? mapEarlyProps({ rowData: rowData }) : null;
+      var columnData = mapColumnData(rowData);
+      var earlyProps = mapEarlyProps ? mapEarlyProps({ rowData: rowData, columnData: columnData }) : null;
 
       return React.createElement(PagerRowFilter, _extends({}, childProps, {
         earlyProps: earlyProps,
-        rowData: filterRowData && filterState ? filterRowData(rowData, filterState) : rowData
+        rowData: rowData,
+        columnData: columnData
       }));
     }
   }));
 
   var PagerRowFilter = pure({ displayName: 'PagerRowFilter',
     propTypes: { rowData: PropTypes.object.isRequired,
+      columnData: PropTypes.object.isRequired,
       mapData: PropTypes.func.isRequired,
       sortData: PropTypes.func,
       mapDataToStatus: PropTypes.func.isRequired,
       mapStatusToActions: PropTypes.func.isRequired
     },
-    state: { status: Immutable.Map()
+    state: { status: Immutable.Map(),
+      filterState: null
     },
     init: function init() {
-      var _this3 = this;
+      var _this2 = this;
 
       var getProps = function getProps() {
-        return _this3.props;
+        return _this2.props;
       };
       var getStatus = function getStatus(status) {
-        return _this3.state.status;
+        return _this2.state.status;
       };
       var setStatus = function setStatus(status) {
-        return _this3.setState({ status: status });
+        return _this2.setState({ status: status });
       };
 
       this.access = { get page() {
@@ -413,13 +401,32 @@ function pager(pure) {
           return getStatus().getIn(['sort', 'direction', id], null);
         },
         merge: function merge(value) {
-          return setStatus(_this3.state.status.merge(value));
+          return setStatus(_this2.state.status.merge(value));
         }
       };
+    },
+    componentWillMount: function componentWillMount() {
+      var _this3 = this;
+
+      var _props3 = this.props;
+      var mapStateToRowData = _props3.mapStateToRowData;
+      var mapColumnData = _props3.mapColumnData;
+      var filterStream = _props3.filterStream;
+      var filterRowData = _props3.filterRowData;
+      var Filter = _props3.Filter;
+
+      if (filterStream) this.unsubscribe = filterStream(function (filterState) {
+        return _this3.setState({ filterState: filterState });
+      });
+    },
+    componentWillUnmount: function componentWillUnmount() {
+      if (this.unsubscribe) this.unsubscribe();
     },
     render: function render() {
       var _props4 = this.props;
       var rowData = _props4.rowData;
+      var columnData = _props4.columnData;
+      var filterRowData = _props4.filterRowData;
       var mapData = _props4.mapData;
       var sortData = _props4.sortData;
       var rowFilter = _props4.rowFilter;
@@ -429,9 +436,14 @@ function pager(pure) {
       var mapLateProps = _props4.mapLateProps;
       var earlyProps = _props4.earlyProps;
 
-      var childProps = _objectWithoutProperties(_props4, ['rowData', 'mapData', 'sortData', 'rowFilter', 'sortRows', 'mapDataToStatus', 'mapStatusToActions', 'mapLateProps', 'earlyProps']);
+      var childProps = _objectWithoutProperties(_props4, ['rowData', 'columnData', 'filterRowData', 'mapData', 'sortData', 'rowFilter', 'sortRows', 'mapDataToStatus', 'mapStatusToActions', 'mapLateProps', 'earlyProps']);
 
-      var rawData = mapData(rowData, this.access);
+      var filterState = this.state.filterState;
+
+
+      var filteredData = filterRowData && filterState ? filterRowData(rowData, filterState) : rowData;
+
+      var rawData = mapData(filteredData, columnData, this.access);
       var data = sortData ? sortData(rawData, this.access) : rawData;
       var status = mapDataToStatus(data, this.access);
       var actions = mapStatusToActions(status, this.access);

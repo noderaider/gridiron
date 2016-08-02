@@ -226,14 +226,6 @@
   font-size:0.9rem;
 }
 
-/*
-.columnHeader > *,
-.columnFooter > * {
-  font-size: 1em;
-  height: 1em;
-}
-*/
-
 .columnHeader h3 {
   cursor: default;
 }
@@ -250,6 +242,7 @@
 .rowHeaderContent,
 .rowFooterContent {
   padding: 0 15px;
+  width: 100%;
 }
 
 .cellContent {
