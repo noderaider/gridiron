@@ -22,7 +22,7 @@ const defaults = { styles, theme: mellow }
 const pure = pureStamp(deps, defaults)
 
 const { Pager } = reduxPager(deps, defaults)
-const { Grid, Accordion, Columns, Logo } = gridironReact(deps, defaults)
+const { Grid, Accordion, Cards, Columns, Logo } = gridironReact(deps, defaults)
 
 const getFormName = columnID => `filter-form-${columnID}`
 const getFilterName = rowID => `filter_${rowID}`
@@ -31,14 +31,11 @@ const createFilterStream = columnIDs => {
   const formNames = columnIDs.map(getFormName)
   return onFilter => {
     const unsubscribe = formula.subscribe(formNames, formStates => {
-      console.warn('GETTING FILTER STATE', formStates, columnIDs)
-
       const filterState = columnIDs.reduce((result, columnID, i) => {
         const formState = formStates[i]
         const getFilterValue = rowID => formState ? formState.getIn([ getFilterName(rowID), 'value' ], false) : false
         return { ...result, [columnID]: getFilterValue }
       }, {})
-      console.warn('FILTER STREAM', filterState)
 
       onFilter(filterState)
     })
@@ -95,14 +92,6 @@ const Gridiron = pure (
                   <Accordion
                       data={pager.status.get('data', Immutable.Map())}
 
-                      mapHeader={({ rowID, rowIndex, datum }) => (
-                        <h3>{datum}</h3>
-                      )}
-                      mapContent={({ rowID, rowIndex, datum }) => (
-                        <h4>content: <Pre>{{ rowID, rowIndex, datum }}</Pre></h4>
-                      )}
-
-
                       header={
                         [ <h2 key="title" style={{ margin: 0, letterSpacing: 6 }}>Accordion</h2>
                         , <Controls key="maximize" />
@@ -115,6 +104,13 @@ const Gridiron = pure (
                         , <pager.RowsPerPage label="Rows Per Page" key="rows-per-page" />
                         ]
                       }
+
+                      mapHeader={({ rowID, rowIndex, datum }) => (
+                        <h3>{datum}</h3>
+                      )}
+                      mapContent={({ rowID, rowIndex, datum }) => (
+                        <h4>content: <Pre>{{ rowID, rowIndex, datum }}</Pre></h4>
+                      )}
                     />
 
 
@@ -122,6 +118,47 @@ const Gridiron = pure (
               )}
             </Pager>
           ))}
+
+          {container(({ Controls, Box, isMaximized, id, actions }) => (
+            <Pager
+              rowsPerPage={6}
+              map={ { rowData: state => Immutable.Map.isMap(state) ? state : Immutable.Map(state)
+                    , cellData: (rowID, rowDatum) => Immutable.Map({ accordion: Immutable.Map({ header: rowID, content: rowDatum }) })
+                    }
+                  }
+            >
+              {pager => (
+                <Box>
+
+                  <Cards
+                      data={pager.status.get('data', Immutable.Map())}
+
+                      header={
+                        [ <h2 key="title" style={{ margin: 0, letterSpacing: 6 }}>Cards</h2>
+                        , <Controls key="maximize" />
+                        ]
+                      }
+                      footer={
+                        [ <pager.Controls key="pager-buttons"><pager.Select /></pager.Controls>
+                        , <pager.RowStatus key="pager-row-status" />
+                        , <pager.PageStatus key="pager-page-status" />
+                        , <pager.RowsPerPage label="Rows Per Page" key="rows-per-page" />
+                        ]
+                      }
+
+                      mapHeader={({ rowID, rowIndex, datum }) => (
+                        <h3>{datum}</h3>
+                      )}
+                      mapContent={({ rowID, rowIndex, datum }) => (
+                        <h4>content: <Pre>{{ rowID, rowIndex, datum }}</Pre></h4>
+                      )}
+                    />
+
+                </Box>
+              )}
+            </Pager>
+          ))}
+
 
 
           {container(({ Controls, Box, isMaximized, id, actions }) => (
@@ -201,7 +238,6 @@ const Gridiron = pure (
                               , <pager.PageStatus key="pager-page-status" />
                               , <pager.RowsPerPage label="Rows Per Page" key="rows-per-page" />
                               ]}
-                      Pre={Pre}
                       {...this.props}
                     />
                 </Box>

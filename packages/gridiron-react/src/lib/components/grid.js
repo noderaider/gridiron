@@ -41,6 +41,11 @@ export default function grid (pure) {
           {children}
         </div>
       )
+    , Body: ({ children, ...props }) => (
+        <div className={cn(styles.gridBody, theme.gridBody)}>
+          {children}
+        </div>
+      )
     , Footer: ({ children, ...props }) => (
         <div className={cn(styles.gridFooter, theme.gridFooter)}>
           {children}
@@ -254,38 +259,40 @@ export default function grid (pure) {
               </templates.Row>
             ) : null}
 
-            {rows.entrySeq().map(
-              ([ rowID, rowContext ], rowIndex) => {
-                const local = locals.getIn([ 'row', rowID ])
-                const rowDatum = rowContext.get('rowDatum')
-                const cellData = rowContext.get('cellData')
-                return (
-                  <templates.Row key={rowIndex} rowIndex={rowIndex}>
-                    {mapRow.header ? (
-                      <templates.RowHeader>
-                        {mapRow.header({ local, rowID, rowIndex, rowDatum })}
-                      </templates.RowHeader>
-                    ) : null}
-                    <templates.RowBody>
-                      {columns.map((columnID, columnIndex) => {
-                        const datum = cellData.get(columnID)
-                        const columnLocal = getColumnLocal(columnID)
-                        return (
-                          <templates.Cell key={columnIndex} rowIndex={rowIndex} columnIndex={columnIndex}>
-                            {mapCell({ columnLocal, rowLocal: local, rowIndex, columnIndex, rowID, columnID, datum })}
-                          </templates.Cell>
-                        )
-                      })}
-                    </templates.RowBody>
-                    {mapRow.footer ? (
-                      <templates.RowFooter>
-                        {mapRow.footer({ local, rowID, rowIndex, rowDatum })}
-                      </templates.RowFooter>
-                    ) : null}
-                  </templates.Row>
-                )
-              }
-            )}
+            <templates.Body key="grid-body">
+              {rows.entrySeq().map(
+                ([ rowID, rowContext ], rowIndex) => {
+                  const local = locals.getIn([ 'row', rowID ])
+                  const rowDatum = rowContext.get('rowDatum')
+                  const cellData = rowContext.get('cellData')
+                  return (
+                    <templates.Row key={rowIndex} rowIndex={rowIndex}>
+                      {mapRow.header ? (
+                        <templates.RowHeader>
+                          {mapRow.header({ local, rowID, rowIndex, rowDatum })}
+                        </templates.RowHeader>
+                      ) : null}
+                      <templates.RowBody>
+                        {columns.map((columnID, columnIndex) => {
+                          const datum = cellData.get(columnID)
+                          const columnLocal = getColumnLocal(columnID)
+                          return (
+                            <templates.Cell key={columnIndex} rowIndex={rowIndex} columnIndex={columnIndex}>
+                              {mapCell({ columnLocal, rowLocal: local, rowIndex, columnIndex, rowID, columnID, datum })}
+                            </templates.Cell>
+                          )
+                        })}
+                      </templates.RowBody>
+                      {mapRow.footer ? (
+                        <templates.RowFooter>
+                          {mapRow.footer({ local, rowID, rowIndex, rowDatum })}
+                        </templates.RowFooter>
+                      ) : null}
+                    </templates.Row>
+                  )
+                }
+              )}
+            </templates.Body>
             {mapColumn.footer ? (
               <templates.Row key="row-footers" isFooter={true}>
                 {gridColumns.map(columns => columns.footer)}

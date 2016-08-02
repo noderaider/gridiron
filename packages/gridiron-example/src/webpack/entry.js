@@ -28,7 +28,8 @@ export default name => {
     case 'vendor':
       return  { vendor: [ 'expose?React!react'
                         , 'expose?ReactDOM!react-dom'
-                        , 'expose?ReactCSSTransitionGroup!react/lib/ReactCSSTransitionGroup'
+                        , 'expose?ReactCSSTransitionGroup!react-addons-css-transition-group'
+                        , 'expose?shallowCompare!react-addons-shallow-compare'
                         ]
               }
     default:

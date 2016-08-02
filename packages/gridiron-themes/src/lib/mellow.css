@@ -49,7 +49,7 @@
 }
 
 :root {
-  --primary: var(--base0C);
+  --primary: var(--base0A);
   --formula-dark: rgb(16, 34, 43);
   --formula-blue: rgb(10, 160, 217);
   --formula-red: rgb(217, 37, 37);
@@ -63,6 +63,7 @@
   --control-border: color(var(--control-bg) blackness(+10%));
 
 
+  --control-fg-hover: color(var(--control-fg) whiteness(+15%));
   --control-bg-hover: color(var(--control-bg) lightness(+10%));
   --control-bg-disabled: color(var(--control-bg) lightness(+50%));
 
@@ -70,9 +71,21 @@
 
   --control-border-hover: color(var(--control-border) whiteness(+20%));
 
+  --control-transparent-bg: color(var(--control-bg) alpha(50%));
+  --control-transparent-bg-hover: color(var(--control-bg) alpha(30%));
+
   --control-header-bg: color(var(--control-bg) blackness(+5%));
   --control-header-fg: var(--primary);
   --control-header-border: color(var(--control-header-bg) blackness(+10%));
+
+  --control-subheader-bg: color(var(--control-bg) blackness(+5%));
+  --control-subheader-fg: color(var(--control-fg) whiteness(+25%));
+  --control-subheader-border: color(var(--control-header-bg) blackness(+10%));
+
+
+  --control-footer-bg: color(var(--control-bg) blackness(+5%));
+  --control-footer-fg: color(var(--control-fg) whiteness(+15%));
+  --control-footer-border: color(var(--control-header-bg) blackness(+10%));
 
 
   --control-child-bg: color(var(--control-bg) whiteness(+5%));
@@ -89,8 +102,8 @@
 }
 
 .accordionHeader {
-  background-color: var(--control-header-bg);
-  color: var(--control-header-fg);
+  background-color: var(--control-subheader-bg);
+  color: var(--control-subheader-fg);
 }
 
 .accordionHeader:hover {
@@ -110,17 +123,53 @@
 
 /** END ACCORDION */
 
+/** CARDS */
 
-/** PAGER */
-
-.pagerSelect {
-  color: rgb(255, 255, 255);
-  background-color: rgb(0, 0, 0);
-  border-radius: 4px;
-  font-size: 0.85rem;
+.cards {
+  margin:5px 0;
+  padding: 0px;
+  border: 2px solid var(--control-border);
+  border-radius:4px;
+  font-size: 0.95rem;
+  font-family: monospace;
+  box-shadow: 2px 2px 3px rgba(50, 50, 50, 0.5);
+  color: var(--control-fg);
 }
 
-/** END PAGER */
+.cardsBody {
+  background-color: transparent;
+  border-width: 0 1px;
+  border-style: solid;
+  border-color: var(--control-border);
+}
+
+
+.cardsRow {
+  background-color: var(--control-transparent-bg);
+  border: 2px groove var(--control-border);
+  border-radius: 3px;
+  box-shadow: inset 0 0 10px #000000;
+
+  &:hover {
+    background-color: var(--control-transparent-bg-hover);
+  }
+}
+
+.card {
+}
+
+.cardHeader {
+  color: var(--control-subheader-fg);
+  background-color: color(var(--control-bg) alpha(30%));
+}
+
+.cardContent {
+
+}
+/** END CARDS */
+
+
+/** GRID */
 
 .grid {
   margin:5px 0;
@@ -131,6 +180,7 @@
   font-family: monospace;
   box-shadow: 2px 2px 3px rgba(50, 50, 50, 0.5);
   background-color: var(--control-bg);
+  color: var(--control-fg);
 }
 
 .row.even,
@@ -150,7 +200,7 @@
 
 .rowHeader,
 .rowFooter {
-  border: 1px solid var(--control-header-border);
+  border: 1px solid var(--control-subheader-border);
 }
 
 
@@ -159,18 +209,20 @@
 }
 
 
-.gridHeader,
-.gridFooter,
+.gridHeader {
+  background-color: var(--control-header-bg);
+  color: var(--control-header-fg);
+}
+
+.gridFooter {
+  background-color: var(--control-footer-bg);
+  color: var(--control-footer-fg);
+}
+
 .columnHeader,
 .columnFooter {
-  /*
-  color: #fff !important;
-  background-color: rgba(0, 0, 0, 0.5);
-  */
-
-  & button {
-    color: #fff;
-  }
+  background-color: var(--control-subheader-bg);
+  color: var(--control-subheader-fg);
 }
 
 .gridHeader,
@@ -246,3 +298,26 @@
   align-items: center;
 }
 
+/** END GRID */
+
+
+/** PAGER */
+
+.pagerSelect,
+.pagerControls,
+.pagerButton {
+  color: var(--control-fg);
+  background-color: var(--control-bg);
+  border-color: var(--control-border);
+  border-radius: 4px;
+  font-size: 0.85rem;
+  align-items: center;
+
+  &:hover {
+    color: var(--control-fg-hover);
+    border-color: var(--control-border-hover);
+  }
+}
+
+
+/** END PAGER */

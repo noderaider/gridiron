@@ -28,7 +28,6 @@
 
 .app {
   width: 100%;
-  color: rgb(131, 148, 150);
 
   @media (--lg-screen) {
     width: 90%;

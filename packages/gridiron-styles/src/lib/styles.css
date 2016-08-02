@@ -38,6 +38,61 @@
 /** END PAGER */
 
 
+/** CARDS */
+
+.cards {
+  display: flex;
+  flex-direction: column;
+
+}
+
+.cardsBody {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+
+.cardsRow {
+  display: inline-flex;
+  margin: 8px;
+  flex: 1 0 calc(33% - 48px);
+  cursor: pointer;
+  max-height: 33vh;
+
+  overflow: auto;
+
+
+  &::-webkit-scrollbar-track {
+    background-color: rgb(40, 40, 40);
+  }
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    background-color: rgb(10, 160, 217);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgb(10, 160, 217);
+  }
+}
+
+.card {
+  width: 100%;
+}
+
+.cardHeader {
+  padding: 1px 10px;
+}
+
+.cardContent {
+  padding: 1px 10px;
+}
+
+/** END CARDS */
+
+
 
 /** ACCORDION */
 
@@ -80,11 +135,19 @@
   overflow-y: auto;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
 
   /* Without this property, Chrome repaints the entire Grid any time a new row or column is added.
      Firefox only repaints the new row or column (regardless of this property).
      Safari and IE don't support the property at all. */
   will-change: transform;
+}
+
+.gridBody {
+  display: flex;
+  flex-direction: column;
+
 }
 
 .container {
@@ -96,13 +159,6 @@
 .innerContainer {
   flex: 1 1 auto;
   width: inherit !important;
-}
-
-.rowGroup {
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 auto;
-  width: 100%;
 }
 
 .row {
