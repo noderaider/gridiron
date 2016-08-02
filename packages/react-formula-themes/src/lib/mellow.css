@@ -1,0 +1,293 @@
+/** xs-screen | 320px  */ @custom-media --xs-screen only screen and (width >= 20em);
+/** sm-screen | 480px  */ @custom-media --sm-screen only screen and (width >= 30em);
+/** md-screen | 600px  */ @custom-media --md-screen only screen and (width >= 37.5em);
+/** lg-screen | 768px  */ @custom-media --lg-screen only screen and (width >= 48em);
+/** xl-screen | 900px  */ @custom-media --xl-screen only screen and (width >= 56.25em);
+/** 2x-screen | 1100px */ @custom-media --2x-screen only screen and (width >= 68.75em);
+/** 3x-screen | 1300px */ @custom-media --3x-screen only screen and (width >= 81.25em);
+
+/**
+ * BASE 16 COLOR SCHEMES
+ *
+ * base00 - Default Background
+ * base01 - Lighter Background (Used for status bars)
+ * base02 - Selection Background
+ * base03 - Comments, Invisibles, Line Highlighting
+ * base04 - Dark Foreground (Used for status bars)
+ * base05 - Default Foreground, Caret, Delimiters, Operators
+ * base06 - Light Foreground (Not often used)
+ * base07 - Light Background (Not often used)
+ * base08 - Variables, XML Tags, Markup Link Text, Markup Lists, Diff Deleted
+ * base09 - Integers, Boolean, Constants, XML Attributes, Markup Link Url
+ * base0A - Classes, Markup Bold, Search Text Background
+ * base0B - Strings, Inherited Class, Markup Code, Diff Inserted
+ * base0C - Support, Regular Expressions, Escape Characters, Markup Quotes
+ * base0D - Functions, Methods, Attribute IDs, Headings
+ * base0E - Keywords, Storage, Selector, Markup Italic, Diff Changed
+ * base0F - Deprecated, Opening/Closing Embedded Language Tags e.g. <?php ?>
+ */
+
+
+:root {
+  --base00: #252424;
+  --base01: #242524;
+  --base02: #403E3E;
+  --base03: #333232;
+  --base04: #7F7C7C;
+  --base05: #8C8888;
+  --base06: #CCC6C6;
+  --base07: #F1F1F1;
+  --base08: #B5564A;
+  --base09: #DB742E;
+  --base0A: #EEB905;
+  --base0B: #5C8278;
+  --base0C: #3463A8;
+  --base0D: #4B6CD8;
+  --base0E: #5C6382;
+  --base0F: #6E5602;
+}
+
+:root {
+  --primary: var(--base0C);
+  --formula-dark: rgb(16, 34, 43);
+  --formula-blue: rgb(10, 160, 217);
+  --formula-red: rgb(217, 37, 37);
+  --formula-orange: rgb(217, 118, 10);
+  --formula-green: rgb(121, 208, 255);
+
+  --control-bg: var(--base01);
+  --control-even-bg: color(var(--control-bg) blackness(+3%));
+  --control-odd-bg: color(var(--control-bg) blackness(-3%));
+  --control-fg: var(--base04);
+  --control-border: color(var(--control-bg) blackness(+10%));
+
+
+  --control-bg-hover: color(var(--control-bg) lightness(+10%));
+  --control-bg-disabled: color(var(--control-bg) lightness(+50%));
+
+  --control-fg-disabled: color(var(--control-fg) whiteness(+50%));
+
+  --control-border-hover: color(var(--control-border) whiteness(+20%));
+
+  --control-header-bg: color(var(--control-bg) blackness(+5%));
+  --control-header-fg: var(--primary);
+  --control-header-border: color(var(--control-header-bg) blackness(+10%));
+
+
+  --control-child-bg: color(var(--control-bg) whiteness(+5%));
+  --control-child-fg: var(--base04);
+}
+
+
+.logo {
+  font-family: monospace;
+}
+
+.dockButton {
+  margin-left: auto;
+  margin-right: auto;
+  border-color: var(--formula-dark);
+  background-color: var(--formula-dark);
+  color: var(--formula-blue);
+  border-style: solid;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 0 0.05rem 0.15rem var(--formula-dark);
+
+  will-change: background-color, border-color, color, box-shadow;
+
+  &:hover {
+    color: var(--formula-green) !important;
+  }
+
+  &:focus {
+    outline: none !important;
+  }
+}
+
+.busy .dockButton {
+  color: var(--formula-orange) !important;
+}
+
+.dockDisabled .dockButton {
+  &:hover {
+    box-shadow: 0 0 0.05rem 0.1rem var(--formula-green);
+  }
+}
+
+.dockEnabled .dockButton {
+  background-color: var(--formula-blue);
+  border-color: var(--formula-blue);
+  color: var(--formula-dark);
+  box-shadow: none;
+}
+
+.dockEnabled .flexSpacer {
+  background-color: var(--formula-blue);
+  border-color: var(--formula-blue);
+  color: var(--formula-dark);
+  box-shadow: none;
+}
+
+.dockWrap {
+  font-family: monospace;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(45, 48, 51, 0.95);
+  color: rgb(10, 160, 217);
+  padding:4px;
+  border-width: 0 1px 1px 1px;
+  border-style: solid;
+  border-color: rgb(10, 160, 217);
+  border-radius: 0 0 1px 1px;
+  max-height: 60vh;
+  overflow: auto;
+
+  will-change: overflow;
+
+
+  &::-webkit-scrollbar-track {
+    background-color: rgb(40, 40, 40);
+    border: 1px solid rgb(10, 160, 217);
+  }
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    border: 1px solid rgb(10, 160, 217);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgb(10, 160, 217);
+  }
+}
+
+
+.dock {
+  background-color: transparent;
+  border-width: 0;
+}
+
+.dockContent {
+  width: 100%;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 1rem;
+  font-weight: 100;
+}
+
+.dockColumn {
+  background: transparent;
+  width:100%;
+}
+
+.dockItem {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+
+.dockTitle {
+  font-size:1rem;
+  letter-spacing:0.2rem;
+  display:flex;
+  align-self: center;
+  font-weight:bold;
+}
+
+.dockFormName {
+  font-weight: bold;
+  font-size:0.9rem;
+  letter-spacing:0.2rem;
+  margin-top: 0.8rem;
+}
+
+
+.dockFormFields {
+  margin-left: 1rem;
+  font-size: 0.7rem;
+}
+
+.dockFormFields pre {
+  display: inline-flex !important;
+}
+
+
+
+
+.inputWrap.type_radio {
+  /* Radio button inner circle */
+  & .inputUI:after {
+    background: var(--control-fg);
+  }
+
+  /* Disabled circle colour */
+  & input:disabled ~ .inputUI:after {
+    background: var(--control-fg-disabled);
+  }
+
+}
+
+.inputWrap.type_checkbox {
+  & .inputUI {
+    border-radius: 0.2em;
+  }
+
+  /* Checkbox tick */
+  & .inputUI:after {
+    border-color: var(--control-fg);
+  }
+
+  /* Disabled tick colour */
+  & input:disabled ~ .inputUI:after {
+    border-color: var(--control-fg-disabled);
+  }
+}
+
+
+.inputWrap.type_checkbox, .inputWrap.type_radio {
+  /*
+  cursor: pointer;
+  */
+
+  & .inputUI {
+    background: var(--control-bg);
+    border: 1px solid var(--control-border)
+  }
+
+
+    /* Disabled state */
+  & input:disabled ~ .inputUI {
+    opacity: .6;
+    background: var(--control-bg-disabled);
+  }
+
+
+  &:hover input ~ .inputUI,
+  & input:focus ~ .inputUI {
+    background: var(--control-bg-hover);
+    border-color: var(--control-border-hover);
+  }
+
+  /* Checked state */
+  & input:checked ~ .inputUI {
+    /*
+    background: #2aa1c0;
+    */
+  }
+
+  /* Hover state whilst checked */
+  &:hover input:not([disabled]):checked ~ .inputUI,
+  & input:checked:focus ~ .inputUI {
+    /*
+    background: #0e647d;
+    */
+  }
+
+}

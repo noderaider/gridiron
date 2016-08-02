@@ -13,12 +13,12 @@ import formula from '../react-formula'
 
 
 import styles from 'gridiron-styles'
-import { sandy, black, carbon  } from 'gridiron-themes'
+import { sandy, black, carbon, mellow } from 'gridiron-themes'
 
 const should = require('chai').should()
 
 const deps = { React, shallowCompare, connect, Immutable, formula, Pre }
-const defaults = { styles, theme: carbon }
+const defaults = { styles, theme: mellow }
 const pure = pureStamp(deps, defaults)
 
 const { Pager } = reduxPager(deps, defaults)
@@ -88,13 +88,11 @@ const Gridiron = pure (
                     , cellData: (rowID, rowDatum) => Immutable.Map({ accordion: Immutable.Map({ header: rowID, content: rowDatum }) })
                     }
                   }
-
-              theme={carbon}>
+            >
               {pager => (
                 <Box>
 
                   <Accordion
-                      theme={carbon}
                       data={pager.status.get('data', Immutable.Map())}
 
                       mapHeader={({ rowID, rowIndex, datum }) => (
@@ -151,11 +149,10 @@ const Gridiron = pure (
                         }
                 })
               }
-              theme={carbon}>
+            >
               {pager => (
                 <Box>
                   <Grid
-                      theme={carbon}
                       data={pager.status.get('data', Immutable.Map())}
                       mapRow={(
                         { header: ({ local, rowID, rowIndex, rowDatum }) => (

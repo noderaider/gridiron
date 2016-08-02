@@ -7,9 +7,9 @@ import { Pre } from '../react-pre'
 
 import reactFormula from 'react-formula'
 import styles from 'react-formula-styles'
-import { carbon, sandy, black } from 'react-formula-themes'
+import { carbon, sandy, black, mellow } from 'react-formula-themes'
 
 export default reactFormula ( { React, ReactDOM, shallowCompare, Immutable, Pre }
-                            , { styles, theme: carbon }
+                            , { styles, theme: mellow }
                             )
 
