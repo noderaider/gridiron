@@ -25,6 +25,7 @@ export default function accordion (pure) {
                   , mapHeader: PropTypes.func.isRequired
                   , mapContent: PropTypes.func.isRequired
                   , data: PropTypes.object.isRequired
+                  , expandedRowID: PropTypes.any
                   , transitionDurationMS: PropTypes.number
                   }
     , defaultProps: { ...defaults
@@ -52,6 +53,11 @@ export default function accordion (pure) {
           node.style.maxHeight = `${node.scrollHeight}px`
           this.expanded.push(rowID)
         }
+      }
+    , componentDidMount() {
+        const { expandedRowID } = this.props
+        if(typeof expandedRowID !== 'undefined')
+          this.expandRow(expandedRowID)
       }
     , render() {
         const { styles, theme, mapHeader, mapContent, data, ...gridProps } = this.props

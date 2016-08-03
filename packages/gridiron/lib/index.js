@@ -3,29 +3,96 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.reduxPager = exports.reactMaximize = exports.reactPreThemes = exports.reactPreStyles = exports.reactPre = exports.reactFormulaThemes = exports.reactFormulaStyles = exports.reactFormula = exports.gridironThemes = exports.gridironStyles = exports.gridironReact = undefined;
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var _gridironReact = require('gridiron-react');
 
-exports.default = gridiron;
+Object.defineProperty(exports, 'gridironReact', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_gridironReact).default;
+  }
+});
 
-var _components = require('./components');
+var _gridironStyles = require('gridiron-styles');
 
-var components = _interopRequireWildcard(_components);
+Object.defineProperty(exports, 'gridironStyles', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_gridironStyles).default;
+  }
+});
+
+var _reactFormula = require('react-formula');
+
+Object.defineProperty(exports, 'reactFormula', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_reactFormula).default;
+  }
+});
+
+var _reactFormulaStyles = require('react-formula-styles');
+
+Object.defineProperty(exports, 'reactFormulaStyles', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_reactFormulaStyles).default;
+  }
+});
+
+var _reactPre = require('react-pre');
+
+Object.defineProperty(exports, 'reactPre', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_reactPre).default;
+  }
+});
+
+var _reactPreStyles = require('react-pre-styles');
+
+Object.defineProperty(exports, 'reactPreStyles', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_reactPreStyles).default;
+  }
+});
+
+var _reactMaximize = require('react-maximize');
+
+Object.defineProperty(exports, 'reactMaximize', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_reactMaximize).default;
+  }
+});
+
+var _reduxPager = require('redux-pager');
+
+Object.defineProperty(exports, 'reduxPager', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_reduxPager).default;
+  }
+});
+
+var _gridironThemes2 = require('gridiron-themes');
+
+var _gridironThemes = _interopRequireWildcard(_gridironThemes2);
+
+var _reactFormulaThemes2 = require('react-formula-themes');
+
+var _reactFormulaThemes = _interopRequireWildcard(_reactFormulaThemes2);
+
+var _reactPreThemes2 = require('react-pre-themes');
+
+var _reactPreThemes = _interopRequireWildcard(_reactPreThemes2);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var applyCapitalization = function applyCapitalization(str) {
-  return str.length <= 2 ? str.toUpperCase() : '' + str[0].toUpperCase() + str.slice(1);
-};
-
-/**
- * gridiron
- * Requires dependencies { React } and returns a decorated component.
- */
-function gridiron(deps, defaults) {
-  return Object.keys(components).reduce(function (libs, x) {
-    return _extends({}, libs, _defineProperty({}, applyCapitalization(x), components[x](deps, defaults)));
-  }, {});
-}
+exports.gridironThemes = _gridironThemes;
+exports.reactFormulaThemes = _reactFormulaThemes;
+exports.reactPreThemes = _reactPreThemes;
