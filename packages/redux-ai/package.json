@@ -1,6 +1,6 @@
 {
   "name": "react-ai",
-  "version": "0.12.1",
+  "version": "0.13.1",
   "description": "Intelligent Redux Toolset",
   "main": "lib/index.js",
   "files": [
@@ -43,7 +43,7 @@
     "chai": "^3.5.0",
     "classnames": "^2.2.5",
     "ncp": "^2.0.0",
-    "solvent": "^0.12.1"
+    "solvent": "^0.13.1"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0",

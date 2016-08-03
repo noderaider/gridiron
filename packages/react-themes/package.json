@@ -1,6 +1,6 @@
 {
   "name": "react-themes",
-  "version": "0.12.1",
+  "version": "0.13.1",
   "description": "React Component Styles for CSS Modules",
   "main": "lib/index.js",
   "scripts": {
@@ -21,9 +21,9 @@
     "classnames": "latest",
     "ncp": "latest",
     "npm-run-all": "latest",
-    "solvent": "^0.12.1",
+    "solvent": "^0.13.1",
     "react-stamp": "latest",
-    "universal-themes": "^0.12.1"
+    "universal-themes": "^0.13.1"
   },
   "devDependencies": {
     "babel-cli": "latest",
