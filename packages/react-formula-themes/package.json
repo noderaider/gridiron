@@ -25,6 +25,7 @@
     "json-loader": "^0.5.4",
     "ncp": "latest",
     "npm-run-all": "latest",
+    "pure-stamp": "^0.1.10",
     "react-stamp": "latest",
     "solvent": "^0.12.1",
     "universal-style-loader": "^0.12.2",

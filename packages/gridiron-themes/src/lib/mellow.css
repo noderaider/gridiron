@@ -229,6 +229,9 @@
 .gridFooter {
   padding: 5px;
   margin: 0;
+  & select {
+
+  }
 }
 
 
@@ -305,7 +308,9 @@
 
 .pagerSelect,
 .pagerControls,
-.pagerButton {
+.pagerButton,
+.gridHeader select,
+.gridFooter select {
   color: var(--control-fg);
   background-color: var(--control-bg);
   border-color: var(--control-border);

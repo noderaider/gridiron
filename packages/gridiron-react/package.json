@@ -24,7 +24,7 @@
     "dom-helpers": "^2.4.0",
     "gridiron-core": "^0.12.1",
     "most": "^1.0.0",
-    "pure-stamp": "^0.1.5",
+    "pure-stamp": "^0.1.10",
     "raf": "^3.2.0",
     "react-pub-sub": "^0.12.1",
     "react-stamp": "^0.5.1",

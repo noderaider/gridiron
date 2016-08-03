@@ -1,11 +1,7 @@
-import * as components from './components'
-
-const applyCapitalization = str => str.length <= 2 ? str.toUpperCase() : `${str[0].toUpperCase()}${str.slice(1)}`
-
-/**
- * gridiron
- * Requires dependencies { React } and returns a decorated component.
- */
-export default function gridiron(deps, defaults) {
-  return Object.keys(components).reduce((libs, x) => ({ ...libs, [applyCapitalization(x)]: components[x](deps, defaults) }), {})
-}
+export { default as gridironReact } from 'gridiron-react'
+export { default as gridironStyles } from 'gridiron-styles'
+export { default as gridironThemes } from 'gridiron-themes'
+export { default as reactFormula } from 'react-formula'
+export { default as reactFormulaStyles } from 'react-formula-styles'
+export { default as reactFormulaThemes } from 'react-formula-themes'
+export { default as reduxPager } from 'redux-pager'
