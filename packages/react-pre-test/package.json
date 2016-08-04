@@ -1,6 +1,6 @@
 {
   "name": "react-pre-test",
-  "version": "0.13.1",
+  "version": "0.14.0",
   "description": "Test framework for react-pre and related components. Enables react-pre to not carry heavyweight dependencies.",
   "main": "lib/index.js",
   "keywords": [
@@ -75,7 +75,7 @@
     "react-tools": "latest",
     "react-virtualized": "latest",
     "redux": "latest",
-    "react-pre": "^0.13.1",
+    "react-pre": "^0.14.0",
     "rimraf": "latest",
     "sinon": "latest"
   },
