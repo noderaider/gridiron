@@ -1,6 +1,6 @@
 {
   "name": "universal-styles",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "description": "Universal Styles for CSS Modules and server side deferred rendering.",
   "main": "lib/index.js",
   "scripts": {
@@ -20,7 +20,7 @@
     "chai": "latest",
     "router": "^1.1.4",
     "serialize-javascript": "latest",
-    "try-defer": "^0.14.0"
+    "try-defer": "^0.15.0"
   },
   "devDependencies": {
     "babel-cli": "latest",

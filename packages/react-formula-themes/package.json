@@ -1,6 +1,6 @@
 {
   "name": "react-formula-themes",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "description": "React Component Styles for CSS Modules",
   "main": "lib/index.js",
   "scripts": {
@@ -27,9 +27,9 @@
     "npm-run-all": "latest",
     "pure-stamp": "^0.1.10",
     "react-stamp": "latest",
-    "solvent": "^0.14.0",
-    "universal-style-loader": "^0.14.0",
-    "universal-styles": "^0.14.0"
+    "solvent": "^0.15.0",
+    "universal-style-loader": "^0.15.0",
+    "universal-styles": "^0.15.0"
   },
   "devDependencies": {
     "babel-cli": "latest",
