@@ -25,7 +25,7 @@ export default function accordion (pure) {
                   , mapHeader: PropTypes.func.isRequired
                   , mapContent: PropTypes.func.isRequired
                   , data: PropTypes.object.isRequired
-                  , expandedRowID: PropTypes.any
+                  , expandedDocumentID: PropTypes.any
                   , transitionDurationMS: PropTypes.number
                   }
     , defaultProps: { ...defaults
@@ -33,31 +33,31 @@ export default function accordion (pure) {
     , init() {
         this.contents = {}
         this.expanded = []
-        this.toggleRow = rowID => {
-          const node = this.contents[rowID]
+        this.toggleDocument = documentID => {
+          const node = this.contents[documentID]
           if(ZERO_MEASURES.includes(node.style.maxHeight))
-            raf(() => this.expandRow(rowID))
+            raf(() => this.expandDocument(documentID))
           else
-            raf(() => this.collapseRows())
+            raf(() => this.collapseDocuments())
         }
-        this.collapseRows = () => {
+        this.collapseDocuments = () => {
           const failed = []
           for(const node of Object.values(this.contents)) {
             if(node)
               node.style.maxHeight = 0
           }
         }
-        this.expandRow = rowID => {
-          this.collapseRows()
-          const node = this.contents[rowID]
+        this.expandDocument = documentID => {
+          this.collapseDocuments()
+          const node = this.contents[documentID]
           node.style.maxHeight = `${node.scrollHeight}px`
-          this.expanded.push(rowID)
+          this.expanded.push(documentID)
         }
       }
     , componentDidMount() {
-        const { expandedRowID } = this.props
-        if(typeof expandedRowID !== 'undefined')
-          this.expandRow(expandedRowID)
+        const { expandedDocumentID } = this.props
+        if(typeof expandedDocumentID !== 'undefined')
+          this.expandDocument(expandedDocumentID)
       }
     , render() {
         const { styles, theme, mapHeader, mapContent, data, ...gridProps } = this.props
@@ -65,21 +65,24 @@ export default function accordion (pure) {
           <Grid
             {...gridProps}
             data={data}
-            mapCell={
-              ({ rowIndex, columnIndex, rowID, columnID, datum }) => {
+            mapDocument={
+              ({ documentIndex, documentID, datum }) => {
+                console.info('DATUM', datum.toJS())
+                const header = mapHeader({ documentIndex, documentID, datum: datum.get('header') })
+                const content = mapContent({ documentIndex, documentID, datum: datum.get('content') })
                 return (
-                  <div className={cn(styles.accordionRow, theme.accordionRow)}>
+                  <div className={cn(styles.accordionDocument, theme.accordionDocument)}>
                     <div
-                      onClick={() => this.toggleRow(rowID)}
+                      onClick={() => this.toggleDocument(documentID)}
                       className={cn(styles.accordionHeader, theme.accordionHeader)}
                     >
-                      {mapHeader({ rowIndex, rowID, datum: datum.get('header') })}
+                      {header}
                     </div>
                     <div
-                      ref={x => this.contents[rowID] = x}
+                      ref={x => this.contents[documentID] = x}
                       className={cn(styles.accordionContent, theme.accordionContent)}
                     >
-                      {mapContent({ rowIndex, rowID, datum: datum.get('content') })}
+                      {content}
                     </div>
                   </div>
                 )

@@ -52,10 +52,10 @@ function pager(pure) {
     StepForward: PropTypes.any.isRequired,
     FastForward: PropTypes.any.isRequired,
     PageStatus: PropTypes.any.isRequired,
-    RowStatus: PropTypes.any.isRequired,
-    RowCount: PropTypes.any.isRequired,
+    DocumentStatus: PropTypes.any.isRequired,
+    DocumentCount: PropTypes.any.isRequired,
     selectOption: PropTypes.func.isRequired,
-    rowsPerPageOption: PropTypes.func.isRequired
+    documentsPerPageOption: PropTypes.func.isRequired
   };
 
   var propTypes = { children: PropTypes.func.isRequired,
@@ -65,25 +65,25 @@ function pager(pure) {
     createSortKeys: PropTypes.func.isRequired,
     createSortKeyComparator: PropTypes.func.isRequired,
     page: PropTypes.number.isRequired,
-    rowsPerPage: PropTypes.any.isRequired,
-    rowsPerPageOptions: PropTypes.arrayOf(PropTypes.any).isRequired,
+    documentsPerPage: PropTypes.any.isRequired,
+    documentsPerPageOptions: PropTypes.arrayOf(PropTypes.any).isRequired,
     typeSingular: PropTypes.string.isRequired,
     typePlural: PropTypes.string.isRequired,
     content: PropTypes.shape(contentShape).isRequired
   };
-  /** CREATES SORT KEYS FOR A ROW */
-  var defaultProps = _extends({ createSortKeys: function createSortKeys(cellData, access) {
+  /** CREATES SORT KEYS FOR A DOCUMENT */
+  var defaultProps = _extends({ createSortKeys: function createSortKeys(cells, access) {
       var sort = access.sort;
       return sort.get('cols').filter(function (columnID) {
         return typeof sort.getIn(['direction', columnID]) === 'string';
       }).map(function (columnID) {
         var sortKey = sort.getIn(['keys', columnID], null);
-        var cellDatum = cellData.get(columnID);
+        var cellDatum = cells.get(columnID);
         var currentKey = sortKey ? sortKey(cellDatum) : cellDatum;
         return typeof currentKey === 'string' ? currentKey : currentKey.toString();
       });
     }
-    /** COMPARES SORT KEYS OF TWO ROWS */
+    /** COMPARES SORT KEYS OF TWO DOCUMENTS */
     , createSortKeyComparator: function createSortKeyComparator(access) {
       var sort = access.sort;
       var multipliers = sort.get('direction') ? sort.get('cols').map(function (columnID) {
@@ -98,8 +98,8 @@ function pager(pure) {
       };
     },
     page: 0,
-    rowsPerPage: 5,
-    rowsPerPageOptions: [1, 2, 3, 4, 5, 10, 25, 50, 100, 500, 1000, 'All'],
+    documentsPerPage: 5,
+    documentsPerPageOptions: [1, 2, 3, 4, 5, 10, 25, 50, 100, 500, 1000, 'All'],
     typeSingular: 'record',
     typePlural: 'records',
     content: { FastBackward: function FastBackward(_ref) {
@@ -157,14 +157,14 @@ function pager(pure) {
           status.get('pages')
         );
       },
-      RowStatus: function RowStatus(_ref7) {
+      DocumentStatus: function DocumentStatus(_ref7) {
         var status = _ref7.status;
 
         var props = _objectWithoutProperties(_ref7, ['status']);
 
         return React.createElement(
           'span',
-          { className: _classnames2.default.apply(undefined, [styles.rowStatus, theme.rowStatus].concat(desktopStyles)) },
+          { className: _classnames2.default.apply(undefined, [styles.documentStatus, theme.documentStatus].concat(desktopStyles)) },
           'Showing ',
           props.typePlural,
           ' ',
@@ -172,49 +172,49 @@ function pager(pure) {
           ' through ',
           status.get('lastIndex').toLocaleString(),
           ' (',
-          status.get('totalRows').toLocaleString(),
+          status.get('totalDocuments').toLocaleString(),
           ' total)'
         );
       },
-      RowStatusMobile: function RowStatusMobile(_ref8) {
+      DocumentStatusMobile: function DocumentStatusMobile(_ref8) {
         var status = _ref8.status;
 
         var props = _objectWithoutProperties(_ref8, ['status']);
 
         return React.createElement(
           'span',
-          { className: _classnames2.default.apply(undefined, [styles.rowStatus, theme.rowStatus].concat(mobileStyles)) },
+          { className: _classnames2.default.apply(undefined, [styles.documentStatus, theme.documentStatus].concat(mobileStyles)) },
           (status.get('startIndex') + 1).toLocaleString(),
           ' - ',
           status.get('lastIndex').toLocaleString(),
           ' / ',
-          status.get('totalRows').toLocaleString()
+          status.get('totalDocuments').toLocaleString()
         );
       },
-      RowCount: function RowCount(_ref9) {
+      DocumentCount: function DocumentCount(_ref9) {
         var status = _ref9.status;
 
         var props = _objectWithoutProperties(_ref9, ['status']);
 
         return React.createElement(
           'span',
-          { className: _classnames2.default.apply(undefined, [styles.rowCount, theme.rowCount].concat(desktopStyles)) },
-          status.totalRows.toLocaleString(),
+          { className: _classnames2.default.apply(undefined, [styles.documentCount, theme.documentCount].concat(desktopStyles)) },
+          status.totalDocuments.toLocaleString(),
           ' ',
-          status.get('totalRows') === 1 ? props.typeSingular : props.typePlural
+          status.get('totalDocuments') === 1 ? props.typeSingular : props.typePlural
         );
       },
-      RowCountMobile: function RowCountMobile(_ref10) {
+      DocumentCountMobile: function DocumentCountMobile(_ref10) {
         var status = _ref10.status;
 
         var props = _objectWithoutProperties(_ref10, ['status']);
 
         return React.createElement(
           'span',
-          { className: _classnames2.default.apply(undefined, [styles.rowCount, theme.rowCount].concat(mobileStyles)) },
-          status.totalRows.toLocaleString(),
+          { className: _classnames2.default.apply(undefined, [styles.documentCount, theme.documentCount].concat(mobileStyles)) },
+          status.totalDocuments.toLocaleString(),
           ' ',
-          status.get('totalRows') === 1 ? props.typeSingular : props.typePlural
+          status.get('totalDocuments') === 1 ? props.typeSingular : props.typePlural
         );
       },
       selectOption: function selectOption(_ref11) {
@@ -224,7 +224,7 @@ function pager(pure) {
 
         return (index + 1).toLocaleString();
       },
-      rowsPerPageOption: function rowsPerPageOption(_ref12) {
+      documentsPerPageOption: function documentsPerPageOption(_ref12) {
         var index = _ref12.index;
 
         var props = _objectWithoutProperties(_ref12, ['index']);
@@ -243,95 +243,94 @@ function pager(pure) {
 
       var _props = this.props;
       var map = _props.map;
-      var rowsPerPageOptions = _props.rowsPerPageOptions;
+      var documentsPerPageOptions = _props.documentsPerPageOptions;
       var createSortKeys = _props.createSortKeys;
       var createSortKeyComparator = _props.createSortKeyComparator;
 
-      var childProps = _objectWithoutProperties(_props, ['map', 'rowsPerPageOptions', 'createSortKeys', 'createSortKeyComparator']);
+      var childProps = _objectWithoutProperties(_props, ['map', 'documentsPerPageOptions', 'createSortKeys', 'createSortKeyComparator']);
 
       return React.createElement(PagerDataFilter, _extends({}, childProps, {
 
-        mapStateToRowData: function mapStateToRowData(state) {
-          var rowData = map.rowData(state);
-          if (!Immutable.Map.isMap(rowData)) {
-            console.warn('redux-pager: map.rowData() should return an Immutable Map for best performance (converting...).');
-            return Immutable.Map(rowData);
+        mapStateToDocumentData: function mapStateToDocumentData(state) {
+          var documents = map.documents(state);
+          if (!Immutable.Map.isMap(documents)) {
+            console.warn('redux-pager: map.documents() should return an Immutable Map for best performance (converting...).');
+            return Immutable.Map(documents);
           }
-          return rowData;
+          return documents;
         },
-        mapColumnData: function mapColumnData(rowData) {
-          return rowData.map(function (rowDatum, rowID) {
-            return map.cellData(rowID, rowDatum);
+        mapColumnData: function mapColumnData(documents) {
+          if (map.cells) return documents.map(function (datum, documentID) {
+            return map.cells(documentID, datum);
           });
         }
         /** CALLED BY FILTER STREAM */
-        , filterRowData: this.props.filterStream ? function (rowData, filterState) {
+        , filterDocumentData: this.props.filterStream ? function (documentData, filterState) {
           if (filterState) {
             var anyFiltered = false;
-            var filtered = rowData.filter(function (rowDatum, rowID) {
+            var filtered = documentData.filter(function (datum, documentID) {
               var value = Object.keys(filterState).some(function (columnID) {
-                return filterState[columnID](rowID) === true;
+                return filterState[columnID](documentID) === true;
               });
-              console.info('FILTERING ROW DATA', filterState, rowDatum, rowID, value);
-
               if (value) anyFiltered = true;
               return value;
             });
-            //console.warn('FILTERED =>', filterState, filtered)
-            return anyFiltered ? filtered : rowData;
+            return anyFiltered ? filtered : documentData;
           }
-          return rowData;
+          return documents;
         } : null
         /** MAP CELL AND SORT DATA AND ADD TO DATA CONSTRUCT */
 
-        , mapData: function mapData(rowData, columnData, access) {
-          var rows = rowData.map(function (rowDatum, rowID) {
-            var cellData = columnData.get(rowID);
-            var sortKeys = _this.props.sort ? createSortKeys(cellData, access) : null;
-            return Immutable.Map({ rowDatum: rowDatum, cellData: cellData, sortKeys: sortKeys });
+        , mapData: function mapData(documentData, columnData, access) {
+          var documents = documentData.map(function (datum, documentID) {
+            var cells = columnData ? columnData.get(documentID) : null;
+            var sortKeys = _this.props.sort ? createSortKeys(cells, access) : null;
+            var context = Immutable.Map({ datum: datum, cells: cells, sortKeys: sortKeys });
+            return context;
           });
-          var columns = rows.first().get('cellData').keySeq();
-          return Immutable.Map({ rows: rows, columns: columns });
+          var columns = columnData ? columnData.first().keySeq() : null;
+          var data = Immutable.Map({ documents: documents, columns: columns });
+          return data;
         },
         sortData: this.props.sort ? function (data, access) {
           var comparator = createSortKeyComparator(access);
-          return data.set('rows', data.get('rows').sortBy(function (context, rowID) {
+          return data.set('documents', data.get('documents').sortBy(function (context, documentID) {
             return context.get('sortKeys');
           }, comparator));
         } : null,
         mapDataToStatus: function mapDataToStatus(data, access) {
           var sort = access.sort;
           var page = access.page;
-          var rowsPerPage = access.rowsPerPage;
-          var rows = data.get('rows');
+          var documentsPerPage = access.documentsPerPage;
+          var documents = data.get('documents');
 
-          if (typeof rowsPerPage !== 'number') {
+          if (typeof documentsPerPage !== 'number') {
             return Immutable.Map({ data: data,
               startIndex: 0,
-              lastIndex: rows.size,
+              lastIndex: documents.size,
               page: page,
               pages: 1,
-              rowsPerPage: rowsPerPage,
-              rowsPerPageOptions: rowsPerPageOptions,
-              totalRows: rows.size,
+              documentsPerPage: documentsPerPage,
+              documentsPerPageOptions: documentsPerPageOptions,
+              totalDocuments: documents.size,
               sort: sort
             });
           }
 
-          var startIndex = page * rowsPerPage;
-          var endIndex = (page + 1) * rowsPerPage;
-          var pages = Math.ceil(rows.size / rowsPerPage);
-          var rowSlice = rows.slice(startIndex, endIndex);
-          var lastIndex = startIndex + (rowSlice.size || rowSlice.length);
+          var startIndex = page * documentsPerPage;
+          var endIndex = (page + 1) * documentsPerPage;
+          var pages = Math.ceil(documents.size / documentsPerPage);
+          var documentSlice = documents.slice(startIndex, endIndex);
+          var lastIndex = startIndex + (documentSlice.size || documentSlice.length);
 
-          return Immutable.Map({ data: data.set('rows', rowSlice),
+          return Immutable.Map({ data: data.set('documents', documentSlice),
             page: page,
             pages: pages,
             startIndex: startIndex,
             lastIndex: lastIndex,
-            rowsPerPage: rowsPerPage,
-            rowsPerPageOptions: rowsPerPageOptions,
-            totalRows: rows.size,
+            documentsPerPage: documentsPerPage,
+            documentsPerPageOptions: documentsPerPageOptions,
+            totalDocuments: documents.size,
             sort: sort
           });
         },
@@ -351,9 +350,9 @@ function pager(pure) {
             select: function select(x) {
               access.page = x;
             },
-            rowsPerPage: function rowsPerPage(_rowsPerPage) {
-              access.merge({ rowsPerPage: _rowsPerPage,
-                page: typeof _rowsPerPage === 'number' ? Math.floor(status.get('startIndex') / status.get('rowsPerPage')) : 0
+            documentsPerPage: function documentsPerPage(_documentsPerPage) {
+              access.merge({ documentsPerPage: _documentsPerPage,
+                page: typeof _documentsPerPage === 'number' ? Math.floor(status.get('startIndex') / status.get('documentsPerPage')) : 0
               });
             },
             sort: function sort(id) {
@@ -378,34 +377,34 @@ function pager(pure) {
     return { state: state };
   })(pure({ displayName: 'PagerDataFilter',
     propTypes: { state: PropTypes.object.isRequired,
-      mapStateToRowData: PropTypes.func.isRequired,
+      mapStateToDocumentData: PropTypes.func.isRequired,
       mapColumnData: PropTypes.func.isRequired,
       filterStream: PropTypes.func,
-      filterRowData: PropTypes.func
+      filterDocumentData: PropTypes.func
     },
     render: function render() {
       var _props2 = this.props;
-      var mapStateToRowData = _props2.mapStateToRowData;
+      var mapStateToDocumentData = _props2.mapStateToDocumentData;
       var mapColumnData = _props2.mapColumnData;
       var mapEarlyProps = _props2.mapEarlyProps;
 
-      var childProps = _objectWithoutProperties(_props2, ['mapStateToRowData', 'mapColumnData', 'mapEarlyProps']);
+      var childProps = _objectWithoutProperties(_props2, ['mapStateToDocumentData', 'mapColumnData', 'mapEarlyProps']);
 
-      var rowData = mapStateToRowData(this.props.state);
-      var columnData = mapColumnData(rowData);
-      var earlyProps = mapEarlyProps ? mapEarlyProps({ rowData: rowData, columnData: columnData }) : null;
+      var documentData = mapStateToDocumentData(this.props.state);
+      var columnData = mapColumnData(documentData);
+      var earlyProps = mapEarlyProps ? mapEarlyProps({ documentData: documentData, columnData: columnData }) : null;
 
-      return React.createElement(PagerRowFilter, _extends({}, childProps, {
+      return React.createElement(PagerDocumentFilter, _extends({}, childProps, {
         earlyProps: earlyProps,
-        rowData: rowData,
+        documentData: documentData,
         columnData: columnData
       }));
     }
   }));
 
-  var PagerRowFilter = pure({ displayName: 'PagerRowFilter',
-    propTypes: { rowData: PropTypes.object.isRequired,
-      columnData: PropTypes.object.isRequired,
+  var PagerDocumentFilter = pure({ displayName: 'PagerDocumentFilter',
+    propTypes: { documentData: PropTypes.object.isRequired,
+      columnData: PropTypes.object,
       mapData: PropTypes.func.isRequired,
       sortData: PropTypes.func,
       mapDataToStatus: PropTypes.func.isRequired,
@@ -433,8 +432,8 @@ function pager(pure) {
         set page(value) {
           setStatus(getStatus().set('page', value));
         },
-        get rowsPerPage() {
-          return getStatus().get('rowsPerPage', getProps().rowsPerPage);
+        get documentsPerPage() {
+          return getStatus().get('documentsPerPage', getProps().documentsPerPage);
         },
         get sort() {
           return getStatus().get('sort', getProps().sort);
@@ -451,10 +450,10 @@ function pager(pure) {
       var _this3 = this;
 
       var _props3 = this.props;
-      var mapStateToRowData = _props3.mapStateToRowData;
+      var mapStateToDocumentData = _props3.mapStateToDocumentData;
       var mapColumnData = _props3.mapColumnData;
       var filterStream = _props3.filterStream;
-      var filterRowData = _props3.filterRowData;
+      var filterDocumentData = _props3.filterDocumentData;
       var Filter = _props3.Filter;
 
       if (filterStream) this.unsubscribe = filterStream(function (filterState) {
@@ -466,24 +465,23 @@ function pager(pure) {
     },
     render: function render() {
       var _props4 = this.props;
-      var rowData = _props4.rowData;
+      var documentData = _props4.documentData;
       var columnData = _props4.columnData;
-      var filterRowData = _props4.filterRowData;
+      var filterDocumentData = _props4.filterDocumentData;
       var mapData = _props4.mapData;
       var sortData = _props4.sortData;
-      var rowFilter = _props4.rowFilter;
-      var sortRows = _props4.sortRows;
+      var sortDocuments = _props4.sortDocuments;
       var mapDataToStatus = _props4.mapDataToStatus;
       var mapStatusToActions = _props4.mapStatusToActions;
       var mapLateProps = _props4.mapLateProps;
       var earlyProps = _props4.earlyProps;
 
-      var childProps = _objectWithoutProperties(_props4, ['rowData', 'columnData', 'filterRowData', 'mapData', 'sortData', 'rowFilter', 'sortRows', 'mapDataToStatus', 'mapStatusToActions', 'mapLateProps', 'earlyProps']);
+      var childProps = _objectWithoutProperties(_props4, ['documentData', 'columnData', 'filterDocumentData', 'mapData', 'sortData', 'sortDocuments', 'mapDataToStatus', 'mapStatusToActions', 'mapLateProps', 'earlyProps']);
 
       var filterState = this.state.filterState;
 
 
-      var filteredData = filterRowData && filterState ? filterRowData(rowData, filterState) : rowData;
+      var filteredData = filterDocumentData && filterState ? filterDocumentData(documentData, filterState) : documentData;
 
       var rawData = mapData(filteredData, columnData, this.access);
       var data = sortData ? sortData(rawData, this.access) : rawData;
@@ -522,17 +520,17 @@ function pager(pure) {
         Select: function Select(props) {
           return React.createElement(PagerSelect, _extends({}, props, childProps, { content: content }));
         },
-        RowsPerPage: function RowsPerPage(props) {
-          return React.createElement(PagerRowsPerPage, _extends({}, props, childProps, { content: content }));
+        DocumentsPerPage: function DocumentsPerPage(props) {
+          return React.createElement(PagerDocumentsPerPage, _extends({}, props, childProps, { content: content }));
         },
         PageStatus: function PageStatus(props) {
           return React.createElement(PagerStatus, _extends({}, props, childProps, { styleName: 'pagerPageStatus', Content: content.PageStatus, ContentMobile: content.PageStatusMobile }));
         },
-        RowStatus: function RowStatus(props) {
-          return React.createElement(PagerStatus, _extends({}, props, childProps, { styleName: 'pagerRowStatus', Content: content.RowStatus, ContentMobile: content.RowStatusMobile }));
+        DocumentStatus: function DocumentStatus(props) {
+          return React.createElement(PagerStatus, _extends({}, props, childProps, { styleName: 'pagerDocumentStatus', Content: content.DocumentStatus, ContentMobile: content.DocumentStatusMobile }));
         },
-        RowCount: function RowCount(props) {
-          return React.createElement(PagerStatus, _extends({}, props, childProps, { styleName: 'pagerRowCount', Content: content.RowCount, ContentMobile: content.RowCountMobile }));
+        DocumentCount: function DocumentCount(props) {
+          return React.createElement(PagerStatus, _extends({}, props, childProps, { styleName: 'pagerDocumentCount', Content: content.DocumentCount, ContentMobile: content.DocumentCountMobile }));
         }
       }));
     }
@@ -598,7 +596,7 @@ function pager(pure) {
       var styles = _props7.styles;
       var theme = _props7.theme;
 
-      return typeof status.get('rowsPerPage') === 'number' && status.get('rowsPerPage') > 0 ? React.createElement(
+      return typeof status.get('documentsPerPage') === 'number' && status.get('documentsPerPage') > 0 ? React.createElement(
         'select',
         {
           value: status.get('page'),
@@ -622,7 +620,7 @@ function pager(pure) {
     }
   });
 
-  var PagerRowsPerPage = pure({ displayName: 'PagerRowsPerPage',
+  var PagerDocumentsPerPage = pure({ displayName: 'PagerDocumentsPerPage',
     defaultProps: defaults,
     render: function render() {
       var _this5 = this;
@@ -637,7 +635,7 @@ function pager(pure) {
 
       return React.createElement(
         'span',
-        { className: (0, _classnames2.default)(styles.pagerRowsPerPage, theme.pagerRowsPerPage) },
+        { className: (0, _classnames2.default)(styles.pagerDocumentsPerPage, theme.pagerDocumentsPerPage) },
         label ? React.createElement(
           'label',
           { className: (0, _classnames2.default)(desktopStyles) },
@@ -647,19 +645,19 @@ function pager(pure) {
         React.createElement(
           'select',
           {
-            value: status.get('rowsPerPage'),
+            value: status.get('documentsPerPage'),
             onChange: function onChange(x) {
               var value = x.target.value;
 
-              if (typeof value === 'string' && value.toLowerCase() === 'all') actions.rowsPerPage(value);else actions.rowsPerPage(parseInt(value));
+              if (typeof value === 'string' && value.toLowerCase() === 'all') actions.documentsPerPage(value);else actions.documentsPerPage(parseInt(value));
             },
             className: (0, _classnames2.default)(styles.pagerSelect, theme.pagerSelect)
           },
-          status.get('rowsPerPageOptions').map(function (x) {
+          status.get('documentsPerPageOptions').map(function (x) {
             return React.createElement(
               'option',
               { key: x, value: x },
-              content.rowsPerPageOption(_extends({}, _this5.props, { index: x }))
+              content.documentsPerPageOption(_extends({}, _this5.props, { index: x }))
             );
           })
         )

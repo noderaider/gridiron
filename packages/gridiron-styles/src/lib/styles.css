@@ -48,7 +48,7 @@
 .pagerControls,
 .pagerButton,
 .pagerSelect,
-.pagerRowsPerPage {
+.pagerDocumentsPerPage {
   position: relative;
   display: inline-flex;
   flex-direction: row;
@@ -63,7 +63,7 @@
   min-width: 2rem;
 }
 
-.rowsPerPage label {
+.documentsPerPage label {
   display: none;
 
   @media (--desktop) {
@@ -90,7 +90,7 @@
 }
 
 
-.cardsRow {
+.cardsDocument {
   display: inline-flex;
   margin: 0.5em 0.75em;
   flex: 0 0 calc(100% - 1.5em - 4px);
@@ -153,7 +153,7 @@
 
 /** ACCORDION */
 
-.accordionRow {
+.accordionDocument {
   display:flex;
   flex-direction: column;
   flex: 1 1 auto;
@@ -263,7 +263,7 @@
   width: inherit !important;
 }
 
-.row {
+.document {
   position: relative;
   display: flex;
   flex-direction: row;
@@ -272,18 +272,18 @@
   flex-wrap: wrap;
 }
 
-.row:last-child {
+.document:last-child {
   border-bottom: none;
 }
 
-.rowHeader,
-.rowFooter {
+.documentHeader,
+.documentFooter {
   display: flex;
   flex-direction: row;
   width: 100%;
 }
 
-.rowBody {
+.documentBody {
   position: relative;
   display: flex;
   flex-direction: row;
@@ -379,8 +379,8 @@
   background-color: transparent;
 }
 
-.rowHeaderContent,
-.rowFooterContent {
+.documentHeaderContent,
+.documentFooterContent {
   padding: 0 15px;
   width: 100%;
 }

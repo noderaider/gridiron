@@ -1,7 +1,6 @@
 import cn from 'classnames'
 import raf from 'raf'
 import grid from './grid'
-import column from './column/index'
 import util from 'util'
 
 export default function cards (pure) {
@@ -38,32 +37,25 @@ export default function cards (pure) {
           <Grid
             {...gridProps}
             data={data}
-            singleCellLayout={true}
             templates={
               { Container: ({ children, ...props }) => (
                   <div className={cn(styles.graphContainer, theme.graphContainer)} {...props}>
                     {children}
                   </div>
                 )
-              , Body: ({ rowIndex, children, ...props }) => (
+              , Body: ({ documentIndex, children, ...props }) => (
                   <svg className={cn(styles.graph, theme.graph)}>
                     {children}
                   </svg>
                 )
-              , Row: ({ rowIndex, children, ...props }) => (
-                  cloneElement(children)
-                )
-              , RowBody: ({ rowIndex, children, ...props }) => (
-                  cloneElement(children)
-                )
-              , Cell: ({ rowIndex, children, ...props }) => (
+              , Document: ({ documentIndex, children, ...props }) => (
                   children
                 )
               }
             }
-            mapCell={
-              ({ rowIndex, columnIndex, rowID, columnID, datum }) => (
-                cloneElement(mapDatum({ rowIndex, rowID, datum }), { className: cn(styles.graphDatum, theme.graphDatum) })
+            mapDocument={
+              ({ documentIndex, documentID, datum }) => (
+                cloneElement(mapDatum({ documentIndex, documentID, datum }), { className: cn(styles.graphDatum, theme.graphDatum) })
               )
             }
           />

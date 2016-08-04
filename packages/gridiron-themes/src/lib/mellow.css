@@ -115,7 +115,7 @@
 
 /** ACCORDION */
 
-.accordionRow {
+.accordionDocument {
   background-color: var(--control-bg);
   color: var(--control-fg);
 }
@@ -167,7 +167,7 @@
 }
 
 
-.cardsRow {
+.cardsDocument {
   background-color: var(--control-transparent-bg);
   border: 2px groove var(--control-border);
   border-radius: 3px;
@@ -210,23 +210,23 @@
   }
 }
 
-.row.even,
-.row.odd {
+.document.even,
+.document.odd {
   border-top: 1px groove rgb(80, 80, 80);
   border-bottom: 2px groove rgb(80, 80, 80);
   color: var(--control-fg);
 }
 
-.row.even {
+.document.even {
   background-color: var(--control-even-bg);
 }
 
-.row.odd {
+.document.odd {
   background-color: var(--control-odd-bg);
 }
 
-.rowHeader,
-.rowFooter {
+.documentHeader,
+.documentFooter {
   border: 1px solid var(--control-subheader-border);
 }
 

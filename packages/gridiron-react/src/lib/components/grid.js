@@ -20,76 +20,80 @@ export default function grid (pure) {
     , Footer: PropTypes.func
     , ColumnHeader: PropTypes.func
     , ColumnFooter: PropTypes.func
-    , Row: PropTypes.func
-    , RowHeader: PropTypes.func
-    , RowBody: PropTypes.func
-    , RowFooter: PropTypes.func
+    , Document: PropTypes.func
+    , DocumentHeader: PropTypes.func
+    , DocumentBody: PropTypes.func
+    , DocumentFooter: PropTypes.func
     , Cell: PropTypes.func
     , CellHeader: PropTypes.func
     , CellFooter: PropTypes.func
     }
 
+  const selectStyles = (...styleNames) => cn(...styleNames.map(
+      styleName => [ styles[styleName], theme[styleName] ]
+    ))
+
 
   const defaultTemplates =
     { Container: ({ children, ...props }) => (
-        <div className={cn(styles.grid, theme.grid)} {...props}>
+        <div className={selectStyles('grid')} {...props}>
           {children}
         </div>
       )
     , Header: ({ children, ...props }) => (
-        <div className={cn(styles.gridHeader, theme.gridHeader)}>
+        <div className={selectStyles('gridHeader')}>
           {children}
         </div>
       )
     , Body: ({ children, ...props }) => (
-        <div className={cn(styles.gridBody, theme.gridBody)}>
+        <div className={selectStyles('gridBody')}>
           {children}
         </div>
       )
     , Footer: ({ children, ...props }) => (
-        <div className={cn(styles.gridFooter, theme.gridFooter)}>
+        <div className={selectStyles('gridFooter')}>
           {children}
         </div>
       )
     , ColumnHeader: ({ children, ...props }) => (
-        <div className={cn(styles.columnHeader, theme.columnHeader)}>
+        <div className={selectStyles('columnHeader')}>
           {children}
         </div>
       )
     , ColumnFooter: ({ children, ...props }) => (
-        <div className={cn(styles.columnFooter, theme.columnFooter)}>
+        <div className={selectStyles('columnFooter')}>
           {children}
         </div>
       )
-    , Row: ({ rowIndex, children, ...props }) => {
-        const moduloStyle = typeof rowIndex === 'number' ? (rowIndex % 2 === 0 ? 'even' : 'odd') : null
+    , Document: ({ documentIndex, children, ...props }) => {
+        const moduloStyle = typeof documentIndex === 'number' ? (documentIndex % 2 === 0 ? 'even' : 'odd') : null
         return (
-          <div className={cn(styles.row, theme.row, styles[moduloStyle], theme[moduloStyle])}>
+          <div className={selectStyles('document', moduloStyle)}>
             {children}
           </div>
         )
       }
-    , RowHeader: ({ children, ...props }) => (
-        <div className={cn(styles.rowHeader, theme.rowHeader)}>
-          <span className={cn(styles.rowHeaderContent, theme.rowHeaderContent)}>
+    , DocumentHeader: ({ children, ...props }) => (
+        <div className={selectStyles('documentHeader')}>
+          <span className={selectStyles('documentHeaderContent')}>
             {children}
           </span>
         </div>
       )
-    , RowBody: ({ children, ...props }) => (
-        <div className={cn(styles.rowBody, theme.rowBody)}>
+    , DocumentBody: ({ children, ...props }) => (
+        <div className={selectStyles('documentBody')}>
           {children}
         </div>
       )
-    , RowFooter: ({ children, ...props }) => (
-        <div className={cn(styles.rowFooter, theme.rowFooter)}>
-          <span className={cn(styles.rowFooterContent, theme.rowFooterContent)}>
+    , DocumentFooter: ({ children, ...props }) => (
+        <div className={selectStyles('documentFooter')}>
+          <span className={selectStyles('documentFooterContent')}>
             {children}
           </span>
         </div>
       )
     , Cell: ({ children, ...props }) => (
-        <div className={cn(styles.cell, theme.cell)}>
+        <div className={selectStyles('cell')}>
           {children}
         </div>
       )
@@ -123,14 +127,14 @@ export default function grid (pure) {
                   /** Column index to ensure visible (by forcefully scrolling if necessary) */
                   , scrollToColumn: PropTypes.number
 
-                  /** Row index to ensure visible (by forcefully scrolling if necessary) */
-                  , scrollToRow: PropTypes.number
+                  /** Document index to ensure visible (by forcefully scrolling if necessary) */
+                  , scrollToDocument: PropTypes.number
 
 
                   /** Tab index for focus */
                   , tabIndex: PropTypes.number
 
-                  /** Optionally constrain grid to maximum height, otherwise expands to fill container (if enough rows rendered). */
+                  /** Optionally constrain grid to maximum height, otherwise expands to fill container (if enough documents rendered). */
                   , maxHeight: PropTypes.number
 
                   /** Optionally constrain grid to maximum width, otherwise uses containers width. */
@@ -150,12 +154,13 @@ export default function grid (pure) {
 
 
                   , data: PropTypes.object.isRequired
+                  , mapDocument: PropTypes.oneOfType([ PropTypes.func, PropTypes.object ])
                   , mapColumn: PropTypes.object
-                  , mapRow: PropTypes.object
-                  , mapCell: PropTypes.func.isRequired
+                  , mapCell: PropTypes.func
                   , templates: PropTypes.shape(templatesShape)
                   , styles: PropTypes.object.isRequired
                   , theme: PropTypes.object.isRequired
+                  , mergeLocal: PropTypes.func.isRequired
                   }
 
     , defaultProps: { 'aria-label': 'grid'
@@ -164,24 +169,24 @@ export default function grid (pure) {
                     , tabIndex: 0
 
                     , templates: {}
-                    , mapRow: {}
+                    , mapDocument: {}
                     , mapColumn:  {}
-                    , mapCell: props => <Pre>{props}</Pre>
-                    , singleCellLayout: false
+                    , mergeLocal: ({ documentLocal, columnLocal }) => Object.assign({}, documentLocal, columnLocal)
                     , ...defaults
                     }
-    , state: { locals: null }
+    , state:  { documentLocal: null
+              , columnLocal: null
+              }
     , init() {
         this._updateLocals = () => {
-          const { data, mapColumn, mapRow } = this.props
+          const { data, mapColumn, mapDocument } = this.props
           const columns = data.get('columns')
-          const rows = data.get('rows')
-          const column = mapColumn.local ? columns.reduce((map, columnID) => map.set(columnID, mapColumn.local(columnID)), Immutable.Map()) : Immutable.Map()
-          const row = mapRow.local ? rows.keySeq().reduce((map, rowID) => {
-            return map.set(rowID, mapRow.local(rowID))
-          }, Immutable.Map()) : Immutable.Map()
-          const locals =  Immutable.Map({ column, row })
-          this.setState({ locals })
+          const documents = data.get('documents')
+          const columnLocal = mapColumn.local ? columns.reduce((map, columnID) => map.set(columnID, mapColumn.local(columnID)), Immutable.Map()) : null
+          const documentLocal = mapDocument.local ? documents.keySeq().reduce((map, documentID) => {
+            return map.set(documentID, mapDocument.local(documentID))
+          }, Immutable.Map()) : null
+          this.setState({ columnLocal, documentLocal })
         }
       }
     , componentWillMount() {
@@ -202,22 +207,24 @@ export default function grid (pure) {
 
               , data
               , mapColumn
-              , mapRow
+              , mapDocument
               , mapCell
-              , singleCellLayout
+              , mergeLocal
 
               , styles
               , theme
               } = this.props
 
-        const { locals } = this.state
         const templates = { ...defaultTemplates, ...this.props.templates }
-        const rows = data.get('rows')
-        const columns = data.get('columns')
+        const documents = data.get('documents')
+
+        const isPrimitive = typeof mapDocument === 'function'
+
+        const columns = isPrimitive ? null : data.get('columns')
 
 
-        const gridColumns = columns.map((columnID, columnIndex) => {
-          const local = locals.getIn([ 'column', columnID ])
+        const gridColumns = isPrimitive ? null : columns.map((columnID, columnIndex) => {
+          const local = this.state.columnLocal && this.state.columnLocal.get(columnID)
           const header = mapColumn.header ? (
             <templates.ColumnHeader key={columnIndex} columnIndex={columnIndex}>
               {mapColumn.header({ local, columnID, columnIndex })}
@@ -232,16 +239,51 @@ export default function grid (pure) {
           return { header, footer }
         })
 
-/*
-        const gridColumns = locals.get('column').entrySeq().map(([ columnID, local ]) => {
-          const props = { columnID, local }
-          const header = mapColumn.header(props)
-          const footer = mapColumn.footer(props)
-          return { header, footer }
-        })
-        */
-
-        const getColumnLocal = columnID => locals.getIn([ 'column', columnID ])
+        /** TODO: MAKE 1 INSTANCE and clone with locals and data, test perf */
+        const renderDocument = ({ documentID, documentIndex, context }) => {
+          const datum = context.get('datum')
+          const cells = isPrimitive ? null : context.get('cells')
+          const documentLocal = isPrimitive ? null : this.state.documentLocal && this.state.documentLocal.get(documentID)
+          return isPrimitive ? (
+            <templates.Document key={documentIndex} documentIndex={documentIndex}>
+              {mapDocument({ documentID, documentIndex, datum })}
+            </templates.Document>
+          ) : (
+            <templates.Document key={documentIndex} documentIndex={documentIndex}>
+              {mapDocument.header ? (
+                <templates.DocumentHeader>
+                  {mapDocument.header({ local: documentLocal, documentID, documentIndex, document })}
+                </templates.DocumentHeader>
+              ) : null}
+              <templates.DocumentBody>
+                {columns.map((columnID, columnIndex) => {
+                  return (
+                    <templates.Cell key={columnIndex} documentIndex={documentIndex} columnIndex={columnIndex}>
+                      {mapCell(
+                        { documentIndex
+                        , documentID
+                        , columnIndex
+                        , columnID
+                        , local: mergeLocal(
+                            { documentLocal
+                            , columnLocal: this.state.columnLocal && this.state.columnLocal.get(columnID)
+                            }
+                          )
+                        , datum: cells.get(columnID)
+                        }
+                      )}
+                    </templates.Cell>
+                  )
+                })}
+              </templates.DocumentBody>
+              {mapDocument.footer ? (
+                <templates.DocumentFooter>
+                  {mapDocument.footer({ local: documentLocal, documentID, documentIndex, document })}
+                </templates.DocumentFooter>
+              ) : null}
+            </templates.Document>
+          )
+        }
 
         return (
           <templates.Container
@@ -252,58 +294,22 @@ export default function grid (pure) {
             tabIndex={tabIndex}
           >
             {this.props.header ? <templates.Header>{this.props.header}</templates.Header> : null}
-            {mapColumn.header ? (
-              <templates.Row key="row-headers" isHeader={true}>
+            {gridColumns && mapColumn.header ? (
+              <templates.Document key="document-headers" isHeader={true}>
                 {gridColumns.map(columns => columns.header)}
-              </templates.Row>
+              </templates.Document>
             ) : null}
 
             <templates.Body key="grid-body">
-              {rows.entrySeq().map(([ rowID, rowContext ], rowIndex) => {
-                const local = locals.getIn([ 'row', rowID ])
-                const rowDatum = rowContext.get('rowDatum')
-                const cellData = rowContext.get('cellData')
-                return singleCellLayout ? (
-                    columns.map((columnID, columnIndex) => {
-                      const datum = cellData.get(columnID)
-                      const columnLocal = getColumnLocal(columnID)
-                      return (
-                        <templates.Cell key={columnIndex} rowIndex={rowIndex} columnIndex={columnIndex}>
-                          {mapCell({ columnLocal, rowLocal: local, rowIndex, columnIndex, rowID, columnID, datum })}
-                        </templates.Cell>
-                      )
-                    })
-                  ) : (
-                    <templates.Row key={rowIndex} rowIndex={rowIndex}>
-                      {mapRow.header ? (
-                        <templates.RowHeader>
-                          {mapRow.header({ local, rowID, rowIndex, rowDatum })}
-                        </templates.RowHeader>
-                      ) : null}
-                      <templates.RowBody>
-                        {columns.map((columnID, columnIndex) => {
-                          const datum = cellData.get(columnID)
-                          const columnLocal = getColumnLocal(columnID)
-                          return (
-                            <templates.Cell key={columnIndex} rowIndex={rowIndex} columnIndex={columnIndex}>
-                              {mapCell({ columnLocal, rowLocal: local, rowIndex, columnIndex, rowID, columnID, datum })}
-                            </templates.Cell>
-                          )
-                        })}
-                      </templates.RowBody>
-                      {mapRow.footer ? (
-                        <templates.RowFooter>
-                          {mapRow.footer({ local, rowID, rowIndex, rowDatum })}
-                        </templates.RowFooter>
-                      ) : null}
-                    </templates.Row>
-                  )
-              })}
+              {documents.entrySeq().map(
+                ([ documentID, context ], documentIndex) => renderDocument({ documentID, documentIndex, context })
+              )}
             </templates.Body>
-            {mapColumn.footer ? (
-              <templates.Row key="row-footers" isFooter={true}>
+
+            {gridColumns && mapColumn.footer ? (
+              <templates.Document key="document-footers" isFooter={true}>
                 {gridColumns.map(columns => columns.footer)}
-              </templates.Row>
+              </templates.Document>
             ) : null}
 
             {this.props.footer ? <templates.Footer>{this.props.footer}</templates.Footer> : null}

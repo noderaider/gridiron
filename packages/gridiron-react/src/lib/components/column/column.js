@@ -22,7 +22,7 @@ export default function column(pure) {
     const HEADER_RADIO = 'HEADER_RADIO'
 
 
-    const getCellName = ({ type, rowID }) => `R-${rowID}_C-${columnID}_T-${type.toUpperCase()}`
+    const getCellName = ({ type, documentID }) => `R-${documentID}_C-${columnID}_T-${type.toUpperCase()}`
 
     const Header = pure (
       { displayName: 'Column.Header'
@@ -115,14 +115,14 @@ export default function column(pure) {
       { displayName: 'Column.Cell'
       , propTypes:  { styles: PropTypes.object.isRequired
                     , theme: PropTypes.object.isRequired
-                    , rowID: PropTypes.any.isRequired
+                    , documentID: PropTypes.any.isRequired
                     }
       , defaultProps: defaults
       , init() {
           this.getName = type => getCellName({ type, ...this.props })
         }
       , render() {
-          const { rowID, checkbox, styles, theme, children, ...props } = this.props
+          const { documentID, checkbox, styles, theme, children, ...props } = this.props
 
           return (
             <div {...props}>

@@ -8,7 +8,7 @@ import util from 'util'
 
 import gridironReact from 'gridiron-react'
 import reduxPager from 'redux-pager'
-import { Pre, Arrows } from '../react-pre'
+import { Pre } from '../react-pre'
 import formula from '../react-formula'
 
 
@@ -25,7 +25,7 @@ const { Pager } = reduxPager(deps, defaults)
 const { Grid, Accordion, Cards, Graph, Columns, Logo } = gridironReact(deps, defaults)
 
 const getFormName = columnID => `filter-form-${columnID}`
-const getFilterName = rowID => `filter_${rowID}`
+const getFilterName = documentID => `filter_${documentID}`
 
 const createFilterStream = columnIDs => {
   const formNames = columnIDs.map(getFormName)
@@ -33,7 +33,7 @@ const createFilterStream = columnIDs => {
     const unsubscribe = formula.subscribe(formNames, formStates => {
       const filterState = columnIDs.reduce((result, columnID, i) => {
         const formState = formStates[i]
-        const getFilterValue = rowID => formState ? formState.getIn([ getFilterName(rowID), 'value' ], false) : false
+        const getFilterValue = documentID => formState ? formState.getIn([ getFilterName(documentID), 'value' ], false) : false
         return { ...result, [columnID]: getFilterValue }
       }, {})
 
@@ -55,10 +55,10 @@ const FilterForm = pure (
       const form = formula(getFormName(this.props.columnID))
       return (
         <div>
-          {columnData.entrySeq().map(([ rowID, cellData ], rowIndex) => {
-            const cellDatum = cellData.get(columnID)
+          {columnData.entrySeq().map(([ documentID, cells ], documentIndex) => {
+            const cellDatum = cells.get(columnID)
             return (
-              <form.Field key={rowIndex} name={getFilterName(rowID)} type="checkbox"><Pre>{cellDatum}</Pre></form.Field>
+              <form.Field key={documentIndex} name={getFilterName(documentID)} type="checkbox"><Pre>{cellDatum}</Pre></form.Field>
             )
           })}
         </div>
@@ -75,108 +75,56 @@ const Gridiron = pure (
 
       const columns = Columns('id', 'state')
 
-      const graphData = [ { x: 25, y: 80, r: 10 }
-                        , { x: 140, y: 20, r: 15 }
-                        , { x: 40, y: 120, r: 15 }
-                        , { x: 80, y: 30, r: 5 }
-                        , { x: 280, y: 240, r: 20 }
-                        , { x: 100, y: 15, r: 30 }
-                        , { x: 330, y: 130, r: 5 }
-                        , { x: 140, y: 12, r: 25 }
-                        , { x: 180, y: 130, r: 35 }
-                        , { x: 280, y: 10, r: 20 }
-                        , { x: 200, y: 115, r: 2 }
-                        , { x: 130, y: 130, r: 45 }
-                        , { x: 280, y: 30, r: 5 }
-                        , { x: 180, y: 240, r: 20 }
-                        , { x: 100, y: 15, r: 30 }
-                        , { x: 30, y: 130, r: 5 }
-                        , { x: 140, y: 12, r: 25 }
-                        , { x: 180, y: 130, r: 35 }
-                        , { x: 480, y: 10, r: 20 }
-                        , { x: 200, y: 115, r: 2 }
-                        , { x: 130, y: 130, r: 45 }
-                        ]
-    let randomizedData = () => graphData.map(({ x, y, r }) => {
-      return  { x: Math.random() * x * 5
-              , y: Math.random() * y * 5
-              , r: Math.random() * r
-              }
-    })
+      const times = n => fn => Array(n).fill().map((_, i) => fn(i, n))
 
-    let lotsData =
-      randomizedData()
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
-        .concat(randomizedData())
+      function* fibonacci(){
+        let last = 0
+        let next = 1
+        while (true) {
+          let current = last
+          last = next
+          next = current + last
+          if(yield { current, last }) {
+            last = 0
+            next = 1
+          }
+        }
+      }
+
+      let fib = fibonacci()
+
+      let spiral = n => times(n)(() => fib.next().value || 0.001)
+        .filter(({ current, last }) => last > 0)
+        .map(({ current, last }, i) => {
+          const phi = current / last
+          const angle = 360 - (360 / last)
+          const theta = angle * (i - 1)
+          const d = Math.sqrt(i)
+          const x = d * Math.cos(theta)
+          const y = d * Math.sin(theta)
+          return Immutable.Map( { x: window.innerWidth / 2 + 0.1 * d * x
+                                , y: (396 / 2) + 0.1 * d * y
+                                , r: 0.2 * d
+                                })
+        })
+      let spiralData = spiral(3000)
 
       return (
         <div>
 
-
-
           {container(({ Controls, Box, isMaximized, id, actions }) => (
             <Pager
-              rowsPerPage={500}
-              map={ { rowData: state => {
-                        return Immutable.Map(lotsData.map((x, index) => ([ index, Immutable.Map(x) ])))
-                      }
-                    , cellData: (rowID, rowDatum) => Immutable.Map({ datum: rowDatum })
+              documentsPerPage={500}
+              map={ { documents: state => (
+                        Immutable.Map(spiralData.map((x, index) => ([ index, Immutable.Map(x) ])))
+                      )
                     }
                   }
             >
               {pager => (
                 <Box>
-
                   <Graph
-
                       data={pager.status.get('data', Immutable.Map())}
-
                       header={
                         [ <h2 key="title" style={{ margin: 0, letterSpacing: 6 }}>Graph</h2>
                         , <Controls key="maximize" />
@@ -184,17 +132,15 @@ const Gridiron = pure (
                       }
                       footer={
                         [ <pager.Controls key="pager-buttons"><pager.Select /></pager.Controls>
-                        , <pager.RowStatus key="pager-row-status" />
+                        , <pager.DocumentStatus key="pager-row-status" />
                         , <pager.PageStatus key="pager-page-status" />
-                        , <pager.RowsPerPage label="Rows Per Page" key="rows-per-page" />
+                        , <pager.DocumentsPerPage label="Documents Per Page" key="documents-per-page" />
                         ]
                       }
-
-                      mapDatum={({ rowID, rowIndex, datum }) => (
+                      mapDatum={({ documentID, documentIndex, datum }) => (
                         <circle r={datum.get('r')} cx={datum.get('x')} cy={datum.get('y')} />
                       )}
                     />
-
                 </Box>
               )}
             </Pager>
@@ -203,13 +149,12 @@ const Gridiron = pure (
 
 
 
-
-
           {container(({ Controls, Box, isMaximized, id, actions }) => (
             <Pager
-              rowsPerPage={5}
-              map={ { rowData: state => Immutable.Map.isMap(state) ? state : Immutable.Map(state)
-                    , cellData: (rowID, rowDatum) => Immutable.Map({ accordion: Immutable.Map({ header: rowID, content: rowDatum }) })
+              documentsPerPage={5}
+              map={ { documents: state => (Immutable.Map.isMap(state) ? state : Immutable.Map(state)).map(
+                        (datum, documentID) => Immutable.Map({ header: documentID, content: datum })
+                      )
                     }
                   }
             >
@@ -226,17 +171,17 @@ const Gridiron = pure (
                       }
                       footer={
                         [ <pager.Controls key="pager-buttons"><pager.Select /></pager.Controls>
-                        , <pager.RowStatus key="pager-row-status" />
+                        , <pager.DocumentStatus key="pager-row-status" />
                         , <pager.PageStatus key="pager-page-status" />
-                        , <pager.RowsPerPage label="Rows Per Page" key="rows-per-page" />
+                        , <pager.DocumentsPerPage label="Documents Per Page" key="documents-per-page" />
                         ]
                       }
 
-                      mapHeader={({ rowID, rowIndex, datum }) => (
+                      mapHeader={({ documentID, documentIndex, datum }) => (
                         <h3>{datum}</h3>
                       )}
-                      mapContent={({ rowID, rowIndex, datum }) => (
-                        <h4>content: <Pre>{{ rowID, rowIndex, datum }}</Pre></h4>
+                      mapContent={({ documentID, documentIndex, datum }) => (
+                        <h4><Pre>{{ documentID, documentIndex, datum }}</Pre></h4>
                       )}
                     />
 
@@ -248,9 +193,9 @@ const Gridiron = pure (
 
           {container(({ Controls, Box, isMaximized, id, actions }) => (
             <Pager
-              rowsPerPage={6}
-              map={ { rowData: state => Immutable.Map.isMap(state) ? state : Immutable.Map(state)
-                    , cellData: (rowID, rowDatum) => Immutable.Map({ accordion: Immutable.Map({ header: rowID, content: rowDatum }) })
+              documentsPerPage={6}
+              map={ { documents: state => Immutable.Map.isMap(state) ? state : Immutable.Map(state)
+                    , cells: (documentID, document) => Immutable.Map({ accordion: Immutable.Map({ header: documentID, content: document }) })
                     }
                   }
             >
@@ -266,18 +211,18 @@ const Gridiron = pure (
                         ]
                       }
                       footer={
-                        [ <pager.Controls key="pager-buttons"><pager.Select /></pager.Controls>
-                        , <pager.RowStatus key="pager-row-status" />
-                        , <pager.PageStatus key="pager-page-status" />
-                        , <pager.RowsPerPage label="Rows Per Page" key="rows-per-page" />
+                        [ <pager.Controls key={0}><pager.Select /></pager.Controls>
+                        , <pager.DocumentStatus key={1} />
+                        , <pager.PageStatus key={2} />
+                        , <pager.DocumentsPerPage key={3} label="Documents Per Page" />
                         ]
                       }
 
-                      mapHeader={({ rowID, rowIndex, datum }) => (
+                      mapHeader={({ documentID, documentIndex, datum }) => (
                         <h3>{datum}</h3>
                       )}
-                      mapContent={({ rowID, rowIndex, datum }) => (
-                        <h4>content: <Pre>{{ rowID, rowIndex, datum }}</Pre></h4>
+                      mapContent={({ documentID, documentIndex, datum }) => (
+                        <h4>content: <Pre>{{ documentID, documentIndex, datum }}</Pre></h4>
                       )}
                     />
 
@@ -290,17 +235,17 @@ const Gridiron = pure (
 
           {container(({ Controls, Box, isMaximized, id, actions }) => (
             <Pager
-              rowsPerPage={5}
+              documentsPerPage={5}
               filterStream={createFilterStream(columns.ids)}
 
-              map={ { rowData: state => Immutable.Map.isMap(state) ? state : Immutable.Map(state)
-                    , cellData: (rowID, rowDatum) => Immutable.Map({ id: rowID, state: rowDatum })
+              map={ { documents: state => Immutable.Map.isMap(state) ? state : Immutable.Map(state)
+                    , cells: (documentID, document) => Immutable.Map({ id: documentID, state: document })
                     }
                   }
 
-              /** EARLY PROPS ({ rowData }) -> WILL BYPASS UPDATES IF DEFINED HERE */
+              /** EARLY PROPS ({ documents }) -> WILL BYPASS UPDATES IF DEFINED HERE */
               mapEarlyProps={
-                ({ rowData, columnData }) => {
+                ({ documents, columnData }) => {
                   const columnFilters = columns.reduce(columnID => <FilterForm columnData={columnData} columnID={columnID} />)
                   return { columnFilters }
                 }
@@ -318,12 +263,12 @@ const Gridiron = pure (
                 <Box>
                   <Grid
                       data={pager.status.get('data', Immutable.Map())}
-                      mapRow={(
-                        { header: ({ local, rowID, rowIndex, rowDatum }) => (
-                            <h3>{rowID}</h3>
+                      mapDocument={(
+                        { header: ({ local, documentID, documentIndex, document }) => (
+                            <h3>{documentID}</h3>
                           )
-                        , footer: ({ local, rowID, rowIndex, rowDatum }) => (
-                            <h5 style={{ float: 'right' }}>({rowIndex + 1})</h5>
+                        , footer: ({ local, documentID, documentIndex, document }) => (
+                            <h5 style={{ float: 'right' }}>({documentIndex + 1})</h5>
                           )
                         }
                       )}
@@ -347,14 +292,12 @@ const Gridiron = pure (
                           )
                         }
                       }
-                      mapCell={({ columnLocal, rowLocal, rowIndex, columnIndex, rowID, columnID, datum }) => (
-                        <columnLocal.Cell rowID={rowID}>
-                          <Pre>{{ rowIndex, columnIndex, rowID, columnID, datum }}</Pre>
-                        </columnLocal.Cell>
+                      mapCell={({ local, documentIndex, columnIndex, documentID, columnID, datum }) => (
+                        <local.Cell documentID={documentID}>
+                          <Pre>{{ documentIndex, columnIndex, documentID, columnID, datum }}</Pre>
+                        </local.Cell>
                       )}
 
-
-                      mapDrill={parentId => <div>Sub grid for {parentID}</div>} //<ReduxGridDetail ids={parentId} />}
                       header={
                         [ <h2 key="title" style={{ margin: 0, letterSpacing: 6 }}>Grid</h2>
                         , <Controls key="maximize" />
@@ -369,13 +312,13 @@ const Gridiron = pure (
                                 )
                               , (
                                   <span key="footer-center">
-                                    <pager.RowStatus key="pager-row-status" />
+                                    <pager.DocumentStatus key="pager-row-status" />
                                     <pager.PageStatus key="pager-page-status" />
                                   </span>
                                 )
                               , (
                                   <span key="footer-right">
-                                    <pager.RowsPerPage label="Rows Per Page" key="rows-per-page" />
+                                    <pager.DocumentsPerPage label="Documents Per Page" key="documents-per-page" />
                                   </span>
                                 )
                               ]}
@@ -392,82 +335,3 @@ const Gridiron = pure (
 )
 
 export { Logo, Gridiron }
-
-
-
-
-
-
-
-
-
-
-      /*
-      const ReduxGridDetail = detailProps => {
-        const { mapCols, mapRows } = createContext()
-        return container(({ Controls, Box, isMaximized, id, actions }) => (
-
-          <Pager
-            maxRecords={5}
-
-            mapCols={mapCols}
-            mapRows={mapRows}
-            filters={
-              { id: filterStream('id')
-              , state: filterStream('state')
-              }
-            }
-            map={ { data: state => detailProps.ids.reduce((subState, id) => subState[id], state)
-                  , rowData: data => {
-                      return Object.keys(data).map(x => [ [ ...detailProps.ids, x ], data[x] ]) //Object.keys(data).map(x => [ [ detailProps.ids, data ] ])
-                    }
-                  , cellData: (rowID, rowDatum) => ({ id: rowID, state: rowDatum })
-                  }
-                }
-
-            sort={{ cols: [ 'id', 'state' ]
-                  , keys: { id: data => data.join('_')
-                          , state: data => Object.keys(data).join('_')
-                          }
-                  }}
-
-            filter={data => {
-              const status =  { id: { content: <FilterForm id="id" data={data} onChange={() => this.forceUpdate()} /> }
-                              , state: { content: <FilterForm id="state" data={data} onChange={() => this.forceUpdate()} /> }
-                              }
-              return { data, status }
-            }}
-
-
-
-            theme={black}>
-            {pager => (
-              <Box>
-                <DrillGrid
-                  styles={styles}
-                  theme={black}
-                  cols={pager.cols}
-                  rows={pager.rows}
-                  mapDrill={parentId => <ReduxGridDetail ids={parentId} />}
-                  header={
-                    [ <span key="title" style={{ fontFamily: 'monospace', fontWeight: 'bold', letterSpacing: 6, fontSize: '1em' }}>
-                        <Arrows>{detailProps.ids}</Arrows> details ({id})
-                      </span>
-                    , <Controls key="maximize" />
-                    ]
-                  }
-                  footer={
-                    [ <pager.Controls key="pager-buttons"><pager.Select /></pager.Controls>
-                    , <pager.RowStatus key="pager-row-status" />
-                    , <pager.PageStatus key="pager-page-status" />
-                    , <pager.RowsPerPage label="Rows Per Page" key="rows-per-page" />
-                    ]
-                  }
-                  maximize={this.props.maximize}
-                />
-              </Box>
-            )}
-          </Pager>
-        ))
-      }
-      */

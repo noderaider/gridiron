@@ -1,6 +1,6 @@
 ## src/lib
 
-Everything in this directory is Universal JavaScript. It will run fine in a node.js and browser environment with ONLY the use of babel.
+Everything in this directory is Universal JavaScript. It will run fine in a node.js and bdocumentser environment with ONLY the use of babel.
 
 
 

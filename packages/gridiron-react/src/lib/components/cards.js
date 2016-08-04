@@ -46,32 +46,32 @@ export default function cards (pure) {
                     {children}
                   </div>
                 )
-              , Body: ({ rowIndex, children, ...props }) => (
+              , Body: ({ documentIndex, children, ...props }) => (
                   <div className={cn(styles.cardsBody, theme.cardsBody)}>
                     {children}
                   </div>
                 )
-              , Row: ({ rowIndex, children, ...props }) => (
-                  <div className={cn(styles.cardsRow, theme.cardsRow)}>
+              , Document: ({ documentIndex, children, ...props }) => (
+                  <div className={cn(styles.cardsDocument, theme.cardsDocument)}>
                     {children}
                   </div>
                 )
               }
             }
             mapCell={
-              ({ rowIndex, columnIndex, rowID, columnID, datum }) => (
+              ({ documentIndex, columnIndex, documentID, columnID, datum }) => (
                 <div className={cn(styles.card, theme.card)}>
                   <div
-                    //onClick={() => this.toggleRow(rowID)}
+                    //onClick={() => this.toggleDocument(documentID)}
                     className={cn(styles.cardHeader, theme.cardHeader)}
                   >
-                    {mapHeader({ rowIndex, rowID, datum: datum.get('header') })}
+                    {mapHeader({ documentIndex, documentID, datum: datum.get('header') })}
                   </div>
                   <div
-                    ref={x => this.contents[rowID] = x}
+                    ref={x => this.contents[documentID] = x}
                     className={cn(styles.cardContent, theme.cardContent)}
                   >
-                    {mapContent({ rowIndex, rowID, datum: datum.get('content') })}
+                    {mapContent({ documentIndex, documentID, datum: datum.get('content') })}
                   </div>
                 </div>
               )

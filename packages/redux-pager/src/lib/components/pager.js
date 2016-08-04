@@ -25,10 +25,10 @@ export default function pager (pure) {
                         , StepForward: PropTypes.any.isRequired
                         , FastForward: PropTypes.any.isRequired
                         , PageStatus: PropTypes.any.isRequired
-                        , RowStatus: PropTypes.any.isRequired
-                        , RowCount: PropTypes.any.isRequired
+                        , DocumentStatus: PropTypes.any.isRequired
+                        , DocumentCount: PropTypes.any.isRequired
                         , selectOption: PropTypes.func.isRequired
-                        , rowsPerPageOption: PropTypes.func.isRequired
+                        , documentsPerPageOption: PropTypes.func.isRequired
                         }
 
   const propTypes = { children: PropTypes.func.isRequired
@@ -38,25 +38,25 @@ export default function pager (pure) {
                     , createSortKeys: PropTypes.func.isRequired
                     , createSortKeyComparator: PropTypes.func.isRequired
                     , page: PropTypes.number.isRequired
-                    , rowsPerPage: PropTypes.any.isRequired
-                    , rowsPerPageOptions: PropTypes.arrayOf(PropTypes.any).isRequired
+                    , documentsPerPage: PropTypes.any.isRequired
+                    , documentsPerPageOptions: PropTypes.arrayOf(PropTypes.any).isRequired
                     , typeSingular: PropTypes.string.isRequired
                     , typePlural: PropTypes.string.isRequired
                     , content: PropTypes.shape(contentShape).isRequired
                     }
-                          /** CREATES SORT KEYS FOR A ROW */
-  const defaultProps =  { createSortKeys: (cellData, access) => {
+                          /** CREATES SORT KEYS FOR A DOCUMENT */
+  const defaultProps =  { createSortKeys: (cells, access) => {
                             const sort = access.sort
                             return sort.get('cols')
                               .filter(columnID => typeof sort.getIn([ 'direction', columnID ]) === 'string')
                               .map(columnID => {
                                 const sortKey = sort.getIn([ 'keys', columnID ], null)
-                                const cellDatum = cellData.get(columnID)
+                                const cellDatum = cells.get(columnID)
                                 const currentKey = sortKey ? sortKey(cellDatum) : cellDatum
                                 return typeof currentKey === 'string' ? currentKey : currentKey.toString()
                               })
                           }
-                          /** COMPARES SORT KEYS OF TWO ROWS */
+                          /** COMPARES SORT KEYS OF TWO DOCUMENTS */
                         , createSortKeyComparator: access => {
                             const sort = access.sort
                             const multipliers = sort.get('direction') ? sort.get('cols').map(columnID => sort.getIn([ 'direction', columnID ]) === 'desc' ? -1 : 1) : []
@@ -70,8 +70,8 @@ export default function pager (pure) {
                             }
                           }
                         , page: 0
-                        , rowsPerPage: 5
-                        , rowsPerPageOptions: [ 1, 2, 3, 4, 5, 10, 25, 50, 100, 500, 1000, 'All' ]
+                        , documentsPerPage: 5
+                        , documentsPerPageOptions: [ 1, 2, 3, 4, 5, 10, 25, 50, 100, 500, 1000, 'All' ]
                         , typeSingular: 'record'
                         , typePlural: 'records'
                         , content:  { FastBackward: ({ status, ...props }) => <i className={'fa fa-fast-backward'} />
@@ -88,28 +88,28 @@ export default function pager (pure) {
                                           {(status.get('page') + 1).toLocaleString()} / {status.get('pages')}
                                         </span>
                                       )
-                                    , RowStatus: ({ status, ...props }) => (
-                                        <span className={cn(styles.rowStatus, theme.rowStatus, ...desktopStyles)}>
-                                          Showing {props.typePlural} {(status.get('startIndex') + 1).toLocaleString()} through {status.get('lastIndex').toLocaleString()} ({status.get('totalRows').toLocaleString()} total)
+                                    , DocumentStatus: ({ status, ...props }) => (
+                                        <span className={cn(styles.documentStatus, theme.documentStatus, ...desktopStyles)}>
+                                          Showing {props.typePlural} {(status.get('startIndex') + 1).toLocaleString()} through {status.get('lastIndex').toLocaleString()} ({status.get('totalDocuments').toLocaleString()} total)
                                         </span>
                                       )
-                                    , RowStatusMobile: ({ status, ...props }) => (
-                                        <span className={cn(styles.rowStatus, theme.rowStatus, ...mobileStyles)}>
-                                          {(status.get('startIndex') + 1).toLocaleString()} - {status.get('lastIndex').toLocaleString()} / {status.get('totalRows').toLocaleString()}
+                                    , DocumentStatusMobile: ({ status, ...props }) => (
+                                        <span className={cn(styles.documentStatus, theme.documentStatus, ...mobileStyles)}>
+                                          {(status.get('startIndex') + 1).toLocaleString()} - {status.get('lastIndex').toLocaleString()} / {status.get('totalDocuments').toLocaleString()}
                                         </span>
                                       )
-                                    , RowCount: ({ status, ...props }) => (
-                                        <span className={cn(styles.rowCount, theme.rowCount, ...desktopStyles)}>
-                                          {status.totalRows.toLocaleString()} {status.get('totalRows') === 1 ? props.typeSingular : props.typePlural}
+                                    , DocumentCount: ({ status, ...props }) => (
+                                        <span className={cn(styles.documentCount, theme.documentCount, ...desktopStyles)}>
+                                          {status.totalDocuments.toLocaleString()} {status.get('totalDocuments') === 1 ? props.typeSingular : props.typePlural}
                                         </span>
                                       )
-                                    , RowCountMobile: ({ status, ...props }) => (
-                                        <span className={cn(styles.rowCount, theme.rowCount, ...mobileStyles)}>
-                                          {status.totalRows.toLocaleString()} {status.get('totalRows') === 1 ? props.typeSingular : props.typePlural}
+                                    , DocumentCountMobile: ({ status, ...props }) => (
+                                        <span className={cn(styles.documentCount, theme.documentCount, ...mobileStyles)}>
+                                          {status.totalDocuments.toLocaleString()} {status.get('totalDocuments') === 1 ? props.typeSingular : props.typePlural}
                                         </span>
                                       )
                                     , selectOption: ({ index, ...props }) => (index + 1).toLocaleString()
-                                    , rowsPerPageOption: ({ index, ...props }) => typeof index === 'number' ? index.toLocaleString() : index
+                                    , documentsPerPageOption: ({ index, ...props }) => typeof index === 'number' ? index.toLocaleString() : index
                                     }
                         , ...defaults
                         }
@@ -122,7 +122,7 @@ export default function pager (pure) {
     , defaultProps: defaultProps
     , render() {
         const { map
-              , rowsPerPageOptions
+              , documentsPerPageOptions
               , createSortKeys
               , createSortKeyComparator
               , ...childProps
@@ -131,86 +131,84 @@ export default function pager (pure) {
           <PagerDataFilter
             {...childProps}
 
-            mapStateToRowData={state => {
-              const rowData = map.rowData(state)
-              if(!Immutable.Map.isMap(rowData)) {
-                console.warn('redux-pager: map.rowData() should return an Immutable Map for best performance (converting...).')
-                return Immutable.Map(rowData)
+            mapStateToDocumentData={state => {
+              const documents = map.documents(state)
+              if(!Immutable.Map.isMap(documents)) {
+                console.warn('redux-pager: map.documents() should return an Immutable Map for best performance (converting...).')
+                return Immutable.Map(documents)
               }
-              return rowData
+              return documents
             }}
-            mapColumnData={rowData => {
-              return rowData.map((rowDatum, rowID) => {
-                return map.cellData(rowID, rowDatum)
-              })
+            mapColumnData={documents => {
+              if(map.cells)
+                return documents.map((datum, documentID) => map.cells(documentID, datum))
             }}
             /** CALLED BY FILTER STREAM */
-            filterRowData={this.props.filterStream ? (rowData, filterState) => {
+            filterDocumentData={this.props.filterStream ? (documentData, filterState) => {
               if(filterState) {
                 let anyFiltered = false
-                let filtered = rowData.filter((rowDatum, rowID) => {
-                  const value = Object.keys(filterState).some(columnID => {
-                    return filterState[columnID](rowID) === true
-                  })
-                  console.info('FILTERING ROW DATA', filterState, rowDatum, rowID, value)
-
+                const filtered = documentData.filter((datum, documentID) => {
+                  const value = Object.keys(filterState).some(columnID => (
+                    filterState[columnID](documentID) === true
+                  ))
                   if(value)
                     anyFiltered = true
                   return value
                 })
-                //console.warn('FILTERED =>', filterState, filtered)
-                return anyFiltered ? filtered : rowData
+                return anyFiltered ? filtered : documentData
               }
-              return rowData
+              return documents
             } : null}
             /** MAP CELL AND SORT DATA AND ADD TO DATA CONSTRUCT */
 
-            mapData={(rowData, columnData, access) => {
-              const rows = rowData.map((rowDatum, rowID) => {
-                const cellData = columnData.get(rowID)
-                const sortKeys = this.props.sort ? createSortKeys(cellData, access) : null
-                return Immutable.Map({ rowDatum, cellData, sortKeys })
+            mapData={(documentData, columnData, access) => {
+              const documents = documentData.map((datum, documentID) => {
+                const cells = columnData ? columnData.get(documentID) : null
+                const sortKeys = this.props.sort ? createSortKeys(cells, access) : null
+                const context = Immutable.Map({ datum, cells, sortKeys })
+                return context
               })
-              const columns = rows.first().get('cellData').keySeq()
-              return Immutable.Map({ rows, columns })
+              const columns = columnData ? columnData.first().keySeq() : null
+              const data = Immutable.Map({ documents: documents, columns })
+              return data
             }}
             sortData={this.props.sort ? (data, access) => {
               const comparator = createSortKeyComparator(access)
-              return data.set('rows', data.get('rows').sortBy((context, rowID) => context.get('sortKeys'), comparator))
+              return data.set('documents', data.get('documents').sortBy((context, documentID) => context.get('sortKeys'), comparator))
             } : null}
             mapDataToStatus={(data, access) => {
               const sort = access.sort
               const page = access.page
-              const rowsPerPage = access.rowsPerPage
-              const rows = data.get('rows')
+              const documentsPerPage = access.documentsPerPage
+              const documents = data.get('documents')
 
-              if(typeof rowsPerPage !== 'number') {
+              if(typeof documentsPerPage !== 'number') {
                 return  Immutable.Map({ data
                                       , startIndex: 0
-                                      , lastIndex: rows.size
+                                      , lastIndex: documents.size
                                       , page
                                       , pages: 1
-                                      , rowsPerPage
-                                      , rowsPerPageOptions
-                                      , totalRows: rows.size
+                                      , documentsPerPage
+                                      , documentsPerPageOptions
+                                      , totalDocuments: documents.size
                                       , sort
                                       })
               }
 
-              const startIndex = page * rowsPerPage
-              const endIndex = (page + 1) * rowsPerPage
-              const pages = Math.ceil(rows.size / rowsPerPage)
-              const rowSlice = rows.slice(startIndex, endIndex)
-              const lastIndex = startIndex + (rowSlice.size || rowSlice.length)
+              const startIndex = page * documentsPerPage
+              const endIndex = (page + 1) * documentsPerPage
+              const pages = Math.ceil(documents.size / documentsPerPage)
+              const documentSlice = documents.slice(startIndex, endIndex)
+              const lastIndex = startIndex + (documentSlice.size || documentSlice.length)
 
-              return  Immutable.Map({ data: data.set('rows', rowSlice)
+              return  Immutable.Map({ data: data.set('documents', documentSlice)
                                     , page
                                     , pages
                                     , startIndex
                                     , lastIndex
-                                    , rowsPerPage
-                                    , rowsPerPageOptions
-                                    , totalRows: rows.size
+                                    , documentsPerPage
+                                    , documentsPerPageOptions
+                                    , totalDocuments: documents.size
                                     , sort
                                     })
             }}
@@ -221,9 +219,9 @@ export default function pager (pure) {
                 , stepForward: () => { access.page = access.page + 1 }
                 , fastForward: () => { access.page = access.page - 1 }
                 , select: x => { access.page = x }
-                , rowsPerPage: rowsPerPage => {
-                    access.merge( { rowsPerPage
-                                  , page: typeof rowsPerPage === 'number' ? Math.floor(status.get('startIndex') / status.get('rowsPerPage')) : 0
+                , documentsPerPage: documentsPerPage => {
+                    access.merge( { documentsPerPage
+                                  , page: typeof documentsPerPage === 'number' ? Math.floor(status.get('startIndex') / status.get('documentsPerPage')) : 0
                                   } )
                   }
                 , sort: id => {
@@ -251,28 +249,28 @@ export default function pager (pure) {
   const PagerDataFilter = connect(state => ({ state }))(pure (
     { displayName: 'PagerDataFilter'
     , propTypes:  { state: PropTypes.object.isRequired
-                  , mapStateToRowData: PropTypes.func.isRequired
+                  , mapStateToDocumentData: PropTypes.func.isRequired
                   , mapColumnData: PropTypes.func.isRequired
                   , filterStream: PropTypes.func
-                  , filterRowData: PropTypes.func
+                  , filterDocumentData: PropTypes.func
                   }
     , render() {
-        const { mapStateToRowData
+        const { mapStateToDocumentData
               , mapColumnData
               , mapEarlyProps
               , ...childProps
               } = this.props
 
-        const rowData = mapStateToRowData(this.props.state)
-        const columnData = mapColumnData(rowData)
-        const earlyProps = mapEarlyProps ? mapEarlyProps({ rowData, columnData }) : null
+        const documentData = mapStateToDocumentData(this.props.state)
+        const columnData = mapColumnData(documentData)
+        const earlyProps = mapEarlyProps ? mapEarlyProps({ documentData, columnData }) : null
 
 
         return (
-          <PagerRowFilter
+          <PagerDocumentFilter
             {...childProps}
             earlyProps={earlyProps}
-            rowData={rowData}
+            documentData={documentData}
             columnData={columnData}
           />
         )
@@ -280,10 +278,10 @@ export default function pager (pure) {
     }
   ))
 
-  const PagerRowFilter = pure (
-    { displayName: 'PagerRowFilter'
-    , propTypes:  { rowData: PropTypes.object.isRequired
-                  , columnData: PropTypes.object.isRequired
+  const PagerDocumentFilter = pure (
+    { displayName: 'PagerDocumentFilter'
+    , propTypes:  { documentData: PropTypes.object.isRequired
+                  , columnData: PropTypes.object
                   , mapData: PropTypes.func.isRequired
                   , sortData: PropTypes.func
                   , mapDataToStatus: PropTypes.func.isRequired
@@ -299,7 +297,7 @@ export default function pager (pure) {
 
         this.access = { get page() { return getStatus().get('page', getProps().page) }
                       , set page(value) { setStatus(getStatus().set('page', value)) }
-                      , get rowsPerPage() { return getStatus().get('rowsPerPage', getProps().rowsPerPage) }
+                      , get documentsPerPage() { return getStatus().get('documentsPerPage', getProps().documentsPerPage) }
                       , get sort() { return getStatus().get('sort', getProps().sort) }
                       , getSortDirection: id => getStatus().getIn([ 'sort', 'direction', id ], null)
                       , merge: value => setStatus(this.state.status.merge(value))
@@ -307,7 +305,7 @@ export default function pager (pure) {
 
       }
     , componentWillMount() {
-        const { mapStateToRowData, mapColumnData, filterStream, filterRowData, Filter } = this.props
+        const { mapStateToDocumentData, mapColumnData, filterStream, filterDocumentData, Filter } = this.props
         if(filterStream)
           this.unsubscribe = filterStream(filterState => this.setState({ filterState }))
       }
@@ -316,13 +314,12 @@ export default function pager (pure) {
           this.unsubscribe()
       }
     , render() {
-        const { rowData
+        const { documentData
               , columnData
-              , filterRowData
+              , filterDocumentData
               , mapData
               , sortData
-              , rowFilter
-              , sortRows
+              , sortDocuments
               , mapDataToStatus
               , mapStatusToActions
               , mapLateProps
@@ -332,7 +329,7 @@ export default function pager (pure) {
 
         const { filterState } = this.state
 
-        const filteredData = filterRowData && filterState ? filterRowData(rowData, filterState) : rowData
+        const filteredData = filterDocumentData && filterState ? filterDocumentData(documentData, filterState) : documentData
 
         const rawData = mapData(filteredData, columnData, this.access)
         const data = sortData ? sortData(rawData, this.access) : rawData
@@ -364,10 +361,10 @@ export default function pager (pure) {
         return children({ ...childProps
                         , Controls: props => <PagerControls {...props} {...childProps} content={content} />
                         , Select: props => <PagerSelect {...props} {...childProps} content={content} />
-                        , RowsPerPage: props => <PagerRowsPerPage {...props} {...childProps} content={content} />
+                        , DocumentsPerPage: props => <PagerDocumentsPerPage {...props} {...childProps} content={content} />
                         , PageStatus: props => <PagerStatus {...props} {...childProps} styleName="pagerPageStatus" Content={content.PageStatus} ContentMobile={content.PageStatusMobile} />
-                        , RowStatus: props => <PagerStatus {...props} {...childProps} styleName="pagerRowStatus" Content={content.RowStatus} ContentMobile={content.RowStatusMobile} />
-                        , RowCount: props => <PagerStatus {...props} {...childProps} styleName="pagerRowCount" Content={content.RowCount} ContentMobile={content.RowCountMobile} />
+                        , DocumentStatus: props => <PagerStatus {...props} {...childProps} styleName="pagerDocumentStatus" Content={content.DocumentStatus} ContentMobile={content.DocumentStatusMobile} />
+                        , DocumentCount: props => <PagerStatus {...props} {...childProps} styleName="pagerDocumentCount" Content={content.DocumentCount} ContentMobile={content.DocumentCountMobile} />
                         })
       }
     }
@@ -410,7 +407,7 @@ export default function pager (pure) {
     , defaultProps: defaults
     , render() {
         const { status, actions, content, styles, theme } = this.props
-        return typeof status.get('rowsPerPage') === 'number' && status.get('rowsPerPage') > 0 ? (
+        return typeof status.get('documentsPerPage') === 'number' && status.get('documentsPerPage') > 0 ? (
           <select
             value={status.get('page')}
             onChange={x =>  actions.select(parseInt(x.target.value))}
@@ -423,27 +420,27 @@ export default function pager (pure) {
     }
   )
 
-  const PagerRowsPerPage = pure (
-    { displayName: 'PagerRowsPerPage'
+  const PagerDocumentsPerPage = pure (
+    { displayName: 'PagerDocumentsPerPage'
     , defaultProps: defaults
     , render() {
         const { label, status, actions, content, styles, theme } = this.props
         return (
-          <span className={cn(styles.pagerRowsPerPage, theme.pagerRowsPerPage)}>
+          <span className={cn(styles.pagerDocumentsPerPage, theme.pagerDocumentsPerPage)}>
             {label ? <label className={cn(desktopStyles)}>{label}</label> : null}
             {' '}
             <select
-              value={status.get('rowsPerPage')}
+              value={status.get('documentsPerPage')}
               onChange={x => {
                 const { value } = x.target
                 if(typeof value === 'string' && value.toLowerCase() === 'all')
-                  actions.rowsPerPage(value)
+                  actions.documentsPerPage(value)
                 else
-                  actions.rowsPerPage(parseInt(value))
+                  actions.documentsPerPage(parseInt(value))
               }}
               className={cn(styles.pagerSelect, theme.pagerSelect)}
             >
-              {status.get('rowsPerPageOptions').map(x => <option key={x} value={x}>{content.rowsPerPageOption({ ...this.props, index: x })}</option>)}
+              {status.get('documentsPerPageOptions').map(x => <option key={x} value={x}>{content.documentsPerPageOption({ ...this.props, index: x })}</option>)}
             </select>
           </span>
         )
