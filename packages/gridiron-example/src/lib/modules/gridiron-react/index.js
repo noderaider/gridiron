@@ -153,7 +153,7 @@ const Gridiron = pure (
             <Pager
               documentsPerPage={5}
               map={ { documents: state => (Immutable.Map.isMap(state) ? state : Immutable.Map(state)).map(
-                        (datum, documentID) => Immutable.Map({ header: documentID, content: datum })
+                        (content, header) => Immutable.Map({ header, content })
                       )
                     }
                   }

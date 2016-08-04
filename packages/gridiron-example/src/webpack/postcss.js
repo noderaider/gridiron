@@ -3,7 +3,7 @@ import postcssImport from 'postcss-import'
 import postcssUrl from 'postcss-url'
 import postcssCssnext from 'postcss-cssnext'
 import postcssFontMagician from 'postcss-font-magician'
-import postcssBdocumentserReporter from 'postcss-browser-reporter'
+import postcssBrowserReporter from 'postcss-browser-reporter'
 import postcssReporter from 'postcss-reporter'
 
 import { IS_DEV } from '../config'
