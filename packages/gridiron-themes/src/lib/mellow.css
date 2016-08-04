@@ -93,6 +93,25 @@
 }
 
 
+/** GRAPH */
+
+.graphContainer {
+  margin:1em 0;
+  padding: 0px;
+  border: 2px solid var(--control-border);
+  font-size: 0.95rem;
+  font-family: monospace;
+  box-shadow: 2px 2px 3px rgba(50, 50, 50, 0.5);
+  color: var(--control-fg);
+  border-radius:0;
+
+  @media (--lg-screen) {
+    border-radius:4px;
+  }
+}
+
+/** END GRAPH */
+
 
 /** ACCORDION */
 

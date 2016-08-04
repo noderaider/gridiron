@@ -22,7 +22,7 @@ const defaults = { styles, theme: mellow }
 const pure = pureStamp(deps, defaults)
 
 const { Pager } = reduxPager(deps, defaults)
-const { Grid, Accordion, Cards, Columns, Logo } = gridironReact(deps, defaults)
+const { Grid, Accordion, Cards, Graph, Columns, Logo } = gridironReact(deps, defaults)
 
 const getFormName = columnID => `filter-form-${columnID}`
 const getFilterName = rowID => `filter_${rowID}`
@@ -75,8 +75,135 @@ const Gridiron = pure (
 
       const columns = Columns('id', 'state')
 
+      const graphData = [ { x: 25, y: 80, r: 10 }
+                        , { x: 140, y: 20, r: 15 }
+                        , { x: 40, y: 120, r: 15 }
+                        , { x: 80, y: 30, r: 5 }
+                        , { x: 280, y: 240, r: 20 }
+                        , { x: 100, y: 15, r: 30 }
+                        , { x: 330, y: 130, r: 5 }
+                        , { x: 140, y: 12, r: 25 }
+                        , { x: 180, y: 130, r: 35 }
+                        , { x: 280, y: 10, r: 20 }
+                        , { x: 200, y: 115, r: 2 }
+                        , { x: 130, y: 130, r: 45 }
+                        , { x: 280, y: 30, r: 5 }
+                        , { x: 180, y: 240, r: 20 }
+                        , { x: 100, y: 15, r: 30 }
+                        , { x: 30, y: 130, r: 5 }
+                        , { x: 140, y: 12, r: 25 }
+                        , { x: 180, y: 130, r: 35 }
+                        , { x: 480, y: 10, r: 20 }
+                        , { x: 200, y: 115, r: 2 }
+                        , { x: 130, y: 130, r: 45 }
+                        ]
+    let randomizedData = () => graphData.map(({ x, y, r }) => {
+      return  { x: Math.random() * x * 5
+              , y: Math.random() * y * 5
+              , r: Math.random() * r
+              }
+    })
+
+    let lotsData =
+      randomizedData()
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+        .concat(randomizedData())
+
       return (
         <div>
+
+
+
+          {container(({ Controls, Box, isMaximized, id, actions }) => (
+            <Pager
+              rowsPerPage={500}
+              map={ { rowData: state => {
+                        return Immutable.Map(lotsData.map((x, index) => ([ index, Immutable.Map(x) ])))
+                      }
+                    , cellData: (rowID, rowDatum) => Immutable.Map({ datum: rowDatum })
+                    }
+                  }
+            >
+              {pager => (
+                <Box>
+
+                  <Graph
+
+                      data={pager.status.get('data', Immutable.Map())}
+
+                      header={
+                        [ <h2 key="title" style={{ margin: 0, letterSpacing: 6 }}>Graph</h2>
+                        , <Controls key="maximize" />
+                        ]
+                      }
+                      footer={
+                        [ <pager.Controls key="pager-buttons"><pager.Select /></pager.Controls>
+                        , <pager.RowStatus key="pager-row-status" />
+                        , <pager.PageStatus key="pager-page-status" />
+                        , <pager.RowsPerPage label="Rows Per Page" key="rows-per-page" />
+                        ]
+                      }
+
+                      mapDatum={({ rowID, rowIndex, datum }) => (
+                        <circle r={datum.get('r')} cx={datum.get('x')} cy={datum.get('y')} />
+                      )}
+                    />
+
+                </Box>
+              )}
+            </Pager>
+          ))}
+
+
+
+
+
 
           {container(({ Controls, Box, isMaximized, id, actions }) => (
             <Pager

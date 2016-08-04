@@ -23,20 +23,25 @@
 }
 
 
-.gridFooter > * {
-  display: inline-flex;
+/** GRAPH */
+
+
+.graphContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.graph {
+  display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  flex: 1 0 40vh;
 }
 
-.gridFooter > *:first-child {
-  justify-content: flex-start;
-}
 
-.gridFooter > *:last-child {
-  justify-content: flex-end;
-}
+
+/** END GRAPH */
+
 
 /** PAGER */
 
@@ -196,10 +201,55 @@
   will-change: transform;
 }
 
+
+.gridHeader,
+.gridFooter {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-right: 0;
+  border-left: 0;
+  margin: 0;
+  font-weight: bold;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+.gridFooter {
+  font-size:0.6rem;
+
+  @media (--lg-screen) {
+    font-size:0.6rem;
+  }
+  @media (--xl-screen) {
+    font-size:0.7rem;
+  }
+  @media (--2x-screen) {
+    font-size:0.8rem;
+  }
+}
+
 .gridBody {
   display: flex;
   flex-direction: column;
+}
 
+
+.gridFooter > * {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.gridFooter > *:first-child {
+  justify-content: flex-start;
+}
+
+.gridFooter > *:last-child {
+  justify-content: flex-end;
 }
 
 .container {
@@ -249,34 +299,6 @@
   flex-direction: column;
 }
 
-.gridHeader,
-.gridFooter {
-  display: flex;
-  flex: 1 0 auto;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  border-right: 0;
-  border-left: 0;
-  margin: 0;
-  font-weight: bold;
-  padding-left: 6px;
-  padding-right: 6px;
-}
-
-.gridFooter {
-  font-size:0.6rem;
-
-  @media (--lg-screen) {
-    font-size:0.6rem;
-  }
-  @media (--xl-screen) {
-    font-size:0.7rem;
-  }
-  @media (--2x-screen) {
-    font-size:0.8rem;
-  }
-}
 
 .header {
   display: flex;
@@ -488,22 +510,5 @@ a:hover .logo {
   }
   to {
     transform: rotate3d(0, 1, 0, 360deg);
-  }
-}
-
-
-.drill {
-  animation-duration: 1000ms;
-  animation-name: slidein;
-  overflow: hidden;
-  will-change: max-height;
-}
-
-@keyframes slidein {
-  from {
-    max-height: 0;
-  }
-  to {
-    max-height: 100vh;
   }
 }

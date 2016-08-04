@@ -159,7 +159,6 @@ export default function grid (pure) {
                   }
 
     , defaultProps: { 'aria-label': 'grid'
-                    , style: {}
                     , cellStyle: {}
                     , scrollToAlignment: 'auto'
                     , tabIndex: 0
@@ -168,8 +167,7 @@ export default function grid (pure) {
                     , mapRow: {}
                     , mapColumn:  {}
                     , mapCell: props => <Pre>{props}</Pre>
-                    , styles: {}
-                    , theme: {}
+                    , singleCellLayout: false
                     , ...defaults
                     }
     , state: { locals: null }
@@ -206,6 +204,7 @@ export default function grid (pure) {
               , mapColumn
               , mapRow
               , mapCell
+              , singleCellLayout
 
               , styles
               , theme
@@ -260,12 +259,21 @@ export default function grid (pure) {
             ) : null}
 
             <templates.Body key="grid-body">
-              {rows.entrySeq().map(
-                ([ rowID, rowContext ], rowIndex) => {
-                  const local = locals.getIn([ 'row', rowID ])
-                  const rowDatum = rowContext.get('rowDatum')
-                  const cellData = rowContext.get('cellData')
-                  return (
+              {rows.entrySeq().map(([ rowID, rowContext ], rowIndex) => {
+                const local = locals.getIn([ 'row', rowID ])
+                const rowDatum = rowContext.get('rowDatum')
+                const cellData = rowContext.get('cellData')
+                return singleCellLayout ? (
+                    columns.map((columnID, columnIndex) => {
+                      const datum = cellData.get(columnID)
+                      const columnLocal = getColumnLocal(columnID)
+                      return (
+                        <templates.Cell key={columnIndex} rowIndex={rowIndex} columnIndex={columnIndex}>
+                          {mapCell({ columnLocal, rowLocal: local, rowIndex, columnIndex, rowID, columnID, datum })}
+                        </templates.Cell>
+                      )
+                    })
+                  ) : (
                     <templates.Row key={rowIndex} rowIndex={rowIndex}>
                       {mapRow.header ? (
                         <templates.RowHeader>
@@ -290,8 +298,7 @@ export default function grid (pure) {
                       ) : null}
                     </templates.Row>
                   )
-                }
-              )}
+              })}
             </templates.Body>
             {mapColumn.footer ? (
               <templates.Row key="row-footers" isFooter={true}>
