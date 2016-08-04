@@ -16,6 +16,9 @@ function nextDirection(direction) {
 
 export default function pager (pure) {
   const { React, PropTypes, cloneElement, connect, shallowCompare, Immutable, defaults } = pure
+  const { styles, theme } = defaults
+  const desktopStyles = [ styles.desktop, theme.desktop ]
+  const mobileStyles = [ styles.mobile, theme.mobile ]
 
   const contentShape =  { FastBackward: PropTypes.any.isRequired
                         , StepBackward: PropTypes.any.isRequired
@@ -41,11 +44,8 @@ export default function pager (pure) {
                     , typePlural: PropTypes.string.isRequired
                     , content: PropTypes.shape(contentShape).isRequired
                     }
-
-  const defaultProps =  { styles: {}
-                        , theme:  {}
                           /** CREATES SORT KEYS FOR A ROW */
-                        , createSortKeys: (cellData, access) => {
+  const defaultProps =  { createSortKeys: (cellData, access) => {
                             const sort = access.sort
                             return sort.get('cols')
                               .filter(columnID => typeof sort.getIn([ 'direction', columnID ]) === 'string')
@@ -78,9 +78,36 @@ export default function pager (pure) {
                                     , StepBackward: ({ status, ...props }) => <i className={'fa fa-step-backward'} />
                                     , StepForward: ({ status, ...props }) => <i className={'fa fa-step-forward'} />
                                     , FastForward: ({ status, ...props }) => <i className={'fa fa-fast-forward'} />
-                                    , PageStatus: ({ status, ...props }) => <span>Page {(status.get('page') + 1).toLocaleString()} of {status.get('pages')}</span>
-                                    , RowStatus: ({ status, ...props }) => <span>Showing {props.typePlural} {(status.get('startIndex') + 1).toLocaleString()} through {status.get('lastIndex').toLocaleString()} ({status.get('totalRows').toLocaleString()} total)</span>
-                                    , RowCount: ({ status, ...props }) => <span>{status.totalRows.toLocaleString()} {status.get('totalRows') === 1 ? props.typeSingular : props.typePlural}</span>
+                                    , PageStatus: ({ status, ...props }) => (
+                                        <span className={cn(styles.pageStatus, theme.pageStatus, ...desktopStyles)}>
+                                          Page {(status.get('page') + 1).toLocaleString()} of {status.get('pages')}
+                                        </span>
+                                      )
+                                    , PageStatusMobile: ({ status, ...props }) => (
+                                        <span className={cn(styles.pageStatus, theme.pageStatus, ...mobileStyles)}>
+                                          {(status.get('page') + 1).toLocaleString()} / {status.get('pages')}
+                                        </span>
+                                      )
+                                    , RowStatus: ({ status, ...props }) => (
+                                        <span className={cn(styles.rowStatus, theme.rowStatus, ...desktopStyles)}>
+                                          Showing {props.typePlural} {(status.get('startIndex') + 1).toLocaleString()} through {status.get('lastIndex').toLocaleString()} ({status.get('totalRows').toLocaleString()} total)
+                                        </span>
+                                      )
+                                    , RowStatusMobile: ({ status, ...props }) => (
+                                        <span className={cn(styles.rowStatus, theme.rowStatus, ...mobileStyles)}>
+                                          {(status.get('startIndex') + 1).toLocaleString()} - {status.get('lastIndex').toLocaleString()} / {status.get('totalRows').toLocaleString()}
+                                        </span>
+                                      )
+                                    , RowCount: ({ status, ...props }) => (
+                                        <span className={cn(styles.rowCount, theme.rowCount, ...desktopStyles)}>
+                                          {status.totalRows.toLocaleString()} {status.get('totalRows') === 1 ? props.typeSingular : props.typePlural}
+                                        </span>
+                                      )
+                                    , RowCountMobile: ({ status, ...props }) => (
+                                        <span className={cn(styles.rowCount, theme.rowCount, ...mobileStyles)}>
+                                          {status.totalRows.toLocaleString()} {status.get('totalRows') === 1 ? props.typeSingular : props.typePlural}
+                                        </span>
+                                      )
                                     , selectOption: ({ index, ...props }) => (index + 1).toLocaleString()
                                     , rowsPerPageOption: ({ index, ...props }) => typeof index === 'number' ? index.toLocaleString() : index
                                     }
@@ -338,9 +365,9 @@ export default function pager (pure) {
                         , Controls: props => <PagerControls {...props} {...childProps} content={content} />
                         , Select: props => <PagerSelect {...props} {...childProps} content={content} />
                         , RowsPerPage: props => <PagerRowsPerPage {...props} {...childProps} content={content} />
-                        , PageStatus: props => <PagerStatus {...props} {...childProps} styleName="pagerPageStatus" Content={content.PageStatus} />
-                        , RowStatus: props => <PagerStatus {...props} {...childProps} styleName="pagerRowStatus" Content={content.RowStatus} />
-                        , RowCount: props => <PagerStatus {...props} {...childProps} styleName="pagerRowCount" Content={content.RowCount} />
+                        , PageStatus: props => <PagerStatus {...props} {...childProps} styleName="pagerPageStatus" Content={content.PageStatus} ContentMobile={content.PageStatusMobile} />
+                        , RowStatus: props => <PagerStatus {...props} {...childProps} styleName="pagerRowStatus" Content={content.RowStatus} ContentMobile={content.RowStatusMobile} />
+                        , RowCount: props => <PagerStatus {...props} {...childProps} styleName="pagerRowCount" Content={content.RowCount} ContentMobile={content.RowCountMobile} />
                         })
       }
     }
@@ -403,7 +430,7 @@ export default function pager (pure) {
         const { label, status, actions, content, styles, theme } = this.props
         return (
           <span className={cn(styles.pagerRowsPerPage, theme.pagerRowsPerPage)}>
-            {label ? <label>{label}</label> : null}
+            {label ? <label className={cn(desktopStyles)}>{label}</label> : null}
             {' '}
             <select
               value={status.get('rowsPerPage')}
@@ -428,10 +455,11 @@ export default function pager (pure) {
     { displayName: 'PagerStatus'
     , defaultProps: defaults
     , render() {
-        const { styleName, Content, className, status, actions, content, styles, theme } = this.props
+        const { styleName, Content, ContentMobile, className, status, actions, content, styles, theme } = this.props
         return (
           <span className={cn(styles[styleName], theme[styleName])}>
             <Content {...this.props} />
+            <ContentMobile {...this.props} />
           </span>
         )
       }

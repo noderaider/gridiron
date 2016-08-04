@@ -41,7 +41,11 @@ function pager(pure) {
   var shallowCompare = pure.shallowCompare;
   var Immutable = pure.Immutable;
   var defaults = pure.defaults;
+  var styles = defaults.styles;
+  var theme = defaults.theme;
 
+  var desktopStyles = [styles.desktop, theme.desktop];
+  var mobileStyles = [styles.mobile, theme.mobile];
 
   var contentShape = { FastBackward: PropTypes.any.isRequired,
     StepBackward: PropTypes.any.isRequired,
@@ -67,11 +71,8 @@ function pager(pure) {
     typePlural: PropTypes.string.isRequired,
     content: PropTypes.shape(contentShape).isRequired
   };
-
-  var defaultProps = _extends({ styles: {},
-    theme: {}
-    /** CREATES SORT KEYS FOR A ROW */
-    , createSortKeys: function createSortKeys(cellData, access) {
+  /** CREATES SORT KEYS FOR A ROW */
+  var defaultProps = _extends({ createSortKeys: function createSortKeys(cellData, access) {
       var sort = access.sort;
       return sort.get('cols').filter(function (columnID) {
         return typeof sort.getIn(['direction', columnID]) === 'string';
@@ -136,21 +137,34 @@ function pager(pure) {
 
         return React.createElement(
           'span',
-          null,
+          { className: _classnames2.default.apply(undefined, [styles.pageStatus, theme.pageStatus].concat(desktopStyles)) },
           'Page ',
           (status.get('page') + 1).toLocaleString(),
           ' of ',
           status.get('pages')
         );
       },
-      RowStatus: function RowStatus(_ref6) {
+      PageStatusMobile: function PageStatusMobile(_ref6) {
         var status = _ref6.status;
 
         var props = _objectWithoutProperties(_ref6, ['status']);
 
         return React.createElement(
           'span',
-          null,
+          { className: _classnames2.default.apply(undefined, [styles.pageStatus, theme.pageStatus].concat(mobileStyles)) },
+          (status.get('page') + 1).toLocaleString(),
+          ' / ',
+          status.get('pages')
+        );
+      },
+      RowStatus: function RowStatus(_ref7) {
+        var status = _ref7.status;
+
+        var props = _objectWithoutProperties(_ref7, ['status']);
+
+        return React.createElement(
+          'span',
+          { className: _classnames2.default.apply(undefined, [styles.rowStatus, theme.rowStatus].concat(desktopStyles)) },
           'Showing ',
           props.typePlural,
           ' ',
@@ -162,30 +176,58 @@ function pager(pure) {
           ' total)'
         );
       },
-      RowCount: function RowCount(_ref7) {
-        var status = _ref7.status;
+      RowStatusMobile: function RowStatusMobile(_ref8) {
+        var status = _ref8.status;
 
-        var props = _objectWithoutProperties(_ref7, ['status']);
+        var props = _objectWithoutProperties(_ref8, ['status']);
 
         return React.createElement(
           'span',
-          null,
+          { className: _classnames2.default.apply(undefined, [styles.rowStatus, theme.rowStatus].concat(mobileStyles)) },
+          (status.get('startIndex') + 1).toLocaleString(),
+          ' - ',
+          status.get('lastIndex').toLocaleString(),
+          ' / ',
+          status.get('totalRows').toLocaleString()
+        );
+      },
+      RowCount: function RowCount(_ref9) {
+        var status = _ref9.status;
+
+        var props = _objectWithoutProperties(_ref9, ['status']);
+
+        return React.createElement(
+          'span',
+          { className: _classnames2.default.apply(undefined, [styles.rowCount, theme.rowCount].concat(desktopStyles)) },
           status.totalRows.toLocaleString(),
           ' ',
           status.get('totalRows') === 1 ? props.typeSingular : props.typePlural
         );
       },
-      selectOption: function selectOption(_ref8) {
-        var index = _ref8.index;
+      RowCountMobile: function RowCountMobile(_ref10) {
+        var status = _ref10.status;
 
-        var props = _objectWithoutProperties(_ref8, ['index']);
+        var props = _objectWithoutProperties(_ref10, ['status']);
+
+        return React.createElement(
+          'span',
+          { className: _classnames2.default.apply(undefined, [styles.rowCount, theme.rowCount].concat(mobileStyles)) },
+          status.totalRows.toLocaleString(),
+          ' ',
+          status.get('totalRows') === 1 ? props.typeSingular : props.typePlural
+        );
+      },
+      selectOption: function selectOption(_ref11) {
+        var index = _ref11.index;
+
+        var props = _objectWithoutProperties(_ref11, ['index']);
 
         return (index + 1).toLocaleString();
       },
-      rowsPerPageOption: function rowsPerPageOption(_ref9) {
-        var index = _ref9.index;
+      rowsPerPageOption: function rowsPerPageOption(_ref12) {
+        var index = _ref12.index;
 
-        var props = _objectWithoutProperties(_ref9, ['index']);
+        var props = _objectWithoutProperties(_ref12, ['index']);
 
         return typeof index === 'number' ? index.toLocaleString() : index;
       }
@@ -484,13 +526,13 @@ function pager(pure) {
           return React.createElement(PagerRowsPerPage, _extends({}, props, childProps, { content: content }));
         },
         PageStatus: function PageStatus(props) {
-          return React.createElement(PagerStatus, _extends({}, props, childProps, { styleName: 'pagerPageStatus', Content: content.PageStatus }));
+          return React.createElement(PagerStatus, _extends({}, props, childProps, { styleName: 'pagerPageStatus', Content: content.PageStatus, ContentMobile: content.PageStatusMobile }));
         },
         RowStatus: function RowStatus(props) {
-          return React.createElement(PagerStatus, _extends({}, props, childProps, { styleName: 'pagerRowStatus', Content: content.RowStatus }));
+          return React.createElement(PagerStatus, _extends({}, props, childProps, { styleName: 'pagerRowStatus', Content: content.RowStatus, ContentMobile: content.RowStatusMobile }));
         },
         RowCount: function RowCount(props) {
-          return React.createElement(PagerStatus, _extends({}, props, childProps, { styleName: 'pagerRowCount', Content: content.RowCount }));
+          return React.createElement(PagerStatus, _extends({}, props, childProps, { styleName: 'pagerRowCount', Content: content.RowCount, ContentMobile: content.RowCountMobile }));
         }
       }));
     }
@@ -598,7 +640,7 @@ function pager(pure) {
         { className: (0, _classnames2.default)(styles.pagerRowsPerPage, theme.pagerRowsPerPage) },
         label ? React.createElement(
           'label',
-          null,
+          { className: (0, _classnames2.default)(desktopStyles) },
           label
         ) : null,
         ' ',
@@ -631,6 +673,7 @@ function pager(pure) {
       var _props9 = this.props;
       var styleName = _props9.styleName;
       var Content = _props9.Content;
+      var ContentMobile = _props9.ContentMobile;
       var className = _props9.className;
       var status = _props9.status;
       var actions = _props9.actions;
@@ -641,7 +684,8 @@ function pager(pure) {
       return React.createElement(
         'span',
         { className: (0, _classnames2.default)(styles[styleName], theme[styleName]) },
-        React.createElement(Content, this.props)
+        React.createElement(Content, this.props),
+        React.createElement(ContentMobile, this.props)
       );
     }
   });

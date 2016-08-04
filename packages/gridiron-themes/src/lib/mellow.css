@@ -126,14 +126,18 @@
 /** CARDS */
 
 .cards {
-  margin:5px 0;
+  margin:1em 0;
   padding: 0px;
   border: 2px solid var(--control-border);
-  border-radius:4px;
   font-size: 0.95rem;
   font-family: monospace;
   box-shadow: 2px 2px 3px rgba(50, 50, 50, 0.5);
   color: var(--control-fg);
+  border-radius:0;
+
+  @media (--lg-screen) {
+    border-radius:4px;
+  }
 }
 
 .cardsBody {
@@ -172,15 +176,19 @@
 /** GRID */
 
 .grid {
-  margin:5px 0;
+  margin:1em 0;
   padding: 0px;
   border: 2px solid var(--control-border);
-  border-radius:4px;
   font-size: 0.95rem;
   font-family: monospace;
   box-shadow: 2px 2px 3px rgba(50, 50, 50, 0.5);
   background-color: var(--control-bg);
   color: var(--control-fg);
+  border-radius:0;
+
+  @media (--lg-screen) {
+    border-radius:4px;
+  }
 }
 
 .row.even,
@@ -315,7 +323,6 @@
   background-color: var(--control-bg);
   border-color: var(--control-border);
   border-radius: 4px;
-  font-size: 0.85rem;
   align-items: center;
 
   &:hover {

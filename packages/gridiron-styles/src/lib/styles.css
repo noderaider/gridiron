@@ -1,3 +1,6 @@
+/** mobile  */ @custom-media --mobile only screen and (width < 48em);
+/** desktop */ @custom-media --desktop only screen and (width >= 48em);
+
 /** xs-screen | 320px  */ @custom-media --xs-screen only screen and (width >= 20em);
 /** sm-screen | 480px  */ @custom-media --sm-screen only screen and (width >= 30em);
 /** md-screen | 600px  */ @custom-media --md-screen only screen and (width >= 37.5em);
@@ -7,31 +10,60 @@
 /** 3x-screen | 1300px */ @custom-media --3x-screen only screen and (width >= 81.25em);
 
 
-/** PAGER */
+@media (--mobile) {
+  .desktop {
+    display: none;
+  }
+}
 
-.pagerControls {
-  display: inline-flex;
-  flex-direction: row;
+@media (--desktop) {
+  .mobile {
+    display: none;
+  }
 }
 
 
-.pagerSelect {
-  position: relative;
-  display: inline-flex;
-  min-width: 80px;
-  margin: 0;
-  padding: 0;
-  font-family: monospace;
-  font-size: 0.8rem;
-}
-
-.pagerRowsPerPage {
+.gridFooter > * {
   display: inline-flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
+}
 
-  & label {
+.gridFooter > *:first-child {
+  justify-content: flex-start;
+}
+
+.gridFooter > *:last-child {
+  justify-content: flex-end;
+}
+
+/** PAGER */
+
+.pagerControls,
+.pagerButton,
+.pagerSelect,
+.pagerRowsPerPage {
+  position: relative;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0 0.2em;
+  padding: 0.1em 0.2em;
+  font-family: monospace;
+  font-size:1em;
+}
+
+.pagerSelect {
+  min-width: 2rem;
+}
+
+.rowsPerPage label {
+  display: none;
+
+  @media (--desktop) {
     margin-right: 5px;
+    display: initial;
   }
 }
 
@@ -55,8 +87,8 @@
 
 .cardsRow {
   display: inline-flex;
-  margin: 8px;
-  flex: 1 0 calc(33% - 48px);
+  margin: 0.5em 0.75em;
+  flex: 0 0 calc(100% - 1.5em - 4px);
   cursor: pointer;
   max-height: 33vh;
 
@@ -68,13 +100,33 @@
   }
 
   &::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 0.25em;
+    height: 0.25em;
     background-color: rgb(10, 160, 217);
   }
 
   &::-webkit-scrollbar-thumb {
     background-color: rgb(10, 160, 217);
+  }
+
+  @media (--sm-screen) {
+    margin: 0.25em;
+    flex: 1 0 calc(50% - 1em - 4px);
+  }
+
+  @media (--md-screen) {
+    margin: 0.25em;
+    flex: 1 0 calc(33% - 1.5em - 4px);
+  }
+
+  @media (--lg-screen) {
+    margin: 0.5em;
+    flex: 1 0 calc(33% - 3em - 4px);
+
+    &::-webkit-scrollbar {
+      width: 0.5em;
+      height: 0.5em;
+    }
   }
 }
 
@@ -213,7 +265,17 @@
 }
 
 .gridFooter {
-  font-size:0.8em;
+  font-size:0.6rem;
+
+  @media (--lg-screen) {
+    font-size:0.6rem;
+  }
+  @media (--xl-screen) {
+    font-size:0.7rem;
+  }
+  @media (--2x-screen) {
+    font-size:0.8rem;
+  }
 }
 
 .header {

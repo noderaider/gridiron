@@ -233,10 +233,24 @@ const Gridiron = pure (
                         , <Controls key="maximize" />
                         ]
                       }
-                      footer={[ <pager.Controls key="pager-buttons"><pager.Select /></pager.Controls>
-                              , <pager.RowStatus key="pager-row-status" />
-                              , <pager.PageStatus key="pager-page-status" />
-                              , <pager.RowsPerPage label="Rows Per Page" key="rows-per-page" />
+                      footer={[ (
+                                  <span key="footer-left">
+                                    <pager.Controls key="pager-buttons">
+                                      <pager.Select />
+                                    </pager.Controls>
+                                  </span>
+                                )
+                              , (
+                                  <span key="footer-center">
+                                    <pager.RowStatus key="pager-row-status" />
+                                    <pager.PageStatus key="pager-page-status" />
+                                  </span>
+                                )
+                              , (
+                                  <span key="footer-right">
+                                    <pager.RowsPerPage label="Rows Per Page" key="rows-per-page" />
+                                  </span>
+                                )
                               ]}
                       {...this.props}
                     />
