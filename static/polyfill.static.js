@@ -484,7 +484,7 @@ module.exports = function(NAME, wrapper, methods, common, IS_MAP, IS_WEAK){
     var instance             = new C
       // early implementations not supports chaining
       , HASNT_CHAINING       = instance[ADDER](IS_WEAK ? {} : -0, 1) != instance
-      // V8 ~  Chromium 40- weak-collections throws on primitives, but should return false
+      // V8 ~  Chromium 40- weak-collections thdocuments on primitives, but should return false
       , THROWS_ON_PRIMITIVES = fails(function(){ instance.has(1); })
       // most early implementations doesn't supports iterables, most modern - not close it correctly
       , ACCEPT_ITERABLES     = $iterDetect(function(iter){ new C(iter); }) // eslint-disable-line no-new
@@ -988,7 +988,7 @@ if(isNode){
   notify = function(){
     process.nextTick(flush);
   };
-// browsers with MutationObserver
+// bdocumentsers with MutationObserver
 } else if(Observer){
   var toggle = 1
     , node   = document.createTextNode('');
@@ -1382,13 +1382,13 @@ if(!setTask || !clearTask){
     defer = function(id){
       process.nextTick(ctx(run, id, 1));
     };
-  // Browsers with MessageChannel, includes WebWorkers
+  // Bdocumentsers with MessageChannel, includes WebWorkers
   } else if(MessageChannel){
     channel = new MessageChannel;
     port    = channel.port2;
     channel.port1.onmessage = listner;
     defer = ctx(port.postMessage, port, 1);
-  // Browsers with postMessage, skip WebWorkers
+  // Bdocumentsers with postMessage, skip WebWorkers
   // IE8 has postMessage, but it's sync & typeof its postMessage is 'object'
   } else if(global.addEventListener && typeof postMessage == 'function' && !global.importScripts){
     defer = function(id){
@@ -1403,7 +1403,7 @@ if(!setTask || !clearTask){
         run.call(id);
       };
     };
-  // Rest old browsers
+  // Rest old bdocumentsers
   } else {
     defer = function(id){
       setTimeout(ctx(run, id, 1), 0);
@@ -3278,7 +3278,7 @@ var buggyJSON = $fails(function(){
   var S = $Symbol();
   // MS Edge converts symbol values to JSON as {}
   // WebKit converts symbol values to JSON as null
-  // V8 throws on boxed symbols
+  // V8 thdocuments on boxed symbols
   return _stringify([S]) != '[null]' || _stringify({a: S}) != '{}' || _stringify(Object(S)) != '{}';
 });
 
