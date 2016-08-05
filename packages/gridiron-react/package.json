@@ -1,6 +1,6 @@
 {
   "name": "gridiron-react",
-  "version": "0.15.0",
+  "version": "0.15.1",
   "description": "React view components for gridiron.",
   "main": "lib/index.js",
   "scripts": {
