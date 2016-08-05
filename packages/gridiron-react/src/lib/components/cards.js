@@ -58,8 +58,8 @@ export default function cards (pure) {
                 )
               }
             }
-            mapCell={
-              ({ documentIndex, columnIndex, documentID, columnID, datum }) => (
+            mapDocument={
+              ({ documentIndex, documentID, datum }) => (
                 <div className={cn(styles.card, theme.card)}>
                   <div
                     //onClick={() => this.toggleDocument(documentID)}

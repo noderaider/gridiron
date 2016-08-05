@@ -2,20 +2,20 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
 import contextTypes from 'lib/context'
-import { Gridiron } from 'lib/modules/gridiron-react'
+import { Accordion, Cards, Graph, Grid } from './gridiron'
 
 class Home extends Component {
   static contextTypes = contextTypes;
   render() {
     const { title, subtitle, username, organization, email, full, packageName, container } = this.props
     const { style } = this.context.theme
-    return <Gridiron container={container} />
+    return (
+      <div>
+        <Accordion />
+        <Cards />
+        <Graph />
+        <Grid />
+      </div>
+    )
   }
 }
-
-function mapStateToProps(state) {
-  const { visual } = state
-  return  {}
-}
-
-export default connect(mapStateToProps)(Home)
