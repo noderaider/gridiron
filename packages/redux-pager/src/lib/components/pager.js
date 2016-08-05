@@ -34,6 +34,7 @@ export default function pager (pure) {
   const propTypes = { children: PropTypes.func.isRequired
                     , styles: PropTypes.object.isRequired
                     , theme: PropTypes.object.isRequired
+                    , columns: PropTypes.array
                     , sort: PropTypes.object
                     , createSortKeys: PropTypes.func.isRequired
                     , createSortKeyComparator: PropTypes.func.isRequired
@@ -72,8 +73,8 @@ export default function pager (pure) {
                         , page: 0
                         , documentsPerPage: 5
                         , documentsPerPageOptions: [ 1, 2, 3, 4, 5, 10, 25, 50, 100, 500, 1000, 'All' ]
-                        , typeSingular: 'record'
-                        , typePlural: 'records'
+                        , typeSingular: 'document'
+                        , typePlural: 'documents'
                         , content:  { FastBackward: ({ status, ...props }) => <i className={'fa fa-fast-backward'} />
                                     , StepBackward: ({ status, ...props }) => <i className={'fa fa-step-backward'} />
                                     , StepForward: ({ status, ...props }) => <i className={'fa fa-step-forward'} />
@@ -121,7 +122,8 @@ export default function pager (pure) {
     , propTypes: propTypes
     , defaultProps: defaultProps
     , render() {
-        const { map
+        const { columns
+              , map
               , documentsPerPageOptions
               , createSortKeys
               , createSortKeyComparator
@@ -140,8 +142,10 @@ export default function pager (pure) {
               return documents
             }}
             mapColumnData={documents => {
-              if(map.cells)
+              if(columns) {
+                should.exist(map.cells, 'map.cells function should exist when columns specified.')
                 return documents.map((datum, documentID) => map.cells(documentID, datum))
+              }
             }}
             /** CALLED BY FILTER STREAM */
             filterDocumentData={this.props.filterStream ? (documentData, filterState) => {
@@ -168,7 +172,6 @@ export default function pager (pure) {
                 const context = Immutable.Map({ datum, cells, sortKeys })
                 return context
               })
-              const columns = columnData ? columnData.first().keySeq() : null
               const data = Immutable.Map({ documents: documents, columns })
               return data
             }}

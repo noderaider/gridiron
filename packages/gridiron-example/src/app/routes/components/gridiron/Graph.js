@@ -1,8 +1,8 @@
 import pure from 'lib/modules/pure'
 import { sandy, black, carbon, mellow } from 'gridiron-themes'
 
-const { React, Immutable, gridiron, defaults } = pure
-const { Pager, Grid, Columns, Accordion, Cards, Graph } = gridiron
+const { React, PropTypes, cloneElement, Immutable, gridiron, defaults } = pure
+const { Pager, Grid, Columns, Accordion, Cards, Graph, Pre, formula } = gridiron
 const { styles, theme } = defaults
 
 const should = require('chai').should()
@@ -24,28 +24,28 @@ function* fibonacci(){
 }
 
 
-const spiral = n => times(n)(() => fib.next().value || 0.001)
-  .filter(({ current, last }) => last > 0)
-  .map(({ current, last }, i) => {
-    const phi = current / last
-    const angle = 360 - (360 / last)
-    const theta = angle * (i - 1)
-    const d = Math.sqrt(i)
-    const x = d * Math.cos(theta)
-    const y = d * Math.sin(theta)
-    return Immutable.Map( { x: window.innerWidth / 2 + 0.1 * d * x
-                          , y: (396 / 2) + 0.1 * d * y
-                          , r: 0.2 * d
-                          })
-  })
-
 export default pure (
   { displayName: 'Graph'
   , init() {
       this.fib = fibonacci()
+
+      this.generateSpiral = n => times(n)(() => this.fib.next().value || 0.001)
+        .filter(({ current, last }) => last > 0)
+        .map(({ current, last }, i) => {
+          const phi = current / last
+          const angle = 360 - (360 / last)
+          const theta = angle * (i - 1)
+          const d = Math.sqrt(i)
+          const x = d * Math.cos(theta)
+          const y = d * Math.sin(theta)
+          return Immutable.Map( { x: window.innerWidth / 2 + 0.1 * d * x
+                                , y: (396 / 2) + 0.1 * d * y
+                                , r: 0.2 * d
+                                })
+        })
     }
   , componentWillMount() {
-      this.setState({ spiral: spiral(3000) })
+      this.setState({ spiral: this.generateSpiral(3000) })
     }
   , render() {
       const { container } = this.props

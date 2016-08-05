@@ -182,7 +182,7 @@ export default function grid (pure) {
           const { data, mapColumn, mapDocument } = this.props
           const columns = data.get('columns')
           const documents = data.get('documents')
-          const columnLocal = mapColumn.local ? columns.reduce((map, columnID) => map.set(columnID, mapColumn.local(columnID)), Immutable.Map()) : null
+          const columnLocal = columns && mapColumn.local ? columns.reduce((map, columnID) => map.set(columnID, mapColumn.local(columnID)), Immutable.Map()) : null
           const documentLocal = mapDocument.local ? documents.keySeq().reduce((map, documentID) => {
             return map.set(documentID, mapDocument.local(documentID))
           }, Immutable.Map()) : null

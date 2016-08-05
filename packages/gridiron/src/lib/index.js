@@ -24,13 +24,19 @@ export  { gridironReact
         }
 
 export default function gridiron (deps, { themeName = 'mellow', ...defaults } = {}) {
+
+  const pre = reactPre(deps, { ...defaults, styles: reactPreStyles, theme: reactPreThemes[themeName] })
+  deps = { ...deps, ...pre }
+
   const formula = reactFormula(deps, { ...defaults, styles: reactFormulaStyles, theme: reactFormulaThemes[themeName] })
   deps = { ...deps, formula }
 
   const args = [ deps, { ...defaults, styles: gridironStyles, theme: gridironThemes[themeName] } ]
 
-  return ({ ...gridironReact(...args)
+  return ({ ...pre
+          , ...gridironReact(...args)
           , ...reduxPager(...args)
+          , ...reactMaximize(...args)
           , formula
           })
 }

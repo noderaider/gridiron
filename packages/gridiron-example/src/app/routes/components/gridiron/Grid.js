@@ -1,12 +1,11 @@
 import pure from 'lib/modules/pure'
 import { sandy, black, carbon, mellow } from 'gridiron-themes'
 
-const { React, Immutable, gridiron, defaults } = pure
-const { Pager, Grid, Columns, Accordion, Cards, Graph } = gridiron
+const { React, PropTypes, cloneElement, Immutable, gridiron, defaults } = pure
+const { Pager, Grid, Columns, Accordion, Cards, Graph, Pre, formula } = gridiron
 const { styles, theme } = defaults
 
 const should = require('chai').should()
-
 
 const getFormName = columnID => `filter-form-${columnID}`
 const getFilterName = documentID => `filter_${documentID}`

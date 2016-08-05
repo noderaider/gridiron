@@ -32,12 +32,12 @@ export default function accordion (pure) {
                     }
     , init() {
         this.contents = {}
-        this.expanded = []
+        this.expanded = null
         this.toggleDocument = documentID => {
           const node = this.contents[documentID]
-          if(ZERO_MEASURES.includes(node.style.maxHeight))
-            raf(() => this.expandDocument(documentID))
-          else
+          if(ZERO_MEASURES.includes(node.style.maxHeight)) {
+            this.expandDocument(documentID)
+          } else
             raf(() => this.collapseDocuments())
         }
         this.collapseDocuments = () => {
@@ -46,18 +46,28 @@ export default function accordion (pure) {
             if(node)
               node.style.maxHeight = 0
           }
+          this.expanded = null
         }
         this.expandDocument = documentID => {
           this.collapseDocuments()
-          const node = this.contents[documentID]
-          node.style.maxHeight = `${node.scrollHeight}px`
-          this.expanded.push(documentID)
+          this.expanded = documentID
+          raf(() => this.updateHeight())
+        }
+
+        this.updateHeight = () => {
+          const node = this.contents[this.expanded]
+          if(node)
+            node.style.maxHeight = `${node.scrollHeight}px`
         }
       }
     , componentDidMount() {
         const { expandedDocumentID } = this.props
         if(typeof expandedDocumentID !== 'undefined')
           this.expandDocument(expandedDocumentID)
+      }
+    , componentWillReceiveProps(nextProps) {
+        if(nextProps.data !== this.props.data)
+          raf(() => this.updateHeight())
       }
     , render() {
         const { styles, theme, mapHeader, mapContent, data, ...gridProps } = this.props

@@ -61,6 +61,7 @@ function pager(pure) {
   var propTypes = { children: PropTypes.func.isRequired,
     styles: PropTypes.object.isRequired,
     theme: PropTypes.object.isRequired,
+    columns: PropTypes.array,
     sort: PropTypes.object,
     createSortKeys: PropTypes.func.isRequired,
     createSortKeyComparator: PropTypes.func.isRequired,
@@ -100,8 +101,8 @@ function pager(pure) {
     page: 0,
     documentsPerPage: 5,
     documentsPerPageOptions: [1, 2, 3, 4, 5, 10, 25, 50, 100, 500, 1000, 'All'],
-    typeSingular: 'record',
-    typePlural: 'records',
+    typeSingular: 'document',
+    typePlural: 'documents',
     content: { FastBackward: function FastBackward(_ref) {
         var status = _ref.status;
 
@@ -242,12 +243,13 @@ function pager(pure) {
       var _this = this;
 
       var _props = this.props;
+      var columns = _props.columns;
       var map = _props.map;
       var documentsPerPageOptions = _props.documentsPerPageOptions;
       var createSortKeys = _props.createSortKeys;
       var createSortKeyComparator = _props.createSortKeyComparator;
 
-      var childProps = _objectWithoutProperties(_props, ['map', 'documentsPerPageOptions', 'createSortKeys', 'createSortKeyComparator']);
+      var childProps = _objectWithoutProperties(_props, ['columns', 'map', 'documentsPerPageOptions', 'createSortKeys', 'createSortKeyComparator']);
 
       return React.createElement(PagerDataFilter, _extends({}, childProps, {
 
@@ -260,9 +262,12 @@ function pager(pure) {
           return documents;
         },
         mapColumnData: function mapColumnData(documents) {
-          if (map.cells) return documents.map(function (datum, documentID) {
-            return map.cells(documentID, datum);
-          });
+          if (columns) {
+            should.exist(map.cells, 'map.cells function should exist when columns specified.');
+            return documents.map(function (datum, documentID) {
+              return map.cells(documentID, datum);
+            });
+          }
         }
         /** CALLED BY FILTER STREAM */
         , filterDocumentData: this.props.filterStream ? function (documentData, filterState) {
@@ -288,7 +293,6 @@ function pager(pure) {
             var context = Immutable.Map({ datum: datum, cells: cells, sortKeys: sortKeys });
             return context;
           });
-          var columns = columnData ? columnData.first().keySeq() : null;
           var data = Immutable.Map({ documents: documents, columns: columns });
           return data;
         },

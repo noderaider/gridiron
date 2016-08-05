@@ -1,4 +1,4 @@
-import configure  from 'redux-idle-monitor'
+import reduxIdleMonitor from 'redux-idle-monitor'
 import { push } from 'react-router-redux'
 
 import { packageName, title, subtitle, IS_BROWSER } from '../../../config'
@@ -23,7 +23,7 @@ export const idleStatusAction = idleStatus => (dispatch, getState) => {
 
 const opts = { appName: title, IDLE_STATUSES, idleStatusDelay, activeStatusAction, idleStatusAction }
 
-const { reducer, actions, middleware } = configure(opts)
+const { reducer, actions, middleware } = reduxIdleMonitor(opts)
 const { start, stop, gotoIdleStatus } = actions
 export default reducer
 export { actions, middleware }

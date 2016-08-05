@@ -1,7 +1,5 @@
 import pure from 'lib/modules/pure'
 
-import createIdleMonitor from 'react-redux-idle-monitor'
-
 import { client, log, IS_BROWSER } from 'config'
 import TopBar from 'app/elements/nav/TopBar'
 import FooterBar from 'app/elements/nav/FooterBar'
@@ -9,16 +7,13 @@ import DevTools from 'lib/redux/DevTools'
 
 import childContextTypes, { schemeNames, getTheme } from 'lib/context'
 
-import { Maximize } from 'lib/modules/react-maximize'
-import { Logo } from 'lib/modules/gridiron-react'
-
 import './styles/vendor/font-awesome'
 import './styles/fonts/fout.gcss'
 import './styles/fonts/fonts.gcss'
 import styles from './styles/App.css'
 
-const IdleMonitor = createIdleMonitor({ React, connect })
-
+const { React, PropTypes, cloneElement, gridiron, IdleMonitor } = pure
+const { Logo, Maximize } = gridiron
 
 const connect = (
   { mapStateToProps: ({ visual, errors }) => (
@@ -36,11 +31,9 @@ const connect = (
   }
 )
 
-
-const { React, PropTypes } = pure
-
 export default pure (
-  { connect
+  { displayName: 'App'
+  , connect
   , childContextTypes
   , getChildContext() {
       return { theme: this.props.theme }

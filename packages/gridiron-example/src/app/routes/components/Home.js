@@ -1,21 +1,21 @@
-import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
+import pure from 'lib/modules/pure'
+import * as gridiron from './gridiron'
 
-import contextTypes from 'lib/context'
-import { Accordion, Cards, Graph, Grid } from './gridiron'
+const { React, PropTypes } = pure
+const { Accordion, Cards, Graph, Grid } = gridiron
 
-class Home extends Component {
-  static contextTypes = contextTypes;
-  render() {
-    const { title, subtitle, username, organization, email, full, packageName, container } = this.props
-    const { style } = this.context.theme
-    return (
-      <div>
-        <Accordion />
-        <Cards />
-        <Graph />
-        <Grid />
-      </div>
-    )
+export default pure (
+  { displayName: 'Home'
+  , render() {
+      const { title, subtitle, username, organization, email, full, packageName, ...childProps } = this.props
+      return (
+        <div>
+          <Accordion {...childProps} />
+          <Cards {...childProps} />
+          <Graph {...childProps} />
+          <Grid {...childProps} />
+        </div>
+      )
+    }
   }
-}
+)
