@@ -30,7 +30,6 @@ export default class FooterBar extends Component {
   static contextTypes = contextTypes;
   render() {
     const { showAttributes, showLegal, showCopyright } = this.props
-    const { palette, color, brand, style } = this.context.theme
 
     /** TODO: FIGURE OUT WHERE THE FUCK THIS CONTEXT STYLES COMING FROM */
     return (

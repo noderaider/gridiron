@@ -1,3 +1,15 @@
+.topBar {
+  display: flex;
+  flex: 1 0 auto;
+  background-color: rgb(34, 34, 34);
+  background-image: linear-gradient(0deg, rgb(34, 34, 34) 0%, rgb(51, 51, 51) 50%, rgb(88, 110, 95) 50%, rgb(131, 187, 147) 100%);
+  border-color: rgb(38, 51, 38);
+  border-style: groove;
+  border-width: 0 1px 1px 1px;
+  padding: 0.2em 0.5em;
+  border-radius: 0 0 4px 4px;
+}
+
 .title {
   margin-left:0;
   font-size: 1.3em;
@@ -5,4 +17,7 @@
 
 .anchor {
   margin-left: 0;
+  text-decoration:none;
+  color: rgb(238, 185, 5);
+  text-shadow: 1px 1px 1px black, 0 0 0.2em rgb(238, 185, 5);
 }

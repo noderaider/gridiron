@@ -125,7 +125,6 @@ export default function formsContext (pure) {
               })
             }
 
-            console.info('INPUT WILL MOUNT', name)
 
             emit(events.registerInput, { formName, name, type, initialValue })
 

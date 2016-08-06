@@ -10,8 +10,7 @@ const should = require('chai').should()
 export default pure (
   { displayName: 'Accordion'
   , render() {
-      const { container } = this.props
-      return container(({ Controls, Box, isMaximized, id, actions }) => (
+      return this.props.container(({ Controls, Box, isMaximized, id, actions }) => (
         <Pager
           documentsPerPage={5}
           map={ { documents: state => (Immutable.Map.isMap(state) ? state : Immutable.Map(state)).map(
@@ -20,8 +19,8 @@ export default pure (
                 }
               }
         >
-          {pager => (
-            <Box>
+        {pager => (
+
               <Accordion
                   data={pager.status.get('data', Immutable.Map())}
 
@@ -45,7 +44,7 @@ export default pure (
                     <h4><Pre>{{ documentID, documentIndex, datum }}</Pre></h4>
                   )}
                 />
-            </Box>
+
           )}
         </Pager>
       ))

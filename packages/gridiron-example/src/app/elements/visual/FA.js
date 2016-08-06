@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
-import contextTypes from 'lib/context'
 
 export const faSizeOptions = [ 'lg', 'xl', '2x', '3x', '4x', '5x' ]
 const faPropTypes = { name: PropTypes.string.isRequired
@@ -34,11 +33,8 @@ const faClassNames = (...names) => ( names && names.filter
                               )
 
 class FA extends Component {
-  static contextTypes = contextTypes;
   static propTypes = faPropTypes;
   static defaultProps = faDefaultProps;
-  componentDidMount() {
-  }
   render() {
     const { name
           , loadingName
@@ -48,9 +44,8 @@ class FA extends Component {
           , iconStyle
           , color
           } = this.props
-    const { theme } = this.context
 
-    const resolvedStyle = { color: color || theme.color.accent, ...iconStyle }
+    const resolvedStyle = { color, ...iconStyle }
 
     const resolvedName = isLoading ? (loadingName === 'same' ? name : loadingName) : name
     const resolvedSpinner= isLoading ? spinnerName : noop()

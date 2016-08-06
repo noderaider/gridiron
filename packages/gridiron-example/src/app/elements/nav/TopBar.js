@@ -4,7 +4,6 @@ import { appName } from 'config'
 
 import styles from './TopBar.css'
 
-import contextTypes from 'lib/context'
 
 export default class TopBar extends Component {
   static propTypes =  { logo: PropTypes.element
@@ -12,21 +11,18 @@ export default class TopBar extends Component {
                       , subtitle: PropTypes.string
                       , packageName: PropTypes.string
                       }
-  static contextTypes = contextTypes;
   render() {
     const { logo, title, subtitle, packageName } = this.props
-    const { palette, color, brand, style } = this.context.theme
-    const { header } = style
 
     return (
-      <header style={header.wrapper} id="topbar">
+      <header className={styles.topBar}>
       {/*
         <button style={header.hamburger} className="hamburger">
           <FA name="bars" size="lg" style={{ color: 'rgb(50, 100, 150)' }} />
         </button>
       */}
         <span className={styles.title}>
-          <a href="/" className={styles.anchor} style={header.anchor}>{logo ? logo : null}{title}{subtitle ? <span style={header.subtitle}>{subtitle}</span> : null}</a>
+          <a href="/" className={styles.anchor} className={styles.anchor}>{logo ? logo : null}{title}{subtitle ? <span className={styles.subtitle}>{subtitle}</span> : null}</a>
         </span>
         {/*
         {packageName ? <span style={header.banner}>

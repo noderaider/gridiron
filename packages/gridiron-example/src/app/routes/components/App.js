@@ -34,10 +34,6 @@ const connect = (
 export default pure (
   { displayName: 'App'
   , connect
-  , childContextTypes
-  , getChildContext() {
-      return { theme: this.props.theme }
-    }
   , render(){
       const { title, subtitle, username, organization, email, full, packageName, errors, children } = this.props
 

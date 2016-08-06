@@ -6,6 +6,7 @@ export default function grid (pure) {
         , PropTypes
         , cloneElement
         , shallowCompare
+        , createFragment
         , Immutable
         , Pre
         , formula
@@ -222,20 +223,32 @@ export default function grid (pure) {
 
         const columns = isPrimitive ? null : data.get('columns')
 
+        const rendered = (
+          { columnHeader: mapColumn.header ? <templates.ColumnHeader columnIndex={0} /> : null
+          , columnFooter: mapColumn.footer ? <templates.ColumnFooter columnIndex={0} /> : null
+          , document: <templates.Document documentIndex={0} />
+          , documentHeader: !isPrimitive && mapDocument && mapDocument.header ? <templates.DocumentHeader documentIndex={0} /> : null
+          , documentFooter: !isPrimitive && mapDocument && mapDocument.footer ? <templates.DocumentFooter documentIndex={0} /> : null
+          , documentBody: !isPrimitive && columns ? <templates.DocumentBody documentIndex={0} /> : null
+          , cell: !isPrimitive && columns ? <templates.Cell documentIndex={0} columnIndex={0} /> : null
+          }
+        )
 
         const gridColumns = isPrimitive ? null : columns.map((columnID, columnIndex) => {
           const local = this.state.columnLocal && this.state.columnLocal.get(columnID)
-          const header = mapColumn.header ? (
-            <templates.ColumnHeader key={columnIndex} columnIndex={columnIndex}>
-              {mapColumn.header({ local, columnID, columnIndex })}
-            </templates.ColumnHeader>
-          ) : null
-
-          const footer = mapColumn.footer ? (
-            <templates.ColumnFooter key={columnIndex} columnIndex={columnIndex}>
-              {mapColumn.footer({ local, columnID, columnIndex })}
-            </templates.ColumnFooter>
-          ) : null
+          const { columnHeader, columnFooter } = rendered
+          const header = columnHeader ? cloneElement(columnHeader, (
+            { key: columnIndex
+            , columnIndex
+            , children: mapColumn.header({ local, columnID, columnIndex })
+            }
+          )) : null
+          const footer = columnFooter ? cloneElement(columnFooter, (
+            { key: columnIndex
+            , columnIndex
+            , children: mapColumn.footer({ local, columnID, columnIndex })
+            }
+          )) : null
           return { header, footer }
         })
 
@@ -244,44 +257,62 @@ export default function grid (pure) {
           const datum = context.get('datum')
           const cells = isPrimitive ? null : context.get('cells')
           const documentLocal = isPrimitive ? null : this.state.documentLocal && this.state.documentLocal.get(documentID)
-          return isPrimitive ? (
-            <templates.Document key={documentIndex} documentIndex={documentIndex}>
-              {mapDocument({ documentID, documentIndex, datum })}
-            </templates.Document>
-          ) : (
-            <templates.Document key={documentIndex} documentIndex={documentIndex}>
-              {mapDocument.header ? (
-                <templates.DocumentHeader>
-                  {mapDocument.header({ local: documentLocal, documentID, documentIndex, document })}
-                </templates.DocumentHeader>
-              ) : null}
-              <templates.DocumentBody>
-                {columns.map((columnID, columnIndex) => {
-                  return (
-                    <templates.Cell key={columnIndex} documentIndex={documentIndex} columnIndex={columnIndex}>
-                      {mapCell(
-                        { documentIndex
-                        , documentID
-                        , columnIndex
-                        , columnID
-                        , local: mergeLocal(
-                            { documentLocal
-                            , columnLocal: this.state.columnLocal && this.state.columnLocal.get(columnID)
-                            }
-                          )
-                        , datum: cells.get(columnID)
-                        }
-                      )}
-                    </templates.Cell>
+
+
+          const children = isPrimitive ? mapDocument({ documentID, documentIndex, datum }) : createFragment(
+            { header: rendered.documentHeader ? (
+                cloneElement(rendered.documentHeader, { documentIndex
+                                                      , children: mapDocument.header( { local: documentLocal
+                                                                                      , documentID
+                                                                                      , documentIndex
+                                                                                      , datum
+                                                                                      })
+                                                      })
+              ) : null
+            , body: cloneElement(rendered.documentBody, { documentIndex
+                                                        , children: (
+                  columns.map((columnID, columnIndex) => (
+                    cloneElement(rendered.cell, { key: columnIndex
+                                                , documentIndex
+                                                , columnIndex
+                                                , children: (
+                                                    mapCell(
+                                                      { documentIndex
+                                                      , documentID
+                                                      , columnIndex
+                                                      , columnID
+                                                      , local: mergeLocal(
+                                                          { documentLocal
+                                                          , columnLocal: this.state.columnLocal && this.state.columnLocal.get(columnID)
+                                                          }
+                                                        )
+                                                      , datum: cells.get(columnID)
+                                                      }
+                                                    )
+                                                  )
+                                              }
+                      )
+                    )
                   )
-                })}
-              </templates.DocumentBody>
-              {mapDocument.footer ? (
-                <templates.DocumentFooter>
-                  {mapDocument.footer({ local: documentLocal, documentID, documentIndex, document })}
-                </templates.DocumentFooter>
-              ) : null}
-            </templates.Document>
+                )
+              })
+            , footer: rendered.documentFooter ? (
+                cloneElement(rendered.documentFooter, { documentIndex
+                                                      , children: mapDocument.footer( { local: documentLocal
+                                                                                      , documentID
+                                                                                      , documentIndex
+                                                                                      , datum
+                                                                                      })
+                                                      })
+              ) : null
+            }
+          )
+
+          return cloneElement(rendered.document,
+            { key: documentIndex
+            , documentIndex
+            , children
+            }
           )
         }
 
@@ -295,9 +326,9 @@ export default function grid (pure) {
           >
             {this.props.header ? <templates.Header>{this.props.header}</templates.Header> : null}
             {gridColumns && mapColumn.header ? (
-              <templates.Document key="document-headers" isHeader={true}>
-                {gridColumns.map(columns => columns.header)}
-              </templates.Document>
+              cloneElement(rendered.document, { isHeader: true
+                                              , children: gridColumns.map(columns => columns.header)
+                                              })
             ) : null}
 
             <templates.Body key="grid-body">
@@ -307,9 +338,9 @@ export default function grid (pure) {
             </templates.Body>
 
             {gridColumns && mapColumn.footer ? (
-              <templates.Document key="document-footers" isFooter={true}>
-                {gridColumns.map(columns => columns.footer)}
-              </templates.Document>
+              cloneElement(rendered.document, { isFooter: true
+                                              , children: gridColumns.map(columns => columns.footer)
+                                              })
             ) : null}
 
             {this.props.footer ? <templates.Footer>{this.props.footer}</templates.Footer> : null}

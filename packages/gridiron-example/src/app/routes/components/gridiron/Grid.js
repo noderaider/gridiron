@@ -59,10 +59,11 @@ export default pure (
       return container(({ Controls, Box, isMaximized, id, actions }) => (
         <Pager
           documentsPerPage={5}
+          columns={columns.ids}
           filterStream={createFilterStream(columns.ids)}
 
           map={ { documents: state => Immutable.Map.isMap(state) ? state : Immutable.Map(state)
-                , cells: (documentID, document) => Immutable.Map({ id: documentID, state: document })
+                , cells: (documentID, datum) => Immutable.Map({ id: documentID, state: datum })
                 }
               }
 

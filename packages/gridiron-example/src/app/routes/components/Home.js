@@ -7,13 +7,13 @@ const { Accordion, Cards, Graph, Grid } = gridiron
 export default pure (
   { displayName: 'Home'
   , render() {
-      const { title, subtitle, username, organization, email, full, packageName, ...childProps } = this.props
+      const { title, subtitle, username, organization, email, full, packageName, container } = this.props
       return (
         <div>
-          <Accordion {...childProps} />
-          <Cards {...childProps} />
-          <Graph {...childProps} />
-          <Grid {...childProps} />
+          <Accordion container={container} />
+          <Cards container={container} />
+          <Graph container={container} />
+          <Grid container={container} />
         </div>
       )
     }

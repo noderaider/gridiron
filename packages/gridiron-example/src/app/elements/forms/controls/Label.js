@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import FA from 'app/elements/visual/FA'
-import contextTypes from 'lib/context'
 
 export default class Label extends Component {
   static propTypes =  { iconName: PropTypes.string
@@ -8,28 +7,25 @@ export default class Label extends Component {
                       , bsStyle: PropTypes.string
                       , children: PropTypes.any.isRequired
                       };
-  static contextTypes = contextTypes;
   render() {
-    const { theme } = this.context
-    const { style, brand } = theme
-    const { color, onClick, children } = this.props
-    const { iconName, bsStyle, ...buttonProps } = this.props
+    const { color, onClick, children, iconName, bsStyle, ...buttonProps } = this.props
 
-    const resolvedColor = color || bsStyle ? theme.color.primary : style.label.color
-    const resolvedBorderColor = bsStyle ? theme.color.secondary : style.label.color
-    const labelStyle =  { ...style.label
-                        , lineHeight: 1.5
+    const labelStyle =  { lineHeight: '1.2em'
+                        , fontSize: '0.7rem'
                         , paddingLeft: 3
                         , paddingRight: 3
-                        , margin: 1
-                        , color: resolvedColor
-                        , borderColor: resolvedBorderColor
-                        , backgroundColor: brand[bsStyle || 'default']
+                        , margin: '0 0.2em'
+                        , color
+                        , borderColor: color
+                        , borderWidth: 1
+                        , borderStyle: 'groove'
+                        , backgroundColor: 'transparent'
+                        , borderRadius: 3
                         , cursor: onClick ? 'pointer' : 'default'
                         }
     return (
       <button {...buttonProps} style={labelStyle}>
-        {iconName ? <FA name={iconName} color={resolvedColor} /> : null}
+        {iconName ? <FA name={iconName} color={color} /> : null}
         {' '}
         <span>{children}</span>
       </button>
