@@ -1,0 +1,16 @@
+.g {
+  font-size: 0.025em;
+}
+
+.g:hover .text {
+  display: block;
+}
+
+.text {
+  display: none;
+  pointer-events: none;
+  /*
+  transform: scaleY(-1);
+  */
+}
+

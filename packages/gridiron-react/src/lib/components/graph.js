@@ -25,14 +25,35 @@ export default function cards (pure) {
                   , theme: PropTypes.object.isRequired
                   , data: PropTypes.object.isRequired
                   , transitionDurationMS: PropTypes.number
+                  , minX: PropTypes.number.isRequired
+                  , minY: PropTypes.number.isRequired
+                  , maxX: PropTypes.number.isRequired
+                  , maxY: PropTypes.number.isRequired
+                  , preserveAspectRatio: PropTypes.string.isRequired
                   }
     , defaultProps: { ...defaults
+                    , minX: -100
+                    , minY: -100
+                    , maxX: 100
+                    , maxY: 100
+                    , preserveAspectRatio: 'xMidYMid meet'
                     }
     , init() {
         this.contents = {}
       }
     , render() {
-        const { styles, theme, mapDatum, data, ...gridProps } = this.props
+        const { styles
+              , theme
+              , mapDatum
+              , data
+              , minX
+              , minY
+              , maxX
+              , maxY
+              , preserveAspectRatio
+              , ...gridProps
+              } = this.props
+        const viewBox = `${minX} ${minY} ${maxX - minX} ${maxY - minY}`
         return (
           <Grid
             {...gridProps}
@@ -44,8 +65,14 @@ export default function cards (pure) {
                   </div>
                 )
               , Body: ({ documentIndex, children, ...props }) => (
-                  <svg className={cn(styles.graph, theme.graph)}>
-                    {children}
+                  <svg
+                    className={cn(styles.graph, theme.graph)}
+                    viewBox={viewBox}
+                    preserveAspectRatio={preserveAspectRatio}
+                  >
+                    <g className={cn(styles.graphTransform, theme.graphTransform)}>
+                      {children}
+                    </g>
                   </svg>
                 )
               , Document: ({ documentIndex, children, ...props }) => (
@@ -55,7 +82,7 @@ export default function cards (pure) {
             }
             mapDocument={
               ({ documentIndex, documentID, datum }) => (
-                cloneElement(mapDatum({ documentIndex, documentID, datum }), { className: cn(styles.graphDatum, theme.graphDatum) })
+                mapDatum({ documentIndex, documentID, datum })
               )
             }
           />

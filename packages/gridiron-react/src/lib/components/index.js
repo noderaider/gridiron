@@ -4,7 +4,6 @@ export { default as cards } from './cards'
 export { default as graph } from './graph'
 
 export { default as expander } from './expander'
-export { default as footer } from './footer'
 export { default as pane } from './pane'
 export { default as settings } from './settings'
 export { default as logo } from './logo'
