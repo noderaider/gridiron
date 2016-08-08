@@ -77,7 +77,7 @@ export default function accordion (pure) {
             data={data}
             mapDocument={
               ({ documentIndex, documentID, datum }) => {
-                console.info('DATUM', datum.toJS())
+                //console.info('DATUM', datum.toJS())
                 const header = mapHeader({ documentIndex, documentID, datum: datum.get('header') })
                 const content = mapContent({ documentIndex, documentID, datum: datum.get('content') })
                 return (

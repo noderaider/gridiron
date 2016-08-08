@@ -96,8 +96,8 @@
 /** GRAPH */
 
 .graphContainer {
-  margin:1em 0;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
   border: 2px solid var(--control-border);
   font-size: 0.95rem;
   font-family: monospace;
@@ -105,9 +105,11 @@
   color: var(--control-fg);
   border-radius:0;
 
+/*
   @media (--lg-screen) {
     border-radius:4px;
   }
+  */
 }
 
 /** END GRAPH */
@@ -145,8 +147,8 @@
 /** CARDS */
 
 .cards {
-  margin:1em 0;
-  padding: 0px;
+  margin:0;
+  padding: 0;
   border: 2px solid var(--control-border);
   font-size: 0.95rem;
   font-family: monospace;
@@ -154,9 +156,11 @@
   color: var(--control-fg);
   border-radius:0;
 
+/*
   @media (--lg-screen) {
     border-radius:4px;
   }
+  */
 }
 
 .cardsBody {
@@ -195,8 +199,8 @@
 /** GRID */
 
 .grid {
-  margin:1em 0;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
   border: 2px solid var(--control-border);
   font-size: 0.95rem;
   font-family: monospace;
@@ -205,9 +209,11 @@
   color: var(--control-fg);
   border-radius:0;
 
+/*
   @media (--lg-screen) {
     border-radius:4px;
   }
+  */
 }
 
 .document.even,

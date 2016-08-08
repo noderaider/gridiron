@@ -53,11 +53,11 @@ export default function formsContext (pure) {
               switch(this.input.type) {
                 case 'checkbox':
                   this.input.checked = value === true
-                  console.info('SET CHECKBOX', this.props.name, this.input.checked)
+                  //console.info('SET CHECKBOX', this.props.name, this.input.checked)
                   break
                 default:
                   this.input.value = value
-                  console.info('SET DEFAULT', this.props.name, this.input.value)
+                  //console.info('SET DEFAULT', this.props.name, this.input.value)
                   break
               }
             }
@@ -69,10 +69,10 @@ export default function formsContext (pure) {
               switch(type) {
                 case 'checkbox':
                   const resolved = checked === true || checked == 'true' || checked == 'checked'
-                  console.info('GET CHECKBOX', this.props.name, checked, resolved)
+                  //console.info('GET CHECKBOX', this.props.name, checked, resolved)
                   return resolved
                 default:
-                  console.info('GET DEFAULT', this.props.name, value)
+                  //console.info('GET DEFAULT', this.props.name, value)
                   return value
               }
             }

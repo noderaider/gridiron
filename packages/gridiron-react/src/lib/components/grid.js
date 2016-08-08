@@ -34,7 +34,6 @@ export default function grid (pure) {
       styleName => [ styles[styleName], theme[styleName] ]
     ))
 
-
   const defaultTemplates =
     { Container: ({ children, ...props }) => (
         <div className={selectStyles('grid')} {...props}>

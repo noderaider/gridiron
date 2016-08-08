@@ -125,16 +125,18 @@ export default function column(pure) {
           const { documentID, checkbox, styles, theme, children, ...props } = this.props
 
           return (
-            <div {...props}>
-              <cellForm.Field
-                name={this.getName('checkbox')}
-                type="checkbox"
-                subscribeInput={[ headerForm.formName, HEADER_CHECKBOX ]}
-                shouldUpdate={({ currentValue, subscribed, subscriptionType }) => {
-                  return true
-                }}>
-                {children}
-              </cellForm.Field>
+            <div {...props} className={cn(styles.cellContent, theme.cellContent)}>
+              {checkbox ? (
+                <cellForm.Field
+                  name={this.getName('checkbox')}
+                  type="checkbox"
+                  subscribeInput={[ headerForm.formName, HEADER_CHECKBOX ]}
+                  shouldUpdate={({ currentValue, subscribed, subscriptionType }) => {
+                    return true
+                  }}>
+                  {children}
+                </cellForm.Field>
+              ) : children}
             </div>
           )
         }
