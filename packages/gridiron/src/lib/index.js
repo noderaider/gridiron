@@ -35,8 +35,14 @@ export default function gridiron (deps, { themeName = 'mellow', ...defaults } = 
 
   return ({ ...pre
           , ...gridironReact(...args)
+          , styles: gridironStyles
+          , themes: gridironThemes
           , ...reduxPager(...args)
           , ...reactMaximize(...args)
           , formula
+          , reactFormulaStyles
+          , reactFormulaThemes
+          , reactPreStyles
+          , reactPreThemes
           })
 }

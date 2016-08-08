@@ -51,34 +51,26 @@ function* sunflower(n, { scaleX = 0.04, scaleY = 0.04, scaleR = 0.06 } = {}) {
   }
 }
 
-function* spiral(n, { thetaIncrement = 1, a = 1 } = {}) {
+function* spiral(n, { thetaIncrement = 0.75, a = 1 } = {}) {
   const isInfinite = typeof n !== 'number'
-  //const [ ...fib ]= fibonacci(75)
-  const fib = fibonacci(n)
+  const [ ...fib ]= fibonacci(75)
+  const [ last, current ]  = fib.slice(-2)
+  const phi = current / last
+  const b = Math.log(phi) / 90
+
   let theta = 0
-  let last = 0
-  let current = 0
-
-
-
   while (isInfinite || n--) {
-    last = current
-    current = fib.next().value
-    const phi = current / last
-    const b = Math.log(phi) / 90
-
-
     const rads = theta * (Math.PI / 180)
-    const calc = Math.exp(b * rads)
+    const calc = Math.exp(b * theta)
     const x = a * Math.cos(rads) * calc
     const y = a * Math.sin(rads) * calc
 
-    yield { x, y, theta }
+    yield { x, y, theta, rads, phi, calc }
     theta += thetaIncrement
   }
 }
 
-const spiralState = [ ...spiral(1080, { a: 5 }) ]
+const spiralState = [ ...spiral(2173, { a: 0.0005 }) ]
 
 export default pure (
   { displayName: 'Graph'
@@ -87,13 +79,13 @@ export default pure (
     }
   , render() {
       const { container } = this.props
-      const maxX = 8
-      const maxY = 8
-      const minX = -8
-      const minY = -8
+      const maxX = 2
+      const maxY = 2
+      const minX = -2
+      const minY = -2
       return container(({ Controls, Box, isMaximized, id, actions }) => (
         <Pager
-          documentsPerPage={500}
+          documentsPerPage="All"
           map={ { documents: state => (
                     Immutable.OrderedMap(this.state.spiral.map((point, index) => ([ index, Immutable.Map(point) ]) ))
                   )
@@ -136,7 +128,7 @@ export default pure (
                         className={styles.g}
                       >
                         <circle
-                          r={0.1}
+                          r={0.01}
                           onMouseOver={() => {
                             if(localText)
                               localText.display = true

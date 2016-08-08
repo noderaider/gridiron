@@ -24,7 +24,7 @@
     "dom-helpers": "^2.4.0",
     "eventemitter3": "^1.2.0",
     "most": "^1.0.0",
-    "pure-stamp": "^0.1.10",
+    "pure-stamp": "^0.1.13",
     "raf": "^3.2.0",
     "react-pre": "^0.15.0",
     "react-pub-sub": "^0.15.0",

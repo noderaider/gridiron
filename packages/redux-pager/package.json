@@ -46,7 +46,7 @@
     "classnames": "^2.2.5",
     "lodash": "^4.13.1",
     "ncp": "^2.0.0",
-    "pure-stamp": "^0.1.10",
+    "pure-stamp": "^0.1.13",
     "solvent": "^0.15.0"
   },
   "devDependencies": {

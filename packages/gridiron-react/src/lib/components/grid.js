@@ -101,6 +101,7 @@ export default function grid (pure) {
     , NoContent: props => <div {...props} />
     }
 
+
   /** Renders a flexbox based grid with Immutable data. */
   return pure (
     { displayName: 'Grid'
@@ -179,7 +180,6 @@ export default function grid (pure) {
               , columnLocal: null
               }
     , init() {
-        this.profile = { init: performance.now() }
         this._updateLocals = () => {
           const { data, mapColumn, mapDocument } = this.props
           const columns = data.get('columns')

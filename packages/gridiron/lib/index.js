@@ -86,6 +86,12 @@ function gridiron(deps) {
 
   var args = [deps, _extends({}, defaults, { styles: _gridironStyles2.default, theme: gridironThemes[themeName] })];
 
-  return _extends({}, pre, _gridironReact2.default.apply(undefined, args), _reduxPager2.default.apply(undefined, args), _reactMaximize2.default.apply(undefined, args), { formula: formula
+  return _extends({}, pre, _gridironReact2.default.apply(undefined, args), { styles: _gridironStyles2.default,
+    themes: gridironThemes
+  }, _reduxPager2.default.apply(undefined, args), _reactMaximize2.default.apply(undefined, args), { formula: formula,
+    reactFormulaStyles: _reactFormulaStyles2.default,
+    reactFormulaThemes: reactFormulaThemes,
+    reactPreStyles: _reactPreStyles2.default,
+    reactPreThemes: reactPreThemes
   });
 }
