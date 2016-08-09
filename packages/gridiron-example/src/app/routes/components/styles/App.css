@@ -30,22 +30,12 @@
   width: 100%;
 
   @media (--lg-screen) {
-    width: 90%;
-    margin-left: 5%;
+    width: 98%;
+    margin-left: 1%;
   }
 
   @media (--xl-screen) {
-    width: 84%;
-    margin-left: 8%;
-  }
-
-  @media (--2x-screen) {
-    width: 82%;
-    margin-left: 9%;
-  }
-
-  @media (--3x-screen) {
-    width: 80%;
-    margin-left: 10%;
+    width: 96%;
+    margin-left: 2%;
   }
 }

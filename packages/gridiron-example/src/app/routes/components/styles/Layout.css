@@ -28,3 +28,7 @@
   }
 
 }
+
+.item > *:first-child {
+  margin: 10px;
+}

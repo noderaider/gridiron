@@ -50,7 +50,7 @@ const FilterForm = pure (
 )
 
 
-export default pure (
+export default pure ( pure.profiler,
   { displayName: 'Grid'
   , render() {
       const { container } = this.props

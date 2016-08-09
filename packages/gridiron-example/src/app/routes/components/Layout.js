@@ -12,26 +12,31 @@ export default pure (
                 }
   , defaultProps: { className: 'layout'
                   , rowHeight: 30
-                  , breakpoints: { lg: 1200, md: 996 }
-                  , cols: { lg: 3, md: 2 }
+                  , breakpoints: { xl: 1100, lg: 768, md: 600 }
+                  , cols: { xl: 3, lg: 2, md: 1 }
+
                   , onLayoutChange: layout => console.warn('LAYOUT CHANGED', layout)
                   }
   , init() {
       this.generateLayouts = () => {
         const { children, cols } = this.props
-        const [ ...iterator ] = Array(children.length).keys()
+        let spanned = 0
         return Object.entries(cols).reduce((reduced, [ size, col ]) => {
           return ({ ...reduced
-                  , [size]: iterator.map(i => {
-                      const y = Math.floor(i / col)
-                      return { x: i % col, y, w: 1, h: 8, i: i.toString() }
+                  , [size]: children.map(({ component, ...meta }, i) => {
+                      const w = meta.w ? (typeof meta.w === 'number' ? meta.w : meta.w[size]) : 1
+                      const h = meta.h ? (typeof meta.h === 'number' ? meta.h : meta.h[size]) : 10
+                      const x = spanned % col
+                      const y = Math.floor(spanned / col)
+                      spanned += w
+                      return { x, y, w, h, i: i.toString() }
                     })
                   })
         }, {})
       }
       this.generateDOM = () => {
         const { children } = this.props
-        return children.map((component, i) => (
+        return children.map(({ component }, i) => (
           <div key={i} className={styles.item}>{component}</div>
         ))
       }

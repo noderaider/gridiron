@@ -229,13 +229,13 @@
   font-size:0.6rem;
 
   @media (--lg-screen) {
-    font-size:0.6rem;
+    font-size:0.55rem;
   }
   @media (--xl-screen) {
-    font-size:0.7rem;
+    font-size:0.62rem;
   }
   @media (--2x-screen) {
-    font-size:0.8rem;
+    font-size:0.7rem;
   }
 }
 
