@@ -54,7 +54,7 @@ export default pure ( pure.profiler,
   { displayName: 'Grid'
   , render() {
       const { container } = this.props
-      const columns = Columns('id', 'state')
+      const columns = Columns([ 'id', 'state' ])
 
       return container(({ Controls, Box, isMaximized, id, actions }) => (
         <Pager

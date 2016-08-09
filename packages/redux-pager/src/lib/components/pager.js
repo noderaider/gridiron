@@ -39,7 +39,7 @@ export default function pager (pure) {
                     , createSortKeys: PropTypes.func.isRequired
                     , createSortKeyComparator: PropTypes.func.isRequired
                     , page: PropTypes.number.isRequired
-                    , documentsPerPage: PropTypes.any.isRequired
+                    , documentsPerPage: PropTypes.any
                     , documentsPerPageOptions: PropTypes.arrayOf(PropTypes.any).isRequired
                     , typeSingular: PropTypes.string.isRequired
                     , typePlural: PropTypes.string.isRequired
@@ -54,7 +54,13 @@ export default function pager (pure) {
                                 const sortKey = sort.getIn([ 'keys', columnID ], null)
                                 const cellDatum = cells.get(columnID)
                                 const currentKey = sortKey ? sortKey(cellDatum) : cellDatum
-                                return typeof currentKey === 'string' ? currentKey : currentKey.toString()
+                                switch(typeof currentKey) {
+                                  case 'number':
+                                  case 'string':
+                                    return currentKey
+                                  default:
+                                    return currentKey.toString()
+                                }
                               })
                           }
                           /** COMPARES SORT KEYS OF TWO DOCUMENTS */
@@ -63,7 +69,18 @@ export default function pager (pure) {
                             const multipliers = sort.get('direction') ? sort.get('cols').map(columnID => sort.getIn([ 'direction', columnID ]) === 'desc' ? -1 : 1) : []
                             return (sortKeysA, sortKeysB) => {
                               for(let colIndex = 0; colIndex < sortKeysA.size; colIndex++) {
-                                let result = sortKeysA.get(colIndex).localeCompare(sortKeysB.get(colIndex)) * multipliers.get(colIndex)
+                                let result
+                                let keyA = sortKeysA.get(colIndex)
+                                let keyB = sortKeysB.get(colIndex)
+                                let multiplier = multipliers.get(colIndex)
+                                if(typeof keyA === 'number') {
+                                  if(keyA > keyB)
+                                    return 1 * multiplier
+                                  if(keyB > keyA)
+                                    return -1 * multiplier
+                                  continue
+                                }
+                                result = keyA.localeCompare(keyB) * multiplier
                                 if(result !== 0)
                                   return result
                               }
@@ -71,7 +88,7 @@ export default function pager (pure) {
                             }
                           }
                         , page: 0
-                        , documentsPerPage: 5
+                        , documentsPerPage: null
                         , documentsPerPageOptions: [ 1, 2, 3, 4, 5, 10, 25, 50, 100, 500, 1000, 'All' ]
                         , typeSingular: 'document'
                         , typePlural: 'documents'
@@ -224,7 +241,7 @@ export default function pager (pure) {
                 , select: x => { access.page = x }
                 , documentsPerPage: documentsPerPage => {
                     access.merge( { documentsPerPage
-                                  , page: typeof documentsPerPage === 'number' ? Math.floor(status.get('startIndex') / status.get('documentsPerPage')) : 0
+                                  , page: 0
                                   } )
                   }
                 , sort: id => {
@@ -410,7 +427,8 @@ export default function pager (pure) {
     , defaultProps: defaults
     , render() {
         const { status, actions, content, styles, theme } = this.props
-        return typeof status.get('documentsPerPage') === 'number' && status.get('documentsPerPage') > 0 ? (
+        const documentsPerPage = status.get('documentsPerPage')
+        return typeof documentsPerPage === 'number' && documentsPerPage > 0 ? (
           <select
             value={status.get('page')}
             onChange={x =>  actions.select(parseInt(x.target.value))}
@@ -436,10 +454,10 @@ export default function pager (pure) {
               value={status.get('documentsPerPage')}
               onChange={x => {
                 const { value } = x.target
-                if(typeof value === 'string' && value.toLowerCase() === 'all')
-                  actions.documentsPerPage(value)
-                else
+                if(/\d+/.test(value))
                   actions.documentsPerPage(parseInt(value))
+                else
+                  actions.documentsPerPage(value)
               }}
               className={cn(styles.pagerSelect, theme.pagerSelect)}
             >

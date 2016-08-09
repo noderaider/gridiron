@@ -12,7 +12,7 @@ export default function column(pure) {
     return <i className={sortClass} />
   }
 
-  return function Column(columnID) {
+  return function Column(columnID, columnProps = {}, calculatedProps = {}) {
     /** TODO: WRAP IN CONTEXT MAYBE TO KEEP SEPARATE FROM OTHER GRIDS */
     const headerForm = formula(`column-header-${columnID}`)
     const cellForm = formula(`column-cell-${columnID}`)
@@ -28,12 +28,15 @@ export default function column(pure) {
       { displayName: 'Column.Header'
       , propTypes:  { theme: PropTypes.object.isRequired
                     , styles: PropTypes.object.isRequired
-                    , status: PropTypes.object.isRequired
-                    , checkbox: PropTypes.object
-                    , radio: PropTypes.object
+                    , style: PropTypes.object.isRequired
+                    , className: PropTypes.string.isRequired
+                    , fields: PropTypes.object.isRequired
                     }
-      , defaultProps: { ...defaults
-                      , status: {}
+      , defaultProps: { style: {}
+                      , fields: {}
+                      , className: ''
+                      , ...defaults
+                      , ...columnProps
                       }
       , state: { paneVisible: false }
       , render() {
@@ -41,23 +44,21 @@ export default function column(pure) {
                 , styles
                 , theme
                 , actions
-                , fields = {}
+                , fields
                 , paneContent
                 } = this.props
 
           const { checkbox, radio, sort, filter } = fields
-
           const { paneVisible } = this.state
-
           const paneClassName = paneVisible ? 'paneVisible' : 'paneHidden'
-
           const className = cn( styles.headerContainer
                               , theme.headerContainer
                               , styles[paneClassName]
                               , theme[paneClassName]
+                              , this.props.className
                               )
           return (
-            <div className={className}>
+            <div className={className} style={this.props.style}>
               <span className={cn(styles.header, theme.header)}>
                 <span className={cn(styles.headerLeft, theme.headerLeft)}>
                   {checkbox ? (
@@ -115,17 +116,22 @@ export default function column(pure) {
       { displayName: 'Column.Cell'
       , propTypes:  { styles: PropTypes.object.isRequired
                     , theme: PropTypes.object.isRequired
+                    , style: PropTypes.object.isRequired
+                    , className: PropTypes.string.isRequired
                     , documentID: PropTypes.any.isRequired
                     }
-      , defaultProps: defaults
+      , defaultProps: { style: {}
+                      , className: ''
+                      , ...defaults
+                      , ...columnProps
+                      }
       , init() {
           this.getName = type => getCellName({ type, ...this.props })
         }
       , render() {
-          const { documentID, checkbox, styles, theme, children, ...props } = this.props
-
+          const { documentID, checkbox, styles, theme, className, style, children, ...props } = this.props
           return (
-            <div {...props} className={cn(styles.cellContent, theme.cellContent)}>
+            <div className={cn(styles.cellContent, theme.cellContent, className)} style={style}>
               {checkbox ? (
                 <cellForm.Field
                   name={this.getName('checkbox')}
@@ -145,10 +151,19 @@ export default function column(pure) {
 
     const Footer = pure (
       { displayName: 'Column.Footer'
-      , defaultProps: defaults
+      , propTypes:  { styles: PropTypes.object.isRequired
+                    , theme: PropTypes.object.isRequired
+                    , style: PropTypes.object.isRequired
+                    , className: PropTypes.string.isRequired
+                    }
+      , defaultProps: { style: {}
+                      , className: ''
+                      , ...defaults
+                      , ...columnProps
+                      }
       , render() {
-          const { children, ...props } = this.props
-          return <div>{children}</div>
+          const { style, className, children, ...props } = this.props
+          return <div className={className} style={style}>{children}</div>
         }
       }
     )

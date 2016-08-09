@@ -41,12 +41,7 @@ export default function cards (pure) {
             {...gridProps}
             data={data}
             templates={
-              { Container: ({ children, ...props }) => (
-                  <div className={cn(styles.cards, theme.cards)} {...props}>
-                    {children}
-                  </div>
-                )
-              , Body: ({ documentIndex, children, ...props }) => (
+              { Body: ({ documentIndex, children, ...props }) => (
                   <div className={cn(styles.cardsBody, theme.cardsBody)}>
                     {children}
                   </div>

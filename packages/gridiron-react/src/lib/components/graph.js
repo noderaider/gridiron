@@ -59,12 +59,7 @@ export default function cards (pure) {
             {...gridProps}
             data={data}
             templates={
-              { Container: ({ children, ...props }) => (
-                  <div className={cn(styles.graphContainer, theme.graphContainer)} {...props}>
-                    {children}
-                  </div>
-                )
-              , Body: ({ documentIndex, children, ...props }) => (
+              { Body: ({ documentIndex, children, ...props }) => (
                   <svg
                     className={cn(styles.graph, theme.graph)}
                     viewBox={viewBox}

@@ -30,13 +30,13 @@ export default function grid (pure) {
     , CellFooter: PropTypes.func
     }
 
-  const selectStyles = (...styleNames) => cn(...styleNames.map(
+  const selectStyles = (styleNames, classNames) => cn(...(Array.isArray(styleNames) ? styleNames : [ styleNames ]).map(
       styleName => [ styles[styleName], theme[styleName] ]
-    ))
+    ), classNames ? (Array.isArray(classNames) ? classNames : [ classNames ]) : null)
 
   const defaultTemplates =
-    { Container: ({ children, ...props }) => (
-        <div className={selectStyles('grid')} {...props}>
+    { Container: ({ children, className, ...props }) => (
+        <div className={selectStyles('grid', className)} {...props}>
           {children}
         </div>
       )
@@ -56,19 +56,25 @@ export default function grid (pure) {
         </div>
       )
     , ColumnHeader: ({ children, ...props }) => (
+        children
+      /*
         <div className={selectStyles('columnHeader')}>
           {children}
         </div>
+        */
       )
     , ColumnFooter: ({ children, ...props }) => (
+        children
+      /*
         <div className={selectStyles('columnFooter')}>
           {children}
         </div>
+        */
       )
-    , Document: ({ documentIndex, children, ...props }) => {
-        const moduloStyle = typeof documentIndex === 'number' ? (documentIndex % 2 === 0 ? 'even' : 'odd') : null
+    , Document: ({ documentIndex, children, isHeader, isFooter, ...props }) => {
+        const moduloStyle = isHeader || isFooter ? null : typeof documentIndex === 'number' ? (documentIndex % 2 === 0 ? 'even' : 'odd') : null
         return (
-          <div className={selectStyles('document', moduloStyle)}>
+          <div className={selectStyles([ 'document', moduloStyle ])}>
             {children}
           </div>
         )
@@ -93,9 +99,12 @@ export default function grid (pure) {
         </div>
       )
     , Cell: ({ children, ...props }) => (
+        children
+      /*
         <div className={selectStyles('cell')}>
           {children}
         </div>
+        */
       )
     , NoContent: props => <div {...props} />
     }
@@ -165,6 +174,8 @@ export default function grid (pure) {
                   }
 
     , defaultProps: { 'aria-label': 'grid'
+                    , className: ''
+                    , style: {}
                     , cellStyle: {}
                     , scrollToAlignment: 'auto'
                     , tabIndex: 0
@@ -320,6 +331,7 @@ export default function grid (pure) {
           <templates.Container
             ref={x => this.container = x}
             style={style}
+            className={className}
             aria-label={this.props['aria-label']}
             role='grid'
             tabIndex={tabIndex}
@@ -347,7 +359,6 @@ export default function grid (pure) {
           </templates.Container>
         )
       }
-
     }
   )
 }

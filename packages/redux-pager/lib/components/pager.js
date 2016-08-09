@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 exports.default = pager;
@@ -66,7 +68,7 @@ function pager(pure) {
     createSortKeys: PropTypes.func.isRequired,
     createSortKeyComparator: PropTypes.func.isRequired,
     page: PropTypes.number.isRequired,
-    documentsPerPage: PropTypes.any.isRequired,
+    documentsPerPage: PropTypes.any,
     documentsPerPageOptions: PropTypes.arrayOf(PropTypes.any).isRequired,
     typeSingular: PropTypes.string.isRequired,
     typePlural: PropTypes.string.isRequired,
@@ -81,7 +83,13 @@ function pager(pure) {
         var sortKey = sort.getIn(['keys', columnID], null);
         var cellDatum = cells.get(columnID);
         var currentKey = sortKey ? sortKey(cellDatum) : cellDatum;
-        return typeof currentKey === 'string' ? currentKey : currentKey.toString();
+        switch (typeof currentKey === 'undefined' ? 'undefined' : _typeof(currentKey)) {
+          case 'number':
+          case 'string':
+            return currentKey;
+          default:
+            return currentKey.toString();
+        }
       });
     }
     /** COMPARES SORT KEYS OF TWO DOCUMENTS */
@@ -92,14 +100,23 @@ function pager(pure) {
       }) : [];
       return function (sortKeysA, sortKeysB) {
         for (var colIndex = 0; colIndex < sortKeysA.size; colIndex++) {
-          var result = sortKeysA.get(colIndex).localeCompare(sortKeysB.get(colIndex)) * multipliers.get(colIndex);
+          var result = void 0;
+          var keyA = sortKeysA.get(colIndex);
+          var keyB = sortKeysB.get(colIndex);
+          var multiplier = multipliers.get(colIndex);
+          if (typeof keyA === 'number') {
+            if (keyA > keyB) return 1 * multiplier;
+            if (keyB > keyA) return -1 * multiplier;
+            continue;
+          }
+          result = keyA.localeCompare(keyB) * multiplier;
           if (result !== 0) return result;
         }
         return 0;
       };
     },
     page: 0,
-    documentsPerPage: 5,
+    documentsPerPage: null,
     documentsPerPageOptions: [1, 2, 3, 4, 5, 10, 25, 50, 100, 500, 1000, 'All'],
     typeSingular: 'document',
     typePlural: 'documents',
@@ -356,7 +373,7 @@ function pager(pure) {
             },
             documentsPerPage: function documentsPerPage(_documentsPerPage) {
               access.merge({ documentsPerPage: _documentsPerPage,
-                page: typeof _documentsPerPage === 'number' ? Math.floor(status.get('startIndex') / status.get('documentsPerPage')) : 0
+                page: 0
               });
             },
             sort: function sort(id) {
@@ -600,7 +617,8 @@ function pager(pure) {
       var styles = _props7.styles;
       var theme = _props7.theme;
 
-      return typeof status.get('documentsPerPage') === 'number' && status.get('documentsPerPage') > 0 ? React.createElement(
+      var documentsPerPage = status.get('documentsPerPage');
+      return typeof documentsPerPage === 'number' && documentsPerPage > 0 ? React.createElement(
         'select',
         {
           value: status.get('page'),
@@ -653,7 +671,7 @@ function pager(pure) {
             onChange: function onChange(x) {
               var value = x.target.value;
 
-              if (typeof value === 'string' && value.toLowerCase() === 'all') actions.documentsPerPage(value);else actions.documentsPerPage(parseInt(value));
+              if (/\d+/.test(value)) actions.documentsPerPage(parseInt(value));else actions.documentsPerPage(value);
             },
             className: (0, _classnames2.default)(styles.pagerSelect, theme.pagerSelect)
           },

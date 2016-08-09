@@ -205,7 +205,6 @@
   font-size: 0.95rem;
   font-family: monospace;
   box-shadow: 2px 2px 3px rgba(50, 50, 50, 0.5);
-  background-color: var(--control-bg);
   color: var(--control-fg);
   border-radius:0;
 
@@ -214,6 +213,10 @@
     border-radius:4px;
   }
   */
+}
+
+.gridBody {
+  background-color: var(--control-bg);
 }
 
 .document.even,

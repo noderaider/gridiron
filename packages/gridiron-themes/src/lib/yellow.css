@@ -1,0 +1,362 @@
+/** xs-screen | 320px  */ @custom-media --xs-screen only screen and (width >= 20em);
+/** sm-screen | 480px  */ @custom-media --sm-screen only screen and (width >= 30em);
+/** md-screen | 600px  */ @custom-media --md-screen only screen and (width >= 37.5em);
+/** lg-screen | 768px  */ @custom-media --lg-screen only screen and (width >= 48em);
+/** xl-screen | 900px  */ @custom-media --xl-screen only screen and (width >= 56.25em);
+/** 2x-screen | 1100px */ @custom-media --2x-screen only screen and (width >= 68.75em);
+/** 3x-screen | 1300px */ @custom-media --3x-screen only screen and (width >= 81.25em);
+
+
+
+/**
+ * BASE 16 COLOR SCHEMES
+ *
+ * base00 - Default Background
+ * base01 - Lighter Background (Used for status bars)
+ * base02 - Selection Background
+ * base03 - Comments, Invisibles, Line Highlighting
+ * base04 - Dark Foreground (Used for status bars)
+ * base05 - Default Foreground, Caret, Delimiters, Operators
+ * base06 - Light Foreground (Not often used)
+ * base07 - Light Background (Not often used)
+ * base08 - Variables, XML Tags, Markup Link Text, Markup Lists, Diff Deleted
+ * base09 - Integers, Boolean, Constants, XML Attributes, Markup Link Url
+ * base0A - Classes, Markup Bold, Search Text Background
+ * base0B - Strings, Inherited Class, Markup Code, Diff Inserted
+ * base0C - Support, Regular Expressions, Escape Characters, Markup Quotes
+ * base0D - Functions, Methods, Attribute IDs, Headings
+ * base0E - Keywords, Storage, Selector, Markup Italic, Diff Changed
+ * base0F - Deprecated, Opening/Closing Embedded Language Tags e.g. <?php ?>
+ */
+
+:root {
+  --base00: #F1F1F1;
+  --base01: #CCC6C6;
+  --base02: #8C8888;
+  --base03: #7F7C7C;
+  --base04: #333232;
+  --base05: #403E3E;
+  --base06: #242524;
+  --base07: #252424;
+  --base08: #B5564A;
+  --base09: #DB742E;
+  --base0A: #EEB905;
+  --base0B: #5C8278;
+  --base0C: #3463A8;
+  --base0D: #4B6CD8;
+  --base0E: #5C6382;
+  --base0F: #6E5602;
+}
+
+:root {
+  --primary: var(--base09);
+  --formula-dark: rgb(16, 34, 43);
+  --formula-blue: rgb(10, 160, 217);
+  --formula-red: rgb(217, 37, 37);
+  --formula-orange: rgb(217, 118, 10);
+  --formula-green: rgb(121, 208, 255);
+
+  --control-bg: var(--base01);
+  --control-even-bg: color(var(--control-bg) red(+10%) green(+10%));
+  --control-odd-bg: color(var(--control-bg) red(+20%) green(+20%));
+  --control-fg: var(--base04);
+  --control-border: color(var(--control-bg) blackness(+10%));
+
+
+  --control-fg-hover: color(var(--control-fg) whiteness(+15%));
+  --control-bg-hover: color(var(--control-bg) lightness(+10%));
+  --control-bg-disabled: color(var(--control-bg) lightness(+50%));
+
+  --control-fg-disabled: color(var(--control-fg) whiteness(+50%));
+
+  --control-border-hover: color(var(--control-border) whiteness(+20%));
+
+  --control-transparent-bg: color(var(--control-bg) alpha(50%));
+  --control-transparent-bg-hover: color(var(--control-bg) alpha(30%));
+
+  --control-header-bg: color(var(--control-bg) whiteness(+15%));
+  --control-header-fg: var(--control-fg);
+  --control-header-border: color(var(--control-header-bg) whiteness(+10%));
+
+  --control-subheader-bg: color(var(--control-bg) whiteness(+5%));
+  --control-subheader-fg: color(var(--control-fg) whiteness(+25%));
+  --control-subheader-border: color(var(--control-header-bg) whiteness(+10%));
+
+
+  --control-footer-bg: color(var(--control-bg) whiteness(+5%));
+  --control-footer-fg: color(var(--control-fg) whiteness(+15%));
+  --control-footer-border: color(var(--control-header-bg) whiteness(+10%));
+
+
+  --control-child-bg: color(var(--control-bg) whiteness(+20%));
+  --control-child-fg: var(--base04);
+}
+
+
+/** GRAPH */
+
+.graphContainer {
+  margin: 0;
+  padding: 0;
+  border: 2px solid var(--control-border);
+  font-size: 0.95rem;
+  font-family: monospace;
+  box-shadow: 2px 2px 3px rgba(50, 50, 50, 0.5);
+  color: var(--control-fg);
+  border-radius:0;
+
+  @media (--lg-screen) {
+    border-radius:4px;
+  }
+}
+
+/** END GRAPH */
+
+
+/** ACCORDION */
+
+.accordionDocument {
+  background-color: var(--control-bg);
+  color: var(--control-fg);
+}
+
+.accordionHeader {
+  background-color: var(--control-subheader-bg);
+  color: var(--control-subheader-fg);
+}
+
+.accordionHeader:hover {
+  background-color: var(--control-bg-hover);
+}
+
+.accordionContent {
+  background-color: var(--control-child-bg);
+  color: var(--control-child-fg);
+}
+
+.accordionHeader > * {
+  margin: 15px;
+}
+
+
+/** END ACCORDION */
+
+/** CARDS */
+
+.cards {
+  margin:0;
+  padding: 0;
+  border: 2px solid var(--control-border);
+  font-size: 0.95rem;
+  font-family: monospace;
+  box-shadow: 2px 2px 3px rgba(50, 50, 50, 0.5);
+  color: var(--control-fg);
+  border-radius:0;
+
+  @media (--lg-screen) {
+    border-radius:4px;
+  }
+}
+
+.cardsBody {
+  background-color: transparent;
+  border-width: 0 1px;
+  border-style: solid;
+  border-color: var(--control-border);
+}
+
+
+.cardsDocument {
+  background-color: var(--control-transparent-bg);
+  border: 2px groove var(--control-border);
+  border-radius: 3px;
+  box-shadow: inset 0 0 10px #000000;
+
+  &:hover {
+    background-color: var(--control-transparent-bg-hover);
+  }
+}
+
+.card {
+}
+
+.cardHeader {
+  color: var(--control-subheader-fg);
+  background-color: color(var(--control-bg) alpha(30%));
+}
+
+.cardContent {
+}
+
+/** END CARDS */
+
+
+/** GRID */
+
+.grid {
+  margin: 0;
+  padding: 0;
+  border: 2px solid var(--control-border);
+  font-size: 0.95rem;
+  font-family: monospace;
+  box-shadow: 2px 2px 3px rgba(50, 50, 50, 0.5);
+  //background-color: var(--control-bg);
+  color: var(--control-fg);
+  border-radius:0;
+
+  @media (--lg-screen) {
+    border-radius:4px;
+  }
+}
+
+.document {
+  color: var(--control-fg);
+  background-color: var(--control-bg);
+}
+
+.document.even,
+.document.odd {
+  border-top: 1px groove rgb(80, 80, 80);
+  cursor: pointer;
+}
+
+.document.even {
+  background-color: var(--control-even-bg);
+
+  &:hover {
+    background-color: color(var(--control-even-bg) blackness(+5%))
+  }
+}
+
+.document.odd {
+  background-color: var(--control-odd-bg);
+
+  &:hover {
+    background-color: color(var(--control-odd-bg) blackness(+5%))
+  }
+}
+
+.documentHeader,
+.documentFooter {
+  border: 1px solid var(--control-subheader-border);
+}
+
+
+.expander {
+  color: rgba(200, 200, 200, 0.7);
+}
+
+
+.gridHeader {
+  background-color: var(--control-header-bg);
+  color: var(--control-header-fg);
+}
+
+.gridFooter {
+  background-color: var(--control-footer-bg);
+  color: var(--control-footer-fg);
+}
+
+.columnHeader,
+.columnFooter {
+  background-color: var(--control-subheader-bg);
+  color: var(--control-subheader-fg);
+}
+
+.gridHeader,
+.gridFooter {
+  padding: 0;
+  margin: 0;
+  & select {
+
+  }
+}
+
+
+.paneVisible .header {
+  background: linear-gradient(180deg, rgba(20, 20, 20, 0), rgba(20, 20, 20, 0.8));
+  border-color: rgba(100, 100, 100, 0.8);
+}
+
+.paneHidden .header {
+  border-color: rgba(100, 100, 100, 0.8);
+}
+
+
+.header button:focus {
+  outline: none;
+}
+
+.paneVisible .filterButton {
+  color: #268bd2;
+}
+
+@keyframes header-enabled {
+  from {
+    clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%);
+    transform: translateY(-100%);
+  }
+  to {
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+    transform: translateY(0%);
+  }
+}
+
+.pane {
+  /*
+  box-shadow: 2px 2px 3px rgba(120, 120, 120, 0.5);
+  */
+  background-color: rgba(20, 20, 20, 0.8);
+  border-width: 0 1px 1px 1px;
+  border-color: rgba(100, 100, 100, 0.8);
+}
+
+.paneContent {
+  width: 100%;
+  max-height: 50vh;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  font-size: 0.7rem;
+  padding: 5px;
+  font-family: "citizen",sans-serif;
+  font-weight: 100;
+}
+
+.paneContent input[type="checkbox"] {
+  background-color:#000;
+  border: 2px solid #ddd;
+}
+
+.paneItem {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+/** END GRID */
+
+
+/** PAGER */
+
+.pagerSelect,
+.pagerControls,
+.pagerButton,
+.gridHeader select,
+.gridFooter select {
+  color: var(--control-fg);
+  background-color: var(--control-bg);
+  border-color: var(--control-border);
+  border-radius: 4px;
+  align-items: center;
+
+  &:hover {
+    color: var(--control-fg-hover);
+    border-color: var(--control-border-hover);
+  }
+}
+
+
+/** END PAGER */

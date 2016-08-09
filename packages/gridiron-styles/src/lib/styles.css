@@ -171,7 +171,9 @@
 .accordionHeader {
   cursor: pointer;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   width: calc(100% - 4px);
   margin: 1px 2px 0 2px;
 }
@@ -272,12 +274,12 @@
 }
 
 .document {
-  position: relative;
   display: flex;
   flex-direction: row;
+  flex-wrap: nowrap;
   flex: 1 1 auto;
   width: 100%;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .document:last-child {
@@ -288,23 +290,13 @@
 .documentFooter {
   display: flex;
   flex-direction: row;
-  width: 100%;
+  flex: 0 1 100%;
 }
 
 .documentBody {
-  position: relative;
   display: flex;
   flex-direction: row;
-  flex: 1 1 auto;
-  width: 100%;
-}
-
-
-.gridHeaderWrap,
-.gridFooterWrap {
-  position: relative;
-  display: flex;
-  flex-direction: column;
+  flex: 0 1 100%;
 }
 
 
@@ -338,23 +330,36 @@
 .cell,
 .columnHeader,
 .columnFooter {
-  display: flex;
+  //display: flex;
+  //justify-content: center;
 }
 
 .cell {
-  border-right: 1px solid #666;
+  //border-right: 1px solid #666;
 }
 .cell:last-child {
-  border-right: none;
+  //border-right: none;
 }
 
 .cell {
+  /*
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: flex-start;
   width: 100%;
+  */
+}
+
+.headerContainer,
+.footerContainer {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0.3em;
+  font-size:0.8em;
 }
 
 .cellContent {
@@ -362,11 +367,14 @@
   flex: 1 1 auto;
   flex-direction: column;
   justify-content: center;
+  padding: 0.3em;
+  overflow: auto;
 }
 
 
 .columnHeader,
 .columnFooter {
+  /*
   display: flex;
   flex: 1 0 auto;
   flex-direction: column;
@@ -374,6 +382,7 @@
   margin: 0;
   padding: 0;
   font-weight:bold;
+  */
 }
 
 .columnFooter {
@@ -386,21 +395,18 @@
 
 .gridHeader button,
 .gridFooter button,
-.columnHeader button,
-.columnFooter button {
+.headerContainer button,
+.footerContainer button {
   border: 1px solid transparent;
   cursor: pointer;
   background-color: transparent;
+  font-size:0.8em;
 }
 
 .documentHeaderContent,
 .documentFooterContent {
   padding: 0 15px;
   width: 100%;
-}
-
-.cellContent {
-  padding: 15px;
 }
 
 .pane {
