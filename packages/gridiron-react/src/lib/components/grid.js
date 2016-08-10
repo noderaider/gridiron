@@ -72,7 +72,7 @@ export default function grid (pure) {
         */
       )
     , Document: ({ documentIndex, children, isHeader, isFooter, className, ...props }) => {
-        const moduloStyle = isHeader || isFooter ? null : typeof documentIndex === 'number' ? (documentIndex % 2 === 0 ? 'even' : 'odd') : null
+        const moduloStyle = typeof documentIndex === 'number' && documentIndex >= 0 ? (documentIndex % 2 === 0 ? 'even' : 'odd') : null
         return (
           <div className={selectStyles([ 'document', moduloStyle ], className)}>
             {children}
@@ -236,13 +236,13 @@ export default function grid (pure) {
         const columns = isPrimitive ? null : data.get('columns')
 
         const rendered = (
-          { columnHeader: mapColumn.header ? <templates.ColumnHeader columnIndex={0} /> : null
-          , columnFooter: mapColumn.footer ? <templates.ColumnFooter columnIndex={0} /> : null
-          , document: <templates.Document documentIndex={0} />
-          , documentHeader: !isPrimitive && mapDocument && mapDocument.header ? <templates.DocumentHeader documentIndex={0} /> : null
-          , documentFooter: !isPrimitive && mapDocument && mapDocument.footer ? <templates.DocumentFooter documentIndex={0} /> : null
-          , documentBody: !isPrimitive && columns ? <templates.DocumentBody documentIndex={0} /> : null
-          , cell: !isPrimitive && columns ? <templates.Cell documentIndex={0} columnIndex={0} /> : null
+          { columnHeader: mapColumn.header ? <templates.ColumnHeader columnIndex={-1} /> : null
+          , columnFooter: mapColumn.footer ? <templates.ColumnFooter columnIndex={-1} /> : null
+          , document: <templates.Document documentIndex={-1} />
+          , documentHeader: !isPrimitive && mapDocument && mapDocument.header ? <templates.DocumentHeader documentIndex={-1} /> : null
+          , documentFooter: !isPrimitive && mapDocument && mapDocument.footer ? <templates.DocumentFooter documentIndex={-1} /> : null
+          , documentBody: !isPrimitive && columns ? <templates.DocumentBody documentIndex={-1} /> : null
+          , cell: !isPrimitive && columns ? <templates.Cell documentIndex={-1} columnIndex={-1} /> : null
           }
         )
 

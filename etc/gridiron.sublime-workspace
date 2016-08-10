@@ -32,122 +32,82 @@
 	"buffers":
 	[
 		{
-			"file": "/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-styles/src/lib/styles.css",
+			"file": "/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-themes/src/lib/yellow.css",
 			"settings":
 			{
-				"buffer_size": 8583,
+				"buffer_size": 8218,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/grid.js",
+			"file": "/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/gridiron/Grid.js",
 			"settings":
 			{
-				"buffer_size": 12646,
+				"buffer_size": 5899,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/modules/gridiron.js",
+			"file": "/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/cards.js",
 			"settings":
 			{
-				"buffer_size": 723,
+				"buffer_size": 2578,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/gridiron/Graph.js",
+			"file": "/C/Users/ColeChamberlain/noderaider/gridiron/packages/redux-pager/src/lib/components/pager.js",
 			"settings":
 			{
-				"buffer_size": 2821,
+				"buffer_size": 23031,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/gridiron/Accordion.js",
+			"file": "/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-styles/src/lib/styles.css",
 			"settings":
 			{
-				"buffer_size": 1944,
+				"buffer_size": 9358,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/gridiron/Cards.js",
+			"file": "/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-themes/src/lib/mellow.css",
 			"settings":
 			{
-				"buffer_size": 1882,
+				"buffer_size": 8248,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/gridiron/Grid.js",
+			"file": "/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/grid.js",
 			"settings":
 			{
-				"buffer_size": 5854,
+				"buffer_size": 15414,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/gridiron/index.js",
+			"file": "/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/graph.js",
 			"settings":
 			{
-				"buffer_size": 178,
+				"buffer_size": 2586,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/cards.js",
+			"file": "/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/column/column.js",
 			"settings":
 			{
-				"buffer_size": 2706,
+				"buffer_size": 6560,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-themes/src/lib/mellow.css",
+			"file": "/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/column/columns.js",
 			"settings":
 			{
-				"buffer_size": 8015,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/graph.js",
-			"settings":
-			{
-				"buffer_size": 1892,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/App.js",
-			"settings":
-			{
-				"buffer_size": 1795,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/Home.js",
-			"settings":
-			{
-				"buffer_size": 544,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/C/Users/cchamberlain/noderaider/gridiron/packages/react-formula/src/lib/formsContext.js",
-			"settings":
-			{
-				"buffer_size": 9567,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron/src/lib/index.js",
-			"settings":
-			{
-				"buffer_size": 1420,
+				"buffer_size": 725,
 				"line_ending": "Windows"
 			}
 		}
@@ -393,156 +353,160 @@
 	},
 	"expanded_folders":
 	[
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron/src",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron/src/lib",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/gridiron",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/styles",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/lib",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/modules",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-react/src",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-react/src/lib",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-styles/src/lib",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-themes/src/lib",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/redux-pager/src/lib",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/redux-pager/src/lib/components",
-		"/C/Users/cchamberlain/noderaider/pure-stamp/src",
-		"/C/Users/cchamberlain/noderaider/pure-stamp/src/lib"
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron/src",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron/src/lib",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-cli/src",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/redux",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/gridiron",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/styles/vendor/react-grid-layout",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/routes/Compare",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/components",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/column",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-styles/src",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-styles/src/lib",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-themes/src",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-themes/src/lib",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/react-formula-themes/src/lib",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/redux-pager/src/lib",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/redux-pager/src/lib/components"
 	],
 	"file_history":
 	[
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/modules/pure/index.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/modules/gridiron/index.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/modules/gridiron-react/index.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-themes/src/lib/carbon.css",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/redux-pager/src/lib/components/pager.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-themes/src/lib/mellow.css",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/index.js",
-		"/C/Users/cchamberlain/noderaider/pure-stamp/src/lib/index.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/App.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/Home.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/components/obsolete/modules/gridiron-react/index.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/etc/gridiron.sublime-project",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/react-formula/src/lib/components/panel.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/accordion.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/column/column.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/column/columns.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-styles/src/lib/styles.css",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/grid.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/pane.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron/src/lib/index.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/react-formula-styles/src/lib/styles.css",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/styles/App.css",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/redux-pager/src/lib/index.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/react-formula/src/lib/index.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/column/index.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/react-formula/src/lib/components/logo.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/components/modules/react-formula/index.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/utils/stamp.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/index.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/components/modules/gridiron-react/index.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/utils/composePure.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/components/obsolete/modules/gridiron-react",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/coreGrid.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/column.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/column/cell.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/cell.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/column/header.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/column/footer.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/react-formula/src/lib/components/dock.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/react-formula-themes/src/lib/carbon.css",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/styles/vendor/font-awesome/css/font-awesome-shim.gcss",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-react/lib/components/factories/createHeader.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/styles/vendor/font-awesome/index.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/styles/vendor/font-awesome/css/font-awesome-fix.gcss",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/react-formula-themes/src/lib/colors/carbon.css",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/elements/nav/FooterBar.css",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/elements/nav/FooterBar.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/elements/micro/core/Micro.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/elements/micro/core/Micro.css",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-styles/src/lib/responsive.css",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/react-formula-styles/src/lib/responsive.css",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/logo.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/react-formula/src/lib/components/index.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/factories/createHeader.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/react-pub-sub/src/lib/index.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/panel.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/package.json",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/universal-styles/src/lib/utils/dom.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/universal-styles/src/lib/index.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/universal-style-loader/src/lib/url.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/universal-style-loader/src/lib/index.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/universal-style-loader/src/lib/compile/addStyleUrls.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/router/configureAppRouter.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-themes/src/lib/black.css",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/universal-style-loader/src/lib/compile/addStyles.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/gridiron/Gridiron.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/universal-style-loader/src/lib/useable.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/universal-styles/src/lib/utils/applyCapitalization.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/router/styles/input.css",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/react-pre/src/lib/components/pre.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/components/ErrorPage.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-themes/src/webpack/module/loaders.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-themes/src/webpack/output.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-themes/package.json",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-themes/src/webpack/devtool.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-styles/package.json",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-themes/src/lib/index.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/public/CNAME",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-core/src/lib/factories/createHeader.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-core/src/lib/Header.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-styles/lib/index.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/webpack/module/loaders.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/elements/visual/FA.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/try-defer/src/lib/index.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/webpack/plugins.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/context/theme/index.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/elements/nav/TopBar.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/context/index.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/elements/visual/PageStyle.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/elements/panels/ErrorPanel.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/elements/panels/base/CorePanel.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/elements/forms/PageForm.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/elements/forms/LoginForm.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/elements/forms/controls/Label.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/elements/forms/controls/Input.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/elements/diagnostics/ErrorVisual.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/context-obsolete.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/config.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/context/theme/overrides/theme.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/context/theme/overrides/touchscreen.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/context/theme/overrides/css/solarized-dark.gcss",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/elements/nav/TopBar.css",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/server.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/react-maximize/src/lib/components/maximize.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/package.json",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/solvent/src/lib/index.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/.gitignore",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-pager/package.json",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/gridiron/css/logo.css",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-redux/src/lib/index.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-pager/src/lib/components/index.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-redux/package.json",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-redux/README.md",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-pager/src/lib/index.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/react-bar/package.json",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-pager/esdoc.json",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/gridiron/Logo.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-react/esdoc.json",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron/package.json",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron/esdoc.json",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-themes/README.md",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-styles/README.md",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-react/lib/components/logo.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-core/esdoc.json",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-pager/README.md",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/pager.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-styles/src/lib/index.js",
-		"/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-styles/esdoc.json"
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/column/columns.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-themes/src/lib/yellow.css",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/react-formula-themes/src/lib/yellow.css",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/react-formula-themes/src/lib/index.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-themes/src/lib/mellow.css",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-themes/src/lib/index.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/Home.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/Layout.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/graph.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/column/column.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/styles/vendor/react-grid-layout/react-resizeable.gcss",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/styles/vendor/react-grid-layout/index.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/styles/Layout.css",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-styles/src/lib/styles.css",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/grid.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/modules/components/IdleMonitor.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/redux-pager/src/lib/components/pager.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/Compare.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/desc/layout.css",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/desc/layout.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/react-formula/src/lib/formsContext.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/accordion.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/redux/modules/redux-idle-monitor.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/gridiron/Accordion.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/gridiron/Cards.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/routes/Compare/index.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/gridiron/Graph.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/ag-grid/index.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/index.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/gridiron/Grid.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/webpack/postcss.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/App.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/modules/pre.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/modules/gridiron.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/modules/pure.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron/src/lib/index.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/modules/gridiron-react/index.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/cards.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/obsolete/coreGrid.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/obsolete/drillGrid.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/utils/updateScrollIndexHelper.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/utils/ScalingCellSizeAndPositionManager.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/utils/getOverscanIndices.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/utils/calculateSizeAndPositionDataAndUpdateScrollOffset.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/obsolete/grid.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/README.md",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/modules/react-pre/index.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/vendor/tinymce/tinymce.min.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/elements/panels/DebugPanel.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/elements/panels/base/CorePanel.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/vendor/tinymce/skins/lightgray/skin.min.css",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/vendor/tinymce/skins/lightgray/skin.ie7.min.css",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/vendor/tinymce/skins/lightgray/fonts/tinymce.svg",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/vendor/tinymce/skins/lightgray/fonts/tinymce.json",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/vendor/tinymce/skins/lightgray/fonts/tinymce-small.svg",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/vendor/tinymce/skins/lightgray/fonts/tinymce-small.json",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/styles/vendor/font-awesome/css/font-awesome.gcss",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/redux/store/configureBrowserStore.prod.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/redux/store/configureBrowserStore.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/redux/store/configureBrowserStore.dev.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/README.md",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/entry/app.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/public/static/polyfill.static.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/services/musical.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/services/musical.browser.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/router/configureUnsupportedRouter.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/react-formula-themes/lib/index.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/etc/gridiron.sublime-project",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/components/modules/gridiron-react/index.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/column/index.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/styles/App.css",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/index.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/react-formula/src/lib/index.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/pane.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/react-formula-themes/src/lib/mellow.css",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/components/modules/react-formula/index.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/webpack/externals.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/webpack/entry.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-themes/src/lib/carbon.css",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/universal-style-loader/src/lib/compile/addStyles.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/universal-style-loader/src/lib/useable.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/react-formula/src/lib/components/ui/input.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/universal-style-loader/src/lib/compile/addStyleUrls.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/universal-style-loader/src/lib/url.js",
+		"/C/Users/ColeChamberlain/noderaider/pure-stamp/src/lib/index.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/react-formula/src/lib/components/logo.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/footer.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/logo.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/settings.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/react-formula/src/lib/components/dock.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/index.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/expander.js",
+		"/C/Users/ColeChamberlain/noderaider/pure-stamp/README.md",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/react-formula/src/lib/components/utils/pureStamp.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/coreGrid.js",
+		"/C/Users/ColeChamberlain/noderaider/pure-stamp/package.json",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/react-formula/src/lib/components/utils/composePureStamp.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/factories/index.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/react-formula-themes/src/lib/solarized.css",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/react-formula-themes/src/lib/ocean.css",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/react-formula-themes/src/lib/monokai.css",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-core/src/lib/CoreGrid.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-core/src/lib/DrillGrid.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/factories/createHeader.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/react-formula-themes/src/lib/carbon.css",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/react-formula-styles/src/lib/styles.css",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/router/configureAppRouter.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/styles/media/responsive.css",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/elements/visual/FA.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/styles/vendor/font-awesome/font-awesome.gcss",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/styles/fonts/fonts.css",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/styles/vendor/font-awesome/index.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/config-server.json",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/react-formula-styles/src/webpack/postcss.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/react-formula-themes/src/webpack/postcss.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/context/index.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/elements/forms/PageForm.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/styles/fonts/fout.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/styles/responsive.css",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/elements/forms/controls/Label.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/elements/forms/LoginForm.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/styles/fonts.css",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-styles/src/lib/responsive.css",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/styles/app.less",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/App.css",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/react-formula-styles/src/lib/responsive.css",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/react-formula/src/lib/components/index.js",
+		"/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/components/modules/react-pre/index.js"
 	],
 	"find":
 	{
@@ -550,25 +514,39 @@
 	},
 	"find_in_files":
 	{
-		"height": 92.0,
+		"height": 183.0,
 		"where_history":
 		[
-			"C:\\Users\\cchamberlain\\noderaider\\gridiron\\packages\\react-formula\\src",
-			"C:\\Users\\cchamberlain\\noderaider\\gridiron\\packages\\gridiron-example\\src",
-			"C:\\Users\\cchamberlain\\noderaider\\gridiron\\packages\\gridiron-react",
-			"C:\\Users\\cchamberlain\\noderaider\\gridiron\\etc",
-			"C:\\Users\\cchamberlain\\noderaider\\gridiron\\packages\\gridiron-example\\src",
-			"C:\\Users\\cchamberlain\\noderaider\\gridiron\\packages\\gridiron-core\\src",
-			"C:\\Users\\cchamberlain\\noderaider\\gridiron\\packages\\gridiron\\src",
-			"C:\\Users\\cchamberlain\\noderaider\\gridiron\\packages\\gridiron-core\\src",
-			"C:\\Users\\cchamberlain\\noderaider\\gridiron\\packages\\gridiron-example\\src",
-			"C:\\Users\\cchamberlain\\noderaider\\gridiron\\packages\\react-maximize\\src",
-			"C:\\Users\\cchamberlain\\noderaider\\gridiron\\packages\\gridiron-react\\src",
-			"C:\\Users\\cchamberlain\\noderaider\\gridiron\\packages\\gridiron-example",
-			"C:\\Users\\cchamberlain\\noderaider\\gridiron\\packages\\gridiron-redux",
-			"C:\\Users\\cchamberlain\\noderaider\\gridiron\\packages\\gridiron-pager",
-			"C:\\Users\\cchamberlain\\noderaider\\gridiron\\packages\\gridiron-themes",
-			"C:\\Users\\cchamberlain\\noderaider\\gridiron\\packages\\gridiron-styles",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\gridiron-react\\src",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\gridiron-example\\src",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\react-formula\\src",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\gridiron-react\\src",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\gridiron-example\\src",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\gridiron-react\\src",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\gridiron-example\\src",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\redux-pager\\src",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\gridiron-example\\src",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\redux-pager/src",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\gridiron-example/src",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\redux-pager\\src",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\react-formula-styles",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\react-formula\\src",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\gridiron-react\\src",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\gridiron-example\\src",
+			"C:\\Users\\ColeChamberlain\\noderaider\\pure-stamp",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\gridiron-example\\src",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\react-formula-cli",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\react-formula,C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\react-formula-styles,C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\react-formula-test,C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\react-formula-themes",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\react-formula\\src\\lib\\components\\factories\\createForm.js",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\react-formula,C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\react-formula-styles,C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\react-formula-test,C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\react-formula-themes",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\react-formula-test",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\react-formula-themes",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\react-formula-themes\\src",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\react-formula-styles",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\react-formula",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\postjs\\.babelrc,C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\postjs\\.eslintrc,C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\postjs\\.gitignore,C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\postjs\\.npmignore,C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\postjs\\CNAME,C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\postjs\\README.md,C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\postjs\\esdoc.json,C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\postjs\\package.json,C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\postjs\\src",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\universal-loader",
+			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\window-loader",
 			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\redux-devtools-grid-monitor\\src",
 			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\redux-devtools-grid-monitor\\src\\",
 			"C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\redux-devtools-grid-monitor\\src",
@@ -666,19 +644,7 @@
 			"C:\\Users\\cchamberlain\\tixinc\\js\\src",
 			"C:\\Users\\cchamberlain\\tixinc\\config\\src",
 			"C:\\Users\\cchamberlain\\tixinc\\js\\src",
-			"C:\\Users\\cchamberlain\\tixinc\\config\\src",
-			"C:\\Users\\cchamberlain\\tixinc\\config",
-			"C:\\Users\\cchamberlain\\tixinc\\js",
-			"C:\\Users\\cchamberlain\\tixinc\\js\\src",
-			"C:\\Users\\cchamberlain\\tixinc\\js",
-			"C:\\Users\\cchamberlain\\tixinc\\services",
-			"C:\\Users\\cchamberlain\\tixinc\\net",
-			"C:\\Users\\cchamberlain\\tixinc\\config",
-			"C:\\Users\\cchamberlain\\tixinc\\tixinc-js",
-			"C:\\Users\\cchamberlain\\tixinc\\tixinc-js\\src",
-			"C:\\Users\\cchamberlain\\tixinc\\tixinc-js",
-			"C:\\Users\\cchamberlain\\cchamberlain\\powerapi",
-			""
+			"C:\\Users\\cchamberlain\\tixinc\\config\\src"
 		]
 	},
 	"find_state":
@@ -686,35 +652,62 @@
 		"case_sensitive": true,
 		"find_history":
 		[
-			"INPUT WILL MOUNT",
+			"SORT",
 			"SET CHECKBOX",
-			"components/modules",
-			"const",
-			"  ",
-			"} ",
-			"HEADER FILTER",
-			"\n}",
-			"C:\\\\Users\\\\ColeChamberlain\\\\noderaider\\\\gridiron\\\\packages\\\\",
-			"{ contextTypes }",
-			"{ contextTypes",
-			"getTheme",
-			"getChildContext",
-			"ocean",
-			"contextual",
-			"solarized-dark",
-			"gcss",
-			"solarized-dark",
-			"background-color",
-			"solarized",
-			"181,",
-			"181, 137",
-			"1px dashed",
-			"border: '1px dash",
-			"ReactGateway",
-			"gridiron-pager",
-			"gridiron-react",
+			"DATUM",
+			"reactReduxIdleMonitor",
+			"react-redux-idle-monitor",
+			"document.",
+			"document =",
+			"rowIndex",
+			"rowID",
+			"rowDatum",
+			"rowContext",
+			"Row",
+			"rows",
+			"rowIndex",
+			"documentDatum",
+			"DocumentData",
+			"documentDatum",
+			"Row",
+			"documentData",
+			"cellData",
+			"rowDatum",
+			"rowID",
+			"rowData",
+			"rowsPerPage",
+			"row",
+			"Row",
+			"Rows",
+			"Row",
+			"row",
+			"Row",
+			"Rows",
+			"rows",
+			"style-loader",
+			"RECEIVING VALUE",
+			"UPDATE INPUT FOR",
+			"GET VALUE on",
+			"SET VALUE",
+			"INPUT REGISTERED",
+			"CELL CONTEXT",
+			"react-formula",
+			"        const onFilter = filterState => {\n          const data = filterData(getData(), filterState)\n          this.setState({ data })\n        }\n        this.unsubscribe = filterStream(onFilter)\n",
+			"react-bootstrap",
+			"gridProps",
+			"FormsContext",
+			"gridiron-cli",
+			"FormulaReact",
+			"Header",
+			"header",
+			"gridiron",
+			"gridiron-test",
+			"gridiron-themes",
 			"gridiron-styles",
+			"gridiron-react-styles",
 			"gridiron-react",
+			"universal-loader",
+			"universal-style-loader",
 			"redux-grid",
 			"reduxGrid",
 			"redux-grid",
@@ -786,34 +779,7 @@
 			"hydrateTokens",
 			"getLocal",
 			"getIdleStatus",
-			"activity detection starting",
-			"setLocalActive",
-			"337ab7;",
-			"'controls",
-			"index",
-			"style/index",
-			"createClientLogger",
-			"createServerLogger",
-			"config.server",
-			"config.client",
-			"timings =>",
-			"THISSSS WORKS",
-			"initializeGrid",
-			"storeBoundActions",
-			"griddle",
-			"solarized",
-			"tix",
-			"musical",
-			"isPaused",
-			"elapsedMS",
-			"threshold",
-			"ErrorFilter",
-			"LoginForm",
-			"ErrorPanel",
-			"ErrorFilter",
-			"@reduxForm",
-			"filters/ErrorFilter",
-			"ErrorFilter"
+			"activity detection starting"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -821,14 +787,47 @@
 		"regex": false,
 		"replace_history":
 		[
-			"modules",
-			"../packages/",
-			"../packages",
-			"contextTypes",
-			"gridiron-redux",
-			"gridiron-pager",
-			"gridiron-themes",
-			"gridiron-styles",
+			"datum.",
+			"datum",
+			"documentIndex",
+			"documentID",
+			"document",
+			"context",
+			"Document",
+			"documents",
+			"documentIndex",
+			"document",
+			"Documents",
+			"document",
+			"Document",
+			"document",
+			"documents",
+			"cells",
+			"document",
+			"documentID",
+			"documents",
+			"documentsPerPage",
+			"document",
+			"Document",
+			"Documents",
+			"Document",
+			"document",
+			"Document",
+			"Documents",
+			"documents",
+			"pure-stamp",
+			"react-formula-cli",
+			"Formula",
+			"Form",
+			"form",
+			"reactFormula",
+			"react-formula-test",
+			"react-formula-themes",
+			"react-formula-styles",
+			"react-formula",
+			"postjs",
+			"universal-loader",
+			"window-loader",
 			"gridiron",
 			"socket",
 			"storagesync",
@@ -884,32 +883,39 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 4,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-styles/src/lib/styles.css",
+					"file": "/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-themes/src/lib/yellow.css",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 8583,
+						"buffer_size": 8218,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1035,
-								1035
+								3709,
+								3709
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Syntax Highlighting for PostCSS/Syntaxes/PostCSS.tmLanguage",
-							"tabs_extra_last_activated": 1470289732.4,
+							"syntax": "Packages/LESS/LESS.tmLanguage",
+							"tab_size": 2,
+							"tabs_extra_last_activated": 1470845051.79,
 							"tabs_extra_last_activated_sheet_index": 0,
+							"tabs_extra_moving":
+							[
+								3,
+								0
+							],
 							"tabs_extra_spawned": true,
+							"translate_tabs_to_spaces": true,
 							"vintage":
 							{
 								"_vintageous_glue_until_normal_mode": false,
@@ -923,40 +929,96 @@
 								"partial_sequence": "",
 								"register": "\"",
 								"sequence": "",
-								"xpos": 16
+								"xpos": 18
 							}
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1315.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 14,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/grid.js",
+					"file": "/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/gridiron/Grid.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 12646,
+						"buffer_size": 5899,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								11291,
-								11291
+								3710,
+								3710
 							]
 						],
 						"settings":
 						{
-							"highlight_line": true,
 							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
-							"tabs_extra_last_activated": 1470451163.24,
+							"tab_size": 2,
+							"tabs_extra_last_activated": 1470844593.9,
 							"tabs_extra_last_activated_sheet_index": 1,
 							"tabs_extra_spawned": true,
+							"translate_tabs_to_spaces": true,
+							"vintage":
+							{
+								"_vintageous_glue_until_normal_mode": false,
+								"action": null,
+								"action_count": "",
+								"mode": "mode_normal",
+								"motion":
+								{
+									"data":
+									{
+										"_inp": ""
+									},
+									"name": "ViSearchForward"
+								},
+								"motion_count": "",
+								"must_capture_register_name": false,
+								"normal_insert_count": "1",
+								"partial_sequence": "/",
+								"register": "\"",
+								"sequence": "/",
+								"xpos": 18
+							}
+						},
+						"translation.x": 0.0,
+						"translation.y": 1700.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/cards.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2578,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1683,
+								1683
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
+							"tab_size": 2,
+							"tabs_extra_last_activated": 1470765756.68,
+							"tabs_extra_last_activated_sheet_index": 1,
+							"tabs_extra_spawned": true,
+							"translate_tabs_to_spaces": true,
 							"vintage":
 							{
 								"_vintageous_glue_until_normal_mode": false,
@@ -970,39 +1032,89 @@
 								"partial_sequence": "",
 								"register": "\"",
 								"sequence": "",
-								"xpos": 44
+								"xpos": 24
 							}
 						},
 						"translation.x": 0.0,
-						"translation.y": 5021.0,
+						"translation.y": 55.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 8,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/lib/modules/gridiron.js",
+					"buffer": 3,
+					"file": "/C/Users/ColeChamberlain/noderaider/gridiron/packages/redux-pager/src/lib/components/pager.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 723,
+						"buffer_size": 23031,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								723,
-								723
+								5231,
+								5231
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
-							"tabs_extra_last_activated": 1470441957.84,
-							"tabs_extra_last_activated_sheet_index": 2,
+							"tab_size": 2,
+							"tabs_extra_last_activated": 1470845049.56,
+							"tabs_extra_last_activated_sheet_index": 3,
 							"tabs_extra_spawned": true,
+							"translate_tabs_to_spaces": true,
+							"vintage":
+							{
+								"_vintageous_glue_until_normal_mode": false,
+								"action": null,
+								"action_count": "",
+								"mode": "mode_normal",
+								"motion": null,
+								"motion_count": "",
+								"must_capture_register_name": false,
+								"normal_insert_count": "1",
+								"partial_sequence": "",
+								"register": "\"",
+								"sequence": "",
+								"xpos": 111
+							}
+						},
+						"translation.x": 0.0,
+						"translation.y": 1560.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-styles/src/lib/styles.css",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 9358,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								9358,
+								9358
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/LESS/LESS.tmLanguage",
+							"tab_size": 2,
+							"tabs_extra_last_activated": 1470859893.49,
+							"tabs_extra_last_activated_sheet_index": 4,
+							"tabs_extra_spawned": true,
+							"translate_tabs_to_spaces": true,
 							"vintage":
 							{
 								"_vintageous_glue_until_normal_mode": false,
@@ -1020,130 +1132,85 @@
 							}
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 10640.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/gridiron/Graph.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2821,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2547,
-								2547
-							]
-						],
-						"settings":
-						{
-							"open_with_edit": true,
-							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
-							"tabs_extra_last_activated": 1470441948.04,
-							"tabs_extra_last_activated_sheet_index": 3,
-							"tabs_extra_spawned": true,
-							"vintage":
-							{
-								"_vintageous_glue_until_normal_mode": false,
-								"action": null,
-								"action_count": "",
-								"mode": "mode_normal",
-								"motion": null,
-								"motion_count": "",
-								"must_capture_register_name": false,
-								"normal_insert_count": "1",
-								"partial_sequence": "",
-								"register": "\"",
-								"sequence": "",
-								"xpos": 18
-							}
-						},
-						"translation.x": 0.0,
-						"translation.y": 264.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/gridiron/Accordion.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1944,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1905,
-								1905
-							]
-						],
-						"settings":
-						{
-							"open_with_edit": true,
-							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
-							"tabs_extra_last_activated": 1470360395.62,
-							"tabs_extra_last_activated_sheet_index": 4,
-							"tabs_extra_spawned": true,
-							"vintage":
-							{
-								"_vintageous_glue_until_normal_mode": false,
-								"action": null,
-								"action_count": "",
-								"mode": "mode_normal",
-								"motion": null,
-								"motion_count": "",
-								"must_capture_register_name": false,
-								"normal_insert_count": "1",
-								"partial_sequence": "",
-								"register": "\"",
-								"sequence": "",
-								"xpos": 18
-							}
-						},
-						"translation.x": 0.0,
-						"translation.y": 840.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 9,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
 					"buffer": 5,
-					"file": "/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/gridiron/Cards.js",
+					"file": "/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-themes/src/lib/mellow.css",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1882,
+						"buffer_size": 8248,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								782,
-								782
+								5723,
+								5723
 							]
 						],
 						"settings":
 						{
-							"open_with_edit": true,
-							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
-							"tabs_extra_last_activated": 1470360367.07,
+							"syntax": "Packages/LESS/LESS.tmLanguage",
+							"tab_size": 2,
+							"tabs_extra_last_activated": 1470842508.87,
 							"tabs_extra_last_activated_sheet_index": 5,
 							"tabs_extra_spawned": true,
+							"translate_tabs_to_spaces": true,
+							"vintage":
+							{
+								"_vintageous_glue_until_normal_mode": false,
+								"action": null,
+								"action_count": "",
+								"mode": "mode_normal",
+								"motion": null,
+								"motion_count": "",
+								"must_capture_register_name": false,
+								"normal_insert_count": "1",
+								"partial_sequence": "",
+								"register": "\"",
+								"sequence": "",
+								"xpos": 17
+							}
+						},
+						"translation.x": 0.0,
+						"translation.y": 3861.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/grid.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 15414,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2463,
+								2463
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
+							"tab_size": 2,
+							"tabs_extra_last_activated": 1470842508.87,
+							"tabs_extra_last_activated_sheet_index": 6,
+							"tabs_extra_spawned": true,
+							"translate_tabs_to_spaces": true,
 							"vintage":
 							{
 								"_vintageous_glue_until_normal_mode": false,
@@ -1161,410 +1228,133 @@
 							}
 						},
 						"translation.x": 0.0,
-						"translation.y": 64.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 10,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/gridiron/Grid.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5854,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								527,
-								527
-							]
-						],
-						"settings":
-						{
-							"open_with_edit": true,
-							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
-							"tabs_extra_last_activated": 1470360526.14,
-							"tabs_extra_last_activated_sheet_index": 6,
-							"tabs_extra_spawned": true,
-							"vintage":
-							{
-								"_vintageous_glue_until_normal_mode": false,
-								"action": null,
-								"action_count": "",
-								"mode": "mode_normal",
-								"motion": null,
-								"motion_count": "",
-								"must_capture_register_name": false,
-								"normal_insert_count": "1",
-								"partial_sequence": "",
-								"register": "\"",
-								"sequence": "",
-								"xpos": 20
-							}
-						},
-						"translation.x": 0.0,
-						"translation.y": 44.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/gridiron/index.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 178,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								178,
-								178
-							]
-						],
-						"settings":
-						{
-							"open_with_edit": true,
-							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
-							"tabs_extra_last_activated": 1470357793.47,
-							"tabs_extra_last_activated_sheet_index": 8,
-							"tabs_extra_spawned": true,
-							"vintage":
-							{
-								"_vintageous_glue_until_normal_mode": false,
-								"action": null,
-								"action_count": "",
-								"mode": "mode_normal",
-								"motion": null,
-								"motion_count": "",
-								"must_capture_register_name": false,
-								"normal_insert_count": "1",
-								"partial_sequence": "",
-								"register": "\"",
-								"sequence": "",
-								"xpos": 38
-							}
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 12,
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/cards.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2706,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1703,
-								1703
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
-							"tabs_extra_last_activated": 1470357281.24,
-							"tabs_extra_last_activated_sheet_index": 3,
-							"tabs_extra_spawned": true,
-							"vintage":
-							{
-								"_vintageous_glue_until_normal_mode": false,
-								"action": null,
-								"action_count": "",
-								"mode": "mode_normal",
-								"motion": null,
-								"motion_count": "",
-								"must_capture_register_name": false,
-								"normal_insert_count": "1",
-								"partial_sequence": "",
-								"register": "\"",
-								"sequence": "",
-								"xpos": 22
-							}
-						},
-						"translation.x": 0.0,
-						"translation.y": 135.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 13,
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-themes/src/lib/mellow.css",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 8015,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								6636,
-								6636
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Syntax Highlighting for PostCSS/Syntaxes/PostCSS.tmLanguage",
-							"tabs_extra_last_activated": 1470441967.39,
-							"tabs_extra_last_activated_sheet_index": 9,
-							"tabs_extra_spawned": true,
-							"vintage":
-							{
-								"_vintageous_glue_until_normal_mode": false,
-								"action": null,
-								"action_count": "",
-								"mode": "mode_normal",
-								"motion": null,
-								"motion_count": "",
-								"must_capture_register_name": false,
-								"normal_insert_count": "1",
-								"partial_sequence": "",
-								"register": "\"",
-								"sequence": "",
-								"xpos": 0
-							}
-						},
-						"translation.x": 0.0,
-						"translation.y": 5514.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				}
-			]
-		},
-		{
-			"selected": 3,
-			"sheets":
-			[
-				{
-					"buffer": 10,
-					"file": "/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/graph.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1892,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1892,
-								1892
-							]
-						],
-						"settings":
-						{
-							"open_with_edit": true,
-							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
-							"tabs_extra_last_activated": 1470289418.53,
-							"tabs_extra_last_activated_sheet_index": 0,
-							"tabs_extra_spawned": true,
-							"vintage":
-							{
-								"_vintageous_glue_until_normal_mode": false,
-								"action": null,
-								"action_count": "",
-								"mode": "mode_normal",
-								"motion": null,
-								"motion_count": "",
-								"must_capture_register_name": false,
-								"normal_insert_count": "1",
-								"partial_sequence": "",
-								"register": "\"",
-								"sequence": "",
-								"xpos": 0
-							}
-						},
-						"translation.x": 0.0,
-						"translation.y": 966.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 11,
-					"file": "/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/App.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1795,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1429,
-								1429
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
-							"tabs_extra_last_activated": 1470439908.65,
-							"tabs_extra_last_activated_sheet_index": 1,
-							"tabs_extra_spawned": true,
-							"vintage":
-							{
-								"_vintageous_glue_until_normal_mode": false,
-								"action": null,
-								"action_count": "",
-								"mode": "mode_normal",
-								"motion": null,
-								"motion_count": "",
-								"must_capture_register_name": false,
-								"normal_insert_count": "1",
-								"partial_sequence": "",
-								"register": "\"",
-								"sequence": "",
-								"xpos": 34
-							}
-						},
-						"translation.x": 0.0,
-						"translation.y": 650.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 12,
-					"file": "/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron-example/src/app/routes/components/Home.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 544,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								440,
-								440
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
-							"tabs_extra_last_activated": 1470362360.63,
-							"tabs_extra_last_activated_sheet_index": 3,
-							"tabs_extra_spawned": true,
-							"vintage":
-							{
-								"_vintageous_glue_until_normal_mode": false,
-								"action": null,
-								"action_count": "",
-								"mode": "mode_normal",
-								"motion": null,
-								"motion_count": "",
-								"must_capture_register_name": false,
-								"normal_insert_count": "1",
-								"partial_sequence": "",
-								"register": "\"",
-								"sequence": "",
-								"xpos": 2
-							}
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1461.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 5,
 					"type": "text"
 				},
 				{
-					"buffer": 13,
-					"file": "/C/Users/cchamberlain/noderaider/gridiron/packages/react-formula/src/lib/formsContext.js",
+					"buffer": 7,
+					"file": "/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/graph.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 9567,
+						"buffer_size": 2586,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1866,
-								1866
+								1382,
+								1382
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
-							"tabs_extra_last_activated": 1470440347.38,
-							"tabs_extra_last_activated_sheet_index": 3,
+							"tab_size": 2,
+							"tabs_extra_last_activated": 1470761694.1,
+							"tabs_extra_last_activated_sheet_index": 5,
 							"tabs_extra_spawned": true,
+							"translate_tabs_to_spaces": true,
 							"vintage":
 							{
+								"_vintageous_glue_until_normal_mode": false,
 								"action": null,
 								"action_count": "",
 								"mode": "mode_normal",
 								"motion": null,
 								"motion_count": "",
 								"must_capture_register_name": false,
+								"normal_insert_count": "1",
 								"partial_sequence": "",
 								"register": "\"",
 								"sequence": "",
-								"xpos": 18
+								"xpos": 16
 							}
 						},
 						"translation.x": 0.0,
-						"translation.y": 770.0,
+						"translation.y": 480.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 9,
 					"type": "text"
 				},
 				{
-					"buffer": 14,
-					"file": "/C/Users/cchamberlain/noderaider/gridiron/packages/gridiron/src/lib/index.js",
+					"buffer": 8,
+					"file": "/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/column/column.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1420,
+						"buffer_size": 6560,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								259,
-								259
+								234,
+								234
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
-							"tabs_extra_last_activated": 1470359779.31,
-							"tabs_extra_last_activated_sheet_index": 2,
+							"tab_size": 2,
+							"tabs_extra_last_activated": 1470775725.15,
+							"tabs_extra_last_activated_sheet_index": 9,
 							"tabs_extra_spawned": true,
+							"translate_tabs_to_spaces": true,
+							"vintage":
+							{
+								"_vintageous_glue_until_normal_mode": false,
+								"action": null,
+								"action_count": "",
+								"mode": "mode_normal",
+								"motion": null,
+								"motion_count": "",
+								"must_capture_register_name": false,
+								"normal_insert_count": "1",
+								"partial_sequence": "",
+								"register": "\"",
+								"sequence": "",
+								"xpos": 71
+							}
+						},
+						"translation.x": 0.0,
+						"translation.y": 107.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "/C/Users/ColeChamberlain/noderaider/gridiron/packages/gridiron-react/src/lib/components/column/columns.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 725,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								555,
+								555
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
+							"tab_size": 2,
+							"tabs_extra_last_activated": 1470775543.41,
+							"tabs_extra_last_activated_sheet_index": 10,
+							"tabs_extra_spawned": true,
+							"translate_tabs_to_spaces": true,
 							"vintage":
 							{
 								"_vintageous_glue_until_normal_mode": false,
@@ -1585,15 +1375,20 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 11,
+					"stack_index": 7,
 					"type": "text"
 				}
+			]
+		},
+		{
+			"sheets":
+			[
 			]
 		}
 	],
 	"incremental_find":
 	{
-		"height": 39.0
+		"height": 28.0
 	},
 	"input":
 	{
@@ -1624,7 +1419,7 @@
 		"rows":
 		[
 			0.0,
-			0.555516813534,
+			0.749761984129,
 			1.0
 		]
 	},
@@ -2163,12 +1958,12 @@
 	},
 	"select_project":
 	{
-		"height": 500.0,
+		"height": 0.0,
 		"last_filter": "",
 		"selected_items":
 		[
 		],
-		"width": 380.0
+		"width": 0.0
 	},
 	"select_symbol":
 	{
@@ -2182,21 +1977,21 @@
 	"selected_group": 0,
 	"settings":
 	{
-		"_vintageous_last_buffer_search": "createFragment",
+		"_vintageous_last_buffer_search": "desktop",
 		"_vintageous_last_buffer_search_command": "vi_slash",
-		"_vintageous_last_char_search_command": "vi_t",
-		"_vintageous_last_character_search": "h",
+		"_vintageous_last_char_search_command": "vi_f",
+		"_vintageous_last_character_search": "f",
 		"_vintageous_reset_during_init": true,
 		"vintage":
 		{
-			"_cmdline_cd": "C:\\Users\\cchamberlain\\noderaider\\gridiron\\packages\\gridiron-example\\src\\lib\\components\\modules\\gridiron-react"
+			"_cmdline_cd": "C:\\Users\\ColeChamberlain\\noderaider\\gridiron\\packages\\gridiron-example\\src\\lib\\router"
 		}
 	},
 	"show_minimap": true,
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 194.0,
+	"side_bar_width": 231.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

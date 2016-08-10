@@ -1,6 +1,6 @@
 {
   "appName": "gridiron",
-  "environment": "prod",
+  "environment": "dev",
   "flags": {
     "dev": true,
     "prod": false,
@@ -13,14 +13,15 @@
   "fs": {
     "ETC_ROOT": "../etc",
     "BIN_ROOT": "../bin",
-    "LOG_ROOT": "../log"
+    "LOG_ROOT": "../log",
+    "MOD_ROOT": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\gridiron-example Space Program\\GameData"
   },
   "bindings": {
     "cdn": [
       [
-        "https",
+        "http",
         {
-          "port": 443
+          "port": 1337
         }
       ]
     ]
