@@ -117,9 +117,9 @@
 
 /** ACCORDION */
 
-.accordionDocument {
-  background-color: var(--control-bg);
-  color: var(--control-fg);
+.accordion .document {
+  background-color: var(--control-bg) !important;
+  color: var(--control-fg) !important;
 }
 
 .accordionHeader {
@@ -215,23 +215,37 @@
   */
 }
 
-.gridBody {
+
+.document {
+  color: var(--control-fg);
   background-color: var(--control-bg);
 }
 
 .document.even,
 .document.odd {
   border-top: 1px groove rgb(80, 80, 80);
-  border-bottom: 2px groove rgb(80, 80, 80);
-  color: var(--control-fg);
+  cursor: pointer;
 }
 
 .document.even {
   background-color: var(--control-even-bg);
+
+  &:hover {
+    background-color: color(var(--control-even-bg) whiteness(+5%));
+  }
 }
 
 .document.odd {
   background-color: var(--control-odd-bg);
+
+  &:hover {
+    background-color: color(var(--control-odd-bg) whiteness(+5%));
+  }
+}
+
+.fill {
+  box-shadow: inset 0 0 10px var(--control-bg);
+  background-color: color(var(--control-bg) whiteness(+10%));
 }
 
 .documentHeader,
@@ -271,17 +285,14 @@
 }
 
 
+.header {
+  border-style: single;
+  border-color: rgba(100, 100, 100, 0.8);
+}
+
 .paneVisible .header {
   background: linear-gradient(180deg, rgba(20, 20, 20, 0), rgba(20, 20, 20, 0.8));
-  border-style: double;
-  border-color: rgba(100, 100, 100, 0.8);
 }
-
-.paneHidden .header {
-  border-style: double;
-  border-color: rgba(100, 100, 100, 0.8);
-}
-
 
 .header button:focus {
   outline: none;

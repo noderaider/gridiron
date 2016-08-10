@@ -35,18 +35,19 @@ export default function cards (pure) {
         this.contents = {}
       }
     , render() {
-        const { styles, theme, mapHeader, mapContent, data, ...gridProps } = this.props
+        const { styles, theme, className, mapHeader, mapContent, data, ...gridProps } = this.props
         return (
           <Grid
             {...gridProps}
             data={data}
+            className={cn(styles.cards, theme.cards, className)}
             templates={
-              { Body: ({ documentIndex, children, ...props }) => (
+              { /*Body: ({ documentIndex, children, ...props }) => (
                   <div className={cn(styles.cardsBody, theme.cardsBody)}>
                     {children}
                   </div>
                 )
-              , Document: ({ documentIndex, children, ...props }) => (
+              ,*/ Document: ({ documentIndex, children, ...props }) => (
                   <div className={cn(styles.cardsDocument, theme.cardsDocument)}>
                     {children}
                   </div>

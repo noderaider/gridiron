@@ -70,10 +70,11 @@ export default function accordion (pure) {
           raf(() => this.updateHeight())
       }
     , render() {
-        const { styles, theme, mapHeader, mapContent, data, ...gridProps } = this.props
+        const { styles, theme, className, mapHeader, mapContent, data, ...gridProps } = this.props
         return (
           <Grid
             {...gridProps}
+            className={cn(styles.accordion, theme.accordion, className)}
             data={data}
             mapDocument={
               ({ documentIndex, documentID, datum }) => {

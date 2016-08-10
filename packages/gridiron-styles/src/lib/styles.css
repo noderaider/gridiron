@@ -9,6 +9,24 @@
 /** 2x-screen | 1100px */ @custom-media --2x-screen only screen and (width >= 68.75em);
 /** 3x-screen | 1300px */ @custom-media --3x-screen only screen and (width >= 81.25em);
 
+:root {
+  --scrollbars: {
+    &::-webkit-scrollbar-track {
+      background-color: rgb(40, 40, 40);
+    }
+
+    &::-webkit-scrollbar {
+      width: 0.25em;
+      height: 0.25em;
+      background-color: rgb(10, 160, 217);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: rgb(10, 160, 217);
+    }
+  }
+}
+
 
 @media (--mobile) {
   .desktop {
@@ -24,19 +42,11 @@
 
 
 /** GRAPH */
-
-
-.graphContainer {
-  display: flex;
-  flex-direction: column;
-  font-size: 1rem;
-}
-
 .graph {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  flex: 1 0 40vh;
+  flex: 1 1 40vh;
   font-size: 1rem;
 }
 
@@ -85,18 +95,10 @@
 
 /** CARDS */
 
-.cards {
-  display: flex;
-  flex-direction: column;
-
-}
-
-.cardsBody {
-  display: flex;
+.cards .body {
   flex-direction: row;
   flex-wrap: wrap;
 }
-
 
 .cardsDocument {
   display: inline-flex;
@@ -106,21 +108,7 @@
   max-height: 33vh;
 
   overflow: auto;
-
-
-  &::-webkit-scrollbar-track {
-    background-color: rgb(40, 40, 40);
-  }
-
-  &::-webkit-scrollbar {
-    width: 0.25em;
-    height: 0.25em;
-    background-color: rgb(10, 160, 217);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: rgb(10, 160, 217);
-  }
+  @apply --scrollbars;
 
   @media (--sm-screen) {
     margin: 0.25em;
@@ -160,6 +148,17 @@
 
 
 /** ACCORDION */
+.accordion .document {
+
+  flex: 1 0 auto;
+  //height: 100%;
+  align-items: center;
+
+}
+
+.accordion .fill {
+  flex: 0 0 0;
+}
 
 .accordionDocument {
   display:flex;
@@ -199,8 +198,6 @@
 
 .grid {
   position: relative;
-  overflow-y: auto;
-  overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   display: flex;
   flex-direction: column;
@@ -211,11 +208,19 @@
   will-change: transform;
 }
 
+:global(.react-grid-item) .grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
 
 .gridHeader,
 .gridFooter {
   display: flex;
-  flex: 1 0 auto;
+  flex: 0 0 auto;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
@@ -241,11 +246,23 @@
   }
 }
 
-.gridBody {
+.body {
   display: flex;
   flex-direction: column;
+  flex: 0 1 auto;
+  height: 100%;
 }
 
+:global(.react-grid-item) .body {
+  max-height:100%;
+  overflow: auto;
+  @apply --scrollbars;
+}
+
+.fill {
+  display: flex;
+  flex: 1 1 auto;
+}
 
 .gridFooter > * {
   display: inline-flex;
@@ -275,11 +292,18 @@
 
 .document {
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  flex: 1 1 auto;
+  flex: 0 0 auto;
   width: 100%;
-  flex-wrap: nowrap;
+}
+
+.document.primitive {
+  flex-flow: row nowrap;
+  //height: 100%;
+}
+
+.document.sectional {
+  flex-flow: column nowrap;
+  //height: 100%;
 }
 
 .document:last-child {
@@ -290,13 +314,13 @@
 .documentFooter {
   display: flex;
   flex-direction: row;
-  flex: 0 1 100%;
+  flex: 0 1 auto;
 }
 
 .documentBody {
   display: flex;
   flex-direction: row;
-  flex: 0 1 100%;
+  flex: 0 1 auto;
 }
 
 
@@ -364,7 +388,8 @@
 
 .cellContent {
   display: flex;
-  flex: 1 1 auto;
+  flex: 1 0 auto;
+  height: 100%;
   flex-direction: column;
   justify-content: center;
   padding: 0.3em;

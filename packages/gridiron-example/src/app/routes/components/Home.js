@@ -15,7 +15,7 @@ export default pure (
   , init() {
       const { container } = this.props
       this.components = componentLayout([ component(Accordion)
-                                        , component(Graph, { h: 13 })
+                                        , component(Graph)
                                         , component(Cards, { h: { xl: 21, lg: 10,  md: 8 } })
                                         , component(Grid, { w: { xl: 2, lg: 2,  md: 1 }, h: 15 })
                                         ], { container })

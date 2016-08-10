@@ -6,7 +6,11 @@
 /** 2x-screen | 1100px */ @custom-media --2x-screen only screen and (width >= 68.75em);
 /** 3x-screen | 1300px */ @custom-media --3x-screen only screen and (width >= 81.25em);
 
-.item {
+/*
+.item > *:first-child {
+
+  max-height: calc(100% - 0.5em);
+  margin: 0 0.5em 0.5em 0;
   overflow: auto;
 
   @media (--lg-screen) {
@@ -26,9 +30,6 @@
   &::-webkit-scrollbar-thumb {
     background-color: rgb(10, 160, 217);
   }
-
 }
 
-.item > *:first-child {
-  margin: 10px;
-}
+*/

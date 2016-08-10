@@ -46,7 +46,7 @@ export default function grid (pure) {
         </div>
       )
     , Body: ({ children, ...props }) => (
-        <div className={selectStyles('gridBody')}>
+        <div className={selectStyles('body')}>
           {children}
         </div>
       )
@@ -71,10 +71,10 @@ export default function grid (pure) {
         </div>
         */
       )
-    , Document: ({ documentIndex, children, isHeader, isFooter, ...props }) => {
+    , Document: ({ documentIndex, children, isHeader, isFooter, className, ...props }) => {
         const moduloStyle = isHeader || isFooter ? null : typeof documentIndex === 'number' ? (documentIndex % 2 === 0 ? 'even' : 'odd') : null
         return (
-          <div className={selectStyles([ 'document', moduloStyle ])}>
+          <div className={selectStyles([ 'document', moduloStyle ], className)}>
             {children}
           </div>
         )
@@ -106,6 +106,7 @@ export default function grid (pure) {
         </div>
         */
       )
+    , Fill: ({ children = null, ...props }) => <div className={cn(selectStyles('fill'))} {...props}>{children}</div>
     , NoContent: props => <div {...props} />
     }
 
@@ -270,7 +271,12 @@ export default function grid (pure) {
           const documentLocal = isPrimitive ? null : this.state.documentLocal && this.state.documentLocal.get(documentID)
 
 
-          const children = isPrimitive ? mapDocument({ documentID, documentIndex, datum }) : createFragment(
+          const children = isPrimitive ? (
+            mapDocument({ documentID
+                        , documentIndex
+                        , datum
+                        })
+          ) : createFragment(
             { header: rendered.documentHeader ? (
                 cloneElement(rendered.documentHeader, { documentIndex
                                                       , children: mapDocument.header( { local: documentLocal
@@ -323,6 +329,7 @@ export default function grid (pure) {
             { key: documentIndex
             , documentIndex
             , children
+            , className: isPrimitive ? selectStyles('primitive') : selectStyles('sectional')
             }
           )
         }
@@ -347,6 +354,7 @@ export default function grid (pure) {
               {documents.entrySeq().map(
                 ([ documentID, context ], documentIndex) => renderDocument({ documentID, documentIndex, context })
               )}
+              <templates.Fill />
             </templates.Body>
 
             {gridColumns && mapColumn.footer ? (
