@@ -1,6 +1,6 @@
 {
   "name": "react-formula",
-  "version": "0.16.0",
+  "version": "0.16.1",
   "description": "Performant, stylized React form components.",
   "main": "lib/index.js",
   "scripts": {
@@ -26,9 +26,9 @@
     "most": "^1.0.0",
     "pure-stamp": "^0.1.13",
     "raf": "^3.2.0",
-    "react-pre": "^0.15.0",
-    "react-pub-sub": "^0.15.0",
-    "solvent": "^0.15.0"
+    "react-pre": "^0.16.1",
+    "react-pub-sub": "^0.16.1",
+    "solvent": "^0.16.1"
   },
   "devDependencies": {
     "babel-cli": "latest",

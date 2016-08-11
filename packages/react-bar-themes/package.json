@@ -1,6 +1,6 @@
 {
   "name": "react-bar-themes",
-  "version": "0.15.0",
+  "version": "0.16.1",
   "description": "React Component Styles for CSS Modules",
   "main": "lib/index.js",
   "scripts": {
@@ -21,9 +21,9 @@
     "classnames": "latest",
     "ncp": "latest",
     "npm-run-all": "latest",
-    "solvent": "^0.15.0",
+    "solvent": "^0.16.1",
     "react-stamp": "latest",
-    "react-themes": "^0.15.0"
+    "react-themes": "^0.16.1"
   },
   "devDependencies": {
     "babel-cli": "latest",

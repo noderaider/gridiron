@@ -1,6 +1,6 @@
 {
   "name": "react-formula-test",
-  "version": "0.16.0",
+  "version": "0.16.1",
   "description": "Test framework for reactFormula and related components. Enables reactFormula to not carry heavyweight dependencies.",
   "main": "lib/index.js",
   "keywords": [
@@ -75,10 +75,10 @@
     "react-tools": "latest",
     "react-virtualized": "latest",
     "redux": "latest",
-    "react-formula": "^0.16.0",
-    "react-formula-styles": "^0.15.0",
-    "react-formula-themes": "^0.15.0",
-    "react-formula-cli": "^0.16.0",
+    "react-formula": "^0.16.1",
+    "react-formula-styles": "^0.16.1",
+    "react-formula-themes": "^0.16.1",
+    "react-formula-cli": "^0.16.1",
     "rimraf": "latest",
     "sinon": "latest"
   },
