@@ -259,9 +259,20 @@
 }
 
 
+
 .gridHeader {
   background-color: var(--control-header-bg);
   color: var(--control-header-fg);
+}
+
+.gridHeader button {
+  color: var(--control-header-fg)
+}
+
+.gridFooter button,
+.headerContainer button,
+.footerContainer button {
+  color: var(--control-subheader-fg);
 }
 
 .gridFooter {

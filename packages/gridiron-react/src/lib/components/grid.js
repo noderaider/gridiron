@@ -172,6 +172,7 @@ export default function grid (pure) {
                   , styles: PropTypes.object.isRequired
                   , theme: PropTypes.object.isRequired
                   , mergeLocal: PropTypes.func.isRequired
+                  , useContentHeight: PropTypes.bool.isRequired
                   }
 
     , defaultProps: { 'aria-label': 'grid'
@@ -185,6 +186,7 @@ export default function grid (pure) {
                     , mapDocument: {}
                     , mapColumn:  {}
                     , mergeLocal: ({ documentLocal, columnLocal }) => Object.assign({}, documentLocal, columnLocal)
+                    , useContentHeight: false
                     , ...defaults
                     }
     , state:  { documentLocal: null
@@ -223,6 +225,7 @@ export default function grid (pure) {
               , mapDocument
               , mapCell
               , mergeLocal
+              , useContentHeight
 
               , styles
               , theme
@@ -338,7 +341,7 @@ export default function grid (pure) {
           <templates.Container
             ref={x => this.container = x}
             style={style}
-            className={className}
+            className={cn(className, selectStyles(useContentHeight ? 'fixedHeight' : 'variableHeight'))}
             aria-label={this.props['aria-label']}
             role='grid'
             tabIndex={tabIndex}

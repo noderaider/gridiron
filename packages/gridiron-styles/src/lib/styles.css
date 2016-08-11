@@ -208,12 +208,35 @@
   will-change: transform;
 }
 
-:global(.react-grid-item) .grid {
+:global(.react-grid-item) .grid.variableHeight {
   position: absolute;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
+}
+
+.grid.fixedHeight {
+  position: relative;
+  flex: 1 0 auto;
+}
+
+
+.body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+:global(.react-grid-item) .grid.variableHeight .body {
+  flex: 0 1 auto;
+  max-height:100%;
+  overflow: auto;
+  @apply --scrollbars;
+}
+
+.grid.fixedHeight .body {
+  flex: 1 0 auto;
 }
 
 
@@ -246,18 +269,7 @@
   }
 }
 
-.body {
-  display: flex;
-  flex-direction: column;
-  flex: 0 1 auto;
-  height: 100%;
-}
 
-:global(.react-grid-item) .body {
-  max-height:100%;
-  overflow: auto;
-  @apply --scrollbars;
-}
 
 .fill {
   display: flex;
@@ -379,7 +391,7 @@
 .headerContainer,
 .footerContainer {
   display: flex;
-  flex: 1 1 auto;
+  flex: 1 0 auto;
   flex-direction: column;
   justify-content: center;
   padding: 0.3em;

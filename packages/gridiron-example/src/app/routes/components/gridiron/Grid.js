@@ -3,7 +3,9 @@ import { sandy, black, carbon, mellow } from 'gridiron-themes'
 
 const { React, PropTypes, cloneElement, Immutable, gridiron, defaults } = pure
 const { Pager, Grid, Columns, Accordion, Cards, Graph, Pre, formula } = gridiron
-const { styles, theme } = defaults
+const { theme } = defaults
+
+import styles from './styles.css'
 
 const should = require('chai').should()
 
@@ -52,8 +54,16 @@ const FilterForm = pure (
 
 export default pure ( pure.profiler,
   { displayName: 'Grid'
+  , state: { useContentHeight: false }
+  , init() {
+      this.toggleFixedHeight = () => {
+        const { useContentHeight } = this.state
+        this.setState({ useContentHeight: !useContentHeight })
+      }
+    }
   , render() {
       const { container } = this.props
+      const { useContentHeight } = this.state
       const columns = Columns([ 'id', 'state' ])
 
       return container(({ Controls, Box, isMaximized, id, actions }) => (
@@ -87,6 +97,7 @@ export default pure ( pure.profiler,
             <Box>
               <Grid
                   data={pager.status.get('data', Immutable.Map())}
+                  useContentHeight={useContentHeight}
                   mapDocument={(
                     { header: ({ local, documentID, documentIndex, document }) => (
                         <h3>{documentID}</h3>
@@ -118,13 +129,20 @@ export default pure ( pure.profiler,
                   }
                   mapCell={({ local, documentIndex, columnIndex, documentID, columnID, datum }) => (
                     <local.Cell documentID={documentID}>
-                      <Pre>{{ documentIndex, columnIndex, documentID, columnID, datum }}</Pre>
+                      <Pre>{datum}</Pre>
                     </local.Cell>
                   )}
 
                   header={
                     [ <h2 key="title" style={{ margin: 0, letterSpacing: 6 }}>Grid</h2>
-                    , <Controls key="maximize" />
+                    , (
+                        <span key="controls" className={styles.controls}>
+                          <button className={styles.expandButton} onClick={this.toggleFixedHeight}>
+                              <i className="fa fa-arrows-v" />
+                          </button>
+                          <Controls key="maximize" />
+                        </span>
+                      )
                     ]
                   }
                   footer={[ (
