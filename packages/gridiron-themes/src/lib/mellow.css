@@ -250,7 +250,9 @@
 
 .documentHeader,
 .documentFooter {
-  border: 1px solid var(--control-subheader-border);
+  border-style: solid;
+  border-color: var(--control-subheader-border);
+  border-width: 1px 0;
 }
 
 

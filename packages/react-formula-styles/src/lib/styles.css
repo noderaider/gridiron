@@ -27,11 +27,13 @@
 }
 
 .dock button {
+  pointer-events: all;
   padding: 0;
 }
 
 .dock,
 .dockDisabled {
+  pointer-events: none;
   transform: translateY(calc(-100% + 3rem));
 }
 
