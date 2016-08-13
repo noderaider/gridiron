@@ -1,13 +1,10 @@
 import pure from 'lib/modules/pure'
-import { sandy, black, carbon, mellow } from 'gridiron-themes'
-
+import Header from './Header'
 import styles from './Graph.css'
-
+const should = require('chai').should()
 
 const { React, PropTypes, cloneElement, Immutable, gridiron, defaults } = pure
-const { Pager, Grid, Columns, Accordion, Cards, Graph, Pre, formula } = gridiron
-
-const should = require('chai').should()
+const { Pager, Graph, Pre, formula } = gridiron
 
 const times = n => fn => Array(n).fill().map((_, i) => fn(i, n))
 
@@ -99,8 +96,8 @@ export default pure (
               <Graph
                   data={pager.status.get('data', Immutable.Map())}
                   header={
-                    [ <h2 key="title" style={{ margin: 0, letterSpacing: 6 }}>Graph</h2>
-                    , <Controls key="maximize" />
+                    [ <Header key="left" title="Graph" subtitle="fibonacci" description="plotted with generators" />
+                    , <Controls key="right" />
                     ]
                   }
                   footer={

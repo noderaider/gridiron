@@ -1,16 +1,17 @@
 import pure from 'lib/modules/pure'
-import { sandy, black, carbon, mellow } from 'gridiron-themes'
+import Header from './Header'
+import styles from './styles.css'
 
 const { React, PropTypes, cloneElement, Immutable, gridiron, defaults } = pure
 const { Pager, Grid, Columns, Accordion, Cards, Graph, Pre, formula } = gridiron
-const { styles, theme } = defaults
 
 const should = require('chai').should()
 
 export default pure (
   { displayName: 'Accordion'
   , render() {
-      return this.props.container(({ Controls, Box, isMaximized, id, actions }) => (
+      const { container, orientation } = this.props
+      return container(({ Controls, Box, isMaximized, id, actions }) => (
         <Pager
           documentsPerPage={5}
           map={ { documents: state => (Immutable.Map.isMap(state) ? state : Immutable.Map(state)).map(
@@ -23,10 +24,15 @@ export default pure (
 
               <Accordion
                   data={pager.status.get('data', Immutable.Map())}
-
+                  orientation={orientation}
                   header={
-                    [ <h2 key="title" style={{ margin: 0, letterSpacing: 6 }}>Accordion</h2>
-                    , <Controls key="maximize" />
+                    [ <Header
+                        key="left"
+                        title="Accordion"
+                        subtitle={`orientation="${orientation}"`}
+                        description={`badass ${orientation === 'ltr' ? 'left to right' : 'top to bottom'} accordion`}
+                        />
+                    , <Controls key="right" />
                     ]
                   }
                   footer={

@@ -27,37 +27,48 @@ export default function accordion (pure) {
                   , data: PropTypes.object.isRequired
                   , expandedDocumentID: PropTypes.any
                   , transitionDurationMS: PropTypes.number
+                  , orientation: PropTypes.oneOf([ 'ttb', 'ltr' ])
                   }
     , defaultProps: { ...defaults
+                    , orientation: 'ttb'
                     }
     , init() {
         this.contents = {}
         this.expanded = null
         this.toggleDocument = documentID => {
           const node = this.contents[documentID]
-          if(ZERO_MEASURES.includes(node.style.maxHeight)) {
+          const { orientation } = this.props
+          if(ZERO_MEASURES.includes(node.style[orientation === 'ltr' ? 'maxWidth' : 'maxHeight'])) {
             this.expandDocument(documentID)
           } else
             raf(() => this.collapseDocuments())
         }
         this.collapseDocuments = () => {
+          const { orientation } = this.props
           const failed = []
           for(const node of Object.values(this.contents)) {
             if(node)
-              node.style.maxHeight = 0
+              node.style[orientation === 'ltr' ? 'maxWidth' : 'maxHeight'] = 0
           }
           this.expanded = null
         }
         this.expandDocument = documentID => {
           this.collapseDocuments()
           this.expanded = documentID
-          raf(() => this.updateHeight())
+          raf(() => this.updateDimension())
         }
+
+        this.updateDimension = () => this.props.orientation === 'ltr' ? this.updateWidth() : this.updateHeight()
 
         this.updateHeight = () => {
           const node = this.contents[this.expanded]
           if(node)
             node.style.maxHeight = `${node.scrollHeight}px`
+        }
+        this.updateWidth = () => {
+          const node = this.contents[this.expanded]
+          if(node)
+            node.style.maxWidth = `${node.scrollWidth}px`
         }
       }
     , componentDidMount() {
@@ -67,18 +78,17 @@ export default function accordion (pure) {
       }
     , componentWillReceiveProps(nextProps) {
         if(nextProps.data !== this.props.data)
-          raf(() => this.updateHeight())
+          raf(() => this.updateDimension())
       }
     , render() {
-        const { styles, theme, className, mapHeader, mapContent, data, ...gridProps } = this.props
+        const { styles, theme, className, mapHeader, mapContent, data, orientation, ...gridProps } = this.props
         return (
           <Grid
             {...gridProps}
-            className={cn(styles.accordion, theme.accordion, className)}
+            className={cn(styles.accordion, theme.accordion, styles[orientation], theme[orientation], className)}
             data={data}
             mapDocument={
               ({ documentIndex, documentID, datum }) => {
-                //console.info('DATUM', datum.toJS())
                 const header = mapHeader({ documentIndex, documentID, datum: datum.get('header') })
                 const content = mapContent({ documentIndex, documentID, datum: datum.get('content') })
                 return (

@@ -10,6 +10,7 @@
 /** 3x-screen | 1300px */ @custom-media --3x-screen only screen and (width >= 81.25em);
 
 :root {
+  --header-font: "boucherie-block", monospace;
   --scrollbars: {
     &::-webkit-scrollbar-track {
       background-color: rgb(40, 40, 40);
@@ -167,6 +168,12 @@
   width: 100%;
 }
 
+.ltr .accordionDocument {
+  flex-direction: row;
+  width: initial;
+  align-items: center;
+}
+
 .accordionHeader {
   cursor: pointer;
   display: flex;
@@ -177,13 +184,22 @@
   margin: 1px 2px 0 2px;
 }
 
+.ltr .accordionHeader {
+  flex-direction: column;
+}
+
+.ltr .accordionHeader > * {
+  width: 1px;
+  word-break: break-all;
+}
+
 .accordionContent {
-  width: 100%;
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
   overflow: hidden;
 
+  width: 100%;
   max-height:0;
 
   will-change: max-height;
@@ -191,6 +207,16 @@
   transition-property: max-height;
   transition-duration: 300ms;
   transition-timing-function: linear;
+}
+
+.ltr .accordionContent {
+  flex-direction: row;
+  max-height: initial;
+  width: initial;
+  height: 100%;
+  max-width: 0;
+  will-change: max-width;
+  transition-property: max-width;
 }
 
 /** END ACCORDION */
@@ -201,6 +227,7 @@
   -webkit-overflow-scrolling: touch;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 
   /* Without this property, Chrome repaints the entire Grid any time a new row or column is added.
      Firefox only repaints the new row or column (regardless of this property).
@@ -228,6 +255,10 @@
   height: 100%;
 }
 
+.ltr .body {
+  flex-flow: row nowrap;
+}
+
 :global(.react-grid-item) .grid.variableHeight .body {
   flex: 0 1 auto;
   max-height:100%;
@@ -253,6 +284,8 @@
   font-weight: bold;
   padding-left: 6px;
   padding-right: 6px;
+
+
 }
 
 .gridFooter {
@@ -291,16 +324,6 @@
   justify-content: flex-end;
 }
 
-.container {
-  display: flex;
-  width: 100%;
-  max-width: 100%;
-}
-
-.innerContainer {
-  flex: 1 1 auto;
-  width: inherit !important;
-}
 
 .document {
   display: flex;
@@ -309,6 +332,10 @@
   font-size: 0.85rem;
 }
 
+.ltr .document {
+  width: initial;
+  height: calc(100% - 1px);
+}
 
 
 .document.primitive {
@@ -319,6 +346,14 @@
 .document.sectional {
   flex-flow: column nowrap;
   //height: 100%;
+}
+
+.ltr .document.primitive {
+  flex-flow: column nowrap;
+}
+
+.ltr .document.sectional {
+  flex-flow: row nowrap;
 }
 
 .document:last-child {
@@ -528,22 +563,9 @@
   }
 }
 
-:root {
-  --nav: {
-    font-family: "boucherie-block",sans-serif;
-    /*
-    font-family: "coquette",fantasy;
-    font-family: "industry-inc-bevel",sans-serif;
-    font-family: "acier-bat-noir",sans-serif;
-    font-family: "modesto-open-shadow",sans-serif;
-    font-family: "modesto-initials-inline",sans-serif;
-    font-family: "citizen",sans-serif;
-    */
-  }
-}
 
 .logo {
-  @apply --nav;
+  font-family: var(--header-font);
   font-size:1.8rem;
   position: relative;
   display: flex;

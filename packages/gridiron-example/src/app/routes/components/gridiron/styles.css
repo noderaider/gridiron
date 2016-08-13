@@ -1,3 +1,58 @@
-.controls {
+:root {
+  --header-font: "boucherie-block", monospace;
+  --subheader-font: monospace;
+}
 
+.header {
+  position: relative;
+  display: flex;
+  flex-flow: column nowrap;
+  flex: 0 0 auto;
+  font-size: 1rem;
+  overflow: hidden;
+}
+
+.title,
+.subtitle {
+  display: flex;
+  flex: 0 1 auto;
+}
+
+.title {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+  min-width: 4em;
+  font-family: var(--header-font);
+  margin: -2px 0 0 -2px;
+  padding: 0.2em 2em 0.2em 0.2em;
+  font-size: 0.75rem;
+}
+
+.description {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+  position: fixed;
+  top: -1.5rem;
+  left: 0;
+  right: 0;
+  height: 1.5rem;
+  transform: translateY(0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: row wrap;
+  font-size: 0.6rem;
+  transition: transform 300ms;
+
+  will-change: transform;
+}
+
+.header:hover .description {
+  transform: translateY(1.5rem);
+}
+
+.subtitle {
+  font-family: var(--subheader-font);
+  font-size: 0.6rem;
+  padding: 0.1em 0.2em 0.1em 0.2em;
+  font-style: italic;
+  letter-spacing: 0.1em;
 }

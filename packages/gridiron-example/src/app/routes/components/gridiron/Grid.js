@@ -1,11 +1,9 @@
 import pure from 'lib/modules/pure'
-import { sandy, black, carbon, mellow } from 'gridiron-themes'
+import Header from './Header'
+import styles from './styles.css'
 
 const { React, PropTypes, cloneElement, Immutable, gridiron, defaults } = pure
-const { Pager, Grid, Columns, Accordion, Cards, Graph, Pre, formula } = gridiron
-const { theme } = defaults
-
-import styles from './styles.css'
+const { Pager, Grid, Columns, Pre, formula } = gridiron
 
 const should = require('chai').should()
 
@@ -134,9 +132,9 @@ export default pure ( pure.profiler,
                   )}
 
                   header={
-                    [ <h2 key="title" style={{ margin: 0, letterSpacing: 6 }}>Grid</h2>
+                    [ <Header key="left" title="Grid" subtitle="swiss army knife" description="badass grid" />
                     , (
-                        <span key="controls" className={styles.controls}>
+                        <span key="right" className={styles.controls}>
                           <button className={styles.expandButton} onClick={this.toggleFixedHeight}>
                               <i className="fa fa-arrows-v" />
                           </button>

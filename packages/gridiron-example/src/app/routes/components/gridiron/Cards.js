@@ -1,9 +1,8 @@
 import pure from 'lib/modules/pure'
-import { sandy, black, carbon, mellow } from 'gridiron-themes'
+import Header from './Header'
 
 const { React, PropTypes, cloneElement, Immutable, gridiron, defaults } = pure
-const { Pager, Grid, Columns, Accordion, Cards, Graph, Pre, formula } = gridiron
-const { styles, theme } = defaults
+const { Pager, Cards, Pre, formula } = gridiron
 
 const should = require('chai').should()
 
@@ -26,8 +25,8 @@ export default pure (
                   data={pager.status.get('data', Immutable.Map())}
 
                   header={
-                    [ <h2 key="title" style={{ margin: 0, letterSpacing: 6 }}>Cards</h2>
-                    , <Controls key="maximize" />
+                    [ <Header key="left" title="Cards" description="for business" />
+                    , <Controls key="right" />
                     ]
                   }
                   footer={
