@@ -30,7 +30,6 @@
     "mocha": "latest",
     "ncp": "latest",
     "npm-run-all": "latest",
-    "nyc": "latest",
     "rewire": "latest",
     "rimraf": "latest"
   },
