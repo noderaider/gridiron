@@ -77,7 +77,6 @@
     "redux": "latest",
     "gridiron": "^0.16.1",
     "gridiron-core": "^0.16.1",
-    "gridiron-cli": "^0.16.1",
     "gridiron-react": "^0.16.1",
     "rimraf": "latest",
     "sinon": "latest"

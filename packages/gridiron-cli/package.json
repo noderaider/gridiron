@@ -7,17 +7,13 @@
     "grid": "bin/grid.js"
   },
   "files": [
-    "bin",
     "lib"
   ],
   "keywords": [
     "gridiron"
   ],
   "dependencies": {
-    "chai": "^3.0.0",
-    "gridiron": "^0.16.1",
-    "gridiron-core": "^0.16.1",
-    "gridiron-test": "^0.16.1"
+    "chai": "^3.0.0"
   },
   "devDependencies": {
     "babel-cli": "latest",
@@ -37,6 +33,9 @@
     "nyc": "latest",
     "rewire": "latest",
     "rimraf": "latest"
+  },
+  "scripts": {
+    "build": "babel src -d ."
   },
   "author": "Cole Chamberlain <cole.chamberlain@gmail.com> (https://github.com/cchamberlain)",
   "license": "MIT"

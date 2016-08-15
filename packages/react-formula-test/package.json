@@ -73,12 +73,10 @@
     "react-dom": "latest",
     "react-redux": "latest",
     "react-tools": "latest",
-    "react-virtualized": "latest",
     "redux": "latest",
     "react-formula": "^0.16.1",
     "react-formula-styles": "^0.16.1",
     "react-formula-themes": "^0.16.1",
-    "react-formula-cli": "^0.16.1",
     "rimraf": "latest",
     "sinon": "latest"
   },
