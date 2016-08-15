@@ -18,6 +18,7 @@ export const definePaths = ({ NODE_ROOT = __rootname
                             , ASSETS_ROOT = resolveRoot('public/assets')
                             , STATIC_ROOT = resolveRoot('public/static')
                             , IMAGES_ROOT = resolveRoot('public/static/images')
+                            , DATA_ROOT = resolveRoot('data')
                             , SRC_ROOT = resolveRoot('src')
                             , APP_ROOT = resolveRoot('app')
                             , LIB_ROOT = resolveRoot('lib')
@@ -26,9 +27,7 @@ export const definePaths = ({ NODE_ROOT = __rootname
                             , DOC_ROOT = resolveRoot('doc')
                             , MOD_ROOT = path.resolve(server.fs.MOD_ROOT)
                             } = {}) => {
-  const paths = { NODE_ROOT, NODE_MODULES_ROOT, SERVER_CONFIG_PATH, CLIENT_CONFIG_PATH, PUBLIC_ROOT, ASSETS_ROOT, STATIC_ROOT, IMAGES_ROOT, SRC_ROOT, APP_ROOT, LIB_ROOT, DOC_ROOT, BIN_ROOT, LOG_ROOT, MOD_ROOT }
-
-
+  const paths = { NODE_ROOT, NODE_MODULES_ROOT, SERVER_CONFIG_PATH, CLIENT_CONFIG_PATH, PUBLIC_ROOT, ASSETS_ROOT, STATIC_ROOT, IMAGES_ROOT, DATA_ROOT, SRC_ROOT, APP_ROOT, LIB_ROOT, DOC_ROOT, BIN_ROOT, LOG_ROOT, MOD_ROOT }
   Object.keys(paths).forEach(x => assert.typeOf(paths[x], 'string', `path ${x} must be a string`) && assert.isAbove(paths[x].length, 0, `path ${x} must have length greater than 0`))
   return mkdirp(paths.LOG_ROOT)
     .then(() => paths)

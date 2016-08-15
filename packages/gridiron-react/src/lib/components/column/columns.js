@@ -5,6 +5,7 @@ export default function columns (pure) {
   const Column = column(pure)
 
   return function Columns (columnIDs, columnProps = {}) {
+    console.warn('COLUMN IDs', columnIDs)
     function reduceColumns (reducer) {
       return columnIDs.reduce((reduced, columnID) => ({ ...reduced, [columnID]: reducer(columnID) }), {})
     }

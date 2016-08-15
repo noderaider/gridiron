@@ -46,9 +46,7 @@
   --base0D: #4B6CD8;
   --base0E: #5C6382;
   --base0F: #6E5602;
-}
 
-:root {
   --primary: var(--base0A);
   --formula-dark: rgb(16, 34, 43);
   --formula-blue: rgb(10, 160, 217);
@@ -90,6 +88,10 @@
 
   --control-child-bg: color(var(--control-bg) whiteness(+5%));
   --control-child-fg: var(--base04);
+}
+
+:global(.react-resizable-handle) {
+  border-color: rgba(255, 100, 100, 0.8);
 }
 
 
@@ -136,10 +138,12 @@
   color: var(--control-child-fg);
 }
 
-.accordionHeader > *,
-.accordionContent > * {
+/*
+.ttb .accordionHeader > *,
+.ttb .accordionContent > * {
   margin: 15px;
 }
+*/
 
 
 /** END ACCORDION */
@@ -220,6 +224,7 @@
   color: var(--control-fg);
   background-color: var(--control-bg);
 }
+
 
 .document.even,
 .document.odd {

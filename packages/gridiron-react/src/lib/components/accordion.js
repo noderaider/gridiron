@@ -93,12 +93,14 @@ export default function accordion (pure) {
                 const content = mapContent({ documentIndex, documentID, datum: datum.get('content') })
                 return (
                   <div className={cn(styles.accordionDocument, theme.accordionDocument)}>
-                    <div
+                    <button
                       onClick={() => this.toggleDocument(documentID)}
                       className={cn(styles.accordionHeader, theme.accordionHeader)}
                     >
-                      {header}
-                    </div>
+                      <span>
+                        {header}
+                      </span>
+                    </button>
                     <div
                       ref={x => this.contents[documentID] = x}
                       className={cn(styles.accordionContent, theme.accordionContent)}

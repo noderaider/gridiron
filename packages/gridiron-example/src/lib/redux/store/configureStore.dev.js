@@ -1,15 +1,15 @@
+import Immutable from 'immutable'
 import { createStore, applyMiddleware, compose } from 'redux'
 import { routerMiddleware } from 'react-router-redux'
 import { combineReducers } from 'redux'
 import { thunk, createLogger } from 'redux-middleware'
 
 import { log, IS_BROWSER } from '../../../config'
-import DevTools from '../DevTools'
 import { middleware as idle, actions as idleActions } from '../modules/redux-idle-monitor'
+import { streamData } from '../actions/data'
 import subscribeStore from './subscribeStore'
 import * as reducers from '../reducers'
 
-const getDevToolsEnhancer = () => IS_BROWSER && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
 
 export default function configureStore(history, initialState) {
   const reducer = combineReducers(reducers)
@@ -19,11 +19,15 @@ export default function configureStore(history, initialState) {
                       , createLogger({ logger: IS_BROWSER ? console : log })
                       ]
   const enhancer = compose( applyMiddleware(...middlewares)
-                          , DevTools.instrument()
-                          //, getDevToolsEnhancer()
+                          , typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
                           )
   const store = createStore(reducer, initialState, enhancer)
   const unsubscribe = subscribeStore(store)
+
+
+
+  if(typeof window === 'object')
+    store.dispatch(streamData([ 'openflights', 'airlines' ]))
   /*
   if(IS_BROWSER)
     store.dispatch(idleActions.start())

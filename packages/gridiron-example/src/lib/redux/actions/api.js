@@ -16,17 +16,17 @@ import { forgetTokens, refreshIdentity } from './identity'
 import APIError from '../../errors/APIError'
 
 const { saveState, loadState, removeState } = persistence()
-const getPersisted = () => loadState(['tokens', 'fingerprint'])
+const getPersisted = () => loadState([ 'tokens', 'fingerprint' ])
 
 const { apis, clientId } = client
 
 const noop = () => {}
 
-export const clearData = createAction(CLEAR_DATA, ([apiName, actionName]) => ({ apiName, actionName }))
-const fetchData = createAction(FETCH_DATA, ([apiName, actionName], inputData) => ({ apiName, actionName, inputData }))
-const receiveData = createAction(RECEIVE_DATA, ([apiName, actionName], data) => ({ apiName, actionName, data }))
+export const clearData = createAction(CLEAR_DATA, ([ apiName, actionName ]) => ({ apiName, actionName }))
+const fetchData = createAction(FETCH_DATA, ([ apiName, actionName ], inputData) => ({ apiName, actionName, inputData }))
+const receiveData = createAction(RECEIVE_DATA, ([ apiName, actionName ], data) => ({ apiName, actionName, data }))
 const receiveDataError = createAction(RECEIVE_DATA)
-const keyedData = createAction(KEYED_DATA, ([apiName, actionName], [apiKey, actionKey], data) => ({ apiName, actionName, apiKey, actionKey, data }))
+const keyedData = createAction(KEYED_DATA, ([ apiName, actionName ], [ apiKey, actionKey ], data) => ({ apiName, actionName, apiKey, actionKey, data }))
 const keyedDataError = createAction(KEYED_DATA)
 
 
@@ -64,7 +64,7 @@ const resolveBaseUrl = actionConfig => {
   return `${resolvedScheme}://${resolvedHostname}:${resolvedPort}`
 }
 
-const supportedPropTypes = ['string', 'bool', 'number']
+const supportedPropTypes = [ 'string', 'bool', 'number' ]
 const checkPropType = (key, prop, propType) => {
   if(typeof prop === 'undefined' || prop === null)
     throw new APIError(`Parameter with key '${key}' was null but API was expecting propType '${propType}'.`)
@@ -198,7 +198,7 @@ function executeFetch (input, init, transform, { apiName, actionName, inputData 
     const key = JSON.stringify({ ...info, transform })
     let request = activeRequests.get(key)
     if(!request) {
-      dispatch(fetchData([apiName, actionName], inputData))
+      dispatch(fetchData([ apiName, actionName ], inputData))
       request = fetch(input, init)
                   .then(response => {
                     if(!response.ok) {
@@ -213,7 +213,7 @@ function executeFetch (input, init, transform, { apiName, actionName, inputData 
                     if(transform)
                       data = Array.isArray(json) ? json.map(transform) : transform(json)
                     activeRequests.delete(key)
-                    dispatch(receiveData([apiName, actionName], data))
+                    dispatch(receiveData([ apiName, actionName ], data))
                     return data
                   })
                   .catch(err => {
@@ -246,7 +246,7 @@ const getDecodedToken = accessToken => jwtSimple.decode(accessToken, null, true)
 
 const getCookieData = () => {
   const { tokens } = getPersisted()
-  const [accessToken, refreshToken] = tokens || []
+  const [ accessToken, refreshToken ] = tokens || []
   const decodedToken = getDecodedToken(accessToken)
   const fingerprint = getTixClaim(decodedToken, 'fingerprint')
   const subject = getClaim(decodedToken, 'sub')
@@ -255,12 +255,12 @@ const getCookieData = () => {
 
 const authorizeInit = init => {
   const { accessToken } = getCookieData()
-  let headers = Object.assign({}, init.headers, { Authorization: `Bearer ${accessToken}`})
+  let headers = Object.assign({}, init.headers, { Authorization: `Bearer ${accessToken}` })
   return Object.assign({}, init, { headers })
 }
 
 
-export function apiAction([apiName, actionName], ...args) {
+export function apiAction([ apiName, actionName ], ...args) {
   const inputData = resolveInputData(args)
   const transform = resolveTransform(args)
   return (dispatch, getState) => {
@@ -291,12 +291,12 @@ export function apiAction([apiName, actionName], ...args) {
   }
 }
 
-export function keyedApiAction([apiName, actionName], [apiKey, actionKey], ...args) {
+export function keyedApiAction([ apiName, actionName ], [ apiKey, actionKey ], ...args) {
   return (dispatch, getState) => {
     try {
-      dispatch(apiAction([apiName, actionName], ...args))
+      dispatch(apiAction([ apiName, actionName ], ...args))
         .then(data => {
-          dispatch(keyedData([apiName, actionName], [apiKey, actionKey], data))
+          dispatch(keyedData([ apiName, actionName ], [ apiKey, actionKey ], data))
           return data
         })
     } catch(innerError) {
@@ -307,4 +307,4 @@ export function keyedApiAction([apiName, actionName], [apiKey, actionKey], ...ar
 }
 
 
-export const logAccess = (path, query, title) => dispatch => dispatch(apiAction(['log', 'access'], { path, query, title }))
+export const logAccess = (path, query, title) => dispatch => dispatch(apiAction([ 'log', 'access' ], { path, query, title }))

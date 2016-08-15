@@ -163,40 +163,55 @@
 
 .accordionDocument {
   display:flex;
-  flex-direction: column;
-  flex: 1 1 auto;
+  flex: 0 1 auto;
+  align-items: center;
+  height: 100%;
+}
+
+.ttb .accordionDocument {
+  flex-flow: column nowrap;
   width: 100%;
 }
 
 .ltr .accordionDocument {
-  flex-direction: row;
-  width: initial;
-  align-items: center;
+  flex-flow: row nowrap;
+  width: 100%;
 }
 
 .accordionHeader {
   cursor: pointer;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
   align-items: center;
-  width: calc(100% - 4px);
-  margin: 1px 2px 0 2px;
+  flex: 0 10 auto;
+  border: 0;
+}
+
+.ttb .accordionHeader {
+  flex-flow: row nowrap;
+  width: 100%;
+  height: 100%;
+  justify-content: space-between;
 }
 
 .ltr .accordionHeader {
-  flex-direction: column;
+  flex-flow: column nowrap;
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+}
+
+.accordionHeader:active {
+  background-color: rgb(255, 100, 100);
 }
 
 .ltr .accordionHeader > * {
-  width: 1px;
-  word-break: break-all;
+  writing-mode: vertical-lr;
 }
 
 .accordionContent {
   display: flex;
   flex-direction: column;
-  flex: 1 1 auto;
+  flex: 10 0 auto;
   overflow: hidden;
 
   width: 100%;
@@ -306,22 +321,24 @@
 
 .fill {
   display: flex;
-  flex: 1 1 auto;
 }
 
 .gridFooter > * {
   display: inline-flex;
   flex-direction: row;
-  align-items: center;
+  align-items: space-between;
   justify-content: space-between;
+  flex: 3 1 auto;
 }
 
 .gridFooter > *:first-child {
   justify-content: flex-start;
+  flex: 1 1 auto;
 }
 
 .gridFooter > *:last-child {
   justify-content: flex-end;
+  flex: 1 1 auto;
 }
 
 
@@ -350,6 +367,7 @@
 
 .ltr .document.primitive {
   flex-flow: column nowrap;
+  border-width-top: 0;
 }
 
 .ltr .document.sectional {

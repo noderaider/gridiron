@@ -1,11 +1,11 @@
 import pure from 'lib/modules/pure'
+import { idSelector } from 'lib/redux/actions/data'
 import Header from './Header'
 import styles from './styles.css'
+const should = require('chai').should()
 
 const { React, PropTypes, cloneElement, Immutable, gridiron, defaults } = pure
 const { Pager, Grid, Columns, Pre, formula } = gridiron
-
-const should = require('chai').should()
 
 const getFormName = columnID => `filter-form-${columnID}`
 const getFilterName = documentID => `filter_${documentID}`
@@ -50,8 +50,27 @@ const FilterForm = pure (
 )
 
 
-export default pure ( pure.profiler,
+export default pure ( pure.profile(),
   { displayName: 'Grid'
+  , connect: {
+      mapStateToProps: state => {
+        const select = idSelector([ 'openflights', 'airlines' ])
+        const meta = state.data.getIn(select('meta'), Immutable.Map())
+
+        const columns = Columns ( meta.get('columns', []).filter(x => x !== 'Alias')
+                                , { 'Airline ID': { style: { flex: '0 0 2em', alignItems: 'center' }, className: styles.desktop }
+                                  , 'Name': { style: { flex: '2 0 7em' } }
+                                  , 'IATA': { style: { flex: '0 0 4em' } }
+                                  , 'ICAO': { style: { flex: '0 0 4em', alignItems: 'flex-start' } }
+                                  , 'Callsign': { style: { flex: '1 0 4em', alignItems: 'flex-start' } }
+                                  , 'Country': { style: { flex: '1 0 4em', alignItems: 'flex-start' } }
+                                  , 'Active': { style: { flex: '1 0 4em', alignItems: 'flex-start' } }
+                                  }
+                                )
+        console.info('COLUMNS', columns)
+        return { select, columns }
+      }
+    }
   , state: { useContentHeight: false }
   , init() {
       this.toggleFixedHeight = () => {
@@ -59,19 +78,26 @@ export default pure ( pure.profiler,
         this.setState({ useContentHeight: !useContentHeight })
       }
     }
+  , componentDidUpdate() {
+      this.profile()
+    }
   , render() {
-      const { container } = this.props
+      const { select, container, columns } = this.props
       const { useContentHeight } = this.state
-      const columns = Columns([ 'id', 'state' ])
 
+/*
       return container(({ Controls, Box, isMaximized, id, actions }) => (
+      */
+      return (
         <Pager
-          documentsPerPage={5}
+          documentsPerPage={100}
           columns={columns.ids}
           filterStream={createFilterStream(columns.ids)}
 
-          map={ { documents: state => Immutable.Map.isMap(state) ? state : Immutable.Map(state)
-                , cells: (documentID, datum) => Immutable.Map({ id: documentID, state: datum })
+          map={ { documents: state => state.data.getIn(select('results'), Immutable.Map())
+                , cells: (documentID, datum) => Immutable.Map(
+                    columns.ids.reduce((cells, columnID) => ({ ...cells, [columnID]: datum.get(columnID) }), {})
+                  )
                 }
               }
 
@@ -84,18 +110,23 @@ export default pure ( pure.profiler,
           }
 
           sort={Immutable.fromJS(
-            { cols: columns.ids
+            { cols: [ 'Airline ID', 'Name' ] //columns.ids
+              /*
             , keys: { id: datum => datum
                     , state: datum => Object.keys(datum).join('_')
                     }
+                    */
             })
           }
         >
           {pager => (
+            /*
             <Box>
+            */
               <Grid
                   data={pager.status.get('data', Immutable.Map())}
                   useContentHeight={useContentHeight}
+                  /*
                   mapDocument={(
                     { header: ({ local, documentID, documentIndex, document }) => (
                         <h3>{documentID}</h3>
@@ -105,31 +136,36 @@ export default pure ( pure.profiler,
                       )
                     }
                   )}
+                  */
                   mapColumn={
                     { local: columnID => columns[columnID]
-                    , header: ({ local, columnID, columnIndex }) => (
+                    , header: ({ local, columnID, columnIndex }) => local ? (
                         <local.Header
                           actions={pager.actions}
-                          fields={{ checkbox: true
-                                  //, radio: [ { yes: 'Yes', no: 'No' }, 'yes' ]
-                                  , filter: true
-                                  , sort: pager.status.get('sort')
-                                  }}
+                          fields={
+                            { sort: pager.status.get('sort')
+                            /*
+                            , filter: true
+                            , checkbox: true
+                            , radio: [ { yes: 'Yes', no: 'No' }, 'yes' ]
+                            */
+                            }
+                          }
                           paneContent={pager.earlyProps.columnFilters[columnID]}
                         >
                           {columnID}
                         </local.Header>
-                      )
-                    , footer: ({ local, columnID, columnIndex }) => (
+                      ) : null
+                    , footer: ({ local, columnID, columnIndex }) => local ? (
                         <local.Footer />
-                      )
+                      ) : null
                     }
                   }
-                  mapCell={({ local, documentIndex, columnIndex, documentID, columnID, datum }) => (
+                  mapCell={({ local, documentIndex, columnIndex, documentID, columnID, datum }) => local ? (
                     <local.Cell documentID={documentID}>
-                      <Pre>{datum}</Pre>
+                      {datum}
                     </local.Cell>
-                  )}
+                  ) : null}
 
                   header={
                     [ <Header key="left" title="Grid" subtitle="swiss army knife" description="badass grid" />
@@ -138,7 +174,9 @@ export default pure ( pure.profiler,
                           <button className={styles.expandButton} onClick={this.toggleFixedHeight}>
                               <i className="fa fa-arrows-v" />
                           </button>
+                          {/*
                           <Controls key="maximize" />
+                        */}
                         </span>
                       )
                     ]
@@ -164,10 +202,12 @@ export default pure ( pure.profiler,
                           ]}
                   {...this.props}
                 />
+                /*
             </Box>
+            */
           )}
         </Pager>
-      ))
+      )
     }
   }
 )

@@ -43,14 +43,13 @@ export default function configureRouter({ isSecure, paths }) {
   const { PUBLIC_ROOT
         , STATIC_ROOT
         , ASSETS_ROOT
+        , DATA_ROOT
         , APP_ROOT
         , NODE_MODULES_ROOT
         , DOC_ROOT
         } = paths
 
-
   const router = express.Router()
-
 
   /** REDIRECT TO HTTPS ROUTE */
   const SECURE_REDIRECTS = []
@@ -59,6 +58,10 @@ export default function configureRouter({ isSecure, paths }) {
 
   router.use(favicon(faviconPath))
   router.use('/img', express.static(join(PUBLIC_ROOT, 'img')))
+  router.use('/data', express.static(join(DATA_ROOT)))
+  /*
+  router.use('/node_modules/papaparse', express.static(join(NODE_MODULES_ROOT, 'papaparse')))
+  */
 
   router.use(configureUnsupportedRouter())
   if(process.env.NODE_ENV !== 'production')

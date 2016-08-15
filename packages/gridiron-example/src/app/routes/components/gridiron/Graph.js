@@ -68,8 +68,10 @@ function* spiral(n, { thetaIncrement = 0.75, a = 1 } = {}) {
 }
 
 const spiralState = [ ...spiral(2173, { a: 0.001 }) ]
+/*
 if(console.table)
   console.table(spiralState)
+*/
 
 export default pure (
   { displayName: 'Graph'

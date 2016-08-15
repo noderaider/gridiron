@@ -5,7 +5,7 @@ import Compare from './components/Compare'
 export default ({ path: '/'
                 , component: App
                 , indexRoute: { component: Home }
-                , childRoutes:  [ { path: '/compare', component: Compare }
-                                , { path: '*', component: Home }
+                , childRoutes:  [ /* { path: '/compare', component: Compare }
+                                ,*/ { path: '*', component: Home }
                                 ]
                 })

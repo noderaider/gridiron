@@ -29,12 +29,11 @@ export default function column(pure) {
       , propTypes:  { theme: PropTypes.object.isRequired
                     , styles: PropTypes.object.isRequired
                     , style: PropTypes.object.isRequired
-                    , className: PropTypes.string.isRequired
+                    , className: PropTypes.string
                     , fields: PropTypes.object.isRequired
                     }
       , defaultProps: { style: {}
                       , fields: {}
-                      , className: ''
                       , ...defaults
                       , ...columnProps
                       }

@@ -3,7 +3,7 @@ import pure from 'lib/modules/pure'
 import { client, log, IS_BROWSER } from 'config'
 import TopBar from 'app/elements/nav/TopBar'
 import FooterBar from 'app/elements/nav/FooterBar'
-import DevTools from 'lib/redux/DevTools'
+//import DevTools from 'lib/redux/DevTools'
 
 import childContextTypes, { schemeNames, getTheme } from 'lib/context'
 
@@ -46,7 +46,6 @@ export default pure (
                 {cloneElement(children, { container })}
                 <FooterBar />
               </div>
-              <DevTools />
               <IdleMonitor showStatus={true} />
             </div>
           )}

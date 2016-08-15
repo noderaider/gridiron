@@ -1,5 +1,6 @@
 import identity from './identity'
 import api from './api'
+import data from './data'
 import autocomplete from './autocomplete'
 import visual from './visual'
 import errors from './errors'
@@ -9,6 +10,7 @@ import idle from '../modules/redux-idle-monitor'
 
 export  { identity
         , api
+        , data
         , autocomplete
         , visual
         , errors

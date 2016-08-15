@@ -22,6 +22,10 @@
       "path": "../packages/gridiron-redux/src"
     },
     {
+      "name": "packages/gridiron-data",
+      "path": "../packages/gridiron-example/data"
+    },
+    {
       "name": "packages/gridiron-example",
       "path": "../packages/gridiron-example/src"
     },

@@ -43,9 +43,7 @@ export default pure (
                     ]
                   }
 
-                  mapHeader={({ documentID, documentIndex, datum }) => (
-                    <h3>{datum}</h3>
-                  )}
+                  mapHeader={({ documentID, documentIndex, datum }) => datum}
                   mapContent={({ documentID, documentIndex, datum }) => (
                     <h4><Pre>{{ documentID, documentIndex, datum }}</Pre></h4>
                   )}
