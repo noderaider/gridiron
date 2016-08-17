@@ -47,6 +47,7 @@
     "lodash": "^4.13.1",
     "ncp": "^2.0.0",
     "pure-stamp": "^0.1.13",
+    "reselect": "^2.5.3",
     "solvent": "^0.16.1"
   },
   "devDependencies": {
