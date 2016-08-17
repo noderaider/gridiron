@@ -34,8 +34,9 @@
   "dependencies": {
     "chai": "^3.0.0",
     "eventemitter3": "^1.2.0",
-    "react-stamp": "^0.5.1",
     "react-pub-sub": "^0.16.1",
+    "react-stamp": "^0.5.1",
+    "reselect": "^2.5.3",
     "solvent": "^0.16.1"
   },
   "devDependencies": {

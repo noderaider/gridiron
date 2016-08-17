@@ -46,6 +46,7 @@ function suggestions(state = [], action = {}) {
     case FILTER_SUGGESTIONS:
       if(state.value === payload.value)
         return payload.suggestions
+      console.info('FILTER SUGGESTIONS', payload)
       return payload.suggestions.filter(moniker => monikerFilter(moniker, payload.value)).sort((a, b) => (a.id - b.id)).slice(0, 12)
   }
   return state

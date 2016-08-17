@@ -177,6 +177,7 @@
     "redux-mux": "latest",
     "redux-pager": "^0.16.1",
     "regenerator": "latest",
+    "reselect": "^2.5.3",
     "router": "latest",
     "safe-json-stringify": "^1.0.3",
     "script-loader": "^0.6.1",
