@@ -172,6 +172,7 @@
     "redux-devtools-themes": "^1.0.0",
     "redux-form": "latest",
     "redux-idle-monitor": "latest",
+    "redux-immutable": "^3.0.7",
     "redux-middleware": "latest",
     "redux-mux": "latest",
     "redux-pager": "^0.16.1",
