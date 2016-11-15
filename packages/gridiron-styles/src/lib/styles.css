@@ -28,7 +28,6 @@
   }
 }
 
-
 @media (--mobile) {
   .desktop {
     display: none;
@@ -41,7 +40,6 @@
   }
 }
 
-
 /** GRAPH */
 .graph {
   display: flex;
@@ -50,20 +48,16 @@
   flex: 1 1 40vh;
   font-size: 1rem;
 }
-
 .graphTransform {
   transform: scaleY(-1);
-
 }
 .graphTransform text {
   transform: scaleY(-1);
 }
-
 /** END GRAPH */
 
 
 /** PAGER */
-
 .pagerControls,
 .pagerButton,
 .pagerSelect,

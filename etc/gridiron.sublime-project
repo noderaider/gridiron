@@ -150,6 +150,10 @@
       "path": "../packages/react-minimize-themes/src"
     },
     {
+      "name": "gridiron",
+      "path": "../"
+    },
+    {
       "name": "pure-stamp",
       "path": "../../pure-stamp"
     }
