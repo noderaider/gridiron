@@ -6,5 +6,5 @@ export default function shouldDocumentUpdate (obj, nextProps, nextState) {
   if(hasDescendantProps && hasNextDescendantProps) {
     return true
   }
-  return false
+  return true
 }
