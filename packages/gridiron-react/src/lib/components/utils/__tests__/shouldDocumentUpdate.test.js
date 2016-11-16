@@ -1,0 +1,2 @@
+import shouldDocumentUpdate from '../shouldDocumentUpdate'
+

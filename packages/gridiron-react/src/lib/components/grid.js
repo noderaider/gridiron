@@ -1,6 +1,8 @@
 import cn from 'classnames'
 import raf from 'raf'
 import shouldGridUpdate from './utils/shouldGridUpdate'
+import shouldDocumentUpdate from './utils/shouldDocumentUpdate'
+
 
 export default function grid (pure) {
   const { React
@@ -14,6 +16,23 @@ export default function grid (pure) {
         , defaults
         } = pure
   const { styles = {}, theme = {} } = defaults
+
+  const Document = pure.impure (
+    { displayName: 'GridDocument'
+    , shouldComponentUpdate(nextProps, nextState) {
+        return shouldDocumentUpdate(this, nextProps, nextState)
+      }
+    , render() {
+        const { documentIndex, children, isHeader, isFooter, className, ...props } = this.props
+        const moduloStyle = typeof documentIndex === 'number' && documentIndex >= 0 ? (documentIndex % 2 === 0 ? 'even' : 'odd') : null
+        return (
+          <div className={selectStyles([ 'document', moduloStyle ], className)}>
+            {children}
+          </div>
+        )
+      }
+    }
+  )
 
   /** Entire grid designed in templates to invert the control here. */
   const templatesShape =
@@ -72,21 +91,20 @@ export default function grid (pure) {
         </div>
         */
       )
-    , Document: pure.profile (
+    , Document /*: pure.impure (
         { displayName: 'GridDocument'
-        , render ({ documentIndex, children, isHeader, isFooter, className, ...props }) {
+        , render
+        ({ documentIndex, children, isHeader, isFooter, className, ...props }) => {
             const moduloStyle = typeof documentIndex === 'number' && documentIndex >= 0 ? (documentIndex % 2 === 0 ? 'even' : 'odd') : null
             return (
               <div className={selectStyles([ 'document', moduloStyle ], className)}>
-              IS THIS THE GRID DOCUMENT
-                <span>
                 {children}
-                </span>
               </div>
             )
           }
         }
       )
+      */
     , DocumentHeader: ({ children, ...props }) => (
         <div className={selectStyles('documentHeader')}>
           <span className={selectStyles('documentHeaderContent')}>
@@ -119,7 +137,7 @@ export default function grid (pure) {
     }
 
   /** Renders a flexbox based grid with Immutable data. */
-  return pure.profile (
+  return pure.impure (
     { displayName: 'GridComponent'
     , propTypes:  { 'aria-label': PropTypes.string
 

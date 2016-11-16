@@ -15,10 +15,10 @@ export default function accordion (pure) {
         , defaults
         } = pure
 
-  const GridAccord = grid(pure)
+  const Grid = grid(pure)
   const ZERO_MEASURES = [ null, '', 0, '0', '0px' ]
 
-  return pure (
+  return pure.impure (
     { displayName: 'Accordion'
     , propTypes:  { styles: PropTypes.object.isRequired
                   , theme: PropTypes.object.isRequired
@@ -83,14 +83,16 @@ export default function accordion (pure) {
     , render() {
         const { styles, theme, className, mapHeader, mapContent, data, orientation, ...gridProps } = this.props
         return (
-          <GridAccord
+          <Grid
             {...gridProps}
             className={cn(styles.accordion, theme.accordion, styles[orientation], theme[orientation], className)}
             data={data}
             mapDocument={
+              /*
               pure.impure(
                 { displayName: 'AccordionDocument'
-                , render ({ documentIndex, documentID, datum }) {
+                , render */
+                ({ documentIndex, documentID, datum }) => {
                     const header = mapHeader({ documentIndex, documentID, datum: datum.get('header') })
                     const content = mapContent({ documentIndex, documentID, datum: datum.get('content') })
                     return (
@@ -112,8 +114,11 @@ export default function accordion (pure) {
                       </div>
                     )
                   }
+
+                  /*
                 }
               )
+              */
             }
           />
         )

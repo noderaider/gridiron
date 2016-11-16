@@ -17,11 +17,6 @@
       "folder_exclude_patterns": [ "node_modules" ]
     },
     {
-      "name": "packages/gridiron-redux",
-      "path": "../packages/gridiron-redux/src",
-      "folder_exclude_patterns": [ "node_modules" ]
-    },
-    {
       "name": "packages/gridiron-data",
       "path": "../packages/gridiron-example/data",
       "folder_exclude_patterns": [ "node_modules" ]
@@ -39,36 +34,6 @@
     {
       "name": "packages/gridiron-themes",
       "path": "../packages/gridiron-themes/src",
-      "folder_exclude_patterns": [ "node_modules" ]
-    },
-    {
-      "name": "packages/react-formula",
-      "path": "../packages/react-formula/src",
-      "folder_exclude_patterns": [ "node_modules" ]
-    },
-    {
-      "name": "packages/react-formula-styles",
-      "path": "../packages/react-formula-styles/src",
-      "folder_exclude_patterns": [ "node_modules" ]
-    },
-    {
-      "name": "packages/react-formula-themes",
-      "path": "../packages/react-formula-themes/src",
-      "folder_exclude_patterns": [ "node_modules" ]
-    },
-    {
-      "name": "packages/redux-pager",
-      "path": "../packages/redux-pager/src",
-      "folder_exclude_patterns": [ "node_modules" ]
-    },
-    {
-      "name": "packages/react-pre",
-      "path": "../packages/react-pre/src",
-      "folder_exclude_patterns": [ "node_modules" ]
-    },
-    {
-      "name": "packages/react-maximize",
-      "path": "../packages/react-maximize/src",
       "folder_exclude_patterns": [ "node_modules" ]
     },
     {
