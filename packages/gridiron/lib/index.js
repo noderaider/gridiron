@@ -71,12 +71,10 @@ exports.reactPreThemes = reactPreThemes;
 exports.reactMaximize = _reactMaximize2.default;
 exports.reduxPager = _reduxPager2.default;
 function gridiron(deps) {
-  var _ref = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-
-  var _ref$themeName = _ref.themeName;
-  var themeName = _ref$themeName === undefined ? 'mellow' : _ref$themeName;
-
-  var defaults = _objectWithoutProperties(_ref, ['themeName']);
+  var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+      _ref$themeName = _ref.themeName,
+      themeName = _ref$themeName === undefined ? 'mellow' : _ref$themeName,
+      defaults = _objectWithoutProperties(_ref, ['themeName']);
 
   var pre = (0, _reactPre2.default)(deps, _extends({}, defaults, { styles: _reactPreStyles2.default, theme: reactPreThemes[themeName] }));
   deps = _extends({}, deps, pre);

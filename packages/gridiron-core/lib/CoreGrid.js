@@ -40,9 +40,9 @@ var DefaultProps = exports.DefaultProps = function DefaultProps(React) {
 
 /** Creates mapStateToProps for <CoreGrid /> component */
 var MapStateToProps = exports.MapStateToProps = function MapStateToProps(deps) {
-  var _ref = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+  var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+      getState = _ref.getState;
 
-  var getState = _ref.getState;
   return function (state, ownProps) {
     var resolvedState = getState ? getState() : state;
     return { cols: ownProps.mapCols(resolvedState),
@@ -53,9 +53,9 @@ var MapStateToProps = exports.MapStateToProps = function MapStateToProps(deps) {
 
 /** Creates mapDispatchToProps for <CoreGrid /> component */
 var MapDispatchToProps = exports.MapDispatchToProps = function MapDispatchToProps(deps) {
-  var _ref2 = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+  var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+      getState = _ref2.getState;
 
-  var getState = _ref2.getState;
   return function (dispatch) {
     return {};
   };
@@ -68,15 +68,12 @@ var MapDispatchToProps = exports.MapDispatchToProps = function MapDispatchToProp
  * @return {Grid}                       A higher order <Grid /> component.
  */
 var Connect = exports.Connect = function Connect() {
-  var _ref3 = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+  var _ref3 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+      connect = _ref3.connect,
+      rest = _objectWithoutProperties(_ref3, ['connect']);
 
-  var connect = _ref3.connect;
-
-  var rest = _objectWithoutProperties(_ref3, ['connect']);
-
-  var _ref4 = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-
-  var getState = _ref4.getState;
+  var _ref4 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+      getState = _ref4.getState;
 
   should.exist(connect, 'redux connect is required for <Grid /> connect');
   connect.should.be.a('function');

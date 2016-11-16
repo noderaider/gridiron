@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.resolveRoot = exports.__rootname = exports.log = exports.baseUrl = exports.IS_BROWSER = exports.IS_DEV = exports.IS_HOT = exports.noop = exports.libName = undefined;
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _path = require('path');
 

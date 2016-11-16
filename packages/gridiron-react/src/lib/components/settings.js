@@ -1,5 +1,4 @@
 import { Settings as Core } from 'gridiron-core'
-const should = require('chai').should()
 
 export default function settings (pure) {
   const { React, defaults } = pure

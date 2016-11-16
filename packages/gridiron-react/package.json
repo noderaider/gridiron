@@ -17,6 +17,7 @@
     "postrelease-doc": "git commit -am \"doc-release\" && git push --follow-tags"
   },
   "dependencies": {
+    "babel-runtime": "^6.18.0",
     "bluebird": "^3.4.1",
     "classnames": "^2.2.5",
     "co": "^4.6.0",
@@ -34,10 +35,11 @@
     "babel-cli": "latest",
     "babel-core": "latest",
     "babel-eslint": "latest",
+    "babel-jest": "^17.0.2",
     "babel-loader": "latest",
     "babel-plugin-react-transform": "latest",
     "babel-plugin-transform-runtime": "latest",
-    "babel-preset-es2015": "latest",
+    "babel-preset-latest": "latest",
     "babel-preset-react": "latest",
     "babel-preset-stage-0": "latest",
     "esdoc": "latest",

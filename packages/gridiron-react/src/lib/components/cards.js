@@ -1,7 +1,7 @@
 import cn from 'classnames'
 import raf from 'raf'
 import grid from './grid'
-import column from './column/index'
+import column from './column/column'
 import util from 'util'
 
 export default function cards (pure) {
@@ -42,15 +42,16 @@ export default function cards (pure) {
             data={data}
             className={cn(styles.cards, theme.cards, className)}
             templates={
-              { /*Body: ({ documentIndex, children, ...props }) => (
-                  <div className={cn(styles.cardsBody, theme.cardsBody)}>
-                    {children}
-                  </div>
-                )
-              ,*/ Document: ({ documentIndex, children, ...props }) => (
-                  <div className={cn(styles.cardsDocument, theme.cardsDocument)}>
-                    {children}
-                  </div>
+              { Document: pure.profile (
+                  { displayName: 'CardsDocument'
+                  , render ({ documentIndex, children, ...props }) {
+                      return (
+                        <div className={cn(styles.cardsDocument, theme.cardsDocument)}>
+                          {children}
+                        </div>
+                      )
+                    }
+                  }
                 )
               }
             }

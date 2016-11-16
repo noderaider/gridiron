@@ -1,7 +1,7 @@
 import cn from 'classnames'
 import raf from 'raf'
 import grid from './grid'
-import column from './column/index'
+import column from './column/column'
 import util from 'util'
 
 export default function accordion (pure) {
@@ -15,7 +15,7 @@ export default function accordion (pure) {
         , defaults
         } = pure
 
-  const Grid = grid(pure)
+  const GridAccord = grid(pure)
   const ZERO_MEASURES = [ null, '', 0, '0', '0px' ]
 
   return pure (
@@ -83,33 +83,37 @@ export default function accordion (pure) {
     , render() {
         const { styles, theme, className, mapHeader, mapContent, data, orientation, ...gridProps } = this.props
         return (
-          <Grid
+          <GridAccord
             {...gridProps}
             className={cn(styles.accordion, theme.accordion, styles[orientation], theme[orientation], className)}
             data={data}
             mapDocument={
-              ({ documentIndex, documentID, datum }) => {
-                const header = mapHeader({ documentIndex, documentID, datum: datum.get('header') })
-                const content = mapContent({ documentIndex, documentID, datum: datum.get('content') })
-                return (
-                  <div className={cn(styles.accordionDocument, theme.accordionDocument)}>
-                    <button
-                      onClick={() => this.toggleDocument(documentID)}
-                      className={cn(styles.accordionHeader, theme.accordionHeader)}
-                    >
-                      <span>
-                        {header}
-                      </span>
-                    </button>
-                    <div
-                      ref={x => this.contents[documentID] = x}
-                      className={cn(styles.accordionContent, theme.accordionContent)}
-                    >
-                      {content}
-                    </div>
-                  </div>
-                )
-              }
+              pure.impure(
+                { displayName: 'AccordionDocument'
+                , render ({ documentIndex, documentID, datum }) {
+                    const header = mapHeader({ documentIndex, documentID, datum: datum.get('header') })
+                    const content = mapContent({ documentIndex, documentID, datum: datum.get('content') })
+                    return (
+                      <div className={cn(styles.accordionDocument, theme.accordionDocument)}>
+                        <button
+                          onClick={() => this.toggleDocument(documentID)}
+                          className={cn(styles.accordionHeader, theme.accordionHeader)}
+                        >
+                          <span>
+                            {header}
+                          </span>
+                        </button>
+                        <div
+                          ref={x => this.contents[documentID] = x}
+                          className={cn(styles.accordionContent, theme.accordionContent)}
+                        >
+                          {content}
+                        </div>
+                      </div>
+                    )
+                  }
+                }
+              )
             }
           />
         )

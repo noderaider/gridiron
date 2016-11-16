@@ -8,14 +8,12 @@ var _webpack = require('webpack');
 
 var _config = require('../config.js');
 
-var CommonsChunkPlugin = _webpack.optimize.CommonsChunkPlugin;
+var CommonsChunkPlugin = _webpack.optimize.CommonsChunkPlugin,
+    OccurenceOrderPlugin = _webpack.optimize.OccurenceOrderPlugin,
+    DedupePlugin = _webpack.optimize.DedupePlugin,
+    UglifyJsPlugin = _webpack.optimize.UglifyJsPlugin;
 //import CompressionPlugin from 'compression-webpack-plugin'
 //import ExtractTextPlugin from 'extract-text-webpack-plugin'
-
-var OccurenceOrderPlugin = _webpack.optimize.OccurenceOrderPlugin;
-var DedupePlugin = _webpack.optimize.DedupePlugin;
-var UglifyJsPlugin = _webpack.optimize.UglifyJsPlugin;
-
 
 var NODE_ENV = process.env.NODE_ENV || 'production';
 var getDefinePlugin = function getDefinePlugin(name) {

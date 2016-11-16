@@ -6,7 +6,7 @@
     "postrelease-pages": "git branch -D gh-pages"
   },
   "devDependencies": {
-    "lerna": "2.0.0-beta.26"
+    "lerna": "2.0.0-beta.30"
   },
   "dependencies": {
     "lerna": "^2.0.0-beta.26"

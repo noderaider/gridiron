@@ -70,8 +70,12 @@ export default function cards (pure) {
                     </g>
                   </svg>
                 )
-              , Document: ({ documentIndex, children, ...props }) => (
-                  children
+              , Document: pure.profile (
+                  { displayName: 'GraphDocument'
+                  , render ({ documentIndex, children, ...props }) {
+                      return children
+                    }
+                  }
                 )
               }
             }

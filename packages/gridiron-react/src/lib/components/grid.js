@@ -1,5 +1,6 @@
 import cn from 'classnames'
 import raf from 'raf'
+import shouldGridUpdate from './utils/shouldGridUpdate'
 
 export default function grid (pure) {
   const { React
@@ -71,14 +72,21 @@ export default function grid (pure) {
         </div>
         */
       )
-    , Document: ({ documentIndex, children, isHeader, isFooter, className, ...props }) => {
-        const moduloStyle = typeof documentIndex === 'number' && documentIndex >= 0 ? (documentIndex % 2 === 0 ? 'even' : 'odd') : null
-        return (
-          <div className={selectStyles([ 'document', moduloStyle ], className)}>
-            {children}
-          </div>
-        )
-      }
+    , Document: pure.profile (
+        { displayName: 'GridDocument'
+        , render ({ documentIndex, children, isHeader, isFooter, className, ...props }) {
+            const moduloStyle = typeof documentIndex === 'number' && documentIndex >= 0 ? (documentIndex % 2 === 0 ? 'even' : 'odd') : null
+            return (
+              <div className={selectStyles([ 'document', moduloStyle ], className)}>
+              IS THIS THE GRID DOCUMENT
+                <span>
+                {children}
+                </span>
+              </div>
+            )
+          }
+        }
+      )
     , DocumentHeader: ({ children, ...props }) => (
         <div className={selectStyles('documentHeader')}>
           <span className={selectStyles('documentHeaderContent')}>
@@ -110,10 +118,9 @@ export default function grid (pure) {
     , NoContent: props => <div {...props} />
     }
 
-
   /** Renders a flexbox based grid with Immutable data. */
-  return pure (
-    { displayName: 'Grid'
+  return pure.profile (
+    { displayName: 'GridComponent'
     , propTypes:  { 'aria-label': PropTypes.string
 
                   /** Optional inline style */
@@ -210,6 +217,9 @@ export default function grid (pure) {
     , componentWillReceiveProps(nextProps) {
         if(this.props.data !== nextProps.data)
           this._updateLocals()
+      }
+    , shouldComponentUpdate(...args) {
+        return shouldGridUpdate(this, ...args)
       }
     , render () {
         const { className
