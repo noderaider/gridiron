@@ -1,6 +1,6 @@
 {
   "name": "gridiron-redux",
-  "version": "0.16.2",
+  "version": "0.16.3",
   "description": "Redux functionality for gridiron framework.",
   "main": "lib/index.js",
   "scripts": {
@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "chai": "latest",
-    "gridiron-core": "^0.16.2",
+    "gridiron-core": "^0.16.3",
     "ncp": "latest",
     "npm-run-all": "latest",
     "redux-pager": "^0.16.1",
