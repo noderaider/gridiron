@@ -179,6 +179,11 @@
   flex: 0 10 auto;
   border: 0;
 }
+.accordionHeader > * {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
 
 .ttb .accordionHeader {
   flex-flow: row nowrap;
@@ -491,8 +496,7 @@
 
 .documentHeaderContent,
 .documentFooterContent {
-  padding: 0 15px;
-  width: 100%;
+  width:100%;
 }
 
 .pane {

@@ -116,7 +116,7 @@ export default function column(pure) {
       , propTypes:  { styles: PropTypes.object.isRequired
                     , theme: PropTypes.object.isRequired
                     , style: PropTypes.object.isRequired
-                    , className: PropTypes.string.isRequired
+                    , className: PropTypes.string
                     , documentID: PropTypes.any.isRequired
                     }
       , defaultProps: { style: {}
@@ -153,7 +153,7 @@ export default function column(pure) {
       , propTypes:  { styles: PropTypes.object.isRequired
                     , theme: PropTypes.object.isRequired
                     , style: PropTypes.object.isRequired
-                    , className: PropTypes.string.isRequired
+                    , className: PropTypes.string
                     }
       , defaultProps: { style: {}
                       , className: ''
