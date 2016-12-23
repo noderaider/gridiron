@@ -236,7 +236,7 @@
   -webkit-overflow-scrolling: touch;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: visible;
 
   /* Without this property, Chrome repaints the entire Grid any time a new row or column is added.
      Firefox only repaints the new row or column (regardless of this property).
@@ -454,7 +454,7 @@
   flex-direction: column;
   justify-content: center;
   padding: 0.3em;
-  overflow: auto;
+  overflow: visible;
 }
 
 
