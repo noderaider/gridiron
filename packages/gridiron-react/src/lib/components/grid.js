@@ -26,7 +26,7 @@ export default function grid (pure) {
         const { documentIndex, children, isHeader, isFooter, className, ...props } = this.props
         const moduloStyle = typeof documentIndex === 'number' && documentIndex >= 0 ? (documentIndex % 2 === 0 ? 'even' : 'odd') : null
         return (
-          <div className={selectStyles([ 'document', moduloStyle ], className)}>
+          <div className={selectStyles([ 'document', moduloStyle ], className)} {...props}>
             {children}
           </div>
         )
@@ -112,8 +112,8 @@ export default function grid (pure) {
           </span>
         </div>
       )
-    , DocumentBody: ({ children, ...props }) => (
-        <div className={selectStyles('documentBody')}>
+    , DocumentBody: ({ children, documentIndex, ...props }) => (
+        <div className={selectStyles('documentBody')} {...props}>
           {children}
         </div>
       )
@@ -139,84 +139,90 @@ export default function grid (pure) {
   /** Renders a flexbox based grid with Immutable data. */
   return pure.impure (
     { displayName: 'GridComponent'
-    , propTypes:  { 'aria-label': PropTypes.string
+    , propTypes: (
+        { 'aria-label': PropTypes.string
 
-                  /** Optional inline style */
-                  , style: PropTypes.object
+        /** Optional inline style */
+        , style: PropTypes.object
 
-                  /** Optional custom CSS class name to attach to root Grid element. */
-                  , className: PropTypes.string
+        /** Optional custom CSS class name to attach to root Grid element. */
+        , className: PropTypes.string
 
-                  /** Optional custom CSS class for individual cells */
-                  , cellClassName: PropTypes.oneOfType([ PropTypes.string, PropTypes.func ])
+        /** Optional custom CSS class for individual cells */
+        , cellClassName: PropTypes.oneOfType([ PropTypes.string, PropTypes.func ])
 
-                  /** Optional custom styles for individual cells */
-                  , cellStyle: PropTypes.oneOfType([ PropTypes.object, PropTypes.func ])
+        /** Optional custom styles for individual cells */
+        , cellStyle: PropTypes.oneOfType([ PropTypes.object, PropTypes.func ])
 
-                  /**
-                   * Controls scroll-to-cell behavior of the Grid.
-                   * The default ("auto") scrolls the least amount possible to ensure that the specified cell is fully visible.
-                   * Use "start" to align cells to the top/left of the Grid and "end" to align bottom/right.
-                   */
-                  , scrollToAlignment: PropTypes.oneOf([ 'auto', 'end', 'start', 'center' ]).isRequired
+        /**
+         * Controls scroll-to-cell behavior of the Grid.
+         * The default ("auto") scrolls the least amount possible to ensure that the specified cell is fully visible.
+         * Use "start" to align cells to the top/left of the Grid and "end" to align bottom/right.
+         */
+        , scrollToAlignment: PropTypes.oneOf([ 'auto', 'end', 'start', 'center' ]).isRequired
 
-                  /** Column index to ensure visible (by forcefully scrolling if necessary) */
-                  , scrollToColumn: PropTypes.number
+        /** Column index to ensure visible (by forcefully scrolling if necessary) */
+        , scrollToColumn: PropTypes.number
 
-                  /** Document index to ensure visible (by forcefully scrolling if necessary) */
-                  , scrollToDocument: PropTypes.number
-
-
-                  /** Tab index for focus */
-                  , tabIndex: PropTypes.number
-
-                  /** Optionally constrain grid to maximum height, otherwise expands to fill container (if enough documents rendered). */
-                  , maxHeight: PropTypes.number
-
-                  /** Optionally constrain grid to maximum width, otherwise uses containers width. */
-                  , maxWidth: PropTypes.number
-
-                  /**
-                   * Optional: Either a fixed row height (number) or a function that returns the height of a row given its index.
-                   * Should implement the following interface: ({ index: number }): number
-                   */
-                  , rowHeight: PropTypes.oneOfType([ PropTypes.number, PropTypes.func ])
-
-                  /**
-                   * Optional: Either a fixed column width (number) or a function that returns the width of a column given its index.
-                   * Should implement the following interface: (index: number): number
-                   */
-                  , columnWidth: PropTypes.oneOfType([ PropTypes.number, PropTypes.func ])
+        /** Document index to ensure visible (by forcefully scrolling if necessary) */
+        , scrollToDocument: PropTypes.number
 
 
-                  , data: PropTypes.object.isRequired
-                  , mapDocument: PropTypes.oneOfType([ PropTypes.func, PropTypes.object ])
-                  , mapColumn: PropTypes.object
-                  , mapCell: PropTypes.func
-                  , templates: PropTypes.shape(templatesShape)
-                  , styles: PropTypes.object.isRequired
-                  , theme: PropTypes.object.isRequired
-                  , mergeLocal: PropTypes.func.isRequired
-                  , useContentHeight: PropTypes.bool.isRequired
-                  }
+        /** Tab index for focus */
+        , tabIndex: PropTypes.number
 
-    , defaultProps: { 'aria-label': 'grid'
-                    , className: ''
-                    , style: {}
-                    , cellStyle: {}
-                    , scrollToAlignment: 'auto'
-                    , tabIndex: 0
+        /** Optionally constrain grid to maximum height, otherwise expands to fill container (if enough documents rendered). */
+        , maxHeight: PropTypes.number
 
-                    , templates: {}
-                    , mapDocument: {}
-                    , mapColumn:  {}
-                    , mergeLocal: ({ documentLocal, columnLocal }) => Object.assign({}, documentLocal, columnLocal)
-                    , useContentHeight: false
-                    , ...defaults
-                    }
-    , state:  { documentLocal: null
-              , columnLocal: null
-              }
+        /** Optionally constrain grid to maximum width, otherwise uses containers width. */
+        , maxWidth: PropTypes.number
+
+        /**
+         * Optional: Either a fixed row height (number) or a function that returns the height of a row given its index.
+         * Should implement the following interface: ({ index: number }): number
+         */
+        , rowHeight: PropTypes.oneOfType([ PropTypes.number, PropTypes.func ])
+
+        /**
+         * Optional: Either a fixed column width (number) or a function that returns the width of a column given its index.
+         * Should implement the following interface: (index: number): number
+         */
+        , columnWidth: PropTypes.oneOfType([ PropTypes.number, PropTypes.func ])
+
+
+        , data: PropTypes.object.isRequired
+        , mapDocument: PropTypes.oneOfType([ PropTypes.func, PropTypes.object ])
+        , mapColumn: PropTypes.object
+        , mapCell: PropTypes.func
+        , templates: PropTypes.shape(templatesShape)
+        , styles: PropTypes.object.isRequired
+        , theme: PropTypes.object.isRequired
+        , mergeLocal: PropTypes.func.isRequired
+        , useContentHeight: PropTypes.bool.isRequired
+        , onDocumentClick: PropTypes.func
+        }
+      )
+    , defaultProps: (
+        { 'aria-label': 'grid'
+        , className: ''
+        , style: {}
+        , cellStyle: {}
+        , scrollToAlignment: 'auto'
+        , tabIndex: 0
+
+        , templates: {}
+        , mapDocument: {}
+        , mapColumn:  {}
+        , mergeLocal: ({ documentLocal, columnLocal }) => Object.assign({}, documentLocal, columnLocal)
+        , useContentHeight: false
+        , ...defaults
+        }
+      )
+    , state: (
+        { documentLocal: null
+        , columnLocal: null
+        }
+      )
     , init() {
         this._updateLocals = () => {
           const { data, mapColumn, mapDocument } = this.props
@@ -254,6 +260,7 @@ export default function grid (pure) {
               , mapCell
               , mergeLocal
               , useContentHeight
+              , onDocumentClick
 
               , styles
               , theme
@@ -360,6 +367,7 @@ export default function grid (pure) {
             { key: documentIndex
             , documentIndex
             , children
+            , onClick: onDocumentClick ? (e) => onDocumentClick({ documentIndex, documentID }) : null
             , className: isPrimitive ? selectStyles('primitive') : selectStyles('sectional')
             }
           )

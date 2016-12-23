@@ -1,4 +1,5 @@
 import pure from 'lib/modules/pure'
+import { connect } from 'react-redux'
 import { idSelector } from 'lib/redux/actions/data'
 import Header from './Header'
 import styles from './styles.css'
@@ -49,80 +50,74 @@ const FilterForm = pure (
   }
 )
 
+function mapStateToProps (state) {
+  const select = idSelector([ 'openflights', 'airlines' ])
+  const meta = state.data.getIn(select('meta'), Immutable.Map())
 
-export default pure ( pure.profile(),
-  { displayName: 'Grid'
-  , connect: {
-      mapStateToProps: state => {
-        const select = idSelector([ 'openflights', 'airlines' ])
-        const meta = state.data.getIn(select('meta'), Immutable.Map())
+  const columns = Columns ( meta.get('columns', []).filter(x => x !== 'Alias')
+                          , { 'Airline ID': { style: { flex: '0 0 2em', alignItems: 'center' }, className: styles.desktop }
+                            , 'Name': { style: { flex: '2 0 7em' } }
+                            , 'IATA': { style: { flex: '0 0 4em' } }
+                            , 'ICAO': { style: { flex: '0 0 4em', alignItems: 'flex-start' } }
+                            , 'Callsign': { style: { flex: '1 0 4em', alignItems: 'flex-start' } }
+                            , 'Country': { style: { flex: '1 0 4em', alignItems: 'flex-start' } }
+                            , 'Active': { style: { flex: '1 0 4em', alignItems: 'flex-start' } }
+                            }
+                          )
+  console.info('COLUMNS', columns)
+  return { select, columns }
+}
 
-        const columns = Columns ( meta.get('columns', []).filter(x => x !== 'Alias')
-                                , { 'Airline ID': { style: { flex: '0 0 2em', alignItems: 'center' }, className: styles.desktop }
-                                  , 'Name': { style: { flex: '2 0 7em' } }
-                                  , 'IATA': { style: { flex: '0 0 4em' } }
-                                  , 'ICAO': { style: { flex: '0 0 4em', alignItems: 'flex-start' } }
-                                  , 'Callsign': { style: { flex: '1 0 4em', alignItems: 'flex-start' } }
-                                  , 'Country': { style: { flex: '1 0 4em', alignItems: 'flex-start' } }
-                                  , 'Active': { style: { flex: '1 0 4em', alignItems: 'flex-start' } }
-                                  }
-                                )
-        console.info('COLUMNS', columns)
-        return { select, columns }
+export default connect(mapStateToProps) (
+  pure (
+    { displayName: 'Grid'
+    , state: { useContentHeight: false }
+    , init() {
+        this.toggleFixedHeight = () => {
+          const { useContentHeight } = this.state
+          this.setState({ useContentHeight: !useContentHeight })
+        }
       }
-    }
-  , state: { useContentHeight: false }
-  , init() {
-      this.toggleFixedHeight = () => {
+    , render() {
+        const { select, container, columns } = this.props
         const { useContentHeight } = this.state
-        this.setState({ useContentHeight: !useContentHeight })
-      }
-    }
-  , componentDidUpdate() {
-      this.profile()
-    }
-  , render() {
-      const { select, container, columns } = this.props
-      const { useContentHeight } = this.state
 
-/*
-      return container(({ Controls, Box, isMaximized, id, actions }) => (
-      */
-      return (
-        <Pager
-          documentsPerPage={100}
-          columns={columns.ids}
-          filterStream={createFilterStream(columns.ids)}
+  /*
+        return container(({ Controls, Box, isMaximized, id, actions }) => (
+        */
+        return (
+          <Pager
+            documentsPerPage={100}
+            columns={columns.ids}
+            filterStream={createFilterStream(columns.ids)}
 
-          map={ { documents: state => state.data.getIn(select('results'), Immutable.Map())
-                , cells: (documentID, datum) => Immutable.Map(
-                    columns.ids.reduce((cells, columnID) => ({ ...cells, [columnID]: datum.get(columnID) }), {})
-                  )
-                }
+            map={
+              { documents: state => state.data.getIn(select('results'), Immutable.Map())
+              , cells: (documentID, datum) => Immutable.Map(
+                  columns.ids.reduce((cells, columnID) => ({ ...cells, [columnID]: datum.get(columnID) }), {})
+                )
               }
-
-          /** EARLY PROPS ({ documents }) -> WILL BYPASS UPDATES IF DEFINED HERE */
-          mapEarlyProps={
-            ({ documents, columnData }) => {
-              const columnFilters = columns.reduce(columnID => <FilterForm columnData={columnData} columnID={columnID} />)
-              return { columnFilters }
             }
-          }
 
-          sort={Immutable.fromJS(
-            { cols: [ 'Airline ID', 'Name' ] //columns.ids
-              /*
-            , keys: { id: datum => datum
-                    , state: datum => Object.keys(datum).join('_')
-                    }
-                    */
-            })
-          }
-        >
-          {pager => (
-            /*
-            <Box>
-            */
+            /** EARLY PROPS ({ documents }) -> WILL BYPASS UPDATES IF DEFINED HERE */
+            mapEarlyProps={
+              ({ documents, columnData }) => {
+                const columnFilters = columns.reduce(columnID => <FilterForm columnData={columnData} columnID={columnID} />)
+                return { columnFilters }
+              }
+            }
+
+            sort={Immutable.fromJS(
+              { cols: [ 'Airline ID', 'Name' ] //columns.ids
+                /*
+              , keys: { id: datum => datum
+                      , state: datum => Object.keys(datum).join('_')
+                      }
+                      */
+              })
+            }
+          >
+            {pager => (
               <Grid
                   data={pager.status.get('data', Immutable.Map())}
                   useContentHeight={useContentHeight}
@@ -166,7 +161,13 @@ export default pure ( pure.profile(),
                       {datum}
                     </local.Cell>
                   ) : null}
-
+                  /*
+                  onDocumentClick={
+                    ({ documentID, documentIndex }) => {
+                      alert(`DOCUMENT CLICKED => ${documentID}, ${documentIndex}`)
+                    }
+                  }
+                  */
                   header={
                     [ <Header key="left" title="Grid" subtitle="swiss army knife" description="badass grid" />
                     , (
@@ -181,33 +182,33 @@ export default pure ( pure.profile(),
                       )
                     ]
                   }
-                  footer={[ (
-                              <span key="footer-left">
-                                <pager.Controls key="pager-buttons">
-                                  <pager.Select />
-                                </pager.Controls>
-                              </span>
-                            )
-                          , (
-                              <span key="footer-center">
-                                <pager.DocumentStatus key="pager-row-status" />
-                                <pager.PageStatus key="pager-page-status" />
-                              </span>
-                            )
-                          , (
-                              <span key="footer-right">
-                                <pager.DocumentsPerPage label="Documents Per Page" key="documents-per-page" />
-                              </span>
-                            )
-                          ]}
+                  footer={
+                    [ (
+                        <span key="footer-left">
+                          <pager.Controls key="pager-buttons">
+                            <pager.Select />
+                          </pager.Controls>
+                        </span>
+                      )
+                    , (
+                        <span key="footer-center">
+                          <pager.DocumentStatus key="pager-row-status" />
+                          <pager.PageStatus key="pager-page-status" />
+                        </span>
+                      )
+                    , (
+                        <span key="footer-right">
+                          <pager.DocumentsPerPage label="Documents Per Page" key="documents-per-page" />
+                        </span>
+                      )
+                    ]
+                  }
                   {...this.props}
                 />
-                /*
-            </Box>
-            */
-          )}
-        </Pager>
-      )
+            )}
+          </Pager>
+        )
+      }
     }
-  }
+  )
 )

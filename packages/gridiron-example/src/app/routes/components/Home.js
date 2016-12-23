@@ -24,7 +24,8 @@ export default pure (
   , render() {
       return (
         <div>
-          <Grid {...this.props} />
+        Hello
+          <Grid />
         </div>
       )
       return (
