@@ -1,6 +1,6 @@
 {
   "name": "gridiron-react",
-  "version": "0.17.0",
+  "version": "0.18.0",
   "description": "React view components for gridiron.",
   "main": "lib/index.js",
   "scripts": {
@@ -23,7 +23,7 @@
     "co": "^4.6.0",
     "detect-resize": "^0.1.5",
     "dom-helpers": "^2.4.0",
-    "gridiron-core": "^0.17.0",
+    "gridiron-core": "^0.18.0",
     "most": "^1.0.0",
     "pure-stamp": "^0.1.13",
     "raf": "^3.2.0",
