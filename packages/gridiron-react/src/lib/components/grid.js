@@ -261,6 +261,7 @@ export default function grid (pure) {
               , mergeLocal
               , useContentHeight
               , onDocumentClick
+              , onCellClick
 
               , styles
               , theme
@@ -336,6 +337,7 @@ export default function grid (pure) {
                                                       , documentID
                                                       , columnIndex
                                                       , columnID
+                                                      , onClick: onCellClick ? (e) => onCellClick({ documentIndex, documentID, columnIndex, columnID, datum: cells.get(columnID) }) : null
                                                       , local: mergeLocal(
                                                           { documentLocal
                                                           , columnLocal: this.state.columnLocal && this.state.columnLocal.get(columnID)
