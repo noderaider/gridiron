@@ -19,6 +19,7 @@
     "postrelease-doc": "git commit -am \"doc-release\" && git push --follow-tags"
   },
   "dependencies": {
+    "bluebird": "^3.4.7",
     "chai": "latest",
     "classnames": "latest",
     "gridiron-core": "^0.18.0",

@@ -7,6 +7,11 @@
       "folder_exclude_patterns": [ "node_modules" ]
     },
     {
+      "name": "packages/redux-pager",
+      "path": "../packages/redux-pager/src",
+      "folder_exclude_patterns": [ "node_modules" ]
+    },
+    {
       "name": "packages/gridiron",
       "path": "../packages/gridiron/src",
       "folder_exclude_patterns": [ "node_modules" ]
@@ -39,11 +44,6 @@
     {
       "name": "gridiron",
       "path": "../",
-      "folder_exclude_patterns": [ "node_modules" ]
-    },
-    {
-      "name": "pure-stamp",
-      "path": "../../pure-stamp",
       "folder_exclude_patterns": [ "node_modules" ]
     }
   ]

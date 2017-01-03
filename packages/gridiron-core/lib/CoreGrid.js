@@ -67,7 +67,7 @@ var MapDispatchToProps = exports.MapDispatchToProps = function MapDispatchToProp
  * @param  {...Object} options.rest     The rest of the connect related dependencies.
  * @return {Grid}                       A higher order <Grid /> component.
  */
-var Connect = exports.Connect = function Connect() {
+var Connect = function Connect() {
   var _ref3 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
       connect = _ref3.connect,
       rest = _objectWithoutProperties(_ref3, ['connect']);
@@ -87,3 +87,4 @@ var Connect = exports.Connect = function Connect() {
     return connect(mapStateToProps, mapDispatchToProps)(Component);
   };
 };
+exports.Connect = Connect;

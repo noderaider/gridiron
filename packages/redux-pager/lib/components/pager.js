@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -36,15 +36,15 @@ function nextDirection(direction) {
 }
 
 function pager(pure) {
-  var React = pure.React;
-  var PropTypes = pure.PropTypes;
-  var cloneElement = pure.cloneElement;
-  var connect = pure.connect;
-  var shallowCompare = pure.shallowCompare;
-  var Immutable = pure.Immutable;
-  var defaults = pure.defaults;
-  var styles = defaults.styles;
-  var theme = defaults.theme;
+  var React = pure.React,
+      PropTypes = pure.PropTypes,
+      cloneElement = pure.cloneElement,
+      connect = pure.connect,
+      shallowCompare = pure.shallowCompare,
+      Immutable = pure.Immutable,
+      defaults = pure.defaults;
+  var styles = defaults.styles,
+      theme = defaults.theme;
 
   var desktopStyles = [styles.desktop, theme.desktop];
   var mobileStyles = [styles.mobile, theme.mobile];
@@ -121,37 +121,32 @@ function pager(pure) {
     typeSingular: 'document',
     typePlural: 'documents',
     content: { FastBackward: function FastBackward(_ref) {
-        var status = _ref.status;
-
-        var props = _objectWithoutProperties(_ref, ['status']);
+        var status = _ref.status,
+            props = _objectWithoutProperties(_ref, ['status']);
 
         return React.createElement('i', { className: 'fa fa-fast-backward' });
       },
       StepBackward: function StepBackward(_ref2) {
-        var status = _ref2.status;
-
-        var props = _objectWithoutProperties(_ref2, ['status']);
+        var status = _ref2.status,
+            props = _objectWithoutProperties(_ref2, ['status']);
 
         return React.createElement('i', { className: 'fa fa-step-backward' });
       },
       StepForward: function StepForward(_ref3) {
-        var status = _ref3.status;
-
-        var props = _objectWithoutProperties(_ref3, ['status']);
+        var status = _ref3.status,
+            props = _objectWithoutProperties(_ref3, ['status']);
 
         return React.createElement('i', { className: 'fa fa-step-forward' });
       },
       FastForward: function FastForward(_ref4) {
-        var status = _ref4.status;
-
-        var props = _objectWithoutProperties(_ref4, ['status']);
+        var status = _ref4.status,
+            props = _objectWithoutProperties(_ref4, ['status']);
 
         return React.createElement('i', { className: 'fa fa-fast-forward' });
       },
       PageStatus: function PageStatus(_ref5) {
-        var status = _ref5.status;
-
-        var props = _objectWithoutProperties(_ref5, ['status']);
+        var status = _ref5.status,
+            props = _objectWithoutProperties(_ref5, ['status']);
 
         return React.createElement(
           'span',
@@ -163,9 +158,8 @@ function pager(pure) {
         );
       },
       PageStatusMobile: function PageStatusMobile(_ref6) {
-        var status = _ref6.status;
-
-        var props = _objectWithoutProperties(_ref6, ['status']);
+        var status = _ref6.status,
+            props = _objectWithoutProperties(_ref6, ['status']);
 
         return React.createElement(
           'span',
@@ -176,9 +170,8 @@ function pager(pure) {
         );
       },
       DocumentStatus: function DocumentStatus(_ref7) {
-        var status = _ref7.status;
-
-        var props = _objectWithoutProperties(_ref7, ['status']);
+        var status = _ref7.status,
+            props = _objectWithoutProperties(_ref7, ['status']);
 
         return React.createElement(
           'span',
@@ -195,9 +188,8 @@ function pager(pure) {
         );
       },
       DocumentStatusMobile: function DocumentStatusMobile(_ref8) {
-        var status = _ref8.status;
-
-        var props = _objectWithoutProperties(_ref8, ['status']);
+        var status = _ref8.status,
+            props = _objectWithoutProperties(_ref8, ['status']);
 
         return React.createElement(
           'span',
@@ -210,9 +202,8 @@ function pager(pure) {
         );
       },
       DocumentCount: function DocumentCount(_ref9) {
-        var status = _ref9.status;
-
-        var props = _objectWithoutProperties(_ref9, ['status']);
+        var status = _ref9.status,
+            props = _objectWithoutProperties(_ref9, ['status']);
 
         return React.createElement(
           'span',
@@ -223,9 +214,8 @@ function pager(pure) {
         );
       },
       DocumentCountMobile: function DocumentCountMobile(_ref10) {
-        var status = _ref10.status;
-
-        var props = _objectWithoutProperties(_ref10, ['status']);
+        var status = _ref10.status,
+            props = _objectWithoutProperties(_ref10, ['status']);
 
         return React.createElement(
           'span',
@@ -236,16 +226,14 @@ function pager(pure) {
         );
       },
       selectOption: function selectOption(_ref11) {
-        var index = _ref11.index;
-
-        var props = _objectWithoutProperties(_ref11, ['index']);
+        var index = _ref11.index,
+            props = _objectWithoutProperties(_ref11, ['index']);
 
         return (index + 1).toLocaleString();
       },
       documentsPerPageOption: function documentsPerPageOption(_ref12) {
-        var index = _ref12.index;
-
-        var props = _objectWithoutProperties(_ref12, ['index']);
+        var index = _ref12.index,
+            props = _objectWithoutProperties(_ref12, ['index']);
 
         return typeof index === 'number' ? index.toLocaleString() : index;
       }
@@ -259,14 +247,13 @@ function pager(pure) {
     render: function render() {
       var _this = this;
 
-      var _props = this.props;
-      var columns = _props.columns;
-      var map = _props.map;
-      var documentsPerPageOptions = _props.documentsPerPageOptions;
-      var createSortKeys = _props.createSortKeys;
-      var createSortKeyComparator = _props.createSortKeyComparator;
-
-      var childProps = _objectWithoutProperties(_props, ['columns', 'map', 'documentsPerPageOptions', 'createSortKeys', 'createSortKeyComparator']);
+      var _props = this.props,
+          columns = _props.columns,
+          map = _props.map,
+          documentsPerPageOptions = _props.documentsPerPageOptions,
+          createSortKeys = _props.createSortKeys,
+          createSortKeyComparator = _props.createSortKeyComparator,
+          childProps = _objectWithoutProperties(_props, ['columns', 'map', 'documentsPerPageOptions', 'createSortKeys', 'createSortKeyComparator']);
 
       return React.createElement(PagerDataFilter, _extends({}, childProps, {
 
@@ -404,12 +391,11 @@ function pager(pure) {
       filterDocumentData: PropTypes.func
     },
     render: function render() {
-      var _props2 = this.props;
-      var mapStateToDocumentData = _props2.mapStateToDocumentData;
-      var mapColumnData = _props2.mapColumnData;
-      var mapEarlyProps = _props2.mapEarlyProps;
-
-      var childProps = _objectWithoutProperties(_props2, ['mapStateToDocumentData', 'mapColumnData', 'mapEarlyProps']);
+      var _props2 = this.props,
+          mapStateToDocumentData = _props2.mapStateToDocumentData,
+          mapColumnData = _props2.mapColumnData,
+          mapEarlyProps = _props2.mapEarlyProps,
+          childProps = _objectWithoutProperties(_props2, ['mapStateToDocumentData', 'mapColumnData', 'mapEarlyProps']);
 
       var documentData = mapStateToDocumentData(this.props.state);
       var columnData = mapColumnData(documentData);
@@ -470,12 +456,12 @@ function pager(pure) {
     componentWillMount: function componentWillMount() {
       var _this3 = this;
 
-      var _props3 = this.props;
-      var mapStateToDocumentData = _props3.mapStateToDocumentData;
-      var mapColumnData = _props3.mapColumnData;
-      var filterStream = _props3.filterStream;
-      var filterDocumentData = _props3.filterDocumentData;
-      var Filter = _props3.Filter;
+      var _props3 = this.props,
+          mapStateToDocumentData = _props3.mapStateToDocumentData,
+          mapColumnData = _props3.mapColumnData,
+          filterStream = _props3.filterStream,
+          filterDocumentData = _props3.filterDocumentData,
+          Filter = _props3.Filter;
 
       if (filterStream) this.unsubscribe = filterStream(function (filterState) {
         return _this3.setState({ filterState: filterState });
@@ -485,19 +471,18 @@ function pager(pure) {
       if (this.unsubscribe) this.unsubscribe();
     },
     render: function render() {
-      var _props4 = this.props;
-      var documentData = _props4.documentData;
-      var columnData = _props4.columnData;
-      var filterDocumentData = _props4.filterDocumentData;
-      var mapData = _props4.mapData;
-      var sortData = _props4.sortData;
-      var sortDocuments = _props4.sortDocuments;
-      var mapDataToStatus = _props4.mapDataToStatus;
-      var mapStatusToActions = _props4.mapStatusToActions;
-      var mapLateProps = _props4.mapLateProps;
-      var earlyProps = _props4.earlyProps;
-
-      var childProps = _objectWithoutProperties(_props4, ['documentData', 'columnData', 'filterDocumentData', 'mapData', 'sortData', 'sortDocuments', 'mapDataToStatus', 'mapStatusToActions', 'mapLateProps', 'earlyProps']);
+      var _props4 = this.props,
+          documentData = _props4.documentData,
+          columnData = _props4.columnData,
+          filterDocumentData = _props4.filterDocumentData,
+          mapData = _props4.mapData,
+          sortData = _props4.sortData,
+          sortDocuments = _props4.sortDocuments,
+          mapDataToStatus = _props4.mapDataToStatus,
+          mapStatusToActions = _props4.mapStatusToActions,
+          mapLateProps = _props4.mapLateProps,
+          earlyProps = _props4.earlyProps,
+          childProps = _objectWithoutProperties(_props4, ['documentData', 'columnData', 'filterDocumentData', 'mapData', 'sortData', 'sortDocuments', 'mapDataToStatus', 'mapStatusToActions', 'mapLateProps', 'earlyProps']);
 
       var filterState = this.state.filterState;
 
@@ -522,17 +507,16 @@ function pager(pure) {
   var Pager = pure({ displayName: 'Pager',
     defaultProps: defaults,
     render: function render() {
-      var _props5 = this.props;
-      var children = _props5.children;
-      var data = _props5.data;
-      var content = _props5.content;
+      var _props5 = this.props,
+          children = _props5.children,
+          data = _props5.data,
+          content = _props5.content,
+          childProps = _objectWithoutProperties(_props5, ['children', 'data', 'content']);
 
-      var childProps = _objectWithoutProperties(_props5, ['children', 'data', 'content']);
-
-      var status = childProps.status;
-      var actions = childProps.actions;
-      var styles = childProps.styles;
-      var theme = childProps.theme;
+      var status = childProps.status,
+          actions = childProps.actions,
+          styles = childProps.styles,
+          theme = childProps.theme;
 
 
       return children(_extends({}, childProps, { Controls: function Controls(props) {
@@ -560,13 +544,13 @@ function pager(pure) {
   var PagerControls = pure({ displayName: 'PagerControls',
     defaultProps: defaults,
     render: function render() {
-      var _props6 = this.props;
-      var children = _props6.children;
-      var status = _props6.status;
-      var actions = _props6.actions;
-      var content = _props6.content;
-      var styles = _props6.styles;
-      var theme = _props6.theme;
+      var _props6 = this.props,
+          children = _props6.children,
+          status = _props6.status,
+          actions = _props6.actions,
+          content = _props6.content,
+          styles = _props6.styles,
+          theme = _props6.theme;
 
       var buttonClass = (0, _classnames2.default)(styles.pagerButton, theme.pagerButton);
       return React.createElement(
@@ -610,12 +594,12 @@ function pager(pure) {
     render: function render() {
       var _this4 = this;
 
-      var _props7 = this.props;
-      var status = _props7.status;
-      var actions = _props7.actions;
-      var content = _props7.content;
-      var styles = _props7.styles;
-      var theme = _props7.theme;
+      var _props7 = this.props,
+          status = _props7.status,
+          actions = _props7.actions,
+          content = _props7.content,
+          styles = _props7.styles,
+          theme = _props7.theme;
 
       var documentsPerPage = status.get('documentsPerPage');
       return typeof documentsPerPage === 'number' && documentsPerPage > 0 ? React.createElement(
@@ -647,13 +631,13 @@ function pager(pure) {
     render: function render() {
       var _this5 = this;
 
-      var _props8 = this.props;
-      var label = _props8.label;
-      var status = _props8.status;
-      var actions = _props8.actions;
-      var content = _props8.content;
-      var styles = _props8.styles;
-      var theme = _props8.theme;
+      var _props8 = this.props,
+          label = _props8.label,
+          status = _props8.status,
+          actions = _props8.actions,
+          content = _props8.content,
+          styles = _props8.styles,
+          theme = _props8.theme;
 
       return React.createElement(
         'span',
@@ -690,16 +674,16 @@ function pager(pure) {
   var PagerStatus = pure({ displayName: 'PagerStatus',
     defaultProps: defaults,
     render: function render() {
-      var _props9 = this.props;
-      var styleName = _props9.styleName;
-      var Content = _props9.Content;
-      var ContentMobile = _props9.ContentMobile;
-      var className = _props9.className;
-      var status = _props9.status;
-      var actions = _props9.actions;
-      var content = _props9.content;
-      var styles = _props9.styles;
-      var theme = _props9.theme;
+      var _props9 = this.props,
+          styleName = _props9.styleName,
+          Content = _props9.Content,
+          ContentMobile = _props9.ContentMobile,
+          className = _props9.className,
+          status = _props9.status,
+          actions = _props9.actions,
+          content = _props9.content,
+          styles = _props9.styles,
+          theme = _props9.theme;
 
       return React.createElement(
         'span',
