@@ -130,7 +130,7 @@ export default function column(pure) {
       , render() {
           const { documentID, checkbox, styles, theme, className, style, children, ...props } = this.props
           return (
-            <div className={cn(styles.cellContent, theme.cellContent, className)} style={style}>
+            <div {...props} className={cn(styles.cellContent, theme.cellContent, className)} style={style}>
               {checkbox ? (
                 <cellForm.Field
                   name={this.getName('checkbox')}
