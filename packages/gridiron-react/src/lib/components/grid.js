@@ -331,13 +331,12 @@ export default function grid (pure) {
                     cloneElement(rendered.cell, { key: columnIndex
                                                 , documentIndex
                                                 , columnIndex
-                                                , children: (
+                                                , children: cloneElement(
                                                     mapCell(
                                                       { documentIndex
                                                       , documentID
                                                       , columnIndex
                                                       , columnID
-                                                      , onClick: onCellClick ? (e) => onCellClick({ documentIndex, documentID, columnIndex, columnID, datum: cells.get(columnID) }) : null
                                                       , local: mergeLocal(
                                                           { documentLocal
                                                           , columnLocal: this.state.columnLocal && this.state.columnLocal.get(columnID)
@@ -346,6 +345,12 @@ export default function grid (pure) {
                                                       , datum: cells.get(columnID)
                                                       }
                                                     )
+                                                  , { onClick: (e) => {
+                                                        if(onCellClick)
+                                                          onCellClick({ documentIndex, documentID, columnIndex, columnID, datum: cells.get(columnID) })
+                                                        return true
+                                                      }
+                                                    }
                                                   )
                                               }
                       )
@@ -369,7 +374,11 @@ export default function grid (pure) {
             { key: documentIndex
             , documentIndex
             , children
-            , onClick: onDocumentClick ? (e) => onDocumentClick({ documentIndex, documentID }) : null
+            , onClick: (e) => {
+                if(onDocumentClick)
+                  onDocumentClick({ documentIndex, documentID })
+                return true
+              }
             , className: isPrimitive ? selectStyles('primitive') : selectStyles('sectional')
             }
           )
