@@ -1,6 +1,8 @@
 [![NPM](https://raw.githubusercontent.com/noderaider/gridiron/master/public/png/gridiron.png)](https://npmjs.com/packages/gridiron)
 
-**Feature-Packed Grid Framework**
+**Feature-Packed Grid Framework for React and ImmutableJS**
+
+**:exclamation: Demo at [gridiron.js.org](https://gridiron.js.org)**
 
 [![Build Status](https://travis-ci.org/noderaider/gridiron-test.svg?branch=master)](https://travis-ci.org/noderaider/gridiron-test)
 [![codecov](https://codecov.io/gh/noderaider/gridiron-test/branch/master/graph/badge.svg)](https://codecov.io/gh/noderaider/gridiron-test)
