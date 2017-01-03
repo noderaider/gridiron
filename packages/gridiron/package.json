@@ -1,6 +1,6 @@
 {
   "name": "gridiron",
-  "version": "0.18.1",
+  "version": "0.18.2",
   "description": "Feature-Packed Grid Framework",
   "main": "lib/index.js",
   "files": [
