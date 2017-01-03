@@ -190,9 +190,6 @@ export default connect(mapStateToProps) (
                         <button className={styles.expandButton} onClick={this.toggleFixedHeight}>
                             <i className="fa fa-arrows-v" />
                         </button>
-                        {/*
-                        <Controls key="maximize" />
-                      */}
                       </span>
                     )
                   ]
