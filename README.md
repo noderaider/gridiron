@@ -1,4 +1,4 @@
-## gridiron
+[![NPM](https://raw.githubusercontent.com/noderaider/gridiron/master/public/png/gridiron.png)](https://npmjs.com/packages/gridiron)
 
 **Feature-Packed Grid Framework**
 
