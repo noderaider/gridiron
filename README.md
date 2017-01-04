@@ -9,9 +9,13 @@
 
 [![NPM](https://nodei.co/npm/gridiron.png?stars=true&downloads=true)](https://nodei.co/npm/gridiron/)
 
+___
+
 ## Install
 
 `npm install -S gridiron`
+
+___
 
 ## Usage
 
@@ -228,6 +232,8 @@ export default connect(mapStateToProps) (
 )
 ```
 
+___
+
 ## Contributing
 
 To setup gridiron for use in development run the following steps at CLI:
@@ -246,6 +252,8 @@ Then from your project:
 npm link ../gridiron/packages/gridiron
 # start your project, gridiron should hot reload as you update its source code.
 ```
+
+___
 
 ## Test
 
