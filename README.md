@@ -22,7 +22,20 @@ ___
 
 ![pager](https://raw.githubusercontent.com/noderaider/gridiron/master/public/png/pager.png)
 
-**Pager documentation is coming soon!**
+All components should be wrapped in a pager component whether you want the data displayed in pages or not. The pager is responsible for taking data from redux and mapping it to the format that the grid and other components expect. Sorting, filtering, and partitioning of the data all occurs at the pager level. By filtering and sorting as early as possible in the rendering hierarchy, gridiron components are able to render fast and bypass unnecessary data.
+
+#### PropTypes
+
+| name                | type            | description                                     |
+|---------------------|-----------------|-------------------------------------------------|
+| `documentsPerPage`  | `number|null`   | how many documents to show on a single page     |
+| `columns`           | `array`         | an array of the column IDs that will be passed  |
+| `map`               | `object`        | how to break the data into documents and cells  |
+| `mapEarlyProps`     | `function`      | allows early lifecycle filtering of columns     |
+| `sort`              | `object`        | which columns to sort by                        |
+| `filterStream`      | `function`      | how to filter the data                          |
+
+
 
 ![grid](https://raw.githubusercontent.com/noderaider/gridiron/master/public/png/grid.png)
 
