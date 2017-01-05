@@ -19,6 +19,11 @@ ___
 
 ## Components
 
+
+![pager](https://raw.githubusercontent.com/noderaider/gridiron/master/public/png/pager.png)
+
+**Pager documentation is coming soon!**
+
 ![grid](https://raw.githubusercontent.com/noderaider/gridiron/master/public/png/grid.png)
 
 **A complex full example:**
@@ -234,19 +239,13 @@ export default connect(mapStateToProps) (
 )
 ```
 
-___
-
 ![accordion](https://raw.githubusercontent.com/noderaider/gridiron/master/public/png/accordion.png)
 
 **Accordion documentation is coming soon!**
 
-___
-
 ![cards](https://raw.githubusercontent.com/noderaider/gridiron/master/public/png/cards.png)
 
 **Cards documentation is coming soon!**
-
-___
 
 ![graph](https://raw.githubusercontent.com/noderaider/gridiron/master/public/png/graph.png)
 
