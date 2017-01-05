@@ -46,7 +46,6 @@
     "detect-resize": "^0.1.4",
     "esdoc": "^0.4.7",
     "esdoc-es7-plugin": "0.0.3",
-    "gridiron-core": "^0.19.1",
     "gridiron-react": "^0.19.1",
     "gridiron-styles": "^0.19.1",
     "gridiron-themes": "^0.19.1",

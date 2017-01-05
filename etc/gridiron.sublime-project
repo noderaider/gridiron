@@ -2,6 +2,16 @@
   "folders":
   [
     {
+      "name": "packages/gridiron",
+      "path": "../packages/gridiron/src",
+      "folder_exclude_patterns": [ "node_modules" ]
+    },
+    {
+      "name": "packages/gridiron-modules",
+      "path": "../packages/gridiron-modules/src",
+      "folder_exclude_patterns": [ "node_modules" ]
+    },
+    {
       "name": "packages/gridiron-react",
       "path": "../packages/gridiron-react",
       "folder_exclude_patterns": [ "node_modules" ]
@@ -12,22 +22,12 @@
       "folder_exclude_patterns": [ "node_modules" ]
     },
     {
-      "name": "packages/gridiron",
-      "path": "../packages/gridiron/src",
-      "folder_exclude_patterns": [ "node_modules" ]
-    },
-    {
-      "name": "packages/gridiron-core",
-      "path": "../packages/gridiron-core/src",
-      "folder_exclude_patterns": [ "node_modules" ]
-    },
-    {
       "name": "packages/gridiron-data",
       "path": "../packages/gridiron-example/data",
       "folder_exclude_patterns": [ "node_modules" ]
     },
     {
-      "name": "packages/gridiron-example",
+      "name": "packages/gridiron-app",
       "path": "../packages/gridiron-example/src",
       "folder_exclude_patterns": [ "node_modules" ]
     },

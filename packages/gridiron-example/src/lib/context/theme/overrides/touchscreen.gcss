@@ -1,7 +1,0 @@
-html, body {
-  box-sizing: content-box;
-}
-
-table, tbody, tr, td {
-  box-sizing: content-box;
-}

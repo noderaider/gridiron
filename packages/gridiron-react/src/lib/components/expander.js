@@ -1,6 +1,4 @@
 import cn from 'classnames'
-import { Expander as Core } from 'gridiron-core'
-const should = require('chai').should()
 
 export default function expander (pure) {
   const { React, defaults } = pure
@@ -27,7 +25,5 @@ export default function expander (pure) {
       ) : null}
     </span>
   )
-  Expander.propTypes = Core.PropTypes(React)
-  Expander.defaultProps = Core.DefaultProps(React)
   return Expander
 }
