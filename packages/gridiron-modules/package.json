@@ -2,10 +2,7 @@
   "name": "gridiron-modules",
   "version": "0.19.0",
   "description": "Factory that exports modules that gridiron depends on.",
-  "main": "lib/index.js",
-  "scripts": {
-    "test": "jest"
-  },
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/noderaider/gridiron.git"
