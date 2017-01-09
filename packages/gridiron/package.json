@@ -1,6 +1,6 @@
 {
   "name": "gridiron",
-  "version": "0.19.1",
+  "version": "0.20.0",
   "description": "Feature-Packed Grid Framework",
   "main": "lib/index.js",
   "files": [
@@ -44,9 +44,9 @@
     "detect-resize": "^0.1.4",
     "esdoc": "^0.4.7",
     "esdoc-es7-plugin": "0.0.3",
-    "gridiron-react": "^0.19.1",
-    "gridiron-styles": "^0.19.1",
-    "gridiron-themes": "^0.19.1",
+    "gridiron-react": "^0.20.0",
+    "gridiron-styles": "^0.20.0",
+    "gridiron-themes": "^0.20.0",
     "ncp": "^2.0.0",
     "npm-run-all": "latest",
     "pure-stamp": "^0.1.12",
@@ -58,7 +58,7 @@
     "react-pre": "^0.16.1",
     "react-pre-styles": "^0.16.5",
     "react-pre-themes": "^0.16.5",
-    "redux-pager": "^0.19.1",
+    "redux-pager": "^0.20.0",
     "solvent": "^0.16.1"
   },
   "devDependencies": {

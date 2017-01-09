@@ -1,6 +1,6 @@
 {
   "name": "gridiron-styles",
-  "version": "0.19.1",
+  "version": "0.20.0",
   "description": "React Component Styles for CSS Modules",
   "main": "lib/index.js",
   "scripts": {
