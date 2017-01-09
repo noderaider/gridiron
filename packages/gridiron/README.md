@@ -13,32 +13,55 @@ ___
 
 ## Install
 
-`npm install -S gridiron`
+`npm install -S gridiron gridiron-modules`
 
+For easiest usage across an application, setup a gridiron.js file in a modules folder with the following content:
+
+
+```js
+import gridiron from 'gridiron'
+import gridironModules from 'gridiron-modules'
+
+/** Factory that imports all of the gridiron components and feeds them your apps version of its dependencies (React, ReactDOM, addons, etc.) */
+export default gridiron(gridironModules(), { themeName: 'mellow' })
+```
 ___
 
 ## Components
+
+
+![pager](https://raw.githubusercontent.com/noderaider/gridiron/master/public/png/pager.png)
+
+All components should be wrapped in a pager component whether you want the data displayed in pages or not. The pager is responsible for taking data from redux and mapping it to the format that the grid and other components expect. Sorting, filtering, and partitioning of the data all occurs at the pager level. By filtering and sorting as early as possible in the rendering hierarchy, gridiron components are able to render fast and bypass unnecessary data.
+
+#### PropTypes
+
+| name                | type            | description                                     |
+|---------------------|-----------------|-------------------------------------------------|
+| `documentsPerPage`  | `number|null`   | how many documents to show on a single page     |
+| `columns`           | `array`         | an array of the column IDs that will be passed  |
+| `map`               | `object`        | how to break the data into documents and cells  |
+| `mapEarlyProps`     | `function`      | allows early lifecycle filtering of columns     |
+| `sort`              | `object`        | which columns to sort by                        |
+| `filterStream`      | `function`      | how to filter the data                          |
+
+
 
 ![grid](https://raw.githubusercontent.com/noderaider/gridiron/master/public/png/grid.png)
 
 **A complex full example:**
 
 ```bash
-import gridiron from 'gridiron'
+
 import React, { Component, PropTypes } from 'react'
-import ReactDOM from 'react-dom'
-import shallowCompare from 'react-addons-shallow-compare'
-import createFragment from 'react-addons-create-fragment'
 import { connect } from 'react-redux'
+
 import Immutable from 'immutable'
 import Header from './Header'
 import styles from './styles.css'
 
-const deps = { React, ReactDOM, shallowCompare, createFragment, connect, Immutable }
-const themeName = 'mellow'
-
-/** Use gridiron factory function to export grid components. */
-const { Pager, Grid, Columns, formula } = gridiron(deps, { themeName })
+/** Import your applications namespaced gridiron components. */
+import gridiron from './modules/gridiron'
 
 const getFormName = columnID => `filter-form-${columnID}`
 const getFilterName = documentID => `filter_${documentID}`
@@ -47,7 +70,7 @@ const getFilterName = documentID => `filter_${documentID}`
 const createFilterStream = columnIDs => {
   const formNames = columnIDs.map(getFormName)
   return onFilter => {
-    const unsubscribe = formula.subscribe(formNames, formStates => {
+    const unsubscribe = gridiron.formula.subscribe(formNames, formStates => {
       const filterState = columnIDs.reduce((result, columnID, i) => {
         const formState = formStates[i]
         const getFilterValue = documentID => formState ? formState.getIn([ getFilterName(documentID), 'value' ], false) : false
@@ -67,7 +90,7 @@ const FilterForm = pure (
                 }
   , render() {
       const { columnData, columnID } = this.props
-      const form = formula(getFormName(this.props.columnID))
+      const form = gridiron.formula(getFormName(this.props.columnID))
       return (
         <div>
           {columnData.entrySeq().map(([ documentID, cells ], documentIndex) => {
@@ -85,7 +108,7 @@ const FilterForm = pure (
 function mapStateToProps (state) {
   const meta = state.data.getIn([ 'meta' ], Immutable.Map())
 
-  const columns = Columns ( meta.get('columns', []).filter(x => x !== 'Alias')
+  const columns = gridiron.Columns ( meta.get('columns', []).filter(x => x !== 'Alias')
                           , { 'Airline ID': { style: { flex: '0 0 2em', alignItems: 'center' }, className: styles.desktop }
                             , 'Name': { style: { flex: '2 0 7em' } }
                             , 'IATA': { style: { flex: '0 0 4em' } }
@@ -117,7 +140,7 @@ export default connect(mapStateToProps) (
        * to the Grid component in a consistent manner.
        */
       return (
-        <Pager
+        <gridiron.Pager
           documentsPerPage={100}
           columns={columns.ids}
           filterStream={createFilterStream(columns.ids)}
@@ -141,7 +164,7 @@ export default connect(mapStateToProps) (
           sort={Immutable.fromJS({ cols: [ 'Airline ID', 'Name' ] })}
         >
           {pager => (
-            <Grid
+            <gridiron.Grid
                 data={pager.status.get('data', Immutable.Map())}
                 useContentHeight={useContentHeight}
                 /* mapDocument allows creation of a document header and footer row
@@ -227,26 +250,20 @@ export default connect(mapStateToProps) (
                 {...this.props}
               />
           )}
-        </Pager>
+        </gridiron.Pager>
       )
     }
   }
 )
 ```
 
-___
-
 ![accordion](https://raw.githubusercontent.com/noderaider/gridiron/master/public/png/accordion.png)
 
 **Accordion documentation is coming soon!**
 
-___
-
 ![cards](https://raw.githubusercontent.com/noderaider/gridiron/master/public/png/cards.png)
 
 **Cards documentation is coming soon!**
-
-___
 
 ![graph](https://raw.githubusercontent.com/noderaider/gridiron/master/public/png/graph.png)
 

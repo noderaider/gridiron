@@ -7,7 +7,6 @@ import * as reactFormulaThemes from 'react-formula-themes'
 import reactPre from 'react-pre'
 import reactPreStyles from 'react-pre-styles'
 import * as reactPreThemes from 'react-pre-themes'
-import reactMaximize from 'react-maximize'
 import reduxPager from 'redux-pager'
 
 export  { gridironReact
@@ -19,7 +18,6 @@ export  { gridironReact
         , reactPre
         , reactPreStyles
         , reactPreThemes
-        , reactMaximize
         , reduxPager
         }
 
@@ -38,7 +36,6 @@ export default function gridiron (deps, { themeName = 'mellow', ...defaults } = 
           , styles: gridironStyles
           , themes: gridironThemes
           , ...reduxPager(...args)
-          , ...reactMaximize(...args)
           , formula
           , reactFormulaStyles
           , reactFormulaThemes

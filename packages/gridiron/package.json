@@ -17,13 +17,11 @@
     "sort"
   ],
   "scripts": {
-    "start": "run-p build-watch",
+    "start": "npm run build -- --watch",
     "clean": "run-p clean-lib clean-doc",
     "clean-lib": "rimraf lib",
     "clean-doc": "rimraf doc",
-    "prebuild": "npm run clean",
     "build": "babel src/lib -d lib",
-    "build-watch": "npm run build -- --watch",
     "release": "npm version patch && npm publish",
     "postrelease": "npm run release-gh-pages",
     "prerelease-gh-pages": "npm run doc",
@@ -58,8 +56,8 @@
     "react-maximize": "^0.16.2",
     "react-minimize": "^0.16.1",
     "react-pre": "^0.16.1",
-    "react-pre-styles": "^0.16.1",
-    "react-pre-themes": "^0.16.1",
+    "react-pre-styles": "^0.16.5",
+    "react-pre-themes": "^0.16.5",
     "redux-pager": "^0.19.1",
     "solvent": "^0.16.1"
   },

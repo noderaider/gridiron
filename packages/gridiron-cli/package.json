@@ -34,6 +34,7 @@
     "rimraf": "latest"
   },
   "scripts": {
+    "start": "npm run build -- --watch",
     "build": "babel src -d ."
   },
   "author": "Cole Chamberlain <cole.chamberlain@gmail.com> (https://github.com/cchamberlain)",

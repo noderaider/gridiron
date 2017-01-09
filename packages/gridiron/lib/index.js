@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.reduxPager = exports.reactMaximize = exports.reactPreThemes = exports.reactPreStyles = exports.reactPre = exports.reactFormulaThemes = exports.reactFormulaStyles = exports.reactFormula = exports.gridironThemes = exports.gridironStyles = exports.gridironReact = undefined;
+exports.reduxPager = exports.reactPreThemes = exports.reactPreStyles = exports.reactPre = exports.reactFormulaThemes = exports.reactFormulaStyles = exports.reactFormula = exports.gridironThemes = exports.gridironStyles = exports.gridironReact = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -45,10 +45,6 @@ var _reactPreThemes = require('react-pre-themes');
 
 var reactPreThemes = _interopRequireWildcard(_reactPreThemes);
 
-var _reactMaximize = require('react-maximize');
-
-var _reactMaximize2 = _interopRequireDefault(_reactMaximize);
-
 var _reduxPager = require('redux-pager');
 
 var _reduxPager2 = _interopRequireDefault(_reduxPager);
@@ -68,7 +64,6 @@ exports.reactFormulaThemes = reactFormulaThemes;
 exports.reactPre = _reactPre2.default;
 exports.reactPreStyles = _reactPreStyles2.default;
 exports.reactPreThemes = reactPreThemes;
-exports.reactMaximize = _reactMaximize2.default;
 exports.reduxPager = _reduxPager2.default;
 function gridiron(deps) {
   var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
@@ -86,7 +81,7 @@ function gridiron(deps) {
 
   return _extends({}, pre, _gridironReact2.default.apply(undefined, args), { styles: _gridironStyles2.default,
     themes: gridironThemes
-  }, _reduxPager2.default.apply(undefined, args), _reactMaximize2.default.apply(undefined, args), { formula: formula,
+  }, _reduxPager2.default.apply(undefined, args), { formula: formula,
     reactFormulaStyles: _reactFormulaStyles2.default,
     reactFormulaThemes: reactFormulaThemes,
     reactPreStyles: _reactPreStyles2.default,
