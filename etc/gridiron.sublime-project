@@ -28,7 +28,7 @@
     },
     {
       "name": "packages/gridiron-app",
-      "path": "../packages/gridiron-example/src",
+      "path": "../packages/gridiron-app/src",
       "folder_exclude_patterns": [ "node_modules" ]
     },
     {
