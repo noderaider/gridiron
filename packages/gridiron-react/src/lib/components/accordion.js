@@ -83,6 +83,7 @@ export default function accordion (pure) {
           raf(this.updateDimension)
       }
     , render() {
+        const { styles, theme, className, mapHeader, mapContent, data, orientation, autoToggle, ...gridProps } = this.props
 
         return (
           <Grid
@@ -95,7 +96,6 @@ export default function accordion (pure) {
                 { displayName: 'AccordionDocument'
                 , render */
                 ({ documentIndex, documentID, datum }) => {
-                    const { styles, theme, className, mapHeader, mapContent, data, orientation, autoToggle, ...gridProps } = this.props
                     const fns = (
                       { toggleDocument: () => this.toggleDocument(documentID)
                       , collapseDocuments: () => this.collapseDocuments()
