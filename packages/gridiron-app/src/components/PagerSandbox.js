@@ -1,44 +1,9 @@
 import React, { Component } from 'react'
 import Immutable from 'immutable'
 import gridiron from '../modules/gridiron'
+import sand from 'react-sand'
 
-class Sand extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {}
-  }
-  render() {
-    const { Box, children, ...props } = this.props
-    if(Box.propTypes)
-      return <pre>{JSON.stringify(Object.keys(Box), null, 2)}</pre>
-      //return <span>Add propTypes to the component.</span>
-    return (
-      <div>
-        {Object.entries(Box.propTypes).map(([ propName, propType ], i) => {
-          return (
-            <div key={i}>
-              <label style={{ display: 'flex', flexFlow: 'column nowrap' }}>
-                {propName}:
-                <input
-                  type="number"
-                  onChange={(e) => {
-                    try {
-                      this.setState({ [propName]: parseInt(e.target.value) }, () => console.info(`${propName} UPDATED`))
-                    } catch(err) {}
-                  }}
-                  defaultValue={documentsPerPage}
-                />
-              </label>
-            </div>
-          )
-        })}
-        <Box {...props}>
-          {children}
-        </Box>
-      </div>
-    )
-  }
-}
+const Sand = sand({ React })
 
 export default class PagerSandbox extends Component {
   constructor(props) {
@@ -53,6 +18,7 @@ export default class PagerSandbox extends Component {
     const { documentsPerPage, mapDocuments } = this.state
     return (
       <div style={{ display: 'flex', flexFlow: 'column nowrap' }}>
+      {/*
         <label style={{ display: 'flex', flexFlow: 'column nowrap' }}>
           documentsPerPage:
           <input
@@ -80,6 +46,7 @@ export default class PagerSandbox extends Component {
           />
         </label>
         <button onClick={() => this.forceUpdate()}>forceUpdate</button>
+      */}
         <Sand
           Box={gridiron.Pager}
           documentsPerPage={documentsPerPage}

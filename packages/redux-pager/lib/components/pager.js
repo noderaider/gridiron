@@ -505,6 +505,7 @@ function pager(pure) {
   });
 
   var Pager = pure({ displayName: 'Pager',
+    propTypes: propTypes,
     defaultProps: defaults,
     render: function render() {
       var _props5 = this.props,

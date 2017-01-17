@@ -373,6 +373,7 @@ export default function pager (pure) {
 
    const Pager = pure (
     { displayName: 'Pager'
+    , propTypes
     , defaultProps: defaults
     , render() {
         const { children, data, content, ...childProps } = this.props

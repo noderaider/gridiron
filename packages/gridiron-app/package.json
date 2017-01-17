@@ -16,6 +16,7 @@
     "react-redux": "latest",
     "react-router": "^4.0.0-2",
     "react-router-redux": "latest",
+    "react-sand": "^0.1.1",
     "redux": "latest",
     "redux-actions": "^1.2.0",
     "redux-form": "^6.4.3",

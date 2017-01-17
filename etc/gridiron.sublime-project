@@ -45,6 +45,11 @@
       "name": "gridiron",
       "path": "../",
       "folder_exclude_patterns": [ "node_modules" ]
+    },
+    {
+      "name": "react-sand",
+      "path": "../../react-sand",
+      "folder_exclude_patterns": [ "node_modules" ]
     }
   ]
 }

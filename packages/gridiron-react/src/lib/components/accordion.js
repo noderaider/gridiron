@@ -28,9 +28,11 @@ export default function accordion (pure) {
                   , expandedDocumentID: PropTypes.any
                   , transitionDurationMS: PropTypes.number
                   , orientation: PropTypes.oneOf([ 'ttb', 'ltr' ])
+                  , autoToggle: PropTypes.bool.isRequired
                   }
     , defaultProps: { ...defaults
                     , orientation: 'ttb'
+                    , autoToggle: true
                     }
     , state: { expandedID: null }
     , init() {
@@ -81,7 +83,7 @@ export default function accordion (pure) {
           raf(this.updateDimension)
       }
     , render() {
-        const { styles, theme, className, mapHeader, mapContent, data, orientation, ...gridProps } = this.props
+
         return (
           <Grid
             {...gridProps}
@@ -93,12 +95,19 @@ export default function accordion (pure) {
                 { displayName: 'AccordionDocument'
                 , render */
                 ({ documentIndex, documentID, datum }) => {
-                    const header = mapHeader({ documentIndex, documentID, datum: datum.get('header') })
+                    const { styles, theme, className, mapHeader, mapContent, data, orientation, autoToggle, ...gridProps } = this.props
+                    const fns = (
+                      { toggleDocument: () => this.toggleDocument(documentID)
+                      , collapseDocuments: () => this.collapseDocuments()
+                      , expandDocument: () => this.expandDocument(documentID)
+                      }
+                    )
+                    const header = mapHeader({ documentIndex, documentID, datum: datum.get('header'), fns })
 
                     return (
                       <div className={cn(styles.accordionDocument, theme.accordionDocument)}>
                         <button
-                          onClick={() => this.toggleDocument(documentID)}
+                          onClick={autoToggle ? fns.toggleDocument : null}
                           className={cn(styles.accordionHeader, theme.accordionHeader)}
                         >
                           <span>
@@ -109,7 +118,7 @@ export default function accordion (pure) {
                           ref={x => this.contents[documentID] = x}
                           className={cn(styles.accordionContent, theme.accordionContent)}
                         >
-                          {this.state.expandedID === documentID && mapContent({ documentIndex, documentID, datum: datum.get('content') })}
+                          {this.state.expandedID === documentID && mapContent({ documentIndex, documentID, datum: datum.get('content'), fns })}
                         </div>
                       </div>
                     )
