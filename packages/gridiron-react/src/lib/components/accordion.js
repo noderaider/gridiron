@@ -91,43 +91,34 @@ export default function accordion (pure) {
             className={cn(styles.accordion, theme.accordion, styles[orientation], theme[orientation], className)}
             data={data}
             mapDocument={
-              /*
-              pure.impure(
-                { displayName: 'AccordionDocument'
-                , render */
-                ({ documentIndex, documentID, datum }) => {
-                    const fns = (
-                      { toggleDocument: () => this.toggleDocument(documentID)
-                      , collapseDocuments: () => this.collapseDocuments()
-                      , expandDocument: () => this.expandDocument(documentID)
-                      }
-                    )
-                    const header = mapHeader({ documentIndex, documentID, datum: datum.get('header'), fns })
+              ({ documentIndex, documentID, datum }) => {
+                  const fns = (
+                    { toggleDocument: () => this.toggleDocument(documentID)
+                    , collapseDocuments: () => this.collapseDocuments()
+                    , expandDocument: () => this.expandDocument(documentID)
+                    }
+                  )
+                  const header = mapHeader({ documentIndex, documentID, datum: datum.get('header'), fns })
 
-                    return (
-                      <div className={cn(styles.accordionDocument, theme.accordionDocument)}>
-                        <button
-                          onClick={autoToggle ? fns.toggleDocument : null}
-                          className={cn(styles.accordionHeader, theme.accordionHeader)}
-                        >
-                          <span>
-                            {header}
-                          </span>
-                        </button>
-                        <div
-                          ref={x => this.contents[documentID] = x}
-                          className={cn(styles.accordionContent, theme.accordionContent)}
-                        >
-                          {this.state.expandedID === documentID && mapContent({ documentIndex, documentID, datum: datum.get('content'), fns })}
-                        </div>
+                  return (
+                    <div className={cn(styles.accordionDocument, theme.accordionDocument)}>
+                      <button
+                        onClick={autoToggle ? fns.toggleDocument : null}
+                        className={cn(styles.accordionHeader, theme.accordionHeader)}
+                      >
+                        <span>
+                          {header}
+                        </span>
+                      </button>
+                      <div
+                        ref={x => this.contents[documentID] = x}
+                        className={cn(styles.accordionContent, theme.accordionContent)}
+                      >
+                        {this.state.expandedID === documentID && mapContent({ documentIndex, documentID, datum: datum.get('content'), fns })}
                       </div>
-                    )
-                  }
-
-                  /*
+                    </div>
+                  )
                 }
-              )
-              */
             }
           />
         )

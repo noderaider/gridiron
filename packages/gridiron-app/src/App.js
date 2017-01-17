@@ -1,34 +1,34 @@
 import React, { Component } from 'react'
-import { Provider } from 'react-redux'
 import { BrowserRouter, Match, Miss, Link } from 'react-router'
-import './App.css'
 
-import gridiron from 'gridiron'
-import gridironModules from 'gridiron-modules'
-
+import Gridiron from './modules/Gridiron'
 import TopBar from './components/nav/TopBar'
 import PagerSandbox from './components/PagerSandbox'
-
-import configureStore from './redux/store/configureStore'
-const store = configureStore()
-
-const { Logo } = gridiron(gridironModules())
+import GridSandbox from './components/GridSandbox'
+import AccordionSandbox from './components/AccordionSandbox'
+import CardsSandbox from './components/CardsSandbox'
+import ColumnsSandbox from './components/ColumnsSandbox'
 
 const Home = () => (
-  <span>HOME</span>
+  <div>
+    <PagerSandbox />
+    <GridSandbox />
+    <AccordionSandbox />
+    <CardsSandbox />
+    <ColumnsSandbox />
+  </div>
 )
 
-
-const App = () => (
-  <Provider store={store}>
-    <BrowserRouter>
-      <div>
-        <TopBar logo={<Logo />} />
-        <Match pattern="/pager" component={PagerSandbox} />
-        <Miss component={Home} />
-      </div>
-    </BrowserRouter>
-  </Provider>
+export default () => (
+  <BrowserRouter>
+    <div>
+      <TopBar logo={<Gridiron.Logo />} />
+      <Match pattern="/pager" component={PagerSandbox} />
+      <Match pattern="/grid" component={GridSandbox} />
+      <Match pattern="/accordion" component={AccordionSandbox} />
+      <Match pattern="/cards" component={CardsSandbox} />
+      <Match pattern="/columns" component={ColumnsSandbox} />
+      <Miss component={Home} />
+    </div>
+  </BrowserRouter>
 )
-
-export default App
