@@ -136,8 +136,8 @@ export default function pager (pure) {
   /** PRE REDUX (CONFIG) */
   const PagerContext = pure (
     { displayName: 'PagerContext'
-    , propTypes: propTypes
-    , defaultProps: defaultProps
+    , propTypes
+    , defaultProps
     , render() {
         const { columns
               , map
@@ -373,7 +373,6 @@ export default function pager (pure) {
 
    const Pager = pure (
     { displayName: 'Pager'
-    , propTypes
     , defaultProps: defaults
     , render() {
         const { children, data, content, ...childProps } = this.props
