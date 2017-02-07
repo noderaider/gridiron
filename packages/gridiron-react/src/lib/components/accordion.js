@@ -65,7 +65,7 @@ export default function accordion (pure) {
         this.updateHeight = () => {
           const node = this.contents[this.state.expandedID]
           if(node)
-            node.style.maxHeight = `${node.scrollHeight}px`
+            node.style.maxHeight = '100%' //`${node.scrollHeight}px`
         }
         this.updateWidth = () => {
           const node = this.contents[this.state.expandedID]
