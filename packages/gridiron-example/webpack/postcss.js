@@ -20,6 +20,10 @@ var _postcssCssnext = require('postcss-cssnext');
 
 var _postcssCssnext2 = _interopRequireDefault(_postcssCssnext);
 
+var _postcssFontMagician = require('postcss-font-magician');
+
+var _postcssFontMagician2 = _interopRequireDefault(_postcssFontMagician);
+
 var _postcssBrowserReporter = require('postcss-browser-reporter');
 
 var _postcssBrowserReporter2 = _interopRequireDefault(_postcssBrowserReporter);
@@ -37,9 +41,9 @@ exports.default = function (name) {
 
     var prodPostcss = [(0, _postcssImport2.default)({ addDependencyTo: webpack }), (0, _postcssUrl2.default)({ url: 'inline'
       //, basePath: '../src/app'
-      //, assetsPath: '../images'
-    }), (0, _postcssCssnext2.default)()
-    // , postcssFontMagician()
+      , assetsPath: '../images'
+    }), (0, _postcssCssnext2.default)(), (0, _postcssFontMagician2.default)({ hosted: '../public/fonts'
+    })
     /*
     , postcssModules( { scopeBehaviour: 'global'
                       } )
@@ -60,4 +64,3 @@ exports.default = function (name) {
     return [].concat(prodPostcss, [(0, _postcssBrowserReporter2.default)({ styles: messagesStyle }), (0, _postcssReporter2.default)()]);
   };
 };
-// import postcssFontMagician from 'postcss-font-magician'

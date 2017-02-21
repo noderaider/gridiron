@@ -84,7 +84,6 @@ export default function accordion (pure) {
       }
     , render() {
         const { styles, theme, className, mapHeader, mapContent, data, orientation, autoToggle, ...gridProps } = this.props
-
         return (
           <Grid
             {...gridProps}

@@ -2,7 +2,7 @@ import postcssModules from 'postcss-modules'
 import postcssImport from 'postcss-import'
 import postcssUrl from 'postcss-url'
 import postcssCssnext from 'postcss-cssnext'
-import postcssFontMagician from 'postcss-font-magician'
+// import postcssFontMagician from 'postcss-font-magician'
 import postcssBrowserReporter from 'postcss-browser-reporter'
 import postcssReporter from 'postcss-reporter'
 
@@ -17,7 +17,7 @@ export default name => {
                           //, assetsPath: '../images'
                           })
                         , postcssCssnext()
-                        , postcssFontMagician()
+                        // , postcssFontMagician()
                         /*
                         , postcssModules( { scopeBehaviour: 'global'
                                           } )

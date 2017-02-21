@@ -387,6 +387,9 @@
   align-items: center;
 }
 
+.documentFooter {
+  cursor: default;
+}
 
 .header {
   display: flex;
