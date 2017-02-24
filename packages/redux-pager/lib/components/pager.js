@@ -381,15 +381,13 @@ function pager(pure) {
     }
   });
 
-  var PagerDataFilter = connect(function (state) {
-    return { state: state };
-  })(pure({ displayName: 'PagerDataFilter',
-    propTypes: { state: PropTypes.object.isRequired,
-      mapStateToDocumentData: PropTypes.func.isRequired,
+  var PagerDataFilter = pure({ displayName: 'PagerDataFilter',
+    propTypes: { mapStateToDocumentData: PropTypes.func.isRequired,
       mapColumnData: PropTypes.func.isRequired,
       filterStream: PropTypes.func,
       filterDocumentData: PropTypes.func
     },
+
     render: function render() {
       var _props2 = this.props,
           mapStateToDocumentData = _props2.mapStateToDocumentData,
@@ -397,7 +395,7 @@ function pager(pure) {
           mapEarlyProps = _props2.mapEarlyProps,
           childProps = _objectWithoutProperties(_props2, ['mapStateToDocumentData', 'mapColumnData', 'mapEarlyProps']);
 
-      var documentData = mapStateToDocumentData(this.props.state);
+      var documentData = mapStateToDocumentData();
       var columnData = mapColumnData(documentData);
       var earlyProps = mapEarlyProps ? mapEarlyProps({ documentData: documentData, columnData: columnData }) : null;
 
@@ -407,7 +405,7 @@ function pager(pure) {
         columnData: columnData
       }));
     }
-  }));
+  });
 
   var PagerDocumentFilter = pure({ displayName: 'PagerDocumentFilter',
     propTypes: { documentData: PropTypes.object.isRequired,
@@ -505,7 +503,6 @@ function pager(pure) {
   });
 
   var Pager = pure({ displayName: 'Pager',
-    propTypes: propTypes,
     defaultProps: defaults,
     render: function render() {
       var _props5 = this.props,

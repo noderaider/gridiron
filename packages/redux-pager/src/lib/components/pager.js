@@ -266,14 +266,14 @@ export default function pager (pure) {
     }
   )
 
-  const PagerDataFilter = connect(state => ({ state }))(pure (
+  const PagerDataFilter = pure (
     { displayName: 'PagerDataFilter'
-    , propTypes:  { state: PropTypes.object.isRequired
-                  , mapStateToDocumentData: PropTypes.func.isRequired
+    , propTypes:  { mapStateToDocumentData: PropTypes.func.isRequired
                   , mapColumnData: PropTypes.func.isRequired
                   , filterStream: PropTypes.func
                   , filterDocumentData: PropTypes.func
                   }
+
     , render() {
         const { mapStateToDocumentData
               , mapColumnData
@@ -281,7 +281,7 @@ export default function pager (pure) {
               , ...childProps
               } = this.props
 
-        const documentData = mapStateToDocumentData(this.props.state)
+        const documentData = mapStateToDocumentData()
         const columnData = mapColumnData(documentData)
         const earlyProps = mapEarlyProps ? mapEarlyProps({ documentData, columnData }) : null
 
@@ -296,7 +296,7 @@ export default function pager (pure) {
         )
       }
     }
-  ))
+  )
 
   const PagerDocumentFilter = pure (
     { displayName: 'PagerDocumentFilter'
