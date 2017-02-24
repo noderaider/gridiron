@@ -1,6 +1,6 @@
 {
   "name": "gridiron-styles",
-  "version": "0.20.0",
+  "version": "0.21.0",
   "description": "React Component Styles for CSS Modules",
   "main": "lib/index.js",
   "scripts": {
@@ -64,7 +64,7 @@
     "rimraf": "latest",
     "style-loader": "latest",
     "url-loader": "latest",
-    "webpack": "latest"
+    "webpack": "^1.0.0"
   },
   "repository": {
     "type": "git",
