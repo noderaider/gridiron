@@ -29,12 +29,12 @@ export default (({}) => ({ 'start': 'run-p build-watch'
   'postrelease-gh-pages': 'npm run clean-doc && npm run git-save -- clean && git push -u origin master --follow-tags'
 
   /** ESDOC */
-  , 'predoc': `rimraf ${ GH_PAGES_ROOT }`,
-  'doc': `esdoc -c ./esdoc.json && ncp CNAME ${ GH_PAGES_ROOT }/CNAME`,
+  , 'predoc': `rimraf ${GH_PAGES_ROOT}`,
+  'doc': `esdoc -c ./esdoc.json && ncp CNAME ${GH_PAGES_ROOT}/CNAME`,
   'postdoc': 'npm run git-save -- doc'
 
   /** GIT COMMANDS */
-  , 'gh-pages-subtree': `git subtree split --prefix ${ GH_PAGES_ROOT } -b gh-pages`,
+  , 'gh-pages-subtree': `git subtree split --prefix ${GH_PAGES_ROOT} -b gh-pages`,
   'gh-pages-push': 'git push -f origin gh-pages:gh-pages',
   'gh-pages-delete': 'git branch -D gh-pages',
   'git-save': 'git add -A && git commit -am '

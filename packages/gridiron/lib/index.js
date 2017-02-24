@@ -66,8 +66,9 @@ exports.reactPreStyles = _reactPreStyles2.default;
 exports.reactPreThemes = reactPreThemes;
 exports.reduxPager = _reduxPager2.default;
 function gridiron(deps) {
-        var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
-            _ref$themeName = _ref.themeName,
+        var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+        var _ref$themeName = _ref.themeName,
             themeName = _ref$themeName === undefined ? 'mellow' : _ref$themeName,
             defaults = _objectWithoutProperties(_ref, ['themeName']);
 
