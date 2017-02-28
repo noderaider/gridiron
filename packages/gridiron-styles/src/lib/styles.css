@@ -401,10 +401,10 @@
 }
 
 .headerLeft {
-  display: flex;
+/*  display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  flex: 1;
+  flex: 1;*/
   align-items: center;
 
 /*
