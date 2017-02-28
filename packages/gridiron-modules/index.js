@@ -2,7 +2,7 @@ function gridironModules () {
   const React = require('react')
   //const Pre = props => <pre dangerouslySetInnerHTML={{ __html: JSON.stringify(props, null, 2) }} />
   return (
-    { React
+    { React: React
     , ReactDOM: require('react-dom')
     , shallowCompare: require('react-addons-shallow-compare')
     , createFragment: require('react-addons-create-fragment')

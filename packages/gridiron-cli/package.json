@@ -1,6 +1,6 @@
 {
   "name": "gridiron-cli",
-  "version": "0.21.0",
+  "version": "0.22.0",
   "description": "CLI commands for scaffolding and setting up gridiron projects.",
   "main": "lib/index.js",
   "bin": {
