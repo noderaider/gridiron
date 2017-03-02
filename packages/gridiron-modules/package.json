@@ -1,6 +1,6 @@
 {
   "name": "gridiron-modules",
-  "version": "0.22.0",
+  "version": "0.23.0",
   "description": "Factory that exports modules that gridiron depends on.",
   "main": "index.js",
   "repository": {

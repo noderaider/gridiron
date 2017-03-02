@@ -1,12 +1,12 @@
 {
   "name": "gridiron-app",
-  "version": "0.22.0",
+  "version": "0.23.0",
   "devDependencies": {
     "react-scripts": "0.8.4"
   },
   "dependencies": {
-    "gridiron": "^0.22.0",
-    "gridiron-modules": "^0.22.0",
+    "gridiron": "^0.23.0",
+    "gridiron-modules": "^0.23.0",
     "immutable": "^3.8.1",
     "papaparse": "^4.1.2",
     "react": "^15.4.1",
