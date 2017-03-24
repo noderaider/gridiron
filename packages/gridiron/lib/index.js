@@ -1,7 +1,7 @@
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-        value: true
+  value: true
 });
 exports.reduxPager = exports.reactPreThemes = exports.reactPreStyles = exports.reactPre = exports.reactFormulaThemes = exports.reactFormulaStyles = exports.reactFormula = exports.gridironThemes = exports.gridironStyles = exports.gridironReact = undefined;
 
@@ -66,26 +66,25 @@ exports.reactPreStyles = _reactPreStyles2.default;
 exports.reactPreThemes = reactPreThemes;
 exports.reduxPager = _reduxPager2.default;
 function gridiron(deps) {
-        var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+      _ref$themeName = _ref.themeName,
+      themeName = _ref$themeName === undefined ? 'mellow' : _ref$themeName,
+      defaults = _objectWithoutProperties(_ref, ['themeName']);
 
-        var _ref$themeName = _ref.themeName,
-            themeName = _ref$themeName === undefined ? 'mellow' : _ref$themeName,
-            defaults = _objectWithoutProperties(_ref, ['themeName']);
+  var pre = (0, _reactPre2.default)(deps, _extends({}, defaults, { styles: _reactPreStyles2.default, theme: reactPreThemes[themeName] }));
+  deps = _extends({}, deps, pre);
 
-        var pre = (0, _reactPre2.default)(deps, _extends({}, defaults, { styles: _reactPreStyles2.default, theme: reactPreThemes[themeName] }));
-        deps = _extends({}, deps, pre);
+  var formula = (0, _reactFormula2.default)(deps, _extends({}, defaults, { styles: _reactFormulaStyles2.default, theme: reactFormulaThemes[themeName] }));
+  deps = _extends({}, deps, { formula: formula });
 
-        var formula = (0, _reactFormula2.default)(deps, _extends({}, defaults, { styles: _reactFormulaStyles2.default, theme: reactFormulaThemes[themeName] }));
-        deps = _extends({}, deps, { formula: formula });
+  var args = [deps, _extends({}, defaults, { styles: _gridironStyles2.default, theme: gridironThemes[themeName] })];
 
-        var args = [deps, _extends({}, defaults, { styles: _gridironStyles2.default, theme: gridironThemes[themeName] })];
-
-        return _extends({}, pre, _gridironReact2.default.apply(undefined, args), { styles: _gridironStyles2.default,
-                themes: gridironThemes
-        }, _reduxPager2.default.apply(undefined, args), { formula: formula,
-                reactFormulaStyles: _reactFormulaStyles2.default,
-                reactFormulaThemes: reactFormulaThemes,
-                reactPreStyles: _reactPreStyles2.default,
-                reactPreThemes: reactPreThemes
-        });
+  return _extends({}, pre, _gridironReact2.default.apply(undefined, args), { styles: _gridironStyles2.default,
+    themes: gridironThemes
+  }, _reduxPager2.default.apply(undefined, args), { formula: formula,
+    reactFormulaStyles: _reactFormulaStyles2.default,
+    reactFormulaThemes: reactFormulaThemes,
+    reactPreStyles: _reactPreStyles2.default,
+    reactPreThemes: reactPreThemes
+  });
 }

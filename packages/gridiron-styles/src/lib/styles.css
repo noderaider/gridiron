@@ -245,8 +245,11 @@
 
   /* Without this property, Chrome repaints the entire Grid any time a new row or column is added.
      Firefox only repaints the new row or column (regardless of this property).
-     Safari and IE don't support the property at all. */
-  will-change: transform;
+     Safari and IE don't support the property at all. 
+
+    commenting out for now due to causing overlap of 2 dropdowns in certain scenario (chrome)
+     */
+  /*will-change: transform;*/
 }
 
 :global(.react-grid-item) .grid.variableHeight {
