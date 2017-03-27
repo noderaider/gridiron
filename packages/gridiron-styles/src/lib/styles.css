@@ -349,6 +349,7 @@
   flex: 0 0 auto;
   width: 100%;
   font-size: 0.85rem;
+  font-family: Lato;
 }
 
 .ltr .document {
